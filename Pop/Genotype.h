@@ -1,7 +1,7 @@
 /*
  * File Genotype.h
  * Author : Sylvain Gaillard <yragael2001@yahoo.fr>
- * Last modification : Monday June 07 2004
+ * Last modification : Wednesday June 09 2004
  */
 
 // Secured inclusion of header's file
@@ -36,6 +36,11 @@ class Genotype {
 		Genotype(AnalyzedLoci * analyzed_loci);
 
 		/**
+		 * @brief Copy constructor.
+		 */
+		Genotype(const Genotype & genotype);
+
+		/**
 		 * @brief Destroy a Genotype.
 		 */
 		~Genotype();
@@ -58,6 +63,23 @@ class Genotype {
 		 */
 		void setMonolocusGenotypeByAlleleId(unsigned int locus_index,
 				const vector<unsigned int> allele_id) throw (Exception);
+
+		/**
+		 * @brief Get the ploidy of a locus.
+		 */
+		unsigned int getPloidy(unsigned int locus_index) const
+			throw (IndexOutOfBoundsException);
+
+		/**
+		 * @brief Get a MonolocusGenotype.
+		 */
+		const MonolocusGenotype * getMonolocusGenotype(unsigned int locus_index) const
+			throw (IndexOutOfBoundsException);
+
+		/**
+		 * @brief Get the AnalyzedLoci linked to this Genotype.
+		 */
+		const AnalyzedLoci * getAnalyzedLoci();
 
 	protected:
 		AnalyzedLoci * _analyzedLoci;
