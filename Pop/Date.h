@@ -33,6 +33,13 @@ class Date {
 		~Date();
 
 		/**
+		 * @brief The Date copy operator.
+		 *
+		 * @return A ref toward the assigned Date.
+		 */
+		Date & operator= (const Date & date);
+
+		/**
 		 * @brief Set the Date.
 		 */
 		void setDate(const int day, const int month, const int year);
