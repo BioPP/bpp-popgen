@@ -153,7 +153,47 @@ class SequenceStatistics
 		 */
 		static double tajimaD(const PolymorphismSequenceContainer & psc, bool gapflag = true);
 
+		/**
+		 * @brief Return the Fu and Li D test (1993).
+		 *
+		 * @param ingroup a PolymorphismSequenceContainer
+		 * @param outgroup a PolymorphismSequenceContainer
+		 */
+		static double fuliD(const PolymorphismSequenceContainer & ingroup, const PolymorphismSequenceContainer & outgroup);
+
+		/**
+		 * @brief Return the Fu and Li D<sup>*</sup> test (1993).
+		 *
+		 * @param group a PolymorphismSequenceContainer
+		 */
+		static double fuliDstar(const PolymorphismSequenceContainer & group);
+
+		/**
+		 * @brief Return the Fu and Li F test (1993).
+		 *
+		 * @param ingroup a PolymorphismSequenceContainer
+		 * @param outgroup a PolymorphismSequenceContainer
+		 */
+		static double fuliF(const PolymorphismSequenceContainer & ingroup, const PolymorphismSequenceContainer & outgroup);
+
+		/**
+		 * @brief Return the Fu and Li F<sup>*</sup> test (1993).
+		 *
+		 * @param group a PolymorphismSequenceContainer
+		 */
+		static double fuliFstar(const PolymorphismSequenceContainer & group);
+
 	private:
+		/**
+		 * @brief Count the number of mutation for a site.
+		 */
+		static unsigned int _getMutationNumber(const Site & site);
+
+		/**
+		 * @brief Count the number of singleton for a site.
+		 */
+		static unsigned int _getSingletonNumber(const Site & site);
+
 		/**
 		 * @brief Get usefull values for theta estimators.
 		 *

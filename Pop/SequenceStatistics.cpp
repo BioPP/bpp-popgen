@@ -2,7 +2,7 @@
  * File SequenceStatistics.cpp
  * Author : Eric Bazin <bazin@univ-montp2.fr>
  *          Sylvain Gailard <yragael2001@yahoo.fr>
- * Last modification : Thursday July 29 2004
+ * Last modification : Friday July 30 2004
  *
  * Copyright (C) 2004 Eric Bazin, Sylvain Gaillard and the
  *                    PopLib Development Core Team
@@ -74,10 +74,7 @@ unsigned int SequenceStatistics::countSingleton(SiteIterator & si) {
 	const Site * site;
 	while (si.hasMoreSites()) {
 		site = si.nextSite();
-		map<int, unsigned int> states_count = SymbolListTools::getCounts(* site);
-		for (map<int, unsigned int>::iterator it = states_count.begin() ; it != states_count.end() ; it++)
-			if (it->second == 1)
-				nus++;
+		nus += _getSingletonNumber(* site);
 	}
 	return nus;
 }
@@ -90,14 +87,7 @@ unsigned int SequenceStatistics::totNumberMutations(SiteIterator & si) {
 	const Site * site;
 	while (si.hasMoreSites()) {
 		site = si.nextSite();
-		unsigned int tmp_count = 0;
-		map<int, unsigned int> states_count = SymbolListTools::getCounts(* site);
-		for (map<int, unsigned int>::iterator it = states_count.begin() ; it != states_count.end() ; it++)
-			if (it->first >= 0)
-				tmp_count++;
-		if (tmp_count > 0)
-			tmp_count--;
-		tnm += tmp_count;
+		tnm += _getMutationNumber(* site);
 	}
 	return tnm;
 }
@@ -175,7 +165,7 @@ double SequenceStatistics::tajima83(const PolymorphismSequenceContainer & psc, b
 	unsigned int alphabet_size = (psc.getAlphabet())->getSize();
 	const Site * site;
 	SiteIterator *si;
-	double value = 0.;
+	double value2 = 0.;
 	if (gapflag)
 		si = new CompleteSiteIterator(psc);
 	else
@@ -183,6 +173,7 @@ double SequenceStatistics::tajima83(const PolymorphismSequenceContainer & psc, b
 	while (si->hasMoreSites()) {
 		site = si->nextSite();
 		if (! SiteTools::isConstant(* site)) {
+			double value = 0.;
 			map<int, unsigned int> count = SymbolListTools::getCounts(* site);
 			map<int, unsigned int> tmp_k;
 			unsigned int tmp_n = 0;
@@ -193,9 +184,10 @@ double SequenceStatistics::tajima83(const PolymorphismSequenceContainer & psc, b
 				}
 			for(map<int, unsigned int>::iterator it = tmp_k.begin() ; it != tmp_k.end() ; it++)
 				value += (double) it->second / (tmp_n * (tmp_n - 1));
+			value2 += 1. - value;
 		}
 	}
-	return 1 - value;
+	return value2;
 }
 
 // Method to compute Tajima D test (1989)
@@ -292,6 +284,79 @@ double SequenceStatistics::DVH( const PolymorphismSequenceContainer & psc, bool 
 	return H;
 }
 
+double SequenceStatistics::fuliD(const PolymorphismSequenceContainer & ingroup, const PolymorphismSequenceContainer & outgroup) {
+	unsigned int n = ingroup.getNumberOfSequences();
+	double nn = (double) n;
+	map<string, double> values = _getUsefullValues(n);
+	double vD = 1. + (pow(values["a1"], 2) / (values["a2"] + pow(values["a1"], 2))) * (values["cn"] - ((nn + 1.) / (nn - 1.)));
+	double uD = values["a1"] - 1. - vD;
+	CompleteSiteIterator csii = ingroup;
+	CompleteSiteIterator csio = outgroup;
+	double eta = (double) totNumberMutations(csii);
+	double etae = (double) countSingleton(csio);
+	return (eta - values["a1"] * etae) / sqrt((uD * eta) + (vD * eta * eta));
+}
+
+double SequenceStatistics::fuliDstar(const PolymorphismSequenceContainer & group) {
+	unsigned int n = group.getNumberOfSequences();
+	double nn = (double) n;
+	map<string, double> values = _getUsefullValues(n);
+	double _n = nn / (nn - 1.);
+	double vDs = (_n * _n * values["a2"] + values["a1"] * values["a1"] * values["dn"] - 2. * (nn * values["a1"] * (values["a1"] + 1.) / ((nn - 1.) * (nn - 1.)))) / (pow(values["a1"], 2) + values["a2"]);
+	double uDs = _n * (values["a1"] - _n) - vDs;
+	CompleteSiteIterator csi = group;
+	double eta = (double) totNumberMutations(csi);
+	double etas = (double) countSingleton(csi);
+	return (_n * eta - values["a1"] * etas) / sqrt(uDs * eta + vDs * eta * eta);
+}
+
+double SequenceStatistics::fuliF(const PolymorphismSequenceContainer & ingroup, const PolymorphismSequenceContainer & outgroup) {
+	unsigned int n = ingroup.getNumberOfSequences();
+	double nn = (double) n;
+	map<string, double> values = _getUsefullValues(n);
+	double pi = tajima83(ingroup, true);
+	double vF = (values["cn"] + values["b2"] - 2. / (nn - 1.)) / (pow(values["a1"], 2) + values["a2"]);
+	double uF = (1. + values["b1"] - (4. * ((nn + 1.) / ((nn - 1.) * (nn - 1.)))) * (values["a1n"] - (2. * nn) / (nn + 1.))) / (values["a1"] - vF);
+	CompleteSiteIterator csii = ingroup;
+	CompleteSiteIterator csio = outgroup;
+	double eta = (double) totNumberMutations(csii);
+	double etae = (double) countSingleton(csio);
+	return (pi - etae) / sqrt(uF * eta + vF * eta * eta);
+}
+
+double SequenceStatistics::fuliFstar(const PolymorphismSequenceContainer & group) {
+	unsigned int n = group.getNumberOfSequences();
+	double nn = (double) n;
+	map<string, double> values = _getUsefullValues(n);
+	double pi = tajima83(group, true);
+	double vFs = (values["dn"] + values["b2"] - (2. / (nn - 1.)) * (4. * values["a2"] - 6. + 8. / nn)) / (pow(values["a1"], 2) + values["a2"]);
+	double uFs = ((nn / (nn - 1.)) + values["b1"] - (4. / (nn * (nn - 1.))) + 2. * ((nn + 1.) / (pow((nn - 1.), 2))) * (values["a1n"] - 2. * nn / (nn + 1.))) / (values["a1"] - vFs);
+	CompleteSiteIterator csi = group;
+	double eta = (double) totNumberMutations(csi);
+	double etas = (double) countSingleton(csi);
+	return (pi - (nn - 1.) / nn * etas) / sqrt(uFs * eta + vFs * eta * eta);
+}
+
+unsigned int SequenceStatistics::_getMutationNumber(const Site & site) {
+	unsigned int tmp_count = 0;
+	map<int, unsigned int> states_count = SymbolListTools::getCounts(site);
+	for (map<int, unsigned int>::iterator it = states_count.begin() ; it != states_count.end() ; it++)
+		if (it->first >= 0)
+			tmp_count++;
+	if (tmp_count > 0)
+		tmp_count--;
+	return tmp_count;
+}
+
+unsigned int SequenceStatistics::_getSingletonNumber(const Site & site) {
+	unsigned int nus = 0;
+	map<int, unsigned int> states_count = SymbolListTools::getCounts(site);
+	for (map<int, unsigned int>::iterator it = states_count.begin() ; it != states_count.end() ; it++)
+		if (it->second == 1)
+			nus++;
+	return nus;
+}
+
 map<string, double> SequenceStatistics::_getUsefullValues(unsigned int n) {
 	map<string, double> values;
 	values["a1"] = 0.;
@@ -310,13 +375,14 @@ map<string, double> SequenceStatistics::_getUsefullValues(unsigned int n) {
 			values["a1"] += 1. / i;
 			values["a2"] += 1. / (i * i);
 		}
-		values["a1n"] = values["a1"] + (1. / n);
-		values["b1"] = (double) (n + 1) / (3 * (n - 1));
-		values["b2"] = (double) 2 * ((n * n) + n + 3) / (9 * n * (n - 1));
+		double nn = (double) n;
+		values["a1n"] = values["a1"] + (1. / nn);
+		values["b1"] = (nn + 1.) / (3. * (nn - 1.));
+		values["b2"] = 2. * ((nn * nn) + nn + 3.) / (9. * nn * (nn - 1.));
 		values["c1"] = values["b1"] - (1. / values["a1"]);
-		values["c2"] = values["b2"] - ((n + 2) / (values["a1"] * n)) + (values["a2"] / (values["a1"] * values["a1"]));
-		values["cn"] = 2. * ((n * values["a1"]) - (2 * (n - 1))) / ((n -1) * (n - 2));
-		values["dn"] = values["cn"] + ((n - 2) / ((n - 1) * (n - 1))) + ((2 / (n - 1)) * ((3 / 2) - (((2 * values["a1n"]) - 3) / (n - 2)) - (1 / n)));
+		values["c2"] = values["b2"] - ((nn + 2.) / (values["a1"] * nn)) + (values["a2"] / (values["a1"] * values["a1"]));
+		values["cn"] = 2. * ((nn * values["a1"]) - (2. * (nn - 1.))) / ((nn - 1.) * (nn - 2.));
+		values["dn"] = values["cn"] + ((nn - 2.) / ((nn - 1.) * (nn - 1.))) + ((2. / (nn - 1.)) * ((3. / 2.) - (((2. * values["a1n"]) - 3.) / (nn - 2.)) - (1. / nn)));
 		values["e1"] = values["c1"] / values["a1"];
 		values["e2"] = values["c2"] / ((values["a1"] * values["a1"]) + values["a2"]);
 	}
