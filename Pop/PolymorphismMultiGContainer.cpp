@@ -79,8 +79,14 @@ void PolymorphismMultiGContainer::deleteMultilocusGenotype(unsigned int position
 
 unsigned int PolymorphismMultiGContainer::getGroupId(unsigned int position) const throw (IndexOutOfBoundsException) {
 	if (position >= size())
-		throw IndexOutOfBoundsException("PolymorphismMultiGContainer::getGroup: position out of bounds.", position, 0, size() - 1);
+		throw IndexOutOfBoundsException("PolymorphismMultiGContainer::getGroupId: position out of bounds.", position, 0, size() - 1);
 	return _groups[position];
+}
+
+void PolymorphismMultiGContainer::setGroupId(unsigned int position, unsigned int group_id) throw (IndexOutOfBoundsException) {
+	if (position >= size())
+		throw IndexOutOfBoundsException("PolymorphismMultiGContainer::setGroupId: position out of bounds.", position, 0, size() - 1);
+	_groups[position] = group_id;
 }
 
 set<unsigned int> PolymorphismMultiGContainer::getAllGroupsIds() const {

@@ -109,6 +109,13 @@ class PolymorphismMultiGContainer {
 		unsigned int getGroupId(unsigned int position) const throw (IndexOutOfBoundsException);
 
 		/**
+		 * @brief Set the Group of a MultilocusGenotype.
+		 *
+		 * @throw IndexOutOfBoundsException if position excedes the size of the container.
+		 */
+		void setGroupId(unsigned int position, unsigned int group_id) throw (IndexOutOfBoundsException);
+
+		/**
 		 * @brief Get the groups' ids.
 		 */
 		set<unsigned int> getAllGroupsIds() const;
