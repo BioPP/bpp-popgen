@@ -1,7 +1,7 @@
 /*
  * File Locality.h
  * Author : Sylvain Gaillard <yragael2001@yahoo.fr>
- * Last modification : Tuesday April 27 2004
+ * Last modification : Friday July 09 2004
  */
 
 // Secured inclusion of header's file
@@ -122,10 +122,7 @@ template <class T> Locality<T> & Locality<T>::operator= (const Locality<T> & loc
 
 //** Comparison operators: ***************************************************/
 template <class T> bool Locality<T>::operator== (const Locality<T> & locality) const {
-	if (_x == locality.getX() && _y == locality.getY() && _name == locality.getName())
-		return true;
-	else
-		return false;
+	return (_x == locality.getX() && _y == locality.getY() && _name == locality.getName());
 }
 
 template <class T> bool Locality<T>::operator!= (const Locality<T> & locality) const {
