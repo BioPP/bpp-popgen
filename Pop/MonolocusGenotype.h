@@ -1,62 +1,39 @@
 /*
  * File MonolocusGenotype.h
  * Author : Sylvain Gaillard <yragael2001@yahoo.fr>
- * Last modification : Thursday May 27 2004
+ * Last modification : Monday June 07 2004
  */
 
-// From STL
-#include <vector>
-using namespace std;
+// Secured inclusion of header's file
+#ifndef _MONOLOCUSGENOTYPE_H_
+#define _MONOLOCUSGENOTYPE_H_
 
-// From Utils
-#include <Utils/Exceptions.h>
+//From Utils
+#include <Utils/Clonable.h>
 
 /**
- * @brief The MonolocusGenotype class.
+ * @brief The MonolocusGenotype virtual class.
  *
  * A MonolocusGenotype containes the Alleles' keys defined in a Locus object.
- * This keys are unsigned integers.
- *
- * 0 (zero) is considered as missing data.
+ * This keys are returned as unsigned integers.
+ * This class is an interface for all monolocus genotypes.
  */
-class MonolocusGenotype {
+class MonolocusGenotype : public Clonable {
 	public: // Constructors and Destructor
-		/**
-		 * @brief Build a void MonolocusGenotype.
-		 */
-		MonolocusGenotype();
-
 		/**
 		 * @brief Destroy a MonolocusGenotype.
 		 */
-		~MonolocusGenotype();
+		virtual ~MonolocusGenotype();
 		
 	public: // Methodes
 		/**
-		 * @brief Add an Allele key to the MonolocusGenotype.
+		 * @brief Get the first allele's key.
 		 */
-		void addKey(unsigned int key);
+		virtual unsigned int getAlleleKey() const = 0;
 
 		/**
-		 * @brief Get a special key.
+		 * @brief Get the ploidy of the locus.
 		 */
-		unsigned int getKey(unsigned int index) throw (IndexOutOfBoundsException);
-
-		/**
-		 * @brief Get all the valid Allele keys.
-		 */
-		vector<unsigned int> getKeys();
-		
-		/**
-		 * @brief Get the number of alleles at this locus in an individual.
-		 */
-		unsigned int getNumberOfData();
-
-		/**
-		 * @brief Test the presence of missing data.
-		 */
-		bool hasMissingData();
-
-	protected:
-		vector<unsigned int> _allelekeys;
+		virtual unsigned int getPloidy() const = 0;
 };
+#endif // _MONOLOCUSGENOTYPE_H_
