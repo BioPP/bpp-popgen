@@ -30,8 +30,8 @@ PolymorphismSequenceContainer::PolymorphismSequenceContainer(const PolymorphismS
 	_strength.resize(nbSeq);
 	_ingroup.resize(nbSeq);
 	for(unsigned int i = 0; i < nbSeq; i++) {
-		_strength[i] = getSequenceStrength(i);
-		_ingroup[i] = isIngroupMember(i);
+		_strength[i] = psc.getSequenceStrength(i);
+		_ingroup[i] = psc.isIngroupMember(i);
 	}
 }
 
@@ -54,8 +54,8 @@ PolymorphismSequenceContainer & PolymorphismSequenceContainer::operator= (const 
 	_ingroup.resize(nbSeq);
 	for(unsigned int i = 0; i < nbSeq; i++) {
 		_comments[i] = new Comments(psc.getComments(i));
-		_strength[i] = getSequenceStrength(i);
-		_ingroup[i] = isIngroupMember(i);
+		_strength[i] = psc.getSequenceStrength(i);
+		_ingroup[i] = psc.isIngroupMember(i);
 	}
 	Sequence * s = NULL;
 	_sequences = vector<Sequence *>(nbSeq, s);
