@@ -1,7 +1,7 @@
 /*
  * File PolymorphismMultiGContainer.cpp
  * Author : Sylvain Gaillard <yragael2001@yahoo.fr>
- * Last modification : Thursday July 29 2004
+ * Last modification : Tuesday August 03 2004
  *
  * Copyright (C) 2004 Sylvain Gaillard and the
  *                    PopLib Development Core Team
@@ -24,6 +24,9 @@
  */
 
 #include "PolymorphismMultiGContainer.h"
+
+#include <iostream>
+using namespace std;
 
 //** Constructors : **********************************************************/
 PolymorphismMultiGContainer::PolymorphismMultiGContainer() {}
@@ -258,7 +261,7 @@ map<unsigned int, double> PolymorphismMultiGContainer::getAllelesFrqForGroups(un
 	if (nb_tot_allele == 0)
 		throw ZeroDivisionException("PolymorphismMultiGContainer::getAllelesFrqForGroups.");
 	for (map<unsigned int, unsigned int>::iterator it = tmp_alleles.begin() ; it != tmp_alleles.end() ; it++)
-		alleles_frq[it->first] = it->second / nb_tot_allele;
+		alleles_frq[it->first] = (double) it->second / (double) nb_tot_allele;
 	return alleles_frq;
 }
 
@@ -433,7 +436,7 @@ map<unsigned int, double> PolymorphismMultiGContainer::getHeterozygousFrqForGrou
 	if (counter == 0)
 		throw ZeroDivisionException("PolymorphismMultiGContainer::getHeterozygousFrqForGroups.");
 	for (map<unsigned int, double>::iterator i = freq.begin() ; i != freq.end() ; i++)
-		i->second = i->second / counter;
+		i->second = (double) i->second / (double) counter;
 	return freq;
 }
 
@@ -546,4 +549,116 @@ double PolymorphismMultiGContainer::getDnei78(unsigned int locus_position, unsig
 		Jxy += tmp_frq1 * tmp_frq2;
 	}
 	return -log(Jxy / sqrt((((2 * nx * Jx) - 1)/((2 * nx) -1)) * (((2 * ny * Jy) - 1)/((2 * ny) -1))));
+}
+
+map<unsigned int, double> PolymorphismMultiGContainer::getWCFit(unsigned int locus_position, const set<unsigned int> & groups) const throw (Exception) {
+	map<unsigned int, PolymorphismMultiGContainer::FstatBases> values = getVarianceComponents(locus_position, groups);
+	map<unsigned int, double> Fit;
+	for (map<unsigned int, PolymorphismMultiGContainer::FstatBases>::iterator it = values.begin() ; it != values.end() ; it++) {
+		Fit[it->first] = it->second.a + it->second.b + it->second.c;
+		if (Fit[it->first] == 0.)
+			throw ZeroDivisionException("PolymorphismMultiGContainer::getWCFit.");
+		Fit[it->first] = 1. - it->second.c / Fit[it->first];
+	}
+	return Fit;
+}
+
+map<unsigned int, double> PolymorphismMultiGContainer::getWCFst(unsigned int locus_position, const set<unsigned int> & groups) const throw (Exception) {
+	if (groups.size() <= 1)
+		throw BadIntegerException("PolymorphismMultiGContainer::getWCFst: groups must be >= 2.", groups.size());
+	map<unsigned int, PolymorphismMultiGContainer::FstatBases> values = getVarianceComponents(locus_position, groups);
+	map<unsigned int, double> Fst;
+	for (map<unsigned int, PolymorphismMultiGContainer::FstatBases>::iterator it = values.begin() ; it != values.end() ; it++) {
+		Fst[it->first] = it->second.a + it->second.b + it->second.c;
+		if (Fst[it->first] == 0.)
+			throw ZeroDivisionException("PolymorphismMultiGContainer::getWCFst.");
+		Fst[it->first] = it->second.a / Fst[it->first];
+	}
+	return Fst;
+}
+
+map<unsigned int, double> PolymorphismMultiGContainer::getWCFis(unsigned int locus_position, const set<unsigned int> & groups) const throw (Exception) {
+	map<unsigned int, PolymorphismMultiGContainer::FstatBases> values = getVarianceComponents(locus_position, groups);
+	map<unsigned int, double> Fis;
+	for (map<unsigned int, PolymorphismMultiGContainer::FstatBases>::iterator it = values.begin() ; it != values.end() ; it++) {
+		Fis[it->first] = it->second.b + it->second.c;
+		if (Fis[it->first] == 0.)
+			throw ZeroDivisionException("PolymorphismMultiGContainer::getWCFis.");
+		Fis[it->first] = 1. - it->second.c / Fis[it->first];
+	}
+	return Fis;
+}
+
+map<unsigned int, PolymorphismMultiGContainer::FstatBases> PolymorphismMultiGContainer::getVarianceComponents(unsigned int locus_position, const set<unsigned int> & groups) const throw (ZeroDivisionException) {
+	map<unsigned int, PolymorphismMultiGContainer::FstatBases> values;
+	// Base values computation
+	double nbar = 0.;
+	double nc = 0.;
+	vector<unsigned int> ids = getAllelesIdsForGroups(locus_position, groups);
+	map<unsigned int, double> pbar;
+	map<unsigned int, double> s2;
+	map<unsigned int, double> hbar;
+	for (unsigned int i = 0 ; i < ids.size() ; i++) {
+		pbar[ids[i]] = 0.;
+		s2[ids[i]] = 0.;
+		hbar[ids[i]] = 0.;
+	}
+	unsigned int r = groups.size();
+	for (unsigned int i = 0 ; i < r ; i++) {
+		double ni = (double) getLocusGroupSize(i, locus_position);
+		map<unsigned int, double> pi = getAllelesFrqForOneGroup(locus_position, (* groups.begin() + i));
+		map<unsigned int, double> hi = getHeterozygousFrqForOneGroup(locus_position, (* groups.begin() + i));
+		nbar += ni;
+		if (r > 1)
+			nc += ni * ni;
+		for (map<unsigned int, double>::iterator it = pi.begin() ; it != pi.end() ; it++)
+			pbar[it->first] += ni * it->second;
+		for (map<unsigned int, double>::iterator it = hi.begin() ; it != hi.end() ; it++)
+			hbar[it->first] += ni * it->second;
+	}
+	nbar = nbar / (double) r;
+	if (nbar <= 1)
+		throw ZeroDivisionException("PolymorphismMultiGContainer::getVarianceComponents.");
+	if (r > 1)
+		nc = (((double) r * nbar) - (nc / ((double) r * nbar))) / ((double) r - 1.);
+	for (map<unsigned int, double>::iterator it = pbar.begin() ; it != pbar.end() ; it++)
+		it->second = it->second / ((double) r * nbar);
+	for (map<unsigned int, double>::iterator it = hbar.begin() ; it != hbar.end() ; it++)
+		it->second = it->second / ((double) r * nbar);
+	for (unsigned int i = 0 ; i < r ; i++) {
+		double ni = (double) getLocusGroupSize(i, locus_position);
+		map<unsigned int, double> pi = getAllelesFrqForOneGroup(locus_position, (* groups.begin() + i));
+		for (unsigned int i = 0 ; i < ids.size() ; i++)
+			pi[ids[i]];
+		for (map<unsigned int, double>::iterator it = pi.begin() ; it != pi.end() ; it++)
+			s2[it->first] += ni * (it->second - pbar[it->first]) * (it->second - pbar[it->first]);
+	}
+	for (map<unsigned int, double>::iterator it = s2.begin() ; it != s2.end() ; it++)
+		it->second = it->second / (((double) r - 1.) * nbar);
+	
+	// a, b, c computation
+	for (unsigned int i = 0 ; i < ids.size() ; i++) {
+		values[ids[i]];
+	}
+	for (map<unsigned int, PolymorphismMultiGContainer::FstatBases>::iterator it = values.begin() ; it != values.end() ; it++) {
+		it->second.a = (nbar / nc) * (s2[it->first] - ((1. / (nbar - 1.)) * ((pbar[it->first] * (1. - pbar[it->first])) - (s2[it->first] * ((double) r - 1.) / (double) r) - ((1. / 4.) * hbar[it->first]))));
+		it->second.b = (nbar / (nbar - 1.)) * ((pbar[it->first] * (1. - pbar[it->first])) - (s2[it->first] * ((double) r - 1.) / (double) r) - ((((2. * nbar) - 1.) / (4. * nbar)) * hbar[it->first]));
+		it->second.c = hbar[it->first] / 2.;
+	}
+
+	// *************** Debug ... ****************
+	for (unsigned int i = 0 ; i < ids.size() ; i++) {
+		cout << "***DEBUG*** id : " << ids[i];
+		cout << "\t A=" << values[ids[i]].a;
+		cout << "\t B=" << values[ids[i]].b;
+		cout << "\t C=" << values[ids[i]].c;
+		cout << "\t nbar=" << nbar;
+		cout << "\t nc=" << nc;
+		cout << "\t P=" << pbar[ids[i]];
+		cout << "\t s2=" << s2[ids[i]];
+		cout << "\t H=" << hbar[ids[i]];
+		cout << endl;
+	}
+	// *************** Debug ... ****************
+	return values;
 }

@@ -1,7 +1,7 @@
 /*
  * File PolymorphismMultiGContainer.h
  * Author : Sylvain Gaillard <yragael2001@yahoo.fr>
- * Last modification : Thursday July 29 2004
+ * Last modification : Monday August 02 2004
  *
  * Copyright (C) 2004 Sylvain Gaillard and the
  *                    PopLib Development Core Team
@@ -53,6 +53,12 @@ using namespace std;
  */
 class PolymorphismMultiGContainer : public Clonable {
 	public: // Constructors and destructor
+		struct FstatBases {
+			double a;
+			double b;
+			double c;
+		};
+
 		/**
 		 * @brief Build a new PolymorphismMultilocusGenotypeContainer.
 		 */
@@ -378,7 +384,27 @@ class PolymorphismMultiGContainer : public Clonable {
 		 * @throw IndexOutOfBoundsException if locus_position excedes the number of loci of one MultilocusGenotype.
 		 * @throw ZeroDivisionException if the number of considered alleles = 0.
 		 */
-		 double getDnei78(unsigned int locus_position, unsigned int grp1, unsigned int grp2) const throw (Exception);
+		double getDnei78(unsigned int locus_position, unsigned int grp1, unsigned int grp2) const throw (Exception);
+
+		/**
+		 * @brief Get the variance components a, b and c (Weir and Cockerham, 1983).
+		 */
+		map<unsigned int, FstatBases> getVarianceComponents(unsigned int locus_position, const set<unsigned int> & groups) const throw (ZeroDivisionException);
+		
+		/**
+		 * @brief Compute the Weir and Cockerham Fit on a set of groups.
+		 */
+		map<unsigned int, double> getWCFit(unsigned int locus_position, const set<unsigned int> & groups) const throw (Exception);
+
+		/**
+		 * @brief Compute the Weir and Cockerham Fst on a set of groups.
+		 */
+		map<unsigned int, double> getWCFst(unsigned int locus_position, const set<unsigned int> & groups) const throw (Exception);
+
+		/**
+		 * @brief Compute the Weir and Cockerham Fis on a set of groups.
+		 */
+		map<unsigned int, double> getWCFis(unsigned int locus_position, const set<unsigned int> & groups) const throw (Exception);
 
 	protected:
 		vector<MultilocusGenotype *> _multilocusGenotypes;
