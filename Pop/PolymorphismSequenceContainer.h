@@ -27,6 +27,11 @@ class PolymorphismSequenceContainer : public VectorSiteContainer
 		PolymorphismSequenceContainer(const Alphabet *alpha);
 
 		/**
+		 * @brief Build a new empty PolymorphismSequenceContainer of given size.
+		 */	
+		PolymorphismSequenceContainer(unsigned int size, const Alphabet *alpha);
+
+		/**
 		 * @brief Build a PolymorphismSequenceContainer by copying data from an OrderedSequenceContainer.
 		 */
 		PolymorphismSequenceContainer(const OrderedSequenceContainer & sc);

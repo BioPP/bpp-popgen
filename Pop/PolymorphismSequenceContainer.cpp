@@ -9,7 +9,12 @@
 #include "PolymorphismSequenceContainer.h"
 
 //** Class constructor: *******************************************************/
-PolymorphismSequenceContainer::PolymorphismSequenceContainer(const Alphabet *alpha) :	VectorSiteContainer(alpha) {}
+PolymorphismSequenceContainer::PolymorphismSequenceContainer(const Alphabet *alpha) : VectorSiteContainer(alpha) {}
+
+PolymorphismSequenceContainer::PolymorphismSequenceContainer(unsigned int size, const Alphabet *alpha) : VectorSiteContainer(size, alpha) {
+	_strength.resize(size);
+	_ingroup.resize(size);
+}
 
 PolymorphismSequenceContainer::PolymorphismSequenceContainer(const OrderedSequenceContainer & sc) : VectorSiteContainer(sc) {
 	for (unsigned int i = 0 ; i < sc.getNumberOfSequences() ; i++) {
