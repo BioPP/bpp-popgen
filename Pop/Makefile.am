@@ -1,5 +1,5 @@
-H_FILES = Coord.h Date.h Locality.h Individual.h
-CPP_FILES = Date.cpp Individual.cpp
+H_FILES = Coord.h Date.h Locality.h
+CPP_FILES = Date.cpp
 
 lib_LTLIBRARIES = libpop.la
 libpop_la_SOURCES = $(H_FILES) $(CPP_FILES)
