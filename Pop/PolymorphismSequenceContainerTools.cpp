@@ -162,3 +162,27 @@ unsigned int PolymorphismSequenceContainerTools::getNumberOfNonGapSites(const Po
 	delete ssi;
 	return count;	
 }
+
+unsigned int PolymorphismSequenceContainerTools::getNumberOfCompleteSites(const PolymorphismSequenceContainer & psc, bool ingroup) throw (Exception) {
+	unsigned int count = psc.getNumberOfSites();
+	PolymorphismSequenceContainer * npsc = NULL;
+	SimpleSiteIterator * ssi;
+	if (ingroup) {
+		try {
+			npsc = extractIngroup(psc);
+		}
+		catch (Exception & e) {
+			if (npsc != NULL)
+				delete npsc;
+			throw e;
+		}
+		ssi = new SimpleSiteIterator(* npsc);
+	}
+	else
+		ssi = new SimpleSiteIterator(psc);
+	while (ssi->hasMoreSites())
+		if (!SiteTools::isComplete(* ssi->nextSite()))
+			count--;
+	delete ssi;
+	return count;	
+}

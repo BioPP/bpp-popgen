@@ -95,12 +95,20 @@ class PolymorphismSequenceContainerTools
 
 		/**
 		 * @brief Return number of sites without gaps in a PolymorphismSequenceContainer.
-		 * Only complete sites are considered.
-		 *
+		 * 
 		 * @param psc a PolymorphismSequenceContainer reference
 		 * @param ingroup a boolean set to true if you want to take only ingroup sequences into account
 		 */
 		static unsigned int getNumberOfNonGapSites(const PolymorphismSequenceContainer & psc, bool ingroup) throw (Exception);
+
+		/**
+		 * @brief Return number of completely resolved sites in a PolymorphismSequenceContainer.
+		 *
+		 *
+		 * @param psc a PolymorphismSequenceContainer reference
+		 * @param ingroup a boolean set to true if you want to take only ingroup sequences into account
+		 */
+		static unsigned int getNumberOfCompleteSites(const PolymorphismSequenceContainer & psc, bool ingroup) throw (Exception);
 
 		/*******************************************************************************/
 };
