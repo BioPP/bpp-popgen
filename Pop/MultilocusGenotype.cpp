@@ -1,7 +1,7 @@
 /*
  * File MultilocusGenotype.cpp
  * Author : Sylvain Gaillard <yragael2001@yahoo.fr>
- * Last modification : Tuesday July 06 2004
+ * Last modification : Thursday July 22 2004
  */
 
 #include "MultilocusGenotype.h"
@@ -20,14 +20,17 @@ MultilocusGenotype::MultilocusGenotype(unsigned int loci_number) throw (BadInteg
 }
 
 MultilocusGenotype::MultilocusGenotype(const MultilocusGenotype & genotype) {
-	for (unsigned int i=0 ; i<genotype._loci.size() ; i++)
-		_loci[i] = dynamic_cast<MonolocusGenotype *>(genotype._loci[i]->clone());
+	for (unsigned int i=0 ; i<genotype.size() ; i++) {
+		if (! genotype.isMonolocusGenotypeMissing(i))
+			_loci.push_back(dynamic_cast<MonolocusGenotype *>((genotype.getMonolocusGenotype(i))->clone()));
+	}
 }
 
 //** Class destructor: *******************************************************/
 MultilocusGenotype::~MultilocusGenotype() {
 	for (unsigned int i=0 ; i<_loci.size() ; i++)
 		delete _loci[i];
+	_loci.clear();
 }
 
 //** Other methodes: *********************************************************/
@@ -93,6 +96,10 @@ const MonolocusGenotype * MultilocusGenotype::getMonolocusGenotype(unsigned int 
 	if (locus_position >= _loci.size())
 		throw IndexOutOfBoundsException("MultilocusGenotype::getMonolocusGenotype: locus_position out of bounds", locus_position, 0, _loci.size());
 	return _loci[locus_position];
+}
+
+unsigned int MultilocusGenotype::size() const {
+	return _loci.size();
 }
 
 unsigned int MultilocusGenotype::countNonMissingLoci() const {

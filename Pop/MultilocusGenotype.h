@@ -1,7 +1,7 @@
 /*
  * File MultilocusGenotype.h
  * Author : Sylvain Gaillard <yragael2001@yahoo.fr>
- * Last modification : Tuesday July 06 2004
+ * Last modification : Thursday July 22 2004
  */
 
 // Secured inclusion of header's file
@@ -89,6 +89,13 @@ class MultilocusGenotype {
 		 */
 		const MonolocusGenotype * getMonolocusGenotype(unsigned int locus_position) const
 			throw (IndexOutOfBoundsException);
+
+		/**
+		 * @brief Count the number of loci.
+		 *
+		 * Return the size of _loci.
+		 */
+		unsigned int size() const;
 
 		/**
 		 * @brief Count the number of non missing MonolocusGenotype.
