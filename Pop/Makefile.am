@@ -25,7 +25,7 @@ PolymorphismMultiGContainer.h\
 PolymorphismSequenceContainer.h\
 PolymorphismSequenceContainerTools.h\
 PoplibIO.h\
-StatisticalTests.h
+SequenceStatistics.h
 
 CPP_FILES = \
 AbstractIDataSet.cpp\
@@ -51,7 +51,7 @@ PolymorphismMultiGContainer.cpp\
 PolymorphismSequenceContainer.cpp\
 PolymorphismSequenceContainerTools.cpp\
 PoplibIO.cpp\
-StatisticalTests.cpp
+SequenceStatistics.cpp
 
 lib_LTLIBRARIES = libpop.la
 libpop_la_SOURCES = $(H_FILES) $(CPP_FILES)
