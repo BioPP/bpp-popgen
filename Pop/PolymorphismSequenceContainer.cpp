@@ -150,6 +150,7 @@ void PolymorphismSequenceContainer::addSequence(const Sequence &sequence, unsign
 	}
 	_count.push_back(effectif);
 	_ingroup.push_back(true);
+	_group.push_back(0);
 }
 
 void PolymorphismSequenceContainer::clear() {
