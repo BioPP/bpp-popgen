@@ -1,7 +1,7 @@
 /*
  * File Coord.h
  * Author : Sylvain Gaillard <yragael2001@yahoo.fr>
- * Last modification : Thursday April 22 2004
+ * Last modification : Wednesday April 28 2004
  */
 
 // Secured inclusion of header's file
@@ -13,8 +13,8 @@
 /**
  * @brief The Coord class.
  *
- * This is a simple class designed to store the coord of a point.
- * The type of the two coord is defined as a template.
+ * This is a simple class designed to store the coordinates of a point.
+ * The type of the two coordinates is defined as a template.
  */
 template <class T> class Coord : public Clonable {
 	public: // Constructors and destructor :
@@ -57,6 +57,13 @@ template <class T> class Coord : public Clonable {
 		 * @brief Set the two values.
 		 */
 		void setCoord(const T x, const T y);
+
+		/**
+		 * @brief Get the coordinates.
+		 *
+		 * @return A pointer toward a Coord object with the same coordinates.
+		 */
+		Coord<T> * getCoord() const;
 
 		/**
 		 * @brief Set only the longitude.
@@ -148,6 +155,10 @@ template <class T> void Coord<T>::setY(const T y) {
 }
 
 //** Consultation opperators: ************************************************/
+template <class T> Coord<T> * Coord<T>::getCoord() const {
+	return new Coord<T>(_x, _y);
+}
+
 template <class T> T Coord<T>::getX() const {
 	return _x;
 }
