@@ -1,7 +1,7 @@
 /*
  * File Individual.h
  * Author : Sylvain Gaillard <yragael2001@yahoo.fr>
- * Last modification : Friday June 11 2004
+ * Last modification : Monday June 21 2004
  */
 
 // Secured inclusion of header's file
@@ -26,6 +26,7 @@
 #include "Coord.h"
 #include "Date.h"
 #include "Genotype.h"
+#include "GeneralExceptions.h"
 
 /**
  * @brief The Individual class.
@@ -41,6 +42,11 @@ class Individual : public Clonable {
 		Individual();
 
 		/**
+		 * @brief Build a new Individual with an identifier.
+		 */
+		Individual(const string & id);
+
+		/**
 		 * @brief Build a new Individual with parameters.
 		 *
 		 * @param id The id of the Individual as a string.
@@ -50,7 +56,7 @@ class Individual : public Clonable {
 		 * object.
 		 * @param sex The sex of the Individual as an unsigned short.
 		 */
-		Individual(const string id,
+		Individual(const string & id,
 		           const Date & date,
 		           const Coord<double> & coord,
 		           Locality<double> * locality,
@@ -122,7 +128,7 @@ class Individual : public Clonable {
 		 * @return A pointer toward a Date object if the Individual has a date.
 		 * Otherwise throw a NullPointerException.
 		 */
-		Date * getDate() const throw(NullPointerException);
+		const Date * getDate() const throw (NullPointerException);
 
 		/**
 		 * @brief Tell if this Individual has a date.
@@ -150,7 +156,7 @@ class Individual : public Clonable {
 		 * @return A pointer toward a Coord object if the Individual has
 		 * coordinates. Otherwise throw a NullPointerException.
 		 */
-		Coord<double> * getCoord() const throw(NullPointerException);
+		const Coord<double> * getCoord() const throw(NullPointerException);
 
 		/**
 		 * @brief Tell if this Individual has coordinates.
@@ -198,14 +204,14 @@ class Individual : public Clonable {
 		 *
 		 * @param locality A pointer to a Locality object.
 		 */
-		void setLocality(Locality<double> * locality);
+		void setLocality(const Locality<double> * locality);
 
 		/**
 		 * @brief Get the locality of the Individual.
 		 *
 		 * @return A pointer to the Locality of the Individual.
 		 */
-		Locality<double> * getLocality() const;
+		const Locality<double> * getLocality() const throw (NullPointerException);
 
 		/**
 		 * @brief Tell if this Individual has a locality.
@@ -225,6 +231,8 @@ class Individual : public Clonable {
 		 *
 		 * @param id The id of the sequence set.
 		 * @param sequence The sequence to add.
+		 * @throw AlphabetMismatchException if the sequence's alphabet doesn't match the container's alphabet.
+		 * @throw BadIdentifierException if sequence's name is already in use.
 		 */
 		void addSequence(const string & id, const Sequence & sequence)
 			throw (Exception);
@@ -314,7 +322,7 @@ class Individual : public Clonable {
 		unsigned short _sex;
 		Date * _date;
 		Coord<double> * _coord;
-		Locality<double> * _locality;
+		const Locality<double> * _locality;
 		map<string,VectorSequenceContainer *> _sequences;
 		Genotype * _genotype;
 };

@@ -1,7 +1,7 @@
 /*
  * File LocusInfo.cpp
  * Author : Sylvain Gaillard <yragael2001@yahoo.fr>
- * Last modification : Monday June 07 2004
+ * Last modification : Friday June 18 2004
  */
 
 // From Utils
@@ -39,16 +39,12 @@ unsigned int LocusInfo::getPloidy() const {
 }
 
 // AlleleInfos
-void LocusInfo::addAlleleInfo(const AlleleInfo &allele) throw (Exception) {
+void LocusInfo::addAlleleInfo(const AlleleInfo &allele) throw (BadIdentifierException) {
 	// Check if the allele id is not already in use
 	for (map<unsigned int, AlleleInfo *>::const_iterator it = _alleles.begin() ;
 			it != _alleles.end() ; it++)
-		if (it->second->getId() == allele.getId()) {
-			string mes = "LocusInfo::addAlleleInfo: Id already in use (";
-			mes += TextTools::toString(allele.getId());
-			mes += ").";
-			throw Exception(mes);
-		}
+		if (it->second->getId() == allele.getId())
+			throw BadIdentifierException("LocusInfo::addAlleleInfo: Id already in use.",allele.getId());
 	if (_alleles.size() == 0)
 		_alleles.insert(make_pair(1, dynamic_cast<AlleleInfo *>(allele.clone())));
 	else
@@ -57,13 +53,13 @@ void LocusInfo::addAlleleInfo(const AlleleInfo &allele) throw (Exception) {
 }
 
 AlleleInfo * LocusInfo::getAlleleInfoById(unsigned int id) const
-throw (BadIdentifierException) {
+throw (AlleleNotFoundException) {
 	for (map<unsigned int, AlleleInfo *>::const_iterator it = _alleles.begin() ;
 			it != _alleles.end() ; it++) {
 		if (it->second->getId() == id)
 			return it->second;
 	}
-	throw BadIdentifierException("LocusInfo::getAlleleInfoById: AlleleInfo id unknown.", id);
+	throw AlleleNotFoundException("LocusInfo::getAlleleInfoById: AlleleInfo id unknown.", id);
 }
 
 AlleleInfo * LocusInfo::getAlleleInfoByKey(unsigned int key) const throw (BadIntegerException) {
@@ -74,13 +70,13 @@ AlleleInfo * LocusInfo::getAlleleInfoByKey(unsigned int key) const throw (BadInt
 }
 
 unsigned int LocusInfo::getAlleleInfoKey(unsigned int id) const
-throw (BadIdentifierException) {
+throw (AlleleNotFoundException) {
 	for (map<unsigned int, AlleleInfo *>::const_iterator it = _alleles.begin() ;
 			it != _alleles.end() ; it++) {
 		if (it->second->getId() == id)
 			return it->first;
 	}
-	throw BadIdentifierException("LocusInfo::getAlleleInfoPosition: AlleleInfo id unknown.",
+	throw AlleleNotFoundException("LocusInfo::getAlleleInfoKey: AlleleInfo id not found.",
 			id);
 }
 

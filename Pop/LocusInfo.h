@@ -1,7 +1,7 @@
 /*
  * File LocusInfo.h
  * Author : Sylvain Gaillard <yragael2001@yahoo.fr>
- * Last modification : Monday June 07 2004
+ * Last modification : Friday June 18 2004
  */
 
 // Secured inclusion of header's file
@@ -61,24 +61,35 @@ class LocusInfo {
 		
 		/**
 		 * @brief Add an AlleleInfo to the LocusInfo.
+		 *
+		 * @throw BadIdentifierException if the AlleleInfo's id already exists.
 		 */
-		void addAlleleInfo(const AlleleInfo &allele) throw (Exception);
+		void addAlleleInfo(const AlleleInfo &allele)
+			throw (BadIdentifierException);
 
 		/**
 		 * @brief Retrieve an AlleleInfo object of the LocusInfo.
+		 *
+		 * @throw AlleleNotFoundException if the id is not found.
 		 */
-		AlleleInfo * getAlleleInfoById(unsigned int id) const throw (BadIdentifierException);
+		AlleleInfo * getAlleleInfoById(unsigned int id) const
+			throw (AlleleNotFoundException);
 
 		/**
 		 * @brief Retrieve an AlleleInfo object of the LocusInfo.
+		 *
+		 * @throw BadIntegerException if the key doesn't match any referenced key.
 		 */
-		AlleleInfo * getAlleleInfoByKey(unsigned int key) const throw (BadIntegerException);
+		AlleleInfo * getAlleleInfoByKey(unsigned int key) const
+			throw (BadIntegerException);
 
 		/**
 		 * @brief Get the position of an AlleleInfo.
+		 *
+		 * @throw AlleleNotFoundException if the AlleleInfo's id is not found.
 		 */
 		unsigned int getAlleleInfoKey(unsigned int id) const
-			throw (BadIdentifierException);
+			throw (AlleleNotFoundException);
 		
 		/**
 		 * @brief Get the number of alleles at this locus.
@@ -87,6 +98,8 @@ class LocusInfo {
 
 		/**
 		 * @brief Get the identity number of each allele in the locus.
+		 *
+		 * @throw Exception if there is no AlleleInfo in the LocusInfo.
 		 */
 		vector<unsigned int> getAlleleInfosKeys() const throw (Exception);
 

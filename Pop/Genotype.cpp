@@ -1,7 +1,7 @@
 /*
  * File Genotype.cpp
  * Author : Sylvain Gaillard <yragael2001@yahoo.fr>
- * Last modification : Friday June 11 2004
+ * Last modification : Friday June 18 2004
  */
 
 #include "Genotype.h"
@@ -77,7 +77,7 @@ void Genotype::setMonolocusGenotypeByAlleleId(unsigned int locus_index,
 	try {
 		setMonolocusGenotypeByAlleleKey(locus_index, allele_keys);
 	}
-	catch (Exception e) {
+	catch (Exception & e) {
 		throw e;
 	}
 }

@@ -1,7 +1,7 @@
 /*
  * File Individual.cpp
  * Author : Sylvain Gaillard <yragael2001@yahoo.fr>
- * Last modification : Wednesday June 09 2004
+ * Last modification : Monday June 21 2004
  */
 
 #include "Individual.h"
@@ -16,7 +16,16 @@ Individual::Individual() {
 	_genotype = NULL;
 }
 
-Individual::Individual(const string id,
+Individual::Individual(const string & id) {
+	_id = id;
+	_sex = 0;
+	_date = NULL;
+	_coord = NULL;
+	_locality = NULL;
+	_genotype = NULL;
+}
+
+Individual::Individual(const string & id,
                        const Date & date,
                        const Coord<double> & coord,
                        Locality<double> * locality,
@@ -29,11 +38,26 @@ Individual::Individual(const string id,
 }
 
 Individual::Individual(const Individual &ind) {
-	this->_id = ind.getId();
-	this->_sex = ind.getSex();
-	this->_date = ind.hasDate() ? new Date(* ind.getDate()) : NULL;
-	this->_coord = ind.hasCoord() ? new Coord<double>(* ind.getCoord()) : NULL;
-	this->_locality = ind.getLocality();
+	setId(ind.getId());
+	setSex(ind.getSex());
+	try {
+		setDate(* ind.getDate());
+	}
+	catch (NullPointerException) {
+		_date = NULL;
+	}
+	try {
+		setCoord(* ind.getCoord());
+	}
+	catch (NullPointerException) {
+		_coord = NULL;
+	}
+	try {
+		setLocality(ind.getLocality());
+	}
+	catch (NullPointerException) {
+		_locality = NULL;
+	}
 	if (ind.hasSequences()) {
 		vector<string> keys = ind.getSequencesKeys();
 		for (unsigned int i = 0 ; i < keys.size() ; i++)
@@ -54,11 +78,26 @@ Clonable * Individual::clone() const {
 }
 
 Individual & Individual::operator= (const Individual & ind) {
-	this->_id = ind.getId();
-	this->_sex = ind.getSex();
-	this->_date = ind.hasDate() ? new Date(* ind.getDate()) : NULL;
-	this->_coord = ind.hasCoord() ? new Coord<double>(* ind.getCoord()) : NULL;
-	this->_locality = ind.getLocality();
+	setId(ind.getId());
+	setSex(ind.getSex());
+	try {
+		setDate(* ind.getDate());
+	}
+	catch (NullPointerException) {
+		_date = NULL;
+	}
+	try {
+		setCoord(* ind.getCoord());
+	}
+	catch (NullPointerException) {
+		_coord = NULL;
+	}
+	try {
+		setLocality(ind.getLocality());
+	}
+	catch (NullPointerException) {
+		_locality = NULL;
+	}
 	if (ind.hasSequences()) {
 		vector<string> keys = ind.getSequencesKeys();
 		for (unsigned int i = 0 ; i < keys.size() ; i++)
@@ -97,7 +136,7 @@ void Individual::setDate(const Date & date) {
 	}
 }
 
-Date * Individual::getDate() const throw(NullPointerException) {
+const Date * Individual::getDate() const throw (NullPointerException) {
 	if (hasDate())
 		return new Date(* _date);
 	else
@@ -129,7 +168,7 @@ void Individual::setCoord(const double x, const double y) {
 	}
 }
 
-Coord<double> * Individual::getCoord() const throw(NullPointerException) {
+const Coord<double> * Individual::getCoord() const throw(NullPointerException) {
 	if (hasCoord())
 		return new Coord<double>(* _coord);
 	else
@@ -169,12 +208,15 @@ double Individual::getY() const throw(NullPointerException) {
 }
 
 // Locality
-void Individual::setLocality(Locality<double> * locality) {
+void Individual::setLocality(const Locality<double> * locality) {
 	_locality = locality;
 }
 
-Locality<double> * Individual::getLocality() const {
-	return _locality;
+const Locality<double> * Individual::getLocality() const  throw (NullPointerException) {
+	if (hasLocality())
+		return _locality;
+	else
+		throw(NullPointerException("Individual::getLocality: no locality associated to this individual."));
 }
 
 bool Individual::hasLocality() const {
@@ -199,13 +241,13 @@ throw (Exception) {
 	try {
 		_sequences[id]->addSequence(sequence);
 	}
-	catch (AlphabetMismatchException ame)
+	catch (AlphabetMismatchException & ame)
 	{
-		throw(ame);
+		throw(AlphabetMismatchException("Individual::addSequence: alphabets don't match.", ame.getAlphabets()[0], ame.getAlphabets()[1]));
 	}
-	catch (Exception e)
+	catch (Exception & e)
 	{
-		throw(e);
+		throw(BadIdentifierException("Individual::addSequence: sequence's name already in use.", sequence.getName()));
 	}
 }
 
@@ -222,7 +264,7 @@ const throw(Exception){
 	try {
 		return const_cast<const VectorSequenceContainer *>(it->second)->getSequence(name);
 	}
-	catch (SequenceNotFoundException snfe) {
+	catch (SequenceNotFoundException & snfe) {
 		throw(snfe);
 	}
 }
@@ -240,7 +282,7 @@ const throw(Exception) {
 	try {
 		return const_cast<const VectorSequenceContainer *>(it->second)->getSequence(i);
 	}
-	catch (IndexOutOfBoundsException ioobe) {
+	catch (IndexOutOfBoundsException & ioobe) {
 		throw(ioobe);
 	}
 }

@@ -1,7 +1,7 @@
 /*
  * File AnalyzedLoci.cpp
  * Author : Sylvain Gaillard <yragael2001@yahoo.fr>
- * Last modification : Monday June 07 2004
+ * Last modification : Friday June 18 2004
  */
 
 #include "AnalyzedLoci.h"
@@ -28,6 +28,14 @@ throw (IndexOutOfBoundsException) {
 	else
 		throw IndexOutOfBoundsException("AnalyzedLoci::setLocusInfo: locus_index out of bounds",
 				locus_index, 0, _loci.size());
+}
+
+unsigned int AnalyzedLoci::getLocusInfoPosition(const string & locus_name) const
+throw (BadIdentifierException) {
+	for (unsigned int i = 0 ; i < _loci.size() ; i++)
+		if (_loci[i] != NULL && _loci[i]->getName() == locus_name)
+			return i;
+	throw BadIdentifierException("AnalyzedLoci::getLocusInfoPosition: locus not found.", locus_name);
 }
 
 const LocusInfo * AnalyzedLoci::getLocusInfoByName(const string & locus_name) const
@@ -61,13 +69,13 @@ throw (Exception) {
 			try {
 				(*it)->addAlleleInfo(allele);
 			}
-			catch (Exception e) {
-				throw e;
+			catch (BadIdentifierException & bie) {
+				throw BadIdentifierException("AnalyzedLoci::addAlleleInfoByLocusName: allele id already in use.", bie.getIdentifier());
 			}
 		}
 	}
 	if (!locus_found)
-		throw BadIdentifierException("AnalyzedLoci::addAlleleInfo: locus not found.",
+		throw LocusNotFoundException("AnalyzedLoci::addAlleleInfoByLocusName: locus_name not found.",
 				locus_name);
 }
 
@@ -78,12 +86,12 @@ throw (Exception) {
 		try {
 			_loci[locus_index]->addAlleleInfo(allele);
 		}
-		catch (Exception e) {
-			throw e;
+		catch (BadIdentifierException & bie) {
+			throw BadIdentifierException("AnalyzedLoci::addAlleleInfoByLocusIndex: allele id is already in use.", bie.getIdentifier());
 		}
 	}
 	else
-		throw IndexOutOfBoundsException("AnalyzedLoci::addAlleleInfo: locus_index out of bounds.",
+		throw IndexOutOfBoundsException("AnalyzedLoci::addAlleleInfoByLocusIndex: locus_index out of bounds.",
 				locus_index, 0, _loci.size());
 }
 
@@ -100,11 +108,11 @@ vector<unsigned int> AnalyzedLoci::getNumberOfAlleles() const {
 }
 
 unsigned int AnalyzedLoci::getPloidyByLocusName(const string & locus_name) const
-throw (BadIdentifierException) {
+throw (LocusNotFoundException) {
 	for (unsigned int i = 0 ; i < _loci.size() ; i++)
 		if (_loci[i] != NULL && _loci[i]->getName() == locus_name)
 			return _loci[i]->getPloidy();
-	throw BadIdentifierException("AnalyzedLoci::getLocusInfo: locus not found.",
+	throw LocusNotFoundException("AnalyzedLoci::getLocusInfo: locus_name not found.",
 			locus_name);
 }
 
