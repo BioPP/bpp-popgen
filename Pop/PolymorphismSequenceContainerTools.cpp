@@ -2,7 +2,7 @@
 // File: PolymorphismSequenceContainerTools.cpp
 // Authors: bazin <bazin@univ-montp2.fr>
 //          Sylvain Gaillard <yragael2001@yahoo.fr>
-// Last modification : Wednesday June 16 2004
+// Last modification : Monday July 26 2004
 //
 
 // from PolyLib
@@ -65,7 +65,7 @@ PolymorphismSequenceContainer * PolymorphismSequenceContainerTools::getSitesWith
 	noGapCont -> setSequencesNames(seqNames, false);
 	unsigned int nbSeq = psc.getNumberOfSequences();
 	for (unsigned int i = 0; i < nbSeq; i++) {
-		noGapCont -> setSequenceStrength( i, psc.getSequenceStrength(i) );
+		noGapCont -> setSequenceCount( i, psc.getSequenceCount(i) );
 		if (! psc.isIngroupMember(i))
 			noGapCont -> setAsOutgroupMember(i);
 	}

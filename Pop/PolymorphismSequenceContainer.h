@@ -2,7 +2,7 @@
 // File: PolymorphismSequenceContainer.h
 // Authors: bazin <bazin@univ-montp2.fr>
 //          Sylvain Gaillard <yragael2001@yahoo.fr>
-// Last modification : Wednesday July 07 2004
+// Last modification : Monday July 26 2004
 //
 
 #ifndef _POLYMORPHISMSEQUENCECONTAINER_H_
@@ -147,68 +147,68 @@ class PolymorphismSequenceContainer : public VectorSiteContainer
 		void setAsOutgroupMember(const string &name) throw (SequenceNotFoundException);
 		
 		/**
-		 * @brief Set the strength of a sequence by index.
+		 * @brief Set the count of a sequence by index.
 		 *
 		 * @throw IndexOutOfBoundsException if index excedes the number of sequences in the container.
-		 * @throw BadIntegerException if stregth < 1 ... use deleteSequence instead of setting the strength to 0.
+		 * @throw BadIntegerException if count < 1 ... use deleteSequence instead of setting the count to 0.
 		 */
-		void setSequenceStrength(unsigned int index, unsigned int strength) throw (Exception);
+		void setSequenceCount(unsigned int index, unsigned int count) throw (Exception);
 		
 		/**
-		 * @brief Set the strength of a sequence by name.
+		 * @brief Set the count of a sequence by name.
 		 *
 		 * @throw throw SequenceNotFoundException if name is not found among the sequences' names.
-		 * @throw BadIntegerException if stregth < 1 ... use deleteSequence instead of setting the strength to 0.
+		 * @throw BadIntegerException if count < 1 ... use deleteSequence instead of setting the count to 0.
 		 */
-		void setSequenceStrength(const string &name, unsigned int strength) throw (Exception);
+		void setSequenceCount(const string &name, unsigned int count) throw (Exception);
 
 		/**
-		 * @brief Add 1 to the sequence strength.
+		 * @brief Add 1 to the sequence count.
 		 *
 		 * @throw IndexOutOfBoundsException if index excedes the number of sequences in the container.
 		 */
-		void incrementSequenceStrength(unsigned int index) throw (IndexOutOfBoundsException);
+		void incrementSequenceCount(unsigned int index) throw (IndexOutOfBoundsException);
 
 		/**
-		 * @brief Add 1 to the sequence strength.
+		 * @brief Add 1 to the sequence count.
 		 *
 		 * @throw throw SequenceNotFoundException if name is not found among the sequences' names.
 		 */
-		void incrementSequenceStrength(const string &name) throw (SequenceNotFoundException);
+		void incrementSequenceCount(const string &name) throw (SequenceNotFoundException);
 
 		/**
-		 * @brief Remove 1 to the sequence strength.
+		 * @brief Remove 1 to the sequence count.
 		 *
 		 * @throw IndexOutOfBoundsException if index excedes the number of sequences in the container.
-		 * @throw BadIntegerException if stregth < 1 ... use deleteSequence instead of setting the strength to 0.
+		 * @throw BadIntegerException if count < 1 ... use deleteSequence instead of setting the count to 0.
 		 */
-		void decrementSequenceStrength(unsigned int index) throw (Exception);
+		void decrementSequenceCount(unsigned int index) throw (Exception);
 
 		/**
-		 * @brief Remove 1 to the sequence strength.
+		 * @brief Remove 1 to the sequence count.
 		 *
 		 * @throw throw SequenceNotFoundException if name is not found among the sequences' names.
-		 * @throw BadIntegerException if stregth < 1 ... use deleteSequence instead of setting the strength to 0.
+		 * @throw BadIntegerException if count < 1 ... use deleteSequence instead of setting the count to 0.
 		 */
-		void decrementSequenceStrength(const string & name) throw (Exception);
+		void decrementSequenceCount(const string & name) throw (Exception);
 
 		/**
-		 * @brief Get the strength of a sequence by index.
+		 * @brief Get the count of a sequence by index.
 		 *
 		 * @throw IndexOutOfBoundsException if index excedes the number of sequences in the container.
 		 */
-		unsigned int getSequenceStrength(unsigned int index) const throw (IndexOutOfBoundsException);
+		unsigned int getSequenceCount(unsigned int index) const throw (IndexOutOfBoundsException);
 
 		/**
-		 * @brief Get the strength of a sequence by name.
+		 * @brief Get the count of a sequence by name.
 		 *
 		 * @brief throw SequenceNotFoundException if name is not found among the sequences' names.
 		 */
-		unsigned int getSequenceStrength(const string &name) const throw (SequenceNotFoundException);
+		unsigned int getSequenceCount(const string &name) const throw (SequenceNotFoundException);
 		
 	protected:
 		vector<bool> _ingroup;
-		vector<unsigned int> _strength;
+		vector<unsigned int> _count;
 };
 
 #endif	//_POLYMORPHISMSEQUENCECONTAINER_H_
