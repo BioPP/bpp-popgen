@@ -1,7 +1,7 @@
 /*
  * File PolymorphismMultiGContainerTools.cpp
  * Author : Sylvain Gailard <yragael2001@yahoo.fr>
- * Last modification : Tuesday September 28 2004
+ * Last modification : Thursday September 30 2004
  *
  * Copyright (C) 2004 Sylvain Gaillard and the
  *                    PopGenLib Development Core Team
@@ -64,6 +64,45 @@ PolymorphismMultiGContainer PolymorphismMultiGContainerTools::permutMonoG(const 
 			}
 			permuted_pmgc.addMultilocusGenotype(tmp_mg, pmgc.getGroupId(i));
 			k++;
+		}
+		else {
+			permuted_pmgc.addMultilocusGenotype(* (pmgc.getMultilocusGenotype(i)), pmgc.getGroupId(i));
+		}
+	}
+	return permuted_pmgc;
+}
+
+PolymorphismMultiGContainer PolymorphismMultiGContainerTools::permutAlleles(const PolymorphismMultiGContainer & pmgc, const set<unsigned int> & groups) {
+	PolymorphismMultiGContainer permuted_pmgc;
+	unsigned int loc_num = pmgc.getNumberOfLoci();
+	vector<vector<unsigned int> > alleles;
+	alleles.resize(loc_num);
+	// Get all the alleles to permut
+	for (unsigned int i = 0 ; i < pmgc.size() ; i++) {
+		if (groups.find(pmgc.getGroupId(i)) != groups.end()) {
+			for (unsigned int j = 0 ; j < loc_num ; j++)
+				if (pmgc.getMultilocusGenotype(i)->getMonolocusGenotype(j) != NULL)
+					for (unsigned int k = 0 ; k < pmgc.getMultilocusGenotype(i)->getMonolocusGenotype(j)->getAlleleIndex().size() ; k++)
+						alleles[j].push_back(pmgc.getMultilocusGenotype(i)->getMonolocusGenotype(j)->getAlleleIndex()[k]);
+		}
+	}
+	// Permut the alleles
+	for (unsigned int i = 0 ; i < loc_num ; i++)
+		alleles[i] = RandomTools::getSample(alleles[i], alleles[i].size());
+	// Build the new PolymorphismMultiGContainer
+	vector<unsigned int> k(loc_num,0);
+	for (unsigned int i = 0 ; i < pmgc.size() ; i++) {
+		if (groups.find(pmgc.getGroupId(i)) != groups.end()) {
+			MultilocusGenotype tmp_mg(loc_num);
+			for (unsigned int j = 0 ; j < loc_num ; j++) {
+				if (pmgc.getMultilocusGenotype(i)->getMonolocusGenotype(j) != NULL) {
+					if (pmgc.getMultilocusGenotype(i)->getMonolocusGenotype(j)->getAlleleIndex().size() == 1)
+						tmp_mg.setMonolocusGenotype(j, MonoAlleleMonolocusGenotype(alleles[j][k[j]++]));
+					if (pmgc.getMultilocusGenotype(i)->getMonolocusGenotype(j)->getAlleleIndex().size() == 2)
+						tmp_mg.setMonolocusGenotype(j, BiAlleleMonolocusGenotype(alleles[j][k[j]++], alleles[j][k[j]++]));
+				}
+			}
+			permuted_pmgc.addMultilocusGenotype(tmp_mg, pmgc.getGroupId(i));
 		}
 		else {
 			permuted_pmgc.addMultilocusGenotype(* (pmgc.getMultilocusGenotype(i)), pmgc.getGroupId(i));

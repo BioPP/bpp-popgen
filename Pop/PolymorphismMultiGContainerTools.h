@@ -1,7 +1,7 @@
 /*
  * File PolymorphismMultiGContainerTools.h
  * Author : Sylvain Gailard <yragael2001@yahoo.fr>
- * Last modification : Tuesday September 28 2004
+ * Last modification : Thursday September 30 2004
  *
  * Copyright (C) 2004 Sylvain Gaillard and the
  *                    PopGenLib Development Core Team
@@ -59,7 +59,7 @@ class PolymorphismMultiGContainerTools {
 		/**
 		 * @brief Permut the MonolocusGenotype.
 		 *
-		 * Permut the MonolocusGenotypes in on or several groups breaking
+		 * Permut the MonolocusGenotypes in one or several groups breaking
 		 * the links between them.
 		 *
 		 * @param pmgc The PolymorphismMultiGContainer to permut.
@@ -67,6 +67,18 @@ class PolymorphismMultiGContainerTools {
 		 * @return A permuted PolymorphismMultiGContainer.
 		 */
 		static PolymorphismMultiGContainer permutMonoG(const PolymorphismMultiGContainer & pmgc, const set<unsigned int> & groups);
+
+		/**
+		 * @brief Permut the Alleles.
+		 *
+		 * Permut the alleles in one or several groups breaking
+		 * the links between them.
+		 *
+		 * @param pmgc The PolymorphismMultiGContainer to permut.
+		 * @param groups The groups ids between which the MonolocusGenotypes will be permuted.
+		 * @return A permuted PolymorphismMultiGContainer.
+		 */
+		static PolymorphismMultiGContainer permutAlleles(const PolymorphismMultiGContainer & pmgc, const set<unsigned int> & groups);
 };
 
 #endif // _POLYMORPHISMMULTIGCONTAINERTOOLS_H_
