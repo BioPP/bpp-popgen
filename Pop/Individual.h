@@ -37,7 +37,7 @@ class Individual : public Clonable {
 		/**
 		 * @brief Destroy an Individual.
 		 */
-		~Individual();
+		virtual ~Individual();
 
 	public: // Methodes
 		
