@@ -2,7 +2,7 @@
 // File: PolymorphismSequenceContainer.h
 // Authors: bazin <bazin@univ-montp2.fr>
 //          Sylvain Gaillard <yragael2001@yahoo.fr>
-// Last modification : Wednesday June 16 2004
+// Last modification : Wednesday July 07 2004
 //
 
 // from PolyLib
@@ -90,7 +90,7 @@ Sequence * PolymorphismSequenceContainer::removeSequence(unsigned int index) thr
 
 Sequence * PolymorphismSequenceContainer::removeSequence(const string &name) throw (SequenceNotFoundException) {
 	try {
-		removeSequence(getSequencePosition(name));
+		return removeSequence(getSequencePosition(name));
 	}
 	catch (SequenceNotFoundException & snfe) {
 		throw SequenceNotFoundException("PolymorphismSequenceContainer::removeSequence.", name);
@@ -147,13 +147,13 @@ bool PolymorphismSequenceContainer::isIngroupMember(const string &name) const th
 	}
 }
 
-bool PolymorphismSequenceContainer::setAsIngroupMember(unsigned int index) throw (IndexOutOfBoundsException) {
+void PolymorphismSequenceContainer::setAsIngroupMember(unsigned int index) throw (IndexOutOfBoundsException) {
 	if (index >= getNumberOfSequences())
 		throw IndexOutOfBoundsException("PolymorphismSequenceContainer::setAsIngroupMember.", index, 0, getNumberOfSequences());
 	_ingroup[index] = true;
 }
 
-bool PolymorphismSequenceContainer::setAsIngroupMember(const string &name) throw (SequenceNotFoundException) {
+void PolymorphismSequenceContainer::setAsIngroupMember(const string &name) throw (SequenceNotFoundException) {
 	try {
 		unsigned int seqPos = getSequencePosition(name);
 		_ingroup[seqPos] = true;
@@ -163,13 +163,13 @@ bool PolymorphismSequenceContainer::setAsIngroupMember(const string &name) throw
 	}
 }
 
-bool PolymorphismSequenceContainer::setAsOutgroupMember(unsigned int index) throw (IndexOutOfBoundsException) {
+void PolymorphismSequenceContainer::setAsOutgroupMember(unsigned int index) throw (IndexOutOfBoundsException) {
 	if (index >= getNumberOfSequences())
 		throw IndexOutOfBoundsException("PolymorphismSequenceContainer::setAsOutgroupMember.", index, 0, getNumberOfSequences());
 	_ingroup[index] = false;
 }
 
-bool PolymorphismSequenceContainer::setAsOutgroupMember(const string &name) throw (SequenceNotFoundException) {
+void PolymorphismSequenceContainer::setAsOutgroupMember(const string &name) throw (SequenceNotFoundException) {
 	try {
 		unsigned int seqPos = getSequencePosition(name);
 		_ingroup[seqPos] = false;

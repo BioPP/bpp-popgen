@@ -2,7 +2,7 @@
 // File: PolymorphismSequenceContainer.h
 // Authors: bazin <bazin@univ-montp2.fr>
 //          Sylvain Gaillard <yragael2001@yahoo.fr>
-// Last modification : Wednesday June 16 2004
+// Last modification : Wednesday July 07 2004
 //
 
 #ifndef _POLYMORPHISMSEQUENCECONTAINER_H_
@@ -123,28 +123,28 @@ class PolymorphismSequenceContainer : public VectorSiteContainer
 		 *
 		 * @throw IndexOutOfBoundsException if index excedes the number of sequences in the container.
 		 */
-		bool setAsIngroupMember(unsigned int index) throw (IndexOutOfBoundsException);
+		void setAsIngroupMember(unsigned int index) throw (IndexOutOfBoundsException);
 		
 		/**
 		 * @brief Set a sequence as ingroup member by name.
 		 *
 		 * @brief throw SequenceNotFoundException if name is not found among the sequences' names.
 		 */
-		bool setAsIngroupMember(const string &name) throw (SequenceNotFoundException);
+		void setAsIngroupMember(const string &name) throw (SequenceNotFoundException);
 		
 		/**
 		 * @brief Set a sequence as outgroup member by index.
 		 *
 		 * @throw IndexOutOfBoundsException if index excedes the number of sequences in the container.
 		 */
-		bool setAsOutgroupMember(unsigned int index) throw (IndexOutOfBoundsException);
+		void setAsOutgroupMember(unsigned int index) throw (IndexOutOfBoundsException);
 		
 		/**
 		 * @brief Set a sequence as outgroup member by name.
 		 *
 		 * @brief throw SequenceNotFoundException if name is not found among the sequences' names.
 		 */
-		bool setAsOutgroupMember(const string &name) throw (SequenceNotFoundException);
+		void setAsOutgroupMember(const string &name) throw (SequenceNotFoundException);
 		
 		/**
 		 * @brief Set the strength of a sequence by index.
