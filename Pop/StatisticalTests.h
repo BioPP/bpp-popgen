@@ -26,17 +26,52 @@ class StatisticalTests
         /*******************************************************************************/
     public:
 
-	    static double polymorphicSiteNumber( SiteIterator & si );
+        /**
+         * @brief Compute number of polymorphic site in an alignment
+	 *
+         * Gaps are consider as mutations so if you want number of
+	 * polymorphic site, you have to give a NonGapSiteIterator
+	 *
+         * @param a SiteIterator
+         */ 
+	 static int polymorphicSiteNumber( SiteIterator & si );
 
-	    static double polymorphicSiteNumber( const SiteContainer & v );
+        /**
+         * @brief Compute number of polymorphic site in an alignment
+         *
+	 * Gaps are consider as mutation variant
+	 *
+         * @param a SiteContainer
+         */
+	 static int polymorphicSiteNumber( const SiteContainer & v );
 
-	    static double watterson75( const SiteContainer & v );
- 
-	    static double tajima83( const SiteContainer & v );
-	    
-	    static double watterson75( const PolymorphismSequenceContainer & v );
- 
-	    static double tajima83( const PolymorphismSequenceContainer & v );	
+        /**
+         * @brief Compute diversity estimator Theta of Watterson (1975)
+         *
+         * @param a SiteContainer
+         */
+	 static double watterson75( const SiteContainer & v );
+
+        /**
+         * @brief Compute diversity estimator Theta of Tajima (1983)
+         *
+         * @param a SiteContainer
+         */ 
+	 static double tajima83( const SiteContainer & v );
+
+        /**
+         * @brief Compute diversity estimator Theta of Watterson (1975)
+         *
+         * @param a PolymorphismSequenceContainer
+         */	    
+	 static double watterson75( const PolymorphismSequenceContainer & v );
+
+        /**
+         * @brief Compute diversity estimator Theta of Tajima (1983)
+         *
+         * @param a PolymorphismSequenceContainer
+         */ 
+	 static double tajima83( const PolymorphismSequenceContainer & v );	
 	        
         /*******************************************************************************/
 };

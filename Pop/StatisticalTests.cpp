@@ -20,10 +20,10 @@ using namespace std;
 
 StatisticalTests::~StatisticalTests() {}
 
-// Methods to compute number of non gap polymorphic site in an alignment
+// Method to compute number of polymorphic site in an alignment
 // Arguments: a SiteIterator
 // Return: Number of polymorphics sites	
-double StatisticalTests::polymorphicSiteNumber( SiteIterator & si ) {
+int StatisticalTests::polymorphicSiteNumber( SiteIterator & si ) {
 	int S=0;
 	const Site *site;
 	while ( si.hasMoreSites() ) {
@@ -35,18 +35,18 @@ double StatisticalTests::polymorphicSiteNumber( SiteIterator & si ) {
 	return S;
 }
 
-// Methods to compute number of non gap polymorphic site in an ingroup alignment
+// Method to compute number of polymorphic site in an alignment
 // Arguments: a SiteContainer
 // Return: Number of polymorphics sites	
-double StatisticalTests::polymorphicSiteNumber( const SiteContainer & v ) {
+int StatisticalTests::polymorphicSiteNumber( const SiteContainer & v ) {
 
 	SiteIterator *si = new NoGapSiteIterator( v );
-	double S = StatisticalTests::polymorphicSiteNumber( *si );
+	int S = StatisticalTests::polymorphicSiteNumber( *si );
 	
 	return S;
 }
 
-// Methods to compute diversity estimator Theta of Watterson (1975)
+// Method to compute diversity estimator Theta of Watterson (1975)
 // Arguments: a SiteContainer
 // Return: theta of Watterson (1975)
 double StatisticalTests::watterson75( const SiteContainer & v ) {
@@ -54,20 +54,21 @@ double StatisticalTests::watterson75( const SiteContainer & v ) {
 	int n = v.getNumberOfSequences();
 	double an = 0.0;
 	SiteIterator *si = new NoGapSiteIterator( v );
-	double S = StatisticalTests::polymorphicSiteNumber( *si );
+	int S = StatisticalTests::polymorphicSiteNumber( *si );
 	for ( int i = 1; i < n; i++ ) {
 			an += (double) 1/i;
 	}	
-	ThetaW = S / an;
+	ThetaW = (double) S / an;
+	delete si;
 	return ThetaW;
 }
 
-// Methods to compute diversity estimator Theta of Tajima (1983)
+// Method to compute diversity estimator Theta of Tajima (1983)
 // Arguments: a SiteContainer
 // Return: theta of Tajima (1983)
 double StatisticalTests::tajima83( const SiteContainer & v ) {
 	double ThetaPi;
-	double S = 0;
+	int S = 0;
 	const Site *site;
 	int n = v.getNumberOfSequences();
 	double etha[20];
@@ -89,39 +90,42 @@ double StatisticalTests::tajima83( const SiteContainer & v ) {
 		}
 	}
 	ThetaPi = S - somme;
+	delete si;
+	delete site;
 	return ThetaPi;
 }
 
-// Methods to compute diversity estimator Theta of Watterson (1975)
+// Method to compute diversity estimator Theta of Watterson (1975)
 // Arguments: a PolymorphismSequenceContainer
 // Return: theta of Watterson (1975)
 double StatisticalTests::watterson75( const PolymorphismSequenceContainer & psc ) {
+	PolymorphismSequenceContainer *psci = PolymorphismSequenceContainerTools::extractIngroup(psc);
 	double ThetaW;
 	int n = psc.getNumberOfSequences();
 	double an = 0.0;
-	PolymorphismSequenceContainer *psci =
-	PolymorphismSequenceContainerTools::extractIngroup( psc );
 	SiteIterator *si = new NoGapSiteIterator( *psci );
-	double S = StatisticalTests::polymorphicSiteNumber( *si );
+	int S = StatisticalTests::polymorphicSiteNumber( *si );
 	for ( int i = 1; i < n; i++ ) {
 			an += (double) 1/i;
 	}	
-	ThetaW = S / an;
+	ThetaW = (double) S / an;	
+	delete si;
 	delete psci;
 	return ThetaW;
 }
 
-// Methods to compute diversity estimator Theta of Tajima (1983)
+// Method to compute diversity estimator Theta of Tajima (1983)
 // Arguments: a PolymorphismSequenceContainer
 // Return: theta of Tajima (1983)
-double StatisticalTests::tajima83( const PolymorphismSequenceContainer & v ) {
+double StatisticalTests::tajima83( const PolymorphismSequenceContainer & psc ) {
+	PolymorphismSequenceContainer *psci = PolymorphismSequenceContainerTools::extractIngroup(psc);
 	double ThetaPi;
-	double S = 0;
+	int S = 0;
 	const Site *site;
-	int n = v.getNumberOfSequences();
+	int n = psci -> getNumberOfSequences();
 	double etha[20];
 	double somme = 0.0;
-	SiteIterator *si = new NoGapSiteIterator( v );
+	SiteIterator *si = new NoGapSiteIterator( *psci );
 	while ( si->hasMoreSites() ) {
 		site = si->nextSite();
 	if ( !SiteTools::isConstant(*site) ) {
@@ -137,6 +141,9 @@ double StatisticalTests::tajima83( const PolymorphismSequenceContainer & v ) {
 			}
 		}
 	}
-	ThetaPi = S - somme;
+	ThetaPi = (double) S - somme;
+	delete si;
+	delete site;
+	delete psci;
 	return ThetaPi;
 }
