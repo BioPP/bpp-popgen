@@ -514,8 +514,38 @@ void PoplibIO::write(ostream & os, const DataSet & data_set) const throw (Except
 				os << "}" << endl;
 			}
 			if (tmp_ind->hasGenotype()) {
+				const MultilocusGenotype * tmp_genotype = tmp_ind->getGenotype();
+				vector<vector<string> > output(tmp_genotype->size());
 				os << "AllelicData = {" << endl;
-				os << "... to be continued ..." << endl;
+				for (unsigned int k = 0 ; k < tmp_genotype->size() ; k++) {
+					output[k].resize(2);
+					if (tmp_genotype->isMonolocusGenotypeMissing(k)) {
+						output[k][0] = getMissingDataChar();
+						output[k][1] = getMissingDataChar();
+					}
+					else {
+						vector<unsigned int> tmp_all_ind = tmp_genotype->getMonolocusGenotype(k)->getAlleleIndex();
+						output[k][0] = data_set.getLocusInfoAtPosition(k)->getAlleleInfoByKey(tmp_all_ind[1])->getId();
+						if (tmp_all_ind.size() > 1)
+							output[k][1] = data_set.getLocusInfoAtPosition(k)->getAlleleInfoByKey(tmp_all_ind[1])->getId();
+						else
+							output[k][1] = getMissingDataChar();
+					}
+				}
+				for (unsigned int k = 0 ; k < output.size() ; k++) {
+					os << output[k][0];
+					if (k < output.size() - 1)
+						os << getDataSeparatorChar();
+					else
+						os << endl;
+				}
+				for (unsigned int k = 0 ; k < output.size() ; k++) {
+					os << output[k][1];
+					if (k < output.size() - 1)
+						os << getDataSeparatorChar();
+					else
+						os << endl;
+				}
 				os << "}" << endl;
 			}
 		}
