@@ -25,6 +25,16 @@ PolymorphismSequenceContainer::PolymorphismSequenceContainer(const SiteContainer
 	}
 }
 
+PolymorphismSequenceContainer::PolymorphismSequenceContainer(const PolymorphismSequenceContainer & psc) : VectorSiteContainer(psc) {
+	unsigned int nbSeq = psc.getNumberOfSequences();
+	_strength.resize(nbSeq);
+	_ingroup.resize(nbSeq);
+	for(unsigned int i = 0; i < nbSeq; i++) {
+		_strength[i] = getSequenceStrength(i);
+		_ingroup[i] = isIngroupMember(i);
+	}
+}
+
 PolymorphismSequenceContainer & PolymorphismSequenceContainer::operator= (const PolymorphismSequenceContainer & psc) {
 	// Setting up alphabet
 	_alphabet = psc.getAlphabet();
@@ -49,6 +59,7 @@ PolymorphismSequenceContainer & PolymorphismSequenceContainer::operator= (const 
 	}
 	Sequence * s = NULL;
 	_sequences = vector<Sequence *>(nbSeq, s);
+	return * this;
 }
 
 //** Class destructor: *******************************************************/
@@ -180,6 +191,41 @@ void PolymorphismSequenceContainer::setSequenceStrength(const string &name, unsi
 	}
 	catch (SequenceNotFoundException & snfe) {
 		throw SequenceNotFoundException("PolymorphismSequenceContainer::setSequenceStrength.", name);
+	}
+}
+
+void PolymorphismSequenceContainer::incrementSequenceStrength(unsigned int index) throw (IndexOutOfBoundsException) {
+	if (index >= getNumberOfSequences())
+		throw IndexOutOfBoundsException("PolymorphismSequenceContainer::incrementSequenceStrength.", index, 0, getNumberOfSequences());
+	_strength[index]++;
+}
+
+void PolymorphismSequenceContainer::incrementSequenceStrength(const string &name) throw (SequenceNotFoundException) {
+	try {
+		incrementSequenceStrength(getSequencePosition(name));
+	}
+	catch (SequenceNotFoundException & snfe) {
+		throw SequenceNotFoundException("PolymorphismSequenceContainer::incrementSequenceStrength.", name);
+	}
+}
+
+void PolymorphismSequenceContainer::decrementSequenceStrength(unsigned int index) throw (Exception) {
+	if (index >= getNumberOfSequences())
+		throw IndexOutOfBoundsException("PolymorphismSequenceContainer::decrementSequenceStrength.", index, 0, getNumberOfSequences());
+	if (_strength[index]-1 < 1)
+		throw BadIntegerException("PolymorphismSequenceContainer::decrementSequenceStrength: strength can't be < 1.", _strength[index]-1);
+	_strength[index]--;
+}
+
+void PolymorphismSequenceContainer::decrementSequenceStrength(const string &name) throw (Exception) {
+	try {
+		decrementSequenceStrength(getSequencePosition(name));
+	}
+	catch (BadIntegerException & bie) {
+		throw bie;
+	}
+	catch (SequenceNotFoundException & snfe) {
+		throw SequenceNotFoundException("PolymorphismSequenceContainer::decrementSequenceStrength.", name);
 	}
 }
 

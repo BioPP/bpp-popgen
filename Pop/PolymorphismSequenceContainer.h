@@ -35,6 +35,11 @@ class PolymorphismSequenceContainer : public VectorSiteContainer
 		 * @brief Build a PolymorphismSequenceContainer by copying data from a SiteContainer.
 		 */
 		PolymorphismSequenceContainer(const SiteContainer & sc);
+
+		/**
+		 * @brief Copy constructor.
+		 */
+		PolymorphismSequenceContainer(const PolymorphismSequenceContainer & psc);
 		
 		/**
 		 * @brief Operator= : copy operator.
@@ -142,15 +147,45 @@ class PolymorphismSequenceContainer : public VectorSiteContainer
 		 * @throw IndexOutOfBoundsException if index excedes the number of sequences in the container.
 		 * @throw BadIntegerException if stregth < 1 ... use deleteSequence instead of setting the strength to 0.
 		 */
-		void setSequenceStrength(unsigned int sequence, unsigned int strength) throw (Exception);
+		void setSequenceStrength(unsigned int index, unsigned int strength) throw (Exception);
 		
 		/**
 		 * @brief Set the strength of a sequence by name.
 		 *
-		 * @brief throw SequenceNotFoundException if name is not found among the sequences' names.
+		 * @throw throw SequenceNotFoundException if name is not found among the sequences' names.
 		 * @throw BadIntegerException if stregth < 1 ... use deleteSequence instead of setting the strength to 0.
 		 */
 		void setSequenceStrength(const string &name, unsigned int strength) throw (Exception);
+
+		/**
+		 * @brief Add 1 to the sequence strength.
+		 *
+		 * @throw IndexOutOfBoundsException if index excedes the number of sequences in the container.
+		 */
+		void incrementSequenceStrength(unsigned int index) throw (IndexOutOfBoundsException);
+
+		/**
+		 * @brief Add 1 to the sequence strength.
+		 *
+		 * @throw throw SequenceNotFoundException if name is not found among the sequences' names.
+		 */
+		void incrementSequenceStrength(const string &name) throw (SequenceNotFoundException);
+
+		/**
+		 * @brief Remove 1 to the sequence strength.
+		 *
+		 * @throw IndexOutOfBoundsException if index excedes the number of sequences in the container.
+		 * @throw BadIntegerException if stregth < 1 ... use deleteSequence instead of setting the strength to 0.
+		 */
+		void decrementSequenceStrength(unsigned int index) throw (Exception);
+
+		/**
+		 * @brief Remove 1 to the sequence strength.
+		 *
+		 * @throw throw SequenceNotFoundException if name is not found among the sequences' names.
+		 * @throw BadIntegerException if stregth < 1 ... use deleteSequence instead of setting the strength to 0.
+		 */
+		void decrementSequenceStrength(const string & name) throw (Exception);
 
 		/**
 		 * @brief Get the strength of a sequence by index.
