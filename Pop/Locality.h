@@ -1,7 +1,7 @@
 /*
  * File Locality.h
  * Author : Sylvain Gaillard <yragael2001@yahoo.fr>
- * Last modification : Thursday April 22 2004
+ * Last modification : Tuesday April 27 2004
  */
 
 // Secured inclusion of header's file
@@ -60,6 +60,18 @@ template <class T> class Locality : public Coord<T> {
 		Locality & operator= (const Locality & locality);
 
 		/**
+		 * @brief The == operator.
+		 *
+		 * returns true if both name and coordinates are identical between the two Locality objects.
+		 */
+		virtual bool operator== (const Locality<T> & locality) const;
+
+		/**
+		 * @brief The != operator.
+		 */
+		virtual bool operator!= (const Locality<T> & locality) const;
+
+		/**
 		 * @brief Set the name of the locality.
 		 */
 		void setName(const string name);
@@ -106,6 +118,18 @@ template <class T> Locality<T> & Locality<T>::operator= (const Locality<T> & loc
 	this->_y = locality.getY();
 	this->_name = locality.getName();
 	return * this;
+}
+
+//** Comparison operators: ***************************************************/
+template <class T> bool Locality<T>::operator== (const Locality<T> & locality) const {
+	if (_x == locality.getX() && _y == locality.getY())
+		return true;
+	else
+		return false;
+}
+
+template <class T> bool Locality<T>::operator!= (const Locality<T> & locality) const {
+	return !(locality == *this);
 }
 
 //** Assignation opperators: *************************************************/
