@@ -103,6 +103,34 @@ class PolymorphismSequenceContainer : public VectorSiteContainer
 		 * @brief Clear the container of all its sequences.
 		 */
 		void clear();
+
+		/**
+		 * @brief Get the group identifier of the sequence.
+		 *
+		 * @throw IndexOutOfBoundsException if index excedes the number of sequences in the container.
+		 */
+		unsigned int getGroupId(unsigned int index) const throw (IndexOutOfBoundsException);
+
+		/**
+		 * @brief Get the group identifier of a sequence.
+		 *
+		 * @brief throw SequenceNotFoundException if name is not found among the sequences' names.
+		 */
+		unsigned int getGroupId(const string & name) const throw (SequenceNotFoundException);
+
+		/**
+		 * @brief Set the group identifier of a sequence.
+		 *
+		 * @throw IndexOutOfBoundsException if index excedes the number of sequences in the container.
+		 */
+		void setGroupId(unsigned int index, unsigned int group_id) throw (IndexOutOfBoundsException);
+		
+		/**
+		 * @brief Set the group identifier of a sequence.
+		 *
+		 * @brief throw SequenceNotFoundException if name is not found among the sequences' names.
+		 */
+		void setGroupId(const string & name, unsigned int group_id) throw (SequenceNotFoundException);
 		
 		/**
 		 * @brief Tell if the sequence is ingroup by index.
@@ -209,6 +237,7 @@ class PolymorphismSequenceContainer : public VectorSiteContainer
 	protected:
 		vector<bool> _ingroup;
 		vector<unsigned int> _count;
+		vector<unsigned int> _group;
 };
 
 #endif	//_POLYMORPHISMSEQUENCECONTAINER_H_
