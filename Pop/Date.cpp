@@ -1,7 +1,7 @@
 /*
  * File Date.cpp
  * Author : Sylvain Gaillard <yragael2001@yahoo.fr>
- * Last modification : Wednesday May 05 2004
+ * Last modification : Monday June 21 2004
  */
 
 // From Utils
@@ -32,10 +32,6 @@ Date::Date(const Date & date) {
 Date::~Date() {}
 
 //** Other methodes: **********************************************************/
-Clonable * Date::clone() const {
-	return new Date(* this);
-}
-
 Date & Date::operator= (const Date & date) {
 	this->_day = date.getDay();
 	this->_month = date.getMonth();

@@ -1,7 +1,7 @@
 /*
  * File Date.h
  * Author : Sylvain Gaillard <yragael2001@yahoo.fr>
- * Last modification : Tuesday May 25 2004
+ * Last modification : Monday June 21 2004
  */
 
 // Secured inclusion of header's file
@@ -9,7 +9,6 @@
 #define _DATE_H_
 
 // From Utils
-#include <Utils/Clonable.h>
 #include <Utils/Exceptions.h>
 
 /**
@@ -17,7 +16,7 @@
  *
  * This is a little class to deal with dates.
  */
-class Date : public Clonable {
+class Date {
 	public: // Constructors and destructor
 		/**
 		 * @brief Build a new Date from three values.
@@ -42,11 +41,6 @@ class Date : public Clonable {
 		~Date();
 
 	public: // Methodes
-
-		/**
-		 * @brief Implements the clonable interface.
-		 */
-		Clonable * clone() const;
 
 		/**
 		 * @brief The Date copy operator.
