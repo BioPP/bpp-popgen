@@ -138,7 +138,7 @@ PolymorphismSequenceContainer * PolymorphismSequenceContainerTools::getSitesWith
 }
 
 unsigned int PolymorphismSequenceContainerTools::getNumberOfNonGapSites(const PolymorphismSequenceContainer & psc, bool ingroup) throw (Exception) {
-	unsigned int count = 0;
+	unsigned int count = psc.getNumberOfSites();
 	PolymorphismSequenceContainer * npsc = NULL;
 	SimpleSiteIterator * ssi;
 	if (ingroup) {
@@ -156,7 +156,7 @@ unsigned int PolymorphismSequenceContainerTools::getNumberOfNonGapSites(const Po
 		ssi = new SimpleSiteIterator(psc);
 	while (ssi->hasMoreSites())
 		if (SiteTools::hasGap(* ssi->nextSite()))
-			count++;
+			count--;
 	delete ssi;
 	return count;	
 }
