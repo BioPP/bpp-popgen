@@ -12,6 +12,7 @@ DataSet.h\
 DataSetTools.h\
 Date.h\
 GeneralExceptions.h\
+Genepop.h\
 Genetix.h\
 Group.h\
 Individual.h\
@@ -43,6 +44,7 @@ DataSet.cpp\
 DataSetTools.cpp\
 Date.cpp\
 GeneralExceptions.cpp\
+Genepop.cpp\
 Genetix.cpp\
 Group.cpp\
 Individual.cpp\
