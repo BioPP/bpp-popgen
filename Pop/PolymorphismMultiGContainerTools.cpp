@@ -63,6 +63,7 @@ PolymorphismMultiGContainer PolymorphismMultiGContainerTools::permutMonoG(const 
 					tmp_mg.setMonolocusGenotype(j, * (mono_gens[j][k]));
 			}
 			permuted_pmgc.addMultilocusGenotype(tmp_mg, pmgc.getGroupId(i));
+			k++;
 		}
 		else {
 			permuted_pmgc.addMultilocusGenotype(* (pmgc.getMultilocusGenotype(i)), pmgc.getGroupId(i));
