@@ -1,5 +1,5 @@
 /*
- * File StatisticalTests.cpp
+ * File Statistics.cpp
  * Author : Eric Bazin <bazin@univ-montp2.fr>
  * Last modification : Friday December 5 2003
 */
@@ -23,7 +23,7 @@ StatisticalTests::~StatisticalTests() {}
 // Method to compute number of polymorphic site in an alignment
 // Arguments: a SiteIterator
 // Return: Number of polymorphics sites	
-int StatisticalTests::polymorphicSiteNumber( SiteIterator & si ) {
+unsigned int StatisticalTests::polymorphicSiteNumber( SiteIterator & si ) {
 	int S=0;
 	const Site *site;
 	while ( si.hasMoreSites() ) {
@@ -38,7 +38,7 @@ int StatisticalTests::polymorphicSiteNumber( SiteIterator & si ) {
 // Method to compute number of polymorphic site in an alignment
 // Arguments: a SiteContainer
 // Return: Number of polymorphics sites	
-int StatisticalTests::polymorphicSiteNumber( const SiteContainer & v ) {
+unsigned int StatisticalTests::polymorphicSiteNumber( const SiteContainer & v ) {
 
 	SiteIterator *si = new NoGapSiteIterator( v );
 	int S = StatisticalTests::polymorphicSiteNumber( *si );
@@ -54,7 +54,7 @@ double StatisticalTests::watterson75( const SiteContainer & v ) {
 	int n = v.getNumberOfSequences();
 	double an = 0.0;
 	SiteIterator *si = new NoGapSiteIterator( v );
-	int S = StatisticalTests::polymorphicSiteNumber( *si );
+	unsigned int S = StatisticalTests::polymorphicSiteNumber( *si );
 	for ( int i = 1; i < n; i++ ) {
 			an += (double) 1/i;
 	}	
@@ -107,7 +107,7 @@ double StatisticalTests::watterson75( const PolymorphismSequenceContainer & psc,
 		si = new NoGapSiteIterator( *psci );
 	else
 		si = new CompleteSiteIterator( *psci );
-	int S = StatisticalTests::polymorphicSiteNumber( *si );
+	unsigned int S = StatisticalTests::polymorphicSiteNumber( *si );
 	for ( int i = 1; i < n; i++ ) {
 			an += (double) 1/i;
 	}	
@@ -159,4 +159,38 @@ double StatisticalTests::tajima83( const PolymorphismSequenceContainer & psc, bo
 	delete si;
 	delete psci;
 	return ThetaPi;
+}
+
+// Return the number of haplotype in the sample. Depaulis and Veuille (1998)
+// Arguments: a PolymorphismSequenceContainer
+// Return: K (Depaulis and Veuille 1998)
+unsigned int StatisticalTests::DVK( const PolymorphismSequenceContainer & psc, bool gapflag ) {
+	PolymorphismSequenceContainer *psci = PolymorphismSequenceContainerTools::extractIngroup(psc);
+	PolymorphismSequenceContainer *sc;
+	if (gapflag)
+		sc = PolymorphismSequenceContainerTools::getSitesWithoutGaps ( *psci );
+	else
+		sc = psci;
+	int K = 0;
+	vector<string> pscvector;
+	pscvector.push_back(sc->toString(0));
+	K++;
+	for ( unsigned int i = 1; i < sc->getNumberOfSequences(); i++ ) {
+		bool uniq = true;	
+		string query = sc->toString(i);
+		for ( vector<string>::iterator it = pscvector.begin(); it != pscvector.end(); it++ ) {
+			if ( query.compare(*it) == 0 ) {
+				uniq = false;
+				break;
+			}	
+		}
+		if (uniq) {
+			K++;
+			pscvector.push_back(query);
+		}				
+	}
+	delete sc;
+	if(gapflag)
+		delete psci;	
+	return K;
 }

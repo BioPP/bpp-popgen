@@ -34,7 +34,7 @@ class StatisticalTests
 	 *
          * @param si a SiteIterator
          */ 
-	 static int polymorphicSiteNumber( SiteIterator & si );
+	 static unsigned int polymorphicSiteNumber( SiteIterator & si );
 
         /**
          * @brief Compute number of polymorphic site in an alignment
@@ -43,7 +43,7 @@ class StatisticalTests
 	 *
          * @param v a SiteContainer
          */
-	 static int polymorphicSiteNumber( const SiteContainer & v );
+	 static unsigned int polymorphicSiteNumber( const SiteContainer & v );
 
         /**
          * @brief Compute diversity estimator Theta of Watterson (1975)
@@ -76,6 +76,16 @@ class StatisticalTests
 	 * take gap into account
          */ 
 	 static double tajima83( const PolymorphismSequenceContainer & v, bool gapflag = true );
+
+        /**
+         * @brief Return the number of haplotype in the sample. 
+	 * Depaulis and Veuille (1998)
+         *
+         * @param v a PolymorphismSequenceContainer
+	 * @param gapflag flag set by default to true if you don't want to
+	 * take gap into account
+         */ 
+	 static unsigned int DVK ( const PolymorphismSequenceContainer & v, bool gapflag = true );
 	        
         /*******************************************************************************/
 };
