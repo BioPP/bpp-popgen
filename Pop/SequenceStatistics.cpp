@@ -2,7 +2,7 @@
  * File Statistics.cpp
  * Author : Eric Bazin <bazin@univ-montp2.fr>
  *          Sylvain Gailard <yragael2001@yahoo.fr>
- * Last modification : Tuesday July 27 2004
+ * Last modification : Wednesday July 28 2004
  */
 
 #include "SequenceStatistics.h" // class's header file
@@ -134,75 +134,60 @@ double SequenceStatistics::tajima83( const SiteContainer & v ) {
 // Method to compute diversity estimator Theta of Watterson (1975)
 // Arguments: a PolymorphismSequenceContainer
 // Return: theta of Watterson (1975)
-double SequenceStatistics::watterson75( const PolymorphismSequenceContainer & psc, bool gapflag ) {
-	PolymorphismSequenceContainer *psci = PolymorphismSequenceContainerTools::extractIngroup(psc);
+double SequenceStatistics::watterson75(const PolymorphismSequenceContainer & psc, bool gapflag) {
 	double ThetaW;
 	unsigned int n = psc.getNumberOfSequences();
-	SiteIterator *si;
+	SiteIterator * si = NULL;
 	if (gapflag) 
-		si = new NoGapSiteIterator( *psci );
+		si = new CompleteSiteIterator(psc);
 	else
-		si = new CompleteSiteIterator( *psci );
-	unsigned int S = polymorphicSiteNumber( *si );
+		si = new SimpleSiteIterator(psc);
+	unsigned int S = polymorphicSiteNumber(* si);
 	map<string, double> values = _getUsefullValues(n);
 	ThetaW = (double) S / values["a1"];	
 	delete si;
-	delete psci;
 	return ThetaW;
 }
 
 // Method to compute diversity estimator Theta of Tajima (1983)
 // Arguments: a PolymorphismSequenceContainer
 // Return: theta of Tajima (1983)
-double SequenceStatistics::tajima83( const PolymorphismSequenceContainer & psc, bool gapflag ) {
-	PolymorphismSequenceContainer *psci = PolymorphismSequenceContainerTools::extractIngroup(psc);
-	double ThetaPi;
-	unsigned int S = 0;
-	const Site *site;
-	vector<double> etha;
-	unsigned int alphasize; 
-	double somme = 0.0;
-	unsigned int samplesize = psci -> getNumberOfSequences();
-	double denom = (double(samplesize)* (double(samplesize) - 1.0));
+double SequenceStatistics::tajima83(const PolymorphismSequenceContainer & psc, bool gapflag) {
+	unsigned int alphabet_size = (psc.getAlphabet())->getSize();
+	const Site * site;
 	SiteIterator *si;
-	if (gapflag) {
-		si = new NoGapSiteIterator( *psci );
-		alphasize = (psc.getAlphabet())->getSize();
-	} else {
-		si = new CompleteSiteIterator( *psci );
-		alphasize = (psc.getAlphabet())->getSize() + 1;
-	}
-	etha.resize(alphasize);
-	while ( si -> hasMoreSites() ) {
+	double value = 0.;
+	if (gapflag)
+		si = new CompleteSiteIterator(psc);
+	else
+		si = new SimpleSiteIterator(psc);
+	while (si->hasMoreSites()) {
 		site = si->nextSite();
-		if ( !SiteTools::isConstant(*site) ) {
-			S++;
-			for ( unsigned int i = 0; i < alphasize; i++ ) {
-				etha[i] = 0;
-			}
-			for ( unsigned int j = 0; j < samplesize; j++ ) {
-				unsigned int svalue = site -> getValue( j );
-				if (svalue < alphasize && svalue >= 0)
-					etha[ svalue ]+= psci -> getSequenceCount( j );
-			}			
-			for ( unsigned int i = 0; i < alphasize; i++ ) {
-				somme += (etha[i] * (etha[i] - 1)) / denom;
-			}
+		if (! SiteTools::isConstant(* site)) {
+			map<int, unsigned int> count = SymbolListTools::getCounts(* site);
+			map<int, unsigned int> tmp_k;
+			unsigned int tmp_n = 0;
+			for (map<int, unsigned int>::iterator it = count.begin() ; it != count.end() ; it++)
+				if (it->first >= 0 && it->first < (int) alphabet_size) {
+					tmp_k[it->first] = it->second * (it->second - 1);
+					tmp_n += it->second;
+				}
+			for(map<int, unsigned int>::iterator it = tmp_k.begin() ; it != tmp_k.end() ; it++)
+				value += (double) it->second / (tmp_n * (tmp_n - 1));
 		}
 	}
-	ThetaPi = (double) S - somme;
-	delete si;
-	delete psci;
-	return ThetaPi;
+	return 1 - value;
 }
 
+// Method to compute Tajima D test (1989)
+// Arguments: a PolymorphismSequenceContainer
+// Return: Tajima's D (1989)
 double SequenceStatistics::tajimaD(const PolymorphismSequenceContainer & psc, bool gapflag) {
-	PolymorphismSequenceContainer * psci = PolymorphismSequenceContainerTools::extractIngroup(psc);
 	SiteIterator * si;
 	if (gapflag)
-		si = new NoGapSiteIterator(* psci);
+		si = new NoGapSiteIterator(psc);
 	else
-		si = new CompleteSiteIterator(* psci);
+		si = new CompleteSiteIterator(psc);
 	unsigned int S = polymorphicSiteNumber(* si);
 	double tajima = tajima83(psc, gapflag);
 	double watterson = watterson75(psc, gapflag);

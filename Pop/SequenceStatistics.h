@@ -1,7 +1,7 @@
 /*
  * File SequenceStatistics.h
  * Author : Eric Bazin <bazin@univ-montp2.fr>
- * Last modification : Tuesday July 27 2004
+ * Last modification : Wednesday July 28 2004
  */
 
 //Secured inclusion of header's file
@@ -75,6 +75,10 @@ class SequenceStatistics
 		/**
 		 * @brief Compute diversity estimator Theta of Watterson (1975)
 		 *
+		 * @f[
+		 * \hat{\theta}_S=\frac{S}{a_1}
+		 * @f]
+		 * where @f$S@f$ is the number of polymorphic sites and @f$a_1@f$ is describe in SequenceStatistics::_getUsefullValues().
 		 * @param psc a PolymorphismSequenceContainer
 		 * @param gapflag flag set by default to true if you don't want to
 		 * take gap into account
@@ -84,6 +88,12 @@ class SequenceStatistics
 		/**
 		 * @brief Compute diversity estimator Theta of Tajima (1983)
 		 *
+		 * @f[
+		 * \hat{\theta}_\pi=1-\sum_{i=1}^{S}\sum_{j=1}^{4}\frac{k_{j,i}\times\left(k_{j,i}-1\right)}
+		 * {n_i\times\left(n_i-1\right)} \qquad \textrm{with }k_{j,i}>0
+		 * @f]
+		 * where @f$k_{j,i}@f$ is the count of the j<sup>th</sup> state at the i<sup>th</sup> site,
+		 * @f$n_i@f$ the number of nucleotides and @f$S@f$ the number of polymorphic sites.
 		 * @param psc a PolymorphismSequenceContainer
 		 * @param gapflag flag set by default to true if you don't want to
 		 * take gap into account
@@ -113,6 +123,10 @@ class SequenceStatistics
 		/**
 		 * @brief Return the Tajima's D test (Tajima 1989).
 		 *
+		 * @f[
+		 * D=\frac{\hat{\theta}_\pi-\hat{\theta}_S}{\sqrt{\textrm{V}\left(\hat{\theta}_\pi-\hat{\theta}_S\right)}}
+		 * =\frac{\hat{\theta}_\pi-\hat{\theta}_S}{\sqrt{e_1S+e_2S(S-1)}}
+		 * @f]
 		 * @param psc a PolymorphismSequenceContainer
 		 * @param gapflag flag set by default to true if you don't want to
 		 * take gap into account
