@@ -1,7 +1,7 @@
 /*
  * File Group.cpp
  * Author : Sylvain Gaillard <yragael2001@yahoo.fr>
- * Last modification : Saturday July 03 2004
+ * Last modification : Monday July 05 2004
  */
 
 #include "Group.h"
@@ -310,15 +310,10 @@ void Group::setIndividualSequences(unsigned int individual_index, const MapSeque
 	_individuals[individual_index]->setSequences(msc);
 }
 
-void Group::addIndividualGenotype(unsigned int individual_index, const MultilocusGenotype & genotype) throw (Exception) {
+void Group::setIndividualGenotype(unsigned int individual_index, const MultilocusGenotype & genotype) throw (IndexOutOfBoundsException) {
 	if (individual_index >= getNumberOfIndividuals())
-		throw IndexOutOfBoundsException("Group::addIndividualGenotype: individual_index out of bounds.", individual_index, 0, getNumberOfIndividuals());
-	try {
-		_individuals[individual_index]->addGenotype(genotype);
-	}
-	catch (Exception) {
-		throw Exception("Group::addIndividualGenotype: individual already has a genotype.");
-	}
+		throw IndexOutOfBoundsException("Group::setIndividualGenotype: individual_index out of bounds.", individual_index, 0, getNumberOfIndividuals());
+	_individuals[individual_index]->setGenotype(genotype);
 }
 
 void Group::initIndividualGenotype(unsigned int individual_index, unsigned int loci_number) throw (Exception) {

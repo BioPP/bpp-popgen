@@ -90,6 +90,21 @@ class MultilocusGenotype {
 		const MonolocusGenotype * getMonolocusGenotype(unsigned int locus_index) const
 			throw (IndexOutOfBoundsException);
 
+		/**
+		 * @brief Count the number of non missing MonolocusGenotype.
+		 */
+		unsigned int countNonMissingLoci() const;
+
+		/**
+		 * @brief Count the number of homozygous MonolocusGenotype.
+		 */
+		unsigned int countHomozygousLoci() const;
+
+		/**
+		 * @brief Count the number of heterozygous MonolocusGenotype.
+		 */
+		unsigned int countHeterozygousLoci() const;
+
 	protected:
 		vector<MonolocusGenotype *> _loci;
 };

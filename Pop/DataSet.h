@@ -1,7 +1,7 @@
 /*
  * File DataSet.h
  * Author : Sylvain Gaillard <yragael2001@yahoo.fr>
- * Last modification : Saturday July 03 2004
+ * Last modification : Monday July 05 2004
  */
 
 // Secured inclusion of header's file
@@ -383,13 +383,12 @@ class DataSet {
 			throw (Exception);
 
 		/**
-		 * @brief Add a MultilocusGenotype to an Individual in a Group.
+		 * @brief Set the MultilocusGenotype of an Individual in a Group.
 		 *
 		 * @throw IndexOutOfBoundsException if group_index excedes the number of groups.
 		 * @throw IndexOutOfBoundsException if individual_index excedes the number of individual in the group.
-		 * @throw Exception if the individual already has a genotype.
 		 */
-		void addIndividualGenotypeInGroup(unsigned int group_index, unsigned int individual_index, const MultilocusGenotype & genotype)
+		void setIndividualGenotypeInGroup(unsigned int group_index, unsigned int individual_index, const MultilocusGenotype & genotype)
 			throw (Exception);
 
 		/**

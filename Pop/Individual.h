@@ -1,7 +1,7 @@
 /*
  * File Individual.h
  * Author : Sylvain Gaillard <yragael2001@yahoo.fr>
- * Last modification : Saturday July 03 2004
+ * Last modification : Monday July 05 2004
  */
 
 // Secured inclusion of header's file
@@ -337,11 +337,11 @@ class Individual : public Clonable {
 		const OrderedSequenceContainer * getSequences() const throw (NullPointerException);
 		
 		/**
-		 * @brief Add a genotype.
+		 * @brief Set a genotype.
 		 *
-		 * @param genotype The MultilocusGenotype to add.
+		 * @param genotype The MultilocusGenotype which will be copied.
 		 */
-		void addGenotype(const MultilocusGenotype & genotype) throw (Exception);
+		void setGenotype(const MultilocusGenotype & genotype);
 
 		/**
 		 * @brief Init the genotype.
@@ -402,6 +402,27 @@ class Individual : public Clonable {
 		 * @throw IndexOutOfBoundsException if locus_index excedes the number of loci.
 		 */
 		const MonolocusGenotype * getMonolocusGenotype(unsigned int locus_index) throw (Exception);
+
+		/**
+		 * @brief Count the number of non missing MonolocusGenotype.
+		 *
+		 * @throw NullPointerException if there is no genotype defined.
+		 */
+		unsigned int countNonMissingLoci() const throw (NullPointerException);
+
+		/**
+		 * @brief Count the number of homozygous MonolocusGenotype.
+		 *
+		 * @throw NullPointerException if there is no genotype defined.
+		 */
+		unsigned int countHomozygousLoci() const throw (NullPointerException);
+
+		/**
+		 * @brief Count the number of heterozygous MonolocusGenotype.
+		 *
+		 * @throw NullPointerException if there is no genotype defined.
+		 */
+		unsigned int countHeterozygousLoci() const throw (NullPointerException);
 	
 	protected:
 		string _id;

@@ -94,3 +94,32 @@ const MonolocusGenotype * MultilocusGenotype::getMonolocusGenotype(unsigned int 
 		throw IndexOutOfBoundsException("MultilocusGenotype::getMonolocusGenotype: locus_index out of bounds", locus_index, 0, _loci.size());
 	return _loci[locus_index];
 }
+
+unsigned int MultilocusGenotype::countNonMissingLoci() const {
+	unsigned int count = 0;
+	for (unsigned int i = 0 ; i < _loci.size() ; i++)
+		if (_loci[i] != NULL) count++;
+	return count;
+}
+
+unsigned int MultilocusGenotype::countHomozygousLoci() const {
+	unsigned int count = 0;
+	for (unsigned int i = 0 ; i < _loci.size() ; i++) {
+		try {
+			if (dynamic_cast<BiAlleleMonolocusGenotype *>(_loci[i])->isHomozygous()) count++;
+		}
+		catch (...) {}
+	}
+	return count;
+}
+
+unsigned int MultilocusGenotype::countHeterozygousLoci() const {
+	unsigned int count = 0;
+	for (unsigned int i = 0 ; i < _loci.size() ; i++) {
+		try {
+			if (!(dynamic_cast<BiAlleleMonolocusGenotype *>(_loci[i])->isHomozygous())) count++;
+		}
+		catch (...) {}
+	}
+	return count;
+}

@@ -432,17 +432,14 @@ unsigned int DataSet::getIndividualNumberOfSequencesInGroup(unsigned int group_i
 	}
 }
 
-void DataSet::addIndividualGenotypeInGroup(unsigned int group_index, unsigned int individual_index, const MultilocusGenotype & genotype) throw (Exception) {
+void DataSet::setIndividualGenotypeInGroup(unsigned int group_index, unsigned int individual_index, const MultilocusGenotype & genotype) throw (Exception) {
 	if (group_index >= getNumberOfGroups())
-		throw IndexOutOfBoundsException("DataSet::getIndividualNumberOfSequencesInGroup: group_index out of bounds.", group_index, 0, getNumberOfGroups());
+		throw IndexOutOfBoundsException("DataSet::setIndividualGenotypeInGroup: group_index out of bounds.", group_index, 0, getNumberOfGroups());
 	try {
-		_groups[group_index]->addIndividualGenotype(individual_index, genotype);
+		_groups[group_index]->setIndividualGenotype(individual_index, genotype);
 	}
 	catch (IndexOutOfBoundsException & ioobe) {
-		throw IndexOutOfBoundsException("DataSet::addIndividualGenotypeInGroup: individual_index out of bounds.", ioobe.getBadInteger(), ioobe.getBounds()[0], ioobe.getBounds()[1]);
-	}
-	catch (Exception) {
-		throw Exception("DataSet::addIndividualGenotypeInGroup: individual already has a genotype.");
+		throw IndexOutOfBoundsException("DataSet::setIndividualGenotypeInGroup: individual_index out of bounds.", ioobe.getBadInteger(), ioobe.getBounds()[0], ioobe.getBounds()[1]);
 	}
 }
 

@@ -1,7 +1,7 @@
 /*
  * File Group.h
  * Author : Sylvain Gaillard <yragael2001@yahoo.fr>
- * Last modification : Saturday July 03 2004
+ * Last modification : Monday July 05 2004
  */
 
 // Secured inclusion of header's file
@@ -339,12 +339,11 @@ class Group {
 			throw (IndexOutOfBoundsException);
 
 		/**
-		 * @brief Add a genotype to an Individual.
+		 * @brief Set the genotype of an Individual.
 		 *
 		 * @throw IndexOutOfBoundsException if individual_index excedes the number of individuals.
-		 * @throw Exception if the individual already has a genotype.
 		 */
-		void addIndividualGenotype(unsigned int individual_index, const MultilocusGenotype & genotype) throw (Exception);
+		void setIndividualGenotype(unsigned int individual_index, const MultilocusGenotype & genotype) throw (IndexOutOfBoundsException);
 
 		/**
 		 * @brief Initialyze the genotype of an Individual.

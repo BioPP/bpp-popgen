@@ -1,7 +1,7 @@
 /*
  * File Individual.cpp
  * Author : Sylvain Gaillard <yragael2001@yahoo.fr>
- * Last modification : Saturday July 03 2004
+ * Last modification : Monday July 05 2004
  */
 
 #include "Individual.h"
@@ -362,9 +362,9 @@ const OrderedSequenceContainer * Individual::getSequences() const throw (NullPoi
 
 // MultilocusGenotype
 
-void Individual::addGenotype(const MultilocusGenotype & genotype) throw (Exception) {
+void Individual::setGenotype(const MultilocusGenotype & genotype) {
 	if (hasGenotype())
-		throw Exception("Individual::addGenotype: individual already has a genotype.");
+		delete _genotype;
 	_genotype = new MultilocusGenotype(genotype);
 }
 
@@ -441,4 +441,22 @@ const MonolocusGenotype * Individual::getMonolocusGenotype(unsigned int locus_in
 	catch (IndexOutOfBoundsException & ioobe) {
 		throw IndexOutOfBoundsException("Individual::getMonolocusGenotype: locus_index out of bounds.", ioobe.getBadInteger(), ioobe.getBounds()[0], ioobe.getBounds()[1]);
 	}
+}
+
+unsigned int Individual::countNonMissingLoci() const throw (NullPointerException) {
+	if (!hasGenotype())
+		throw NullPointerException("Individual::countNonMissingLoci: individual has no genotype.");
+	return _genotype->countNonMissingLoci();
+}
+
+unsigned int Individual::countHomozygousLoci() const throw (NullPointerException) {
+	if (!hasGenotype())
+		throw NullPointerException("Individual::countHomozygousLoci: individual has no genotype.");
+	return _genotype->countHomozygousLoci();
+}
+
+unsigned int Individual::countHeterozygousLoci() const throw (NullPointerException) {
+	if (!hasGenotype())
+		throw NullPointerException("Individual::countHeterozygousLoci: individual has no genotype.");
+	return _genotype->countHeterozygousLoci();
 }
