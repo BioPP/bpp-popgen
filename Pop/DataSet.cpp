@@ -1,7 +1,7 @@
 /*
  * File DataSet.cpp
  * Author : Sylvain Gaillard <yragael2001@yahoo.fr>
- * Last modification : Wednesday July 21 2004
+ * Last modification : Monday July 26 2004
  */
 
 #include "DataSet.h"
@@ -93,14 +93,14 @@ void DataSet::addEmptyGroup(unsigned int group_id) throw (BadIdentifierException
 	_groups.push_back(new Group(group_id));
 }
 
-const Group * DataSet::getGroupById(unsigned int group_id) {
+const Group * DataSet::getGroupById(unsigned int group_id) const {
 	for (unsigned int i = 0 ; i < _groups.size() ; i++)
 		if (group_id == _groups[i]->getGroupId())
 			return _groups[i];
 	return NULL;
 }
 
-unsigned int DataSet::getGroupPosition(unsigned int group_id) throw (GroupNotFoundException) {
+unsigned int DataSet::getGroupPosition(unsigned int group_id) const throw (GroupNotFoundException) {
 	for (unsigned int i = 0 ; i < _groups.size() ; i++)
 		if (group_id == _groups[i]->getGroupId())
 			return i;
@@ -776,6 +776,58 @@ PolymorphismMultiGContainer * DataSet::getPolymorphismMultiGContainer() const {
 		}
 	}
 	return pmgc;
+}
+
+PolymorphismMultiGContainer * DataSet::getPolymorphismMultiGContainer(const map<unsigned int, vector<unsigned int> > & selection) const throw (Exception) {
+	PolymorphismMultiGContainer * pmgc = new PolymorphismMultiGContainer();
+	for (map<unsigned int, vector<unsigned int> >::const_iterator it = selection.begin() ; it != selection.end() ; it++) {
+		unsigned int i;
+		try {
+			i = getGroupPosition(it->first);
+		}
+		catch (GroupNotFoundException & gnfe) {
+			throw gnfe;
+		}
+		for (unsigned int j = 0 ; j < it->second.size() ; j++) {
+			const Individual * tmp_ind = NULL;
+			try {
+				tmp_ind = getIndividualAtPositionFromGroup(i, j);
+			}
+			catch (IndexOutOfBoundsException & ioobe) {
+				throw ioobe;
+			}
+			if (tmp_ind->hasGenotype()) {
+				const MultilocusGenotype * tmp_mg = tmp_ind->getGenotype();
+				pmgc->addMultilocusGenotype(* tmp_mg, i);
+			}
+		}
+	}
+	return pmgc;
+}
+
+PolymorphismSequenceContainer * DataSet::getPolymorphismSequenceConstainer(const map<unsigned int, vector<unsigned int> > & selection, unsigned int sequence_position) const throw (Exception) {
+	PolymorphismSequenceContainer * psc = new PolymorphismSequenceContainer(getAlphabet());
+	for (map<unsigned int, vector<unsigned int> >::const_iterator it = selection.begin() ; it != selection.end() ; it++) {
+		unsigned int i;
+		try {
+			i = getGroupPosition(it->first);
+		}
+		catch (GroupNotFoundException & gnfe) {
+			throw gnfe;
+		}
+		for (unsigned int j = 0 ; j < it->second.size() ; j++) {
+			const Individual * tmp_ind = NULL;
+			try {
+				tmp_ind = getIndividualAtPositionFromGroup(i, j);
+			}
+			catch (IndexOutOfBoundsException & ioobe) {
+				throw ioobe;
+			}
+			if (tmp_ind->hasSequenceAtPosition(sequence_position))
+				psc->addSequence(* tmp_ind->getSequenceAtPosition(sequence_position), 1, false);
+		}
+	}
+	return psc;
 }
 
 // General tests ------------------------------------------

@@ -1,7 +1,7 @@
 /*
  * File DataSet.h
  * Author : Sylvain Gaillard <yragael2001@yahoo.fr>
- * Last modification : Wednesday July 21 2004
+ * Last modification : Monday July 26 2004
  */
 
 // Secured inclusion of header's file
@@ -16,6 +16,7 @@ using namespace std;
 
 // From Utils
 #include <Utils/Exceptions.h>
+#include <Utils/MapTools.h>
 
 // From PopLib (local)
 #include "Group.h"
@@ -25,6 +26,7 @@ using namespace std;
 #include "AnalyzedLoci.h"
 #include "AnalyzedSequences.h"
 #include "PolymorphismMultiGContainer.h"
+#include "PolymorphismSequenceContainer.h"
 
 /**
  * @brief The DataSet class.
@@ -122,14 +124,14 @@ class DataSet {
 		/**
 		 * @brief Get a group by identifier.
 		 */
-		const Group * getGroupById(unsigned int group_id);
+		const Group * getGroupById(unsigned int group_id) const;
 		
 		/**
 		 * @brief Get the position of a Group.
 		 *
 		 * @throw GroupNotFoundException if the group_id is not found.
 		 */
-		unsigned int getGroupPosition(unsigned int group_id) throw (GroupNotFoundException);
+		unsigned int getGroupPosition(unsigned int group_id) const throw (GroupNotFoundException);
 		
 		/**
 		 * @brief Get a group by position.
@@ -589,6 +591,22 @@ class DataSet {
 		 * @brief Get a PolymorphismMultiGContainer with all allelic data of the DataSet.
 		 */
 		PolymorphismMultiGContainer * getPolymorphismMultiGContainer() const;
+
+		/**
+		 * @brief Get a PolymorphismMultiGContainer from a selection of groups and individuals.
+		 *
+		 * @param selection A map with groups id as keys and vector of individuals position in each group as values.
+		 */
+		PolymorphismMultiGContainer * getPolymorphismMultiGContainer(const map<unsigned int, vector<unsigned int> > & selection) const throw (Exception);
+
+		/**
+		 * @brief Get a PolymorphismSequenceContainer from a selection of groups and individuals.
+		 *
+		 * All the sequences are ingroup. You may change their state after created the container.
+		 * @param selection A map with groups id as keys and vector of individuals position in each group as values.
+		 * @param sequence_position The position of the sequence in the individuals;
+		 */
+		PolymorphismSequenceContainer * getPolymorphismSequenceConstainer(const map<unsigned int, vector<unsigned int> > & selection, unsigned int sequence_position) const throw (Exception);
 
 	//** General tests **********************************************************/
 		/**
