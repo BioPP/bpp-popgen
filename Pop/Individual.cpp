@@ -1,7 +1,7 @@
 /*
  * File Individual.cpp
  * Author : Sylvain Gaillard <yragael2001@yahoo.fr>
- * Last modification : Thursday July 29 2004
+ * Last modification : Tuesday August 03 2004
  *
  * Copyright (C) 2004 Sylvain Gaillard and the
  *                    PopLib Development Core Team
@@ -109,10 +109,6 @@ Individual::~Individual () {
 }
 
 //** Other methodes: *********************************************************/
-Clonable * Individual::clone() const {
-	return new Individual(* this);
-}
-
 Individual & Individual::operator= (const Individual & ind) {
 	setId(ind.getId());
 	setSex(ind.getSex());

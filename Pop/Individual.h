@@ -1,7 +1,7 @@
 /*
  * File Individual.h
  * Author : Sylvain Gaillard <yragael2001@yahoo.fr>
- * Last modification : Thursday July 29 2004
+ * Last modification : Tuesday August 03 2004
  *
  * Copyright (C) 2004 Sylvain Gaillard and the
  *                    PopLib Development Core Team
@@ -57,7 +57,7 @@
  * about diploid sequence data.
  * See the no more in use MultiSeqIndividual documentation for an alternative.
  */
-class Individual : public Clonable {
+class Individual {
 	public: // Constructors and destructor :
 		
 		/**
@@ -98,11 +98,6 @@ class Individual : public Clonable {
 
 	public: // Methodes
 		
-		/**
-		 * @brief Implement the Clonable interface.
-		 */
-		Clonable * clone() const;
-
 		/**
 		 * @brief The Individual copy operator.
 		 *
