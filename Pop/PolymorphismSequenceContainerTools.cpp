@@ -69,14 +69,14 @@ PolymorphismSequenceContainer * PolymorphismSequenceContainerTools::read(const s
 					delete psc;
 					throw snfe;
 				}
-			}			
+			}
 		}
 	}
 	return psc;
 }
-	 
+
 PolymorphismSequenceContainer * PolymorphismSequenceContainerTools::extractIngroup (const PolymorphismSequenceContainer & psc) throw (Exception) {
-	SequenceSelection ss;	
+	SequenceSelection ss;
 	PolymorphismSequenceContainer * psci = dynamic_cast<PolymorphismSequenceContainer *>(psc.clone());
 	for(unsigned int i = 0; i < psc.getNumberOfSequences(); i++)
 		if (! psc.isIngroupMember(i))
@@ -122,7 +122,7 @@ PolymorphismSequenceContainer * PolymorphismSequenceContainerTools::extractGroup
 		psci->deleteSequence(ss[i]);
 	return psci;
 }
-	 
+
 PolymorphismSequenceContainer * PolymorphismSequenceContainerTools::getSitesWithoutGaps (const PolymorphismSequenceContainer & psc) {
 	vector<string> seqNames = psc.getSequencesNames();
 	PolymorphismSequenceContainer * noGapCont = new PolymorphismSequenceContainer(psc.getNumberOfSequences(), psc.getAlphabet());
@@ -160,7 +160,7 @@ unsigned int PolymorphismSequenceContainerTools::getNumberOfNonGapSites(const Po
 		if (SiteTools::hasGap(* ssi->nextSite()))
 			count--;
 	delete ssi;
-	return count;	
+	return count;
 }
 
 unsigned int PolymorphismSequenceContainerTools::getNumberOfCompleteSites(const PolymorphismSequenceContainer & psc, bool ingroup) throw (Exception) {
@@ -184,5 +184,199 @@ unsigned int PolymorphismSequenceContainerTools::getNumberOfCompleteSites(const 
 		if (!SiteTools::isComplete(* ssi->nextSite()))
 			count--;
 	delete ssi;
-	return count;	
+	return count;
+}
+
+
+//*******************************************************************************************************************************
+
+
+PolymorphismSequenceContainer * PolymorphismSequenceContainerTools::getCompleteSites (const PolymorphismSequenceContainer & psc) {
+	vector<string> seqNames = psc.getSequencesNames();
+	PolymorphismSequenceContainer * complete = new PolymorphismSequenceContainer(psc.getNumberOfSequences(), psc.getAlphabet());
+	complete->setSequencesNames(seqNames, false);
+	unsigned int nbSeq = psc.getNumberOfSequences();
+	for (unsigned int i = 0 ; i < nbSeq ; i++) {
+		complete->setSequenceCount(i, psc.getSequenceCount(i));
+		if (! psc.isIngroupMember(i))
+			complete->setAsOutgroupMember(i);
+	}
+	CompleteSiteIterator csi(psc);
+	while(csi.hasMoreSites())
+		complete->addSite(* csi.nextSite());
+	return complete;
+}
+
+PolymorphismSequenceContainer * PolymorphismSequenceContainerTools::excludeFlankingGap(const PolymorphismSequenceContainer & psc) throw (Exception) {
+	try {
+        PolymorphismSequenceContainer *psci = new PolymorphismSequenceContainer(psc);
+        while(SiteTools::hasGap(*psci->getSite(0))){
+                psci->deleteSite(0);
+        }
+        int i=0;
+        int n = psci->getNumberOfSites();
+        while(SiteTools::hasGap(*psci->getSite(n-i-1))){
+                psci->deleteSite(n-i-1);
+                i++;
+        }
+	return psci;
+	}
+	catch(...) {}
+}
+
+
+// Be carefull: To use before excluding gap
+PolymorphismSequenceContainer * PolymorphismSequenceContainerTools::getCodingSites(const PolymorphismSequenceContainer & psc) throw (Exception) {
+	try {
+	Comments maseFileHeader = psc.getGeneralComments();
+        SiteSelection ss = MaseTools::getCodingPositions(maseFileHeader);
+        const SiteContainer *sc = SiteContainerTools::getSelectedSites(psc,ss);
+        PolymorphismSequenceContainer *psci = new PolymorphismSequenceContainer(*sc);
+        delete sc;
+        return psci;
+        }
+	catch(...) {}
+
+}
+
+
+// Be carefull: To use before excluding gap
+
+PolymorphismSequenceContainer * PolymorphismSequenceContainerTools::getNonCodingSites(const PolymorphismSequenceContainer & psc) throw (Exception) {
+try {
+	Comments maseFileHeader = psc.getGeneralComments();
+        SiteSelection ss;
+        SiteSelection codss = MaseTools::getCodingPositions(maseFileHeader);
+        for(unsigned int i=0; i<psc.getNumberOfSites(); i++) {
+                if(find(codss.begin(),codss.end(),i)==codss.end()) {
+                        ss.push_back(i);
+                }
+        }
+        const SiteContainer *sc = SiteContainerTools::getSelectedSites(psc,ss);
+        PolymorphismSequenceContainer *psci = new PolymorphismSequenceContainer(*sc);
+        delete sc;
+        return psci;
+        }
+catch(...) {}
+
+}
+
+
+// Be carefull : to use before excluding gap
+// The first site of the alignment is supposed to correspond to the first position
+PolymorphismSequenceContainer * PolymorphismSequenceContainerTools::getOnePosition(const PolymorphismSequenceContainer & psc, unsigned int pos) throw (Exception) {
+	try {
+        SiteSelection ss;
+        for(unsigned int i=0; i<psc.getNumberOfSites(); i++){
+                if((i+1)%pos ==0) ss.push_back(i);
+                }
+        const SiteContainer *sc = SiteContainerTools::getSelectedSites(psc,ss);
+        PolymorphismSequenceContainer *newpsc = new PolymorphismSequenceContainer(*sc);
+        delete sc;
+        return newpsc;
+        }
+	catch(...) {}
+}
+
+
+//Same as getNonCodgingSites but exclude 5' and 3' flanking regions if there are
+//Assumed that the first coding site correspond to the first position
+PolymorphismSequenceContainer * PolymorphismSequenceContainerTools::getIntrons(const PolymorphismSequenceContainer & psc) throw (Exception) {
+        try {
+	Comments maseFileHeader = psc.getGeneralComments();
+        SiteSelection ss;
+        SiteSelection codss = MaseTools::getCodingPositions(maseFileHeader);
+        unsigned int first, last;
+        //Check the first Codon
+	if(psc.getSite(codss[0])->getValue(0)==0 &&
+	   psc.getSite(codss[1])->getValue(0)==3 &&
+	   psc.getSite(codss[2])->getValue(0)==2) first = codss[0];
+	else first=0;
+	//Check the last Codon
+	if(psc.getSite(codss[codss.size()-3])->getValue(0)==3) {
+		if(psc.getSite(codss[codss.size()-2])->getValue(0)==0) {
+			if(psc.getSite(codss[codss.size()-1])->getValue(0)==0 || psc.getSite(codss[codss.size()-1])->getValue(0)==2){
+				last = codss[codss.size()-1];
+			}
+                       }
+		else {
+			if(psc.getSite(codss[codss.size()-2])->getValue(0)==2 && psc.getSite(codss[codss.size()-1])->getValue(0)==0) {
+				last = codss[codss.size()-1];
+			}
+			else last=psc.getNumberOfSites();
+                       }
+               }
+               else last=psc.getNumberOfSites();
+        for(unsigned int i=first; i<last; i++) {
+            if(find(codss.begin(),codss.end(),i)==codss.end()) {
+               ss.push_back(i);
+            }
+        }
+        const SiteContainer *sc = SiteContainerTools::getSelectedSites(psc,ss);
+        PolymorphismSequenceContainer *psci = new PolymorphismSequenceContainer(*sc);
+        delete sc;
+        return psci;
+        }
+        catch(...) {}
+
+}
+
+PolymorphismSequenceContainer * PolymorphismSequenceContainerTools::get5Prime(const PolymorphismSequenceContainer & psc) throw (Exception) {
+        try {
+	Comments maseFileHeader = psc.getGeneralComments();
+        SiteSelection ss;
+        SiteSelection codss = MaseTools::getCodingPositions(maseFileHeader);
+        unsigned int last;
+        //Check the first Codon
+        if(psc.getSite(codss[0])->getValue(0)==0 &&
+	   psc.getSite(codss[1])->getValue(0)==3 &&
+	   psc.getSite(codss[2])->getValue(0)==2) last = codss[0];
+	else last=0;
+        for(unsigned int i=0; i<last; i++) {
+                if(find(codss.begin(),codss.end(),i)==codss.end()) {
+                        ss.push_back(i);
+                }
+        }
+        const SiteContainer *sc = SiteContainerTools::getSelectedSites(psc,ss);
+        PolymorphismSequenceContainer *psci = new PolymorphismSequenceContainer(*sc);
+        delete sc;
+        return psci;
+        }
+        catch(...) {}
+
+}
+
+PolymorphismSequenceContainer * PolymorphismSequenceContainerTools::get3Prime(const PolymorphismSequenceContainer & psc) throw (Exception) {
+        try {
+	Comments maseFileHeader = psc.getGeneralComments();
+        SiteSelection ss;
+        SiteSelection codss = MaseTools::getCodingPositions(maseFileHeader);
+        unsigned int first;
+	//Check the last Codon
+	if(psc.getSite(codss[codss.size()-3])->getValue(0)==3) {
+		if(psc.getSite(codss[codss.size()-2])->getValue(0)==0) {
+			if(psc.getSite(codss[codss.size()-1])->getValue(0)==0 || psc.getSite(codss[codss.size()-1])->getValue(0)==2){
+				first = codss[codss.size()-1];
+			}
+                       }
+		else {
+			if(psc.getSite(codss[codss.size()-2])->getValue(0)==2 && psc.getSite(codss[codss.size()-1])->getValue(0)==0) {
+				first = codss[codss.size()-1];
+			}
+			else first=psc.getNumberOfSites()-1;
+                       }
+               }
+               else first=psc.getNumberOfSites()-1;
+        for(unsigned int i=first; i<psc.getNumberOfSites(); i++) {
+                if(find(codss.begin(),codss.end(),i)==codss.end()) {
+                        ss.push_back(i);
+                }
+        }
+        const SiteContainer *sc = SiteContainerTools::getSelectedSites(psc,ss);
+        PolymorphismSequenceContainer *psci = new PolymorphismSequenceContainer(*sc);
+        delete sc;
+        return psci;
+        }
+        catch(...) {}
+
 }
