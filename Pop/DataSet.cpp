@@ -1,7 +1,7 @@
 /*
  * File DataSet.cpp
  * Author : Sylvain Gaillard <yragael2001@yahoo.fr>
- * Last modification : Wednesday July 07 2004
+ * Last modification : Wednesday July 21 2004
  */
 
 #include "DataSet.h"
@@ -649,7 +649,7 @@ string DataSet::getAlphabetType() const throw (NullPointerException) {
 }
 
 // Dealing with AnalyzedLoci -------------------------------
-void DataSet::setAnalyzedLoci(AnalyzedLoci & analyzedLoci) throw (Exception) {
+void DataSet::setAnalyzedLoci(const AnalyzedLoci & analyzedLoci) throw (Exception) {
 	if (_analyzedLoci != NULL) {
 		try {
 			deleteAnalyzedLoci();
@@ -762,6 +762,20 @@ unsigned int DataSet::getPloidyByLocusPosition(unsigned int locus_position) cons
 	catch (IndexOutOfBoundsException & ioobe) {
 		throw IndexOutOfBoundsException("DataSet::getPloidyByLocusPosition: locus_position out of bounds.", ioobe.getBadInteger(), ioobe.getBounds()[0], ioobe.getBounds()[1]);
 	}
+}
+// Container extraction -----------------------------------
+PolymorphismMultiGContainer * DataSet::getPolymorphismMultiGContainer() const {
+	PolymorphismMultiGContainer * pmgc = new PolymorphismMultiGContainer();
+	for (unsigned int i = 0 ; i < getNumberOfGroups() ; i++) {
+		for (unsigned int j = 0 ; j < getNumberOfIndividualsInGroup(i) ; j++) {
+			const Individual * tmp_ind = getIndividualAtPositionFromGroup(i, j);
+			if (tmp_ind->hasGenotype()) {
+				const MultilocusGenotype * tmp_mg = tmp_ind->getGenotype();
+				pmgc->addMultilocusGenotype(* tmp_mg, i);
+			}
+		}
+	}
+	return pmgc;
 }
 
 // General tests ------------------------------------------

@@ -1,7 +1,7 @@
 /*
  * File DataSet.h
  * Author : Sylvain Gaillard <yragael2001@yahoo.fr>
- * Last modification : Wednesday July 07 2004
+ * Last modification : Wednesday July 21 2004
  */
 
 // Secured inclusion of header's file
@@ -24,6 +24,7 @@ using namespace std;
 #include "GeneralExceptions.h"
 #include "AnalyzedLoci.h"
 #include "AnalyzedSequences.h"
+#include "PolymorphismMultiGContainer.h"
 
 /**
  * @brief The DataSet class.
@@ -521,7 +522,7 @@ class DataSet {
 		 *
 		 * @throw Exception if at least one Individual has a genotype refering to the actual AnalyzedLoci.
 		 */
-		void setAnalyzedLoci(AnalyzedLoci & analyzedLoci) throw (Exception);
+		void setAnalyzedLoci(const AnalyzedLoci & analyzedLoci) throw (Exception);
 
 		/**
 		 * @brief Initialize the AnalyzedLoci for number of loci.
@@ -582,6 +583,12 @@ class DataSet {
 		 * @brief Get the ploidy of a locus.
 		 */
 		unsigned int getPloidyByLocusPosition(unsigned int locus_position) const throw (Exception);
+
+	//** Container extraction ***************************************************/
+		/**
+		 * @brief Get a PolymorphismMultiGContainer with all allelic data of the DataSet.
+		 */
+		PolymorphismMultiGContainer * getPolymorphismMultiGContainer() const;
 
 	//** General tests **********************************************************/
 		/**
