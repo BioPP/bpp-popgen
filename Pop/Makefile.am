@@ -9,6 +9,7 @@ BiAlleleMonolocusGenotype.h\
 Coord.h\
 CoordsTools.h\
 DataSet.h\
+DataSetTools.h\
 Date.h\
 GeneralExceptions.h\
 Genetix.h\
@@ -39,6 +40,7 @@ AnalyzedSequences.cpp\
 BasicAlleleInfo.cpp\
 BiAlleleMonolocusGenotype.cpp\
 DataSet.cpp\
+DataSetTools.cpp\
 Date.cpp\
 GeneralExceptions.cpp\
 Genetix.cpp\
