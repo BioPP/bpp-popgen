@@ -49,31 +49,43 @@ class PolymorphismSequenceContainer : public VectorSiteContainer
 		/**
 		 * @brief Clone a PolymorphismSequenceContainer.
 		 */
-		Clonable* clone() const;
+		Clonable * clone() const;
 		
 	public: // Other methodes
 		/**
 		 * @brief Remove a sequence by index and return a pointer to this removed sequence.
+		 *
+		 * @throw IndexOutOfBoundsException if index excedes the number of sequences.
 		 */
 		Sequence * removeSequence(unsigned int index) throw (IndexOutOfBoundsException);
 		
 		/**
 		 * @brief Remove a sequence by name and return a pointer to this removed sequence.
+		 *
+		 * @brief throw SequenceNotFoundException if name is not found among the sequences' names.
 		 */
 		Sequence * removeSequence(const string &name) throw (SequenceNotFoundException);
 		
 		/**
 		 * @brief Delete a sequence by index.
+		 *
+		 * @throw IndexOutOfBoundsException if index excedes the number of sequences.
 		 */
 		void deleteSequence(unsigned int index) throw (IndexOutOfBoundsException);
 		
 		/**
 		 * @brief Delete a sequence by name.
+		 *
+		 * @brief throw SequenceNotFoundException if name is not found among the sequences' names.
 		 */
 		void deleteSequence(const string &name) throw (SequenceNotFoundException);
 		
 		/**
 		 * @brief Add a sequence to the container.
+		 *
+		 * @throw AlphabetMismatchException if the sequence's alphabet doesn't match the container's alphabet.
+		 * @throw SequenceException if the sequence's size doesn't match the sequence's size of the container.
+		 * @throw SequenceException if the sequence's name already exists in the container.
 		 */
 		void addSequence(const Sequence &sequence,unsigned int effectif=1,  bool checkNames=true) throw (Exception);
 		
@@ -84,47 +96,79 @@ class PolymorphismSequenceContainer : public VectorSiteContainer
 		
 		/**
 		 * @brief Tell if the sequence is ingroup by index.
+		 *
+		 * @throw IndexOutOfBoundsException if index excedes the number of sequences in the container.
 		 */
-		bool isIngroup(unsigned int index) const throw (IndexOutOfBoundsException);
+		bool isIngroupMember(unsigned int index) const throw (IndexOutOfBoundsException);
 		
 		/**
 		 * @brief Tell if a sequence is ingroup by name.
+		 *
+		 * @brief throw SequenceNotFoundException if name is not found among the sequences' names.
 		 */
-		bool isIngroup(const string &name) const throw (SequenceNotFoundException);
+		bool isIngroupMember(const string &name) const throw (SequenceNotFoundException);
 		
 		/**
-		 * @brief Toggle the ingroup state of a sequence by index.
+		 * @brief Set a sequence as ingroup member by index.
+		 *
+		 * @throw IndexOutOfBoundsException if index excedes the number of sequences in the container.
 		 */
-		bool toggleIngroup(unsigned int index) throw (IndexOutOfBoundsException);
+		bool setAsIngroupMember(unsigned int index) throw (IndexOutOfBoundsException);
 		
 		/**
-		 * @brief Toggle the ingroup state of a sequence by name.
+		 * @brief Set a sequence as ingroup member by name.
+		 *
+		 * @brief throw SequenceNotFoundException if name is not found among the sequences' names.
 		 */
-		bool toggleIngroup(const string &name) throw (SequenceNotFoundException);
+		bool setAsIngroupMember(const string &name) throw (SequenceNotFoundException);
 		
 		/**
-		 * @brief Set the effectif of a sequence by index.
+		 * @brief Set a sequence as outgroup member by index.
+		 *
+		 * @throw IndexOutOfBoundsException if index excedes the number of sequences in the container.
 		 */
-		void setEffectif(unsigned int sequence, unsigned int effectif) throw (IndexOutOfBoundsException);
+		bool setAsOutgroupMember(unsigned int index) throw (IndexOutOfBoundsException);
 		
 		/**
-		 * @brief Set the effectif of a sequence by name.
+		 * @brief Set a sequence as outgroup member by name.
+		 *
+		 * @brief throw SequenceNotFoundException if name is not found among the sequences' names.
 		 */
-		void setEffectif(const string &name, unsigned int effectif) throw (SequenceNotFoundException);
+		bool setAsOutgroupMember(const string &name) throw (SequenceNotFoundException);
+		
+		/**
+		 * @brief Set the strength of a sequence by index.
+		 *
+		 * @throw IndexOutOfBoundsException if index excedes the number of sequences in the container.
+		 * @throw BadIntegerException if stregth < 1 ... use deleteSequence instead of setting the strength to 0.
+		 */
+		void setSequenceStrength(unsigned int sequence, unsigned int strength) throw (Exception);
+		
+		/**
+		 * @brief Set the strength of a sequence by name.
+		 *
+		 * @brief throw SequenceNotFoundException if name is not found among the sequences' names.
+		 * @throw BadIntegerException if stregth < 1 ... use deleteSequence instead of setting the strength to 0.
+		 */
+		void setSequenceStrength(const string &name, unsigned int strength) throw (Exception);
 
 		/**
-		 * @brief Get the effectif of a sequence by index.
+		 * @brief Get the strength of a sequence by index.
+		 *
+		 * @throw IndexOutOfBoundsException if index excedes the number of sequences in the container.
 		 */
-		unsigned int getEffectif(unsigned int index) const throw (IndexOutOfBoundsException);
+		unsigned int getSequenceStrength(unsigned int index) const throw (IndexOutOfBoundsException);
 
 		/**
-		 * @brief Get theeffectif of a sequence by name.
+		 * @brief Get the strength of a sequence by name.
+		 *
+		 * @brief throw SequenceNotFoundException if name is not found among the sequences' names.
 		 */
-		unsigned int getEffectif(const string &name) const throw (SequenceNotFoundException);
+		unsigned int getSequenceStrength(const string &name) const throw (SequenceNotFoundException);
 		
 	protected:
 		vector<bool> _ingroup;
-		vector<unsigned int> _effectif;
+		vector<unsigned int> _strength;
 };
 
 #endif	//_POLYMORPHISMSEQUENCECONTAINER_H_
