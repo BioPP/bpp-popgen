@@ -11,6 +11,7 @@ CoordsTools.h\
 DataSet.h\
 Date.h\
 GeneralExceptions.h\
+Genetix.h\
 Group.h\
 Individual.h\
 IDataSet.h\
@@ -38,6 +39,7 @@ BiAlleleMonolocusGenotype.cpp\
 DataSet.cpp\
 Date.cpp\
 GeneralExceptions.cpp\
+Genetix.cpp\
 Group.cpp\
 Individual.cpp\
 IDataSet.cpp\
