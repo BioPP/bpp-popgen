@@ -1,7 +1,7 @@
 /*
  * File Date.h
  * Author : Sylvain Gaillard <yragael2001@yahoo.fr>
- * Last modification : Wednesday May 05 2004
+ * Last modification : Tuesday May 25 2004
  */
 
 // Secured inclusion of header's file
@@ -131,22 +131,22 @@ class Date : public Clonable {
 		/**
 		 * @brief The != operator.
 		 */
-		bool operator!= (const Date & date) { return !(*this == date); }
+		bool operator!= (const Date & date) const { return !(*this == date); }
 
 		/**
 		 * @brief The > operator.
 		 */
-		bool operator> (const Date & date) { return date < *this; }
+		bool operator> (const Date & date) const { return date < *this; }
 
 		/**
 		 * @brief The <= operator.
 		 */
-		bool operator<= (const Date & date) { return !(date < *this); }
+		bool operator<= (const Date & date) const { return !(date < *this); }
 
 		/**
 		 * @brief The >= operator.
 		 */
-		bool operator>= (const Date & date) { return !(*this < date); }
+		bool operator>= (const Date & date) const { return !(*this < date); }
 
 	protected:
 		int _day;
