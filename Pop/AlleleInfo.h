@@ -1,62 +1,38 @@
 /*
  * File AlleleInfo.h
  * Author : Sylvain Gaillard <yragael2001@yahoo.fr>
- * Last modification : Tuesday June 01 2004
+ * Last modification : Wednesday June 30 2004
  */
 
 // Secured inclusion of header's file
 #ifndef _ALLELEINFO_H_
 #define _ALLELEINFO_H_
 
+// From STL
+#include <string>
+using namespace std;
+
 // From Utils
 #include <Utils/Clonable.h>
 
 /**
- * @brief The AlleleInfo class.
- *
- * This is the simplest allele class which contains just an identity number.
+ * @brief The AlleleInfo interface.
  */
 class AlleleInfo : public Clonable {
-	public: // Constructors and destructor
-		/**
-		 * @brief Build a new allele.
-		 *
-		 * @param id The identity number of the allele.
-		 */
-		AlleleInfo(unsigned int id);
-
-		/**
-		 * @brief The AlleleInfo copy constructor.
-		 */
-		AlleleInfo(const AlleleInfo &allele);
+	public: // Destructor
 
 		virtual ~AlleleInfo();
 
 	public: // Methodes
 		/**
-		 * @brief Implement the Cloanble interface.
+		 * @brief Set the identifier of the allele.
 		 */
-		Clonable * clone() const;
-			
-		/**
-		 * @brief The == operator.
-		 */
-		virtual bool operator== (const AlleleInfo & allele) const;
+		virtual void setId(const string & allele_id) = 0;
 		
 		/**
-		 * @brief The !h operator.
+		 * @brief Get the identitier of the allele.
 		 */
-		bool operator!= (const AlleleInfo & allele) const {
-			return !(*this == allele);
-		}
-		
-		/**
-		 * @brief Get the identity number of the allele.
-		 */
-		unsigned int getId() const;
-
-	private:
-		unsigned int _id;
+		virtual string getId() const = 0;
 };
 
 #endif // _ALLELEINFO_H_
