@@ -1,8 +1,12 @@
 /*
  * File AnalyzedLoci.h
  * Author : Sylvain Gaillard <yragael2001@yahoo.fr>
- * Last modification : Tuesday June 01 2004
+ * Last modification : Monday June 07 2004
  */
+
+// Secured inclusion of header's file
+#ifndef _ANALYZEDLOCI_H_
+#define _ANALYZEDLOCI_H_
 
 // From STL
 #include <vector>
@@ -44,27 +48,51 @@ class AnalyzedLoci {
 		/**
 		 * @brief Get a LocusInfo by name.
 		 */
-		const LocusInfo * getLocusInfo(const string & locus_name)
+		const LocusInfo * getLocusInfoByName(const string & locus_name) const
 			throw (LocusInfoNotFoundException);
 
 		/**
 		 * @brief Get a LocusInfo by index.
 		 */
-		const LocusInfo * getLocusInfo(unsigned int locus_index)
-			throw (NullPointerException);
+		const LocusInfo * getLocusInfoByIndex(unsigned int locus_index) const
+			throw (Exception);
 
 		/**
 		 * @brief Add an AlleleInfo to a LocusInfo by LocusInfo name.
 		 */
-		void addAlleleInfo(const string & locus_name, const AlleleInfo & allele)
+		void addAlleleInfoByLocusName(const string & locus_name,
+				const AlleleInfo & allele)
 			throw (Exception);
 
 		/**
 		 * @brief Add an AlleleInfo to a LocusInfo by index.
 		 */
-		void addAlleleInfo(unsigned int locus_index, const AlleleInfo & allele)
+		void addAlleleInfoByLocusIndex(unsigned int locus_index,
+				const AlleleInfo & allele)
 			throw (Exception);
+
+		/**
+		 * @brief Get the number of loci.
+		 */
+		unsigned int getNumberOfLoci() const;
 		
+		/**
+		 * @brief Get the number of alleles at each locus.
+		 */
+		vector<unsigned int> getNumberOfAlleles() const;
+
+		/**
+		 * @brief Get the ploidy of a locus by name.
+		 */
+		unsigned int getPloidyByLocusName(const string & locus_name) const
+			throw (LocusInfoNotFoundException);
+
+		/**
+		 * @brief Get the ploidy of a locus by index.
+		 */
+		unsigned int getPloidyByLocusIndex(unsigned int locus_index) const
+			throw (IndexOutOfBoundsException);
 	protected:
 		vector<LocusInfo *> _loci;
 };
+#endif // _ANALYZEDLOCI_H_
