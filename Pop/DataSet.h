@@ -1,7 +1,7 @@
 /*
  * File DataSet.h
  * Author : Sylvain Gaillard <yragael2001@yahoo.fr>
- * Last modification : Tuesday July 06 2004
+ * Last modification : Wednesday July 07 2004
  */
 
 // Secured inclusion of header's file
@@ -23,6 +23,7 @@ using namespace std;
 #include "Locality.h"
 #include "GeneralExceptions.h"
 #include "AnalyzedLoci.h"
+#include "AnalyzedSequences.h"
 
 /**
  * @brief The DataSet class.
@@ -489,6 +490,31 @@ class DataSet {
 		const MonolocusGenotype * getIndividualMonolocusGenotypeInGroup(unsigned int group_position, unsigned int individual_position, unsigned int locus_position) const
 			throw (Exception);
 
+//** AnalyzedSequences manipulation ******************************************/
+		/**
+		 * @brief Set the alphabet of the AnalyzedSequences.
+		 */
+		void setAlphabet(const Alphabet * alpha);
+
+		/**
+		 * @brief Set the alphabet of the AnalyzedSequences by its type..
+		 */
+		void setAlphabet(const string & alpha_type);
+
+		/**
+		 * @brief Get the alphabet if there is sequence data.
+		 *
+		 * @throw NullPointerException if there is no sequence data.
+		 */
+		const Alphabet * getAlphabet() const throw (NullPointerException);
+
+		/**
+		 * @brief Get the alphabet type as a string.
+		 *
+		 * @throw NullPointerException if there is no sequence data.
+		 */
+		string getAlphabetType() const throw (NullPointerException);
+
 //** AnalyzedLoci manipulation ***********************************************/
 		/**
 		 * @brief Set the AnalyzedLoci to the DataSet.
@@ -562,13 +588,6 @@ class DataSet {
 		 * @brief Tell if at least one individual has at least one sequence.
 		 */
 		bool hasSequenceData() const;
-
-		/**
-		 * @brief Get the alphabet if there is sequence data.
-		 *
-		 * @throw NullPointerException if there is no sequence data.
-		 */
-		const Alphabet * getAlphabet() const throw (NullPointerException);
 		
 		/**
 		 * @brief Tell if there is alelelic data.
@@ -577,6 +596,7 @@ class DataSet {
 		
 	protected:
 		AnalyzedLoci * _analyzedLoci;
+		AnalyzedSequences * _analyzedSequences;
 		vector<Locality<double> *> _localities;
 		vector<Group *> _groups;
 };

@@ -1,7 +1,7 @@
 /*
  * File PoplibIO.cpp
  * Author : Sylvain Gaillard <yragael2001@yahoo.fr>
- * Last modification : Wednesday July 07 2004
+ * Last modification : Monday July 19 2004
  */
 
 #include "PoplibIO.h"
@@ -87,36 +87,261 @@ void PoplibIO::read(istream & is, DataSet & data_set) throw (Exception) {
 	if (!is)
 		throw IOException("PoplibIO::read: fail to open stream.");
 	string temp = "";
+	vector<string> temp_v;
+	stringstream tmp_ss;
+	VectorSequenceContainer * tmp_vsc = NULL;
+	Locality<double> tmp_locality("tmp");
+	Individual tmp_indiv;
+	bool section1 = true;
+	bool section2 = true;
+	bool section3 = true;
+	bool section4 = true;
+	bool section5 = true;
 	unsigned int current_section = 0;
+	unsigned int previous_section = 0;
+	unsigned int linenum = 0;
 	// Main loop for all file lines
 	while (!is.eof()) {
-		getline(is, temp, '\n'); // Copy the line in a temporary string
+		temp = FileTools::getNextLine(is);
+		linenum++;
 		// Get the correct current section
-		if (temp.find("[General]", 0) != string::npos)
+		if (temp.find("[General]", 0) != string::npos) {
+			previous_section = current_section;
 			current_section = 1;
-		if (temp.find("[Localities]", 0) != string::npos)
-			current_section = 2;
-		if (temp.find("[Sequences]", 0) != string::npos)
-			current_section = 3;
-		if (temp.find("[Loci]", 0) != string::npos)
-			current_section = 4;
-		if (temp.find("[Individuals]", 0) != string::npos)
-			current_section = 5;
-		// General section ------------------------------------
-		if (current_section == 1) {
-			cout << "General section" << endl;
-			if (temp.find("MissingData", 0) != string::npos)
-				setMissingDataSymbol(_getValues(temp, "=")[0]);
-			if (temp.find("DataSeparator", 0) != string::npos)
-				setDataSeparator(_getValues(temp, "=")[0]);
-			if (temp.find("SequenceType", 0) != string::npos)
-				// *** Must set the AnalyzedSequences alphabet ***
-				cout << _getValues(temp, "=")[0] << endl;
+			continue;
 		}
+		else if (temp.find("[Localities]", 0) != string::npos) {
+			previous_section = current_section;
+			current_section = 2;
+			continue;
+		}
+		else if (temp.find("[Sequences]", 0) != string::npos) {
+			previous_section = current_section;
+			current_section = 3;
+			continue;
+		}
+		else if (temp.find("[Loci]", 0) != string::npos) {
+			previous_section = current_section;
+			current_section = 4;
+			continue;
+		}
+		else if (temp.find("[Individuals]", 0) != string::npos) {
+			previous_section = current_section;
+			current_section = 5;
+			continue;
+		}
+		// General section ------------------------------------
+		if (current_section == 1 && previous_section < 1) {
+			temp_v.push_back(temp);
+		}
+		if (section1 && current_section != 1 && previous_section == 1) {
+			section1 = false;
+			_parseGeneral(temp_v, data_set);
+			temp_v.clear();
+			if (data_set.hasSequenceData() && tmp_vsc == NULL)
+				tmp_vsc = new VectorSequenceContainer(data_set.getAlphabet());
+		}
+
 		// Localities section ---------------------------------
-		if (current_section == 2) {
-			cout << "Localities section" << endl;
-			
+		if (current_section == 2 && previous_section < 2) {
+			if (temp.find(">", 0) != string::npos) {
+				_parseLocality(temp_v, data_set);
+				temp_v.clear();
+				temp_v.push_back(temp);
+			}
+			else
+				temp_v.push_back(temp);
+		}
+		if (section2 && current_section !=2 && previous_section == 2) {
+			section2 = false;
+			_parseLocality(temp_v, data_set);
+			temp_v.clear();
+		}	
+
+		// Sequences section ----------------------------------
+		if (current_section == 3 && previous_section < 3) {
+			if (temp.find(">", 0) != string::npos) {
+				_parseSequence(temp_v, *tmp_vsc);
+				temp_v.clear();
+				temp_v.push_back(temp);
+			}
+			else
+				temp_v.push_back(temp);
+		}
+		if (section3 && current_section !=3 && previous_section == 3) {
+			section3 = false;
+			_parseSequence(temp_v, *tmp_vsc);
+			temp_v.clear();
+		}
+
+		// Loci section ---------------------------------------
+		if (current_section == 4) {
+			section4 = false;
+		}
+		
+		// Individuals section --------------------------------
+		if (current_section == 5 && previous_section < 5) {
+			if (temp.find(">", 0) != string::npos) {
+				_parseIndividual(temp_v, data_set, *tmp_vsc);
+				temp_v.clear();
+				temp_v.push_back(temp);
+			}
+			else
+				temp_v.push_back(temp);
+		}
+		if (section5 && current_section != 5 && previous_section == 5) {
+			section5 = false;
+			_parseIndividual(temp_v, data_set, *tmp_vsc);
+			temp_v.clear();
+		}
+	}
+	// Emptied the buffer if eof.
+	if (section2 && current_section == 2)
+		_parseLocality(temp_v, data_set);
+	if (section3 && current_section == 3)
+		_parseSequence(temp_v, *tmp_vsc);
+	if (section5 && current_section == 5)
+		_parseIndividual(temp_v, data_set, *tmp_vsc);
+	temp_v.clear();
+}
+
+void PoplibIO::_parseGeneral(const vector<string> & in, DataSet & data_set) {
+	stringstream is;
+	for (unsigned int i = 0 ; i < in.size() ; i++)
+		is << in[i] << endl;
+	string temp;
+	while (!is.eof() && in.size() != 0) {
+		temp = FileTools::getNextLine(is);
+		if (temp.find("MissingData", 0) != string::npos)
+			setMissingDataSymbol(_getValues(temp, "=")[0]);
+		if (temp.find("DataSeparator", 0) != string::npos)
+			setDataSeparator(_getValues(temp, "=")[0]);
+		if (temp.find("SequenceType", 0) != string::npos)
+			data_set.setAlphabet(_getValues(temp, "=")[0]);
+	}
+}
+
+void PoplibIO::_parseLocality(const vector<string> & in, DataSet & data_set) {
+	stringstream is;
+	for (unsigned int i = 0 ; i < in.size() ; i++)
+		is << in[i] << endl;
+	Locality<double> tmp_locality("");
+	string temp;
+	while (!is.eof() && in.size() != 0) {
+		temp = FileTools::getNextLine(is);
+		//cout << "_parseLocality: " << temp << endl;
+		if (temp.find(">", 0) != string::npos) {
+			tmp_locality.setName(TextTools::removeSurroundingWhiteSpaces(string(temp.begin() + 1, temp.end())));
+		}
+		if (temp.find("Coord", 0) != string::npos) {
+			vector<string> v = _getValues(temp, "=");
+			tmp_locality.setX(TextTools::toDouble(v[0]));
+			tmp_locality.setY(TextTools::toDouble(v[1]));
+		}
+	}
+	if (tmp_locality.getName() != "")
+		data_set.addLocality(tmp_locality);
+}
+
+void PoplibIO::_parseSequence(const vector<string> & in, VectorSequenceContainer & vsc) {
+	Fasta ifasta;
+	stringstream is;
+	for (unsigned int i = 0 ; i < in.size() ; i++)
+		is << in[i] << endl;
+	ifasta.read(is, vsc);
+}
+
+void PoplibIO::_parseIndividual(const vector<string> & in, DataSet & data_set, const VectorSequenceContainer & vsc) {
+	Individual tmp_indiv;
+	unsigned int tmp_group_pos = 0;
+	string temp = "";
+	for (unsigned int i = 0 ; i < in.size() ; i++)
+		cout << "_parsIndiv: " << in[i] << endl;
+	for (unsigned int i = 0 ; i < in.size() ; i++) {
+		// Get Individual Id
+		if (in[i].find(">", 0) != string::npos) {
+			tmp_indiv.setId(TextTools::removeSurroundingWhiteSpaces(string(in[i].begin() + 1, in[i].end())));
+		}
+		// Get the Group
+		if (in[i].find("Group", 0) != string::npos) {
+			temp = in[i];
+			tmp_group_pos = TextTools::toInt(_getValues(temp, "=")[0]);
+			try {
+				data_set.addEmptyGroup(tmp_group_pos);
+			}
+			catch (...) {}
+			try {
+			cout << "Group id : " << tmp_group_pos << endl;
+			cout << "Group pos: " << data_set.getGroupPosition(tmp_group_pos) << endl;
+			}
+			catch (Exception & e) {
+				cout << e.what() << endl;
+			}
+		}
+		// Find the locality
+		if (in[i].find("Locality", 0) != string::npos) {
+			temp = in[i];
+			unsigned int sep_pos = temp.find("=", 0);
+			string loc_name = TextTools::removeSurroundingWhiteSpaces(string(temp.begin()+sep_pos+1, temp.end()));
+			cout << "### Locality: " << loc_name;
+			try {
+				cout << " - position: " << data_set.getLocalityPosition(loc_name) << endl;
+			}
+			catch (Exception & e) {
+				cout << endl << e.what() << endl;
+			}
+			try {
+				tmp_indiv.setLocality(data_set.getLocalityByName(loc_name));
+			}
+			catch (Exception & e) {
+				cout << "l.192:" << e.what() << endl;
+			}
+		}
+		// Set the coord
+		if (in[i].find("Coord", 0) != string::npos) {
+			temp = in[i];
+			tmp_indiv.setCoord(TextTools::toDouble(_getValues(temp, "=")[0]), TextTools::toDouble(_getValues(temp, "=")[1]));
+		}
+		// And the date
+		if (in[i].find("Date", 0) != string::npos) {
+			int d, m, y;
+			temp = in[i];
+			string tmp_date = _getValues(temp, "=")[0];
+			d = TextTools::toInt(string(tmp_date.begin(), tmp_date.begin() + 2));
+			m = TextTools::toInt(string(tmp_date.begin() + 2, tmp_date.begin() + 4));
+			y = TextTools::toInt(string(tmp_date.begin() + 4, tmp_date.end()));
+			cout << "l.210:" << Date(d, m, y).getDateStr() << endl;
+			tmp_indiv.setDate(Date(d, m, y));
+		}
+		// Now the sequences
+		if (in[i].find("SequenceData", 0) != string::npos) {
+			i++;
+			temp = in[i];
+			vector<string> seq_pos_str = _getValues(temp, "");
+			for (unsigned int j = 0 ; j < seq_pos_str.size() ; j++) {
+				cout << "_parseIndiv l.308 " <<  seq_pos_str[j];
+				try {
+					if (seq_pos_str[j] != getMissingDataSymbol()) {
+						cout << endl;
+						tmp_indiv.addSequence(j, *vsc.getSequence(TextTools::toInt(seq_pos_str[j])-1));
+						cout << tmp_indiv.getNumberOfSequences();
+					}
+					else
+						cout << " is missing symbol !" << endl;
+				}
+				catch (Exception & e) {
+					cout << e.what() << endl;
+				}
+			}
+		}
+	}
+	cout << "nb grps : " << data_set.getNumberOfGroups() << endl;
+	if (tmp_indiv.getId() != "") {
+		try {
+			data_set.addIndividualToGroup(data_set.getGroupPosition(tmp_group_pos), tmp_indiv);
+		}
+		catch (Exception & e) {
+			cout << "Et de une : " << e.what() << endl;
 		}
 	}
 }
@@ -139,8 +364,10 @@ void PoplibIO::write(ostream & os, const DataSet & data_set) const throw (Except
 	os << "[General]" << endl;
 	os << "MissingData = " << getMissingDataSymbol() << endl;
 	os << "DataSeparator = " << getDataSeparator() << endl;
-	if (data_set.hasSequenceData())
-		os << "SequenceType = " << data_set.getAlphabet()->getAlphabetType() << endl;
+	if (data_set.hasSequenceData()) {
+		string seq_type = data_set.getAlphabetType();
+		os << "SequenceType = " << seq_type << endl;
+	}
 	// Localities section -----------------------------------
 	if (data_set.hasLocality()) {
 		os << endl << "[Localities]" << endl;

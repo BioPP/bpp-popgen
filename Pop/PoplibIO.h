@@ -1,7 +1,7 @@
 /*
  * File PoplibIO.h
  * Author : Sylvain Gaillard <yragael2001@yahoo.fr>
- * Last modification : Wednesday July 07 2004
+ * Last modification : Thursday July 08 2004
  */
 
 // Secured inclusion of header's file
@@ -10,10 +10,12 @@
 
 // From Utils
 #include <Utils/TextTools.h>
+#include <Utils/FileTools.h>
 #include <Utils/Exceptions.h>
 
 // From Seq
 #include <Seq/Fasta.h>
+#include <Seq/VectorSequenceContainer.h>
 
 // From local Pop
 #include "AbstractIDataSet.h"
@@ -125,6 +127,11 @@ class PoplibIO : public AbstractIDataSet, public AbstractODataSet {
 		char _data_separator;
 
 		vector<string> _getValues(string & param_line, const string & delim);
+		void _parseGeneral(const vector<string> & in, DataSet & data_set);
+		void _parseLocality(const vector<string> & in, DataSet & data_set);
+		void _parseSequence(const vector<string> & in, VectorSequenceContainer & vsc);
+		void _parseLoci(const vector<string> & in, DataSet & data_set);
+		void _parseIndividual(const vector<string> & in, DataSet & data_set, const VectorSequenceContainer & vsc);
 };
 
 #endif // _POPLIBIO_H_

@@ -1,7 +1,7 @@
 /*
  * File DataSet.cpp
  * Author : Sylvain Gaillard <yragael2001@yahoo.fr>
- * Last modification : Tuesday July 06 2004
+ * Last modification : Wednesday July 07 2004
  */
 
 #include "DataSet.h"
@@ -9,6 +9,7 @@
 //** Class constructor: *******************************************************/
 DataSet::DataSet() {
 	_analyzedLoci = NULL;
+	_analyzedSequences = NULL;
 }
 
 //** Class destructor: *******************************************************/
@@ -20,6 +21,7 @@ DataSet::~DataSet() {
 	if (getNumberOfLocalities() > 0)
 		for (unsigned int i = 0 ; i < getNumberOfLocalities() ; i++)
 			delete _localities[i];
+	if (_analyzedSequences != NULL) delete _analyzedSequences;
 }
 
 //** Other methodes: *********************************************************/
@@ -184,6 +186,8 @@ void DataSet::addIndividualToGroup(unsigned int group, const Individual & indivi
 		throw IndexOutOfBoundsException("DataSet::addIndividualToGroup: group out of bounds.", group, 0, getNumberOfGroups());
 	try {
 		_groups[group]->addIndividual(individual);
+		if (individual.hasSequences())
+			setAlphabet(individual.getSequenceAlphabet());
 	}
 	catch (BadIdentifierException & bie) {
 		throw BadIdentifierException("DataSet::addIndividualToGroup: individual's id already in use in this group.", bie.getIdentifier());
@@ -367,6 +371,7 @@ void DataSet::addIndividualSequenceInGroup(unsigned int group_position, unsigned
 		throw IndexOutOfBoundsException("DataSet::addIndividualSequenceInGroup: group_position out of bounds.", group_position, 0, getNumberOfGroups());
 	try {
 		_groups[group_position]->addIndividualSequenceAtPosition(individual_position, sequence_position, sequence);
+		setAlphabet(sequence.getAlphabet());
 	}
 	catch (IndexOutOfBoundsException & ioobe) {
 		throw IndexOutOfBoundsException("DataSet::addIndividualSequenceInGroup: individual_position out of bounds.", ioobe.getBadInteger(), ioobe.getBounds()[0], ioobe.getBounds()[1]);
@@ -618,6 +623,31 @@ const MonolocusGenotype * DataSet::getIndividualMonolocusGenotypeInGroup(unsigne
 	}
 }
 
+// Dealing with AnalyzedSequences --------------------------
+void DataSet::setAlphabet(const Alphabet * alpha) {
+	if (_analyzedSequences == NULL)
+		_analyzedSequences = new AnalyzedSequences();
+	_analyzedSequences->setAlphabet(alpha);
+}
+
+void DataSet::setAlphabet(const string & alpha_type) {
+	if (_analyzedSequences == NULL)
+		_analyzedSequences = new AnalyzedSequences();
+	_analyzedSequences->setAlphabet(alpha_type);
+}
+
+const Alphabet * DataSet::getAlphabet() const throw (NullPointerException) {
+	if (_analyzedSequences != NULL)
+		return _analyzedSequences->getAlphabet();
+	throw NullPointerException("DataSet::getAlphabet: no sequence data.");
+}
+
+string DataSet::getAlphabetType() const throw (NullPointerException) {
+	if (_analyzedSequences != NULL)
+		return _analyzedSequences->getAlphabetType();
+	throw NullPointerException("DataSet::getAlphabetType: no sequence data.");
+}
+
 // Dealing with AnalyzedLoci -------------------------------
 void DataSet::setAnalyzedLoci(AnalyzedLoci & analyzedLoci) throw (Exception) {
 	if (_analyzedLoci != NULL) {
@@ -736,16 +766,7 @@ unsigned int DataSet::getPloidyByLocusPosition(unsigned int locus_position) cons
 
 // General tests ------------------------------------------
 bool DataSet::hasSequenceData() const {
-	for (unsigned int i = 0 ; i < getNumberOfGroups() ; i++)
-		if (_groups[i]->hasSequenceData()) return true;
-	return false;
-}
-
-const Alphabet * DataSet::getAlphabet() const throw (NullPointerException) {
-	for (unsigned int i = 0 ; i < getNumberOfGroups() ; i++)
-		if (_groups[i]->hasSequenceData())
-			return _groups[i]->getAlphabet();
-	throw NullPointerException("DataSet::getAlphabet: no sequence data.");
+	return _analyzedSequences != NULL;
 }
 
 bool DataSet::hasAlleleicData() const {

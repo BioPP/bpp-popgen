@@ -1,7 +1,7 @@
 /*
  * File Individual.cpp
  * Author : Sylvain Gaillard <yragael2001@yahoo.fr>
- * Last modification : Friday July 09 2004
+ * Last modification : Monday July 19 2004
  */
 
 #include "Individual.h"
@@ -44,31 +44,29 @@ Individual::Individual(const string & id,
 Individual::Individual(const Individual &ind) {
 	setId(ind.getId());
 	setSex(ind.getSex());
+	_date = NULL;
 	try {
 		setDate(* ind.getDate());
 	}
-	catch (NullPointerException) {
-		_date = NULL;
-	}
+	catch (...) {}
+	_coord = NULL;
 	try {
 		setCoord(* ind.getCoord());
 	}
-	catch (NullPointerException) {
-		_coord = NULL;
-	}
+	catch (...) {}
+	_locality = NULL;
 	try {
 		setLocality(ind.getLocality());
 	}
-	catch (NullPointerException) {
-		_locality = NULL;
-	}
+	catch (...) {}
+	_sequences = NULL;
 	try {
 		setSequences(* dynamic_cast<const MapSequenceContainer *>(ind.getSequences()));
 	}
-	catch (NullPointerException) {
-		_sequences = NULL;
-	}
-	this->_genotype = ind.hasGenotype() ? new MultilocusGenotype(* ind.getGenotype()) : NULL;
+	catch (...) {}
+	_genotype = NULL;
+	if (ind.hasGenotype())
+		_genotype = new MultilocusGenotype(* ind.getGenotype());
 }
 
 //** Class destructor: *******************************************************/
@@ -80,10 +78,6 @@ Individual::~Individual () {
 	if (_coord != NULL) {
 		delete _coord;
 		_coord = NULL;
-	}
-	if (_locality != NULL) {
-		delete _locality;
-		_locality = NULL;
 	}
 	if (_sequences != NULL) {
 		delete _sequences;

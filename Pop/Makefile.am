@@ -3,6 +3,7 @@ AbstractIDataSet.h\
 AbstractODataSet.h\
 AlleleInfo.h\
 AnalyzedLoci.h\
+AnalyzedSequences.h\
 BasicAlleleInfo.h\
 BiAlleleMonolocusGenotype.h\
 Coord.h\
@@ -30,6 +31,7 @@ AbstractIDataSet.cpp\
 AbstractODataSet.cpp\
 AlleleInfo.cpp\
 AnalyzedLoci.cpp\
+AnalyzedSequences.cpp\
 BasicAlleleInfo.cpp\
 BiAlleleMonolocusGenotype.cpp\
 DataSet.cpp\
