@@ -1,7 +1,7 @@
 /*
  * File MultilocusGenotype.cpp
  * Author : Sylvain Gaillard <yragael2001@yahoo.fr>
- * Last modification : Thursday July 22 2004
+ * Last modification : Friday July 23 2004
  */
 
 #include "MultilocusGenotype.h"
@@ -23,6 +23,8 @@ MultilocusGenotype::MultilocusGenotype(const MultilocusGenotype & genotype) {
 	for (unsigned int i=0 ; i<genotype.size() ; i++) {
 		if (! genotype.isMonolocusGenotypeMissing(i))
 			_loci.push_back(dynamic_cast<MonolocusGenotype *>((genotype.getMonolocusGenotype(i))->clone()));
+		else
+			_loci.push_back(NULL);
 	}
 }
 
