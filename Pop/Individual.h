@@ -1,7 +1,7 @@
 /*
  * File Individual.h
  * Author : Sylvain Gaillard <yragael2001@yahoo.fr>
- * Last modification : Monday April 05 2004
+ * Last modification : Tuesday April 27 2004
  */
 
 // Secured inclusion of header's file
@@ -10,6 +10,7 @@
 
 // From Utils
 #include <Utils/Clonable.h>
+#include <Utils/Exceptions.h>
 
 // From PopLib
 #include "Locality.h"
@@ -42,7 +43,7 @@ class Individual : public Clonable {
 	public: // Methodes
 		
 		/**
-		 * @brief Implement the Clanable interface.
+		 * @brief Implement the Clonable interface.
 		 */
 		Clonable * clone() const;
 
@@ -79,7 +80,7 @@ class Individual : public Clonable {
 		 *
 		 * @return The date of the Individual as a Date.
 		 */
-		Date * getDate() const;
+		Date getDate() const throw(NullPointerException);
 
 		/**
 		 * @brief Set the coodinates of the Individual.
@@ -89,35 +90,66 @@ class Individual : public Clonable {
 		void setCoord(const Coord<double> & coord);
 
 		/**
+		 * @brief Set the coordinates of the Individual.
+		 *
+		 * @param x The X coordinate as a double.
+		 * @param y The Y coordinate as a double.
+		 */
+		void setCoord(const double x, const double y);
+
+		/**
 		 * @brief Get the coordinates of the Induvidual.
 		 *
-		 * @return The coordinates of the Individual as a Coord object?
+		 * @return The coordinates of the Individual as a Coord object.
 		 */
-		Coord<double> * getCoord() const;
+		Coord<double> getCoord() const throw(NullPointerException);
 
 		/**
 		 * @brief Set the X coordinate of the Individual.
 		 */
-		void setX(const double x);
+		void setX(const double x) throw(NullPointerException);
 
 		/**
 		 * @brief Set the Y coordinate of th Individual.
 		 */
-		void setY(const double y);
+		void setY(const double y) throw(NullPointerException);
 
 		/**
 		 * @brief Get the X coordinate of the Individual.
 		 */
-		double getX() const;
+		double getX() const throw(NullPointerException);
 
 		/**
 		 * @brief Get the Y coordinate of the Individual.
 		 */
-		double getY() const;
+		double getY() const throw(NullPointerException);
+
+		/**
+		 * @brief Set the locality of the Individual.
+		 */
+		void setLocality(const Locality<double> & locality);
 		
+		/**
+		 * @brief Set the locality of the Individual.
+		 */
+		void setLocality(const string name, const Coord<double> & coord);
+
+		/**
+		 * @brief Set the locality of the Individual.
+		 */
+		void setLocality(const string name, const double x, const double y);
+
+		/**
+		 * @brief Get the locality of the Individual.
+		 *
+		 * @return The locality of the Individual as a Locality object.
+		 */
+		Locality<double> getLocality() const throw(NullPointerException);
+
 	protected:
 		unsigned short _sex;
 		Date * _date;
 		Coord<double> * _coord;
+		Locality<double> * _locality;
 };
 #endif // _INDIVIDUAL_H_
