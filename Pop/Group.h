@@ -1,7 +1,7 @@
 /*
  * File Group.h
  * Author : Sylvain Gaillard <yragael2001@yahoo.fr>
- * Last modification : Tuesday June 01 2004
+ * Last modification : Monday June 14 2004
  */
 
 // Secured inclusion of header's file
@@ -10,15 +10,19 @@
 
 // From STL
 #include <vector>
-#include <map>
 using namespace std;
+
+// From Utils
+#include <Utils/Exceptions.h>
 
 // From SeqLib
 #include <Seq/VectorSequenceContainer.h>
 #include <Seq/VectorSiteContainer.h>
+#include <Seq/SequenceContainerTools.h>
 
 // From local
 #include "Individual.h"
+#include "GeneralExceptions.h"
 
 /**
  * @brief The Group class.
@@ -68,9 +72,44 @@ class Group {
 		 *
 		 * @param individual_id The id of the Individual to find.
 		 *
-		 * @return A pointer to the removed Individual.
+		 * @return A pointer to the Individual.
 		 */
-		Individual * getIndividual(const string individual_id) const;
+		const Individual * getIndividualById(const string individual_id) const
+			throw (BadIdentifierException);
+
+		/**
+		 * @brief Get a pointer to an Individual by index.
+		 *
+		 * @param index The index of the Individual.
+		 *
+		 * @return A pointer to the Individual.
+		 */
+		const Individual * getIndividualByIndex(unsigned int index) const
+			throw (IndexOutOfBoundsException);
+
+		/**
+		 * @brief Remove an Individual from the Group.
+		 *
+		 * @param individual_id The id of the Individual to remove.
+		 *
+		 * @return A pointer to the removed Individual.
+		 *
+		 * Search an Individual in the Group by cheking the id and remove it
+		 * if it is found then return a pointer to this Individual.
+		 */
+		Individual * removeIndividualById(const string individual_id) throw (BadIdentifierException);
+
+		/**
+		 * @brief Remove an Individual from the Group.
+		 *
+		 * @param index The index of the Individual to remove.
+		 *
+		 * @return A pointer to the removed Individual.
+		 *
+		 * Remove the individual at the index position and return a pointer
+		 * to this Individual.
+		 */
+		Individual * removeIndividualByIndex(unsigned int index) throw (IndexOutOfBoundsException);
 
 		/**
 		 * @brief Delete an Individual from the Group.
@@ -78,14 +117,24 @@ class Group {
 		 * @param individual_id The id of the Individual to delete.
 		 *
 		 * Search an Individual in the Group by cheking the id and delete it
-		 * if it is found.
+		 * if it is foundi and free the memory by calling the destructor of the
+		 * Individual.
 		 */
-		void deleteIndividualById(const string individual_id);
+		void deleteIndividualById(const string individual_id) throw (BadIdentifierException);
+
+		/**
+		 * @brief Delete an Individual from the Group.
+		 *
+		 * @param index The index of the Individual to delete.
+		 *
+		 * Free the memory by calling the destructor of the Individual.
+		 */
+		void deleteIndividualByIndex(unsigned int index) throw (IndexOutOfBoundsException);
 
 		/**
 		 * @brief Clear the Group.
 		 *
-		 * Remove all the Individuals of the group.
+		 * Delete all the Individuals of the group.
 		 */
 		void clear();
 
@@ -94,14 +143,14 @@ class Group {
 		 *
 		 * @return A pointer to a VectorSequenceContainer.
 		 */
-		VectorSequenceContainer * getVectorSequenceContainer(const string & id);
+		VectorSequenceContainer * getVectorSequenceContainer(const string & seqset_id) const throw (Exception);
 
 		/**
 		 * @brief Get a VectorSiteContainer from a named sequence set.
 		 *
 		 * @return A pointer to a VectorSiteContainer.
 		 */
-		VectorSiteContainer * getVectorSiteContainer(const string & id);
+		VectorSiteContainer * getVectorSiteContainer(const string & seqset_id) const throw (Exception);
 
 		/**
 		 * @brief Get the number of Individual in the Group.
