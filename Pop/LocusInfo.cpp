@@ -1,7 +1,7 @@
 /*
  * File LocusInfo.cpp
  * Author : Sylvain Gaillard <yragael2001@yahoo.fr>
- * Last modification : Saturday July 03 2004
+ * Last modification : Wednesday July 21 2004
  */
 
 // From Utils
@@ -18,6 +18,15 @@ unsigned int LocusInfo::DIPLOID = 2;
 LocusInfo::LocusInfo(const string &name, const unsigned int ploidy) {
 	_name = name;
 	_ploidy = ploidy;
+}
+
+LocusInfo::LocusInfo(const LocusInfo & locus_info) {
+	_name = locus_info.getName();
+	_ploidy = locus_info.getPloidy();
+	for (unsigned int i = 0 ; i < locus_info.getNumberOfAlleles() ; i++) {
+		Clonable * tmp_allele = locus_info.getAlleleInfoByKey(i)->clone();
+		_alleles.push_back(dynamic_cast<AlleleInfo *>(tmp_allele));
+	}
 }
 
 //** Class destructor: *******************************************************/

@@ -1,7 +1,7 @@
 /*
  * File LocusInfo.h
  * Author : Sylvain Gaillard <yragael2001@yahoo.fr>
- * Last modification : Saturday July 03 2004
+ * Last modification : Wednesday July 21 2004
  */
 
 // Secured inclusion of header's file
@@ -39,6 +39,11 @@ class LocusInfo {
 		 * @param ploidy The ploidy of the locus.
 		 */
 		LocusInfo(const string &name, const unsigned int ploidy = DIPLOID);
+
+		/**
+		 * @brief Copy constructor.
+		 */
+		LocusInfo(const LocusInfo & locus_info);
 
 		/**
 		 * @brief Destroy the LocusInfo.

@@ -1,7 +1,7 @@
 /*
  * File AnalyzedLoci.cpp
  * Author : Sylvain Gaillard <yragael2001@yahoo.fr>
- * Last modification : Tuesday July 06 2004
+ * Last modification : Wednesday July 21 2004
  */
 
 #include "AnalyzedLoci.h"
@@ -11,6 +11,11 @@ AnalyzedLoci::AnalyzedLoci(unsigned int number_of_loci) {
 	_loci.resize(number_of_loci);
 	for (unsigned int i = 0 ; i < _loci.size() ; i++)
 		_loci[i] = NULL;
+}
+
+AnalyzedLoci::AnalyzedLoci(const AnalyzedLoci & analyzed_loci) {
+	for (unsigned int i = 0 ; i < analyzed_loci.getNumberOfLoci() ; i++)
+		_loci.push_back(new LocusInfo(* analyzed_loci.getLocusInfoAtPosition(i)));
 }
 
 //** Destructor: *************************************************************/

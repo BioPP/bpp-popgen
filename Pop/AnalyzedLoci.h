@@ -1,7 +1,7 @@
 /*
  * File AnalyzedLoci.h
  * Author : Sylvain Gaillard <yragael2001@yahoo.fr>
- * Last modification : Tuesday July 06 2004
+ * Last modification : Wednesday July 21 2004
  */
 
 // Secured inclusion of header's file
@@ -32,6 +32,11 @@ class AnalyzedLoci {
 		 * @brief Build a void AnalyzedLoci with a specific number of loci.
 		 */
 		AnalyzedLoci(unsigned int number_of_loci);
+
+		/**
+		 * @brief Copy constructor.
+		 */
+		AnalyzedLoci(const AnalyzedLoci & analyzed_loci);
 
 		/**
 		 * @brief Destroy the AnalyzedLoci.
