@@ -283,10 +283,26 @@ double MultilocusGenotypeStatistics::getDnei78(const PolymorphismMultiGContainer
 	return -log(Jxy / sqrt((((2 * nx * Jx) - 1)/((2 * nx) -1)) * (((2 * ny * Jy) - 1)/((2 * ny) -1))));
 }
 
-map<unsigned int, double> MultilocusGenotypeStatistics::getWCFit(const PolymorphismMultiGContainer & pmgc, unsigned int locus_position, const set<unsigned int> & groups) throw (Exception) {
-	map<unsigned int, MultilocusGenotypeStatistics::FstatBases> values = getVarianceComponents(pmgc, locus_position, groups);
+map<unsigned int, MultilocusGenotypeStatistics::Fstats> MultilocusGenotypeStatistics::getAllelesFstats(const PolymorphismMultiGContainer & pmgc, unsigned int locus_position, const set<unsigned int> & groups) throw (Exception) {
+	map<unsigned int, MultilocusGenotypeStatistics::VarComp> vc = getVarianceComponents(pmgc, locus_position, groups);
+	map<unsigned int, MultilocusGenotypeStatistics::Fstats> f_stats;
+	for (map<unsigned int, MultilocusGenotypeStatistics::VarComp>::iterator it = vc.begin() ; it != vc.end() ; it++) {
+		f_stats[it->first].Fit = it->second.a + it->second.b + it->second.c;
+		f_stats[it->first].Fst = it->second.a + it->second.b + it->second.c;
+		f_stats[it->first].Fis = it->second.b + it->second.c;
+		if (f_stats[it->first].Fit == 0. || f_stats[it->first].Fis == 0.)
+			throw ZeroDivisionException("MultilocusGenotypeStatistics::getAllelesFstats.");
+		f_stats[it->first].Fit = 1. - it->second.c / f_stats[it->first].Fit;
+		f_stats[it->first].Fst = it->second.a / f_stats[it->first].Fst;
+		f_stats[it->first].Fis = 1. - it->second.c / f_stats[it->first].Fis;
+	}
+	return f_stats;
+}
+
+map<unsigned int, double> MultilocusGenotypeStatistics::getAllelesFit(const PolymorphismMultiGContainer & pmgc, unsigned int locus_position, const set<unsigned int> & groups) throw (Exception) {
+	map<unsigned int, MultilocusGenotypeStatistics::VarComp> values = getVarianceComponents(pmgc, locus_position, groups);
 	map<unsigned int, double> Fit;
-	for (map<unsigned int, MultilocusGenotypeStatistics::FstatBases>::iterator it = values.begin() ; it != values.end() ; it++) {
+	for (map<unsigned int, MultilocusGenotypeStatistics::VarComp>::iterator it = values.begin() ; it != values.end() ; it++) {
 		Fit[it->first] = it->second.a + it->second.b + it->second.c;
 		if (Fit[it->first] == 0.)
 			throw ZeroDivisionException("MultilocusGenotypeStatistics::getWCFit.");
@@ -295,12 +311,12 @@ map<unsigned int, double> MultilocusGenotypeStatistics::getWCFit(const Polymorph
 	return Fit;
 }
 
-map<unsigned int, double> MultilocusGenotypeStatistics::getWCFst(const PolymorphismMultiGContainer & pmgc, unsigned int locus_position, const set<unsigned int> & groups) throw (Exception) {
+map<unsigned int, double> MultilocusGenotypeStatistics::getAllelesFst(const PolymorphismMultiGContainer & pmgc, unsigned int locus_position, const set<unsigned int> & groups) throw (Exception) {
 	if (groups.size() <= 1)
 		throw BadIntegerException("MultilocusGenotypeStatistics::getWCFst: groups must be >= 2.", groups.size());
-	map<unsigned int, MultilocusGenotypeStatistics::FstatBases> values = getVarianceComponents(pmgc, locus_position, groups);
+	map<unsigned int, MultilocusGenotypeStatistics::VarComp> values = getVarianceComponents(pmgc, locus_position, groups);
 	map<unsigned int, double> Fst;
-	for (map<unsigned int, MultilocusGenotypeStatistics::FstatBases>::iterator it = values.begin() ; it != values.end() ; it++) {
+	for (map<unsigned int, MultilocusGenotypeStatistics::VarComp>::iterator it = values.begin() ; it != values.end() ; it++) {
 		Fst[it->first] = it->second.a + it->second.b + it->second.c;
 		if (Fst[it->first] == 0.)
 			throw ZeroDivisionException("MultilocusGenotypeStatistics::getWCFst.");
@@ -309,10 +325,10 @@ map<unsigned int, double> MultilocusGenotypeStatistics::getWCFst(const Polymorph
 	return Fst;
 }
 
-map<unsigned int, double> MultilocusGenotypeStatistics::getWCFis(const PolymorphismMultiGContainer & pmgc, unsigned int locus_position, const set<unsigned int> & groups) throw (Exception) {
-	map<unsigned int, MultilocusGenotypeStatistics::FstatBases> values = getVarianceComponents(pmgc, locus_position, groups);
+map<unsigned int, double> MultilocusGenotypeStatistics::getAllelesFis(const PolymorphismMultiGContainer & pmgc, unsigned int locus_position, const set<unsigned int> & groups) throw (Exception) {
+	map<unsigned int, MultilocusGenotypeStatistics::VarComp> values = getVarianceComponents(pmgc, locus_position, groups);
 	map<unsigned int, double> Fis;
-	for (map<unsigned int, MultilocusGenotypeStatistics::FstatBases>::iterator it = values.begin() ; it != values.end() ; it++) {
+	for (map<unsigned int, MultilocusGenotypeStatistics::VarComp>::iterator it = values.begin() ; it != values.end() ; it++) {
 		Fis[it->first] = it->second.b + it->second.c;
 		if (Fis[it->first] == 0.)
 			throw ZeroDivisionException("MultilocusGenotypeStatistics::getWCFis.");
@@ -321,8 +337,8 @@ map<unsigned int, double> MultilocusGenotypeStatistics::getWCFis(const Polymorph
 	return Fis;
 }
 
-map<unsigned int, MultilocusGenotypeStatistics::FstatBases> MultilocusGenotypeStatistics::getVarianceComponents(const PolymorphismMultiGContainer & pmgc, unsigned int locus_position, const set<unsigned int> & groups) throw (ZeroDivisionException) {
-	map<unsigned int, MultilocusGenotypeStatistics::FstatBases> values;
+map<unsigned int, MultilocusGenotypeStatistics::VarComp> MultilocusGenotypeStatistics::getVarianceComponents(const PolymorphismMultiGContainer & pmgc, unsigned int locus_position, const set<unsigned int> & groups) throw (ZeroDivisionException) {
+	map<unsigned int, MultilocusGenotypeStatistics::VarComp> values;
 	// Base values computation
 	double nbar = 0.;
 	double nc = 0.;
@@ -376,7 +392,7 @@ map<unsigned int, MultilocusGenotypeStatistics::FstatBases> MultilocusGenotypeSt
 	for (unsigned int i = 0 ; i < ids.size() ; i++) {
 		values[ids[i]];
 	}
-	for (map<unsigned int, MultilocusGenotypeStatistics::FstatBases>::iterator it = values.begin() ; it != values.end() ; it++) {
+	for (map<unsigned int, MultilocusGenotypeStatistics::VarComp>::iterator it = values.begin() ; it != values.end() ; it++) {
 		it->second.a = (nbar / nc) * (s2[it->first] - ((1. / (nbar - 1.)) * ((pbar[it->first] * (1. - pbar[it->first])) - (s2[it->first] * ((double) r - 1.) / (double) r) - ((1. / 4.) * hbar[it->first]))));
 		it->second.b = (nbar / (nbar - 1.)) * ((pbar[it->first] * (1. - pbar[it->first])) - (s2[it->first] * ((double) r - 1.) / (double) r) - ((((2. * nbar) - 1.) / (4. * nbar)) * hbar[it->first]));
 		it->second.c = hbar[it->first] / 2.;

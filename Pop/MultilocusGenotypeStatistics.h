@@ -53,10 +53,16 @@ using namespace std;
  */
 class MultilocusGenotypeStatistics {
 	public:
-		struct FstatBases {
+		struct VarComp {
 			double a;
 			double b;
 			double c;
+		};
+
+		struct Fstats {
+			double Fit;
+			double Fst;
+			double Fis;
 		};
 
 		/**
@@ -190,24 +196,29 @@ class MultilocusGenotypeStatistics {
 		static double getDnei78(const PolymorphismMultiGContainer & pmgc, unsigned int locus_position, unsigned int grp1, unsigned int grp2) throw (Exception);
 
 		/**
-		 * @brief Get the variance components a, b and c (Weir and Cockerham, 1983).
+		 * @brief Compute the three F statistics of Weir and Cockerham.
 		 */
-		static map<unsigned int, FstatBases> getVarianceComponents(const PolymorphismMultiGContainer & pmgc, unsigned int locus_position, const set<unsigned int> & groups) throw (ZeroDivisionException);
+		static map<unsigned int, Fstats>  getAllelesFstats(const PolymorphismMultiGContainer & pmgc, unsigned int locus_position, const set<unsigned int> & groups) throw (Exception);
 		
 		/**
 		 * @brief Compute the Weir and Cockerham Fit on a set of groups.
 		 */
-		static map<unsigned int, double> getWCFit(const PolymorphismMultiGContainer & pmgc, unsigned int locus_position, const set<unsigned int> & groups) throw (Exception);
+		static map<unsigned int, double> getAllelesFit(const PolymorphismMultiGContainer & pmgc, unsigned int locus_position, const set<unsigned int> & groups) throw (Exception);
 
 		/**
 		 * @brief Compute the Weir and Cockerham Fst on a set of groups.
 		 */
-		static map<unsigned int, double> getWCFst(const PolymorphismMultiGContainer & pmgc, unsigned int locus_position, const set<unsigned int> & groups) throw (Exception);
+		static map<unsigned int, double> getAllelesFst(const PolymorphismMultiGContainer & pmgc, unsigned int locus_position, const set<unsigned int> & groups) throw (Exception);
 
 		/**
 		 * @brief Compute the Weir and Cockerham Fis on a set of groups.
 		 */
-		static map<unsigned int, double> getWCFis(const PolymorphismMultiGContainer & pmgc, unsigned int locus_position, const set<unsigned int> & groups) throw (Exception);
+		static map<unsigned int, double> getAllelesFis(const PolymorphismMultiGContainer & pmgc, unsigned int locus_position, const set<unsigned int> & groups) throw (Exception);
+		
+		/**
+		 * @brief Get the variance components a, b and c (Weir and Cockerham, 1983).
+		 */
+		static map<unsigned int, VarComp> getVarianceComponents(const PolymorphismMultiGContainer & pmgc, unsigned int locus_position, const set<unsigned int> & groups) throw (ZeroDivisionException);
 };
 
 #endif // _MULTILOCUSGENOTYPESTATISTICS_H_
