@@ -13,6 +13,7 @@
 #include <Seq/VectorSiteContainer.h>
 #include <Seq/MaseTools.h>
 #include <Seq/SequenceContainerTools.h>
+#include <Seq/SiteIterator.h>
 
 // from STL
 #include <map>
@@ -47,7 +48,16 @@ class PolymorphismSequenceContainerTools
          *
          * @param psc a PolymorphismSequenceContainer reference
          */
-	 static PolymorphismSequenceContainer * extractIngroup (const PolymorphismSequenceContainer & psc ) throw (Exception);
+	static PolymorphismSequenceContainer * extractIngroup (const PolymorphismSequenceContainer & psc ) throw (Exception);
+
+        /**
+         * @brief Retrieves sites without gaps from PolymorphismSequenceContainer.
+         *
+         * @param psc a PolymorphismSequenceContainer reference
+         */
+	static PolymorphismSequenceContainer * PolymorphismSequenceContainerTools::getSitesWithoutGaps (const PolymorphismSequenceContainer & psc ) throw (Exception);
+
+
         /*******************************************************************************/
 };
 #endif // _POLYMORPHISMSEQUENCECONTAINERTOOL_H_

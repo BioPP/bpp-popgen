@@ -52,7 +52,25 @@ PolymorphismSequenceContainer * PolymorphismSequenceContainerTools::extractIngro
 		* dynamic_cast<const OrderedSequenceContainer *>(
 			dynamic_cast<const SiteContainer *>(psci)), ss );
 	return( psci );
+	} catch(...) {}
+}
+	 
+PolymorphismSequenceContainer * PolymorphismSequenceContainerTools::getSitesWithoutGaps (const PolymorphismSequenceContainer & psc ) throw (Exception) {
+	try {
+	vector<string> seqNames = psc.getSequencesNames();
+	PolymorphismSequenceContainer * noGapCont = new PolymorphismSequenceContainer( psc.getNumberOfSequences(), psc.getAlphabet() );
+	noGapCont -> setSequencesNames(seqNames, false);
+	unsigned int nbSeq = psc.getNumberOfSequences();
+	for (unsigned int i = 0; i < nbSeq; i++) {
+		noGapCont -> setSequenceStrength( i, psc.getSequenceStrength(i) );
+		if (! psc.isIngroupMember(i))
+			noGapCont -> setAsOutgroupMember(i);
+	}
+	NoGapSiteIterator ngsi(psc);
+	while(ngsi.hasMoreSites()) {
+		noGapCont -> addSite(* ngsi.nextSite());
+	}
+	return noGapCont;
 	}
 	catch(...) {}
 }
-
