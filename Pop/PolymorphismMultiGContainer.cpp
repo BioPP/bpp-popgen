@@ -1,7 +1,7 @@
 /*
  * File PolymorphismMultiGContainer.cpp
  * Author : Sylvain Gaillard <yragael2001@yahoo.fr>
- * Last modification : Tuesday July 20 2004
+ * Last modification : Wednesday July 21 2004
  */
 
 #include "PolymorphismMultiGContainer.h"
@@ -94,7 +94,7 @@ unsigned int PolymorphismMultiGContainer::getGroupSize(unsigned int group) const
 	return counter;
 }
 
-unsigned int PolymorphismMultiGContainer::getGroupSize(unsigned int group, unsigned int locus_position) const {
+unsigned int PolymorphismMultiGContainer::getLocusGroupSize(unsigned int group, unsigned int locus_position) const {
 	unsigned int counter = 0;
 	for (unsigned int i = 0 ; i < size() ; i++) {
 		try {

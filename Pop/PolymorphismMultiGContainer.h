@@ -1,7 +1,7 @@
 /*
  * File PolymorphismMultiGContainer.h
  * Author : Sylvain Gaillard <yragael2001@yahoo.fr>
- * Last modification : Tuesday July 20 2004
+ * Last modification : Wednesday July 21 2004
  */
 
 // Secured inclusion of header's file
@@ -114,7 +114,7 @@ class PolymorphismMultiGContainer : public Clonable {
 		/**
 		 * @brief Get the size of a group for a given locus.
 		 */
-		unsigned int getGroupSize(unsigned int group, unsigned int locus_position) const;
+		unsigned int getLocusGroupSize(unsigned int group, unsigned int locus_position) const;
 		
 		/**
 		 * @brief Get the number of MultilocusGenotype.
