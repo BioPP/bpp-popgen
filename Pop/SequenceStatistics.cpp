@@ -2,7 +2,7 @@
  * File Statistics.cpp
  * Author : Eric Bazin <bazin@univ-montp2.fr>
  *          Sylvain Gailard <yragael2001@yahoo.fr>
- * Last modification : Monday July 26 2004
+ * Last modification : Tuesday July 27 2004
  */
 
 #include "SequenceStatistics.h" // class's header file
@@ -25,7 +25,7 @@ SequenceStatistics::~SequenceStatistics() {}
 // Arguments: a SiteIterator
 // Return: Number of polymorphics sites	
 unsigned int SequenceStatistics::polymorphicSiteNumber( SiteIterator & si ) {
-	int S=0;
+	unsigned int S=0;
 	const Site *site;
 	while ( si.hasMoreSites() ) {
 		site=si.nextSite();
@@ -42,9 +42,45 @@ unsigned int SequenceStatistics::polymorphicSiteNumber( SiteIterator & si ) {
 unsigned int SequenceStatistics::polymorphicSiteNumber( const SiteContainer & v ) {
 
 	SiteIterator *si = new NoGapSiteIterator( v );
-	int S = SequenceStatistics::polymorphicSiteNumber( *si );
+	unsigned int S = SequenceStatistics::polymorphicSiteNumber( *si );
 	
 	return S;
+}
+
+// Method to compute number of singleton nucleotides in an alignment
+// Arguments: a SiteIterator
+// Return: Number of singleton nucleotides
+unsigned int SequenceStatistics::countSingleton(SiteIterator & si) {
+	unsigned int nus = 0;
+	const Site * site;
+	while (si.hasMoreSites()) {
+		site = si.nextSite();
+		map<int, unsigned int> states_count = SymbolListTools::getCounts(* site);
+		for (map<int, unsigned int>::iterator it = states_count.begin() ; it != states_count.end() ; it++)
+			if (it->second == 1)
+				nus++;
+	}
+	return nus;
+}
+
+// Method to compute total number of mutation under an infinite site model in an alignment
+// Arguments: a SiteIterator
+// Return: Total number of mutations
+unsigned int SequenceStatistics::totNumberMutations(SiteIterator & si) {
+	unsigned int tnm = 0;
+	const Site * site;
+	while (si.hasMoreSites()) {
+		site = si.nextSite();
+		unsigned int tmp_count = 0;
+		map<int, unsigned int> states_count = SymbolListTools::getCounts(* site);
+		for (map<int, unsigned int>::iterator it = states_count.begin() ; it != states_count.end() ; it++)
+			if (it->first >= 0)
+				tmp_count++;
+		if (tmp_count > 0)
+			tmp_count--;
+		tnm += tmp_count;
+	}
+	return tnm;
 }
 
 // Method to compute diversity estimator Theta of Watterson (1975)

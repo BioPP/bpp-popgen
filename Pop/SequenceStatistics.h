@@ -1,7 +1,7 @@
 /*
  * File SequenceStatistics.h
  * Author : Eric Bazin <bazin@univ-montp2.fr>
- * Last modification : Monday July 26 2004
+ * Last modification : Tuesday July 27 2004
  */
 
 //Secured inclusion of header's file
@@ -11,6 +11,7 @@
 //From the SeqLib library
 #include <Seq/SiteIterator.h>
 #include <Seq/SiteContainer.h>
+#include <Seq/SymbolListTools.h>
 
 //From the PolyLib library
 #include "PolymorphismSequenceContainer.h"
@@ -44,6 +45,18 @@ class SequenceStatistics
 		 * @param v a SiteContainer
 		 */
 		static unsigned int polymorphicSiteNumber( const SiteContainer & v );
+
+		/**
+		 * @brief Count the number of singleton nucleotides in an alignment.
+		 */
+		static unsigned int countSingleton(SiteIterator & si);
+
+		/**
+		 * @brief Count the total number of mutatuons in an alignment.
+		 *
+		 * This count is assumed to be under an infinite site model.
+		 */
+		static unsigned int totNumberMutations(SiteIterator & si);
 
 		/**
 		 * @brief Compute diversity estimator Theta of Watterson (1975)
