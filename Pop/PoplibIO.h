@@ -1,7 +1,7 @@
 /*
  * File PoplibIO.h
  * Author : Sylvain Gaillard <yragael2001@yahoo.fr>
- * Last modification : Wednesday July 21 2004
+ * Last modification : Thursday July 22 2004
  */
 
 // Secured inclusion of header's file
@@ -20,6 +20,7 @@
 // From local Pop
 #include "AbstractIDataSet.h"
 #include "AbstractODataSet.h"
+#include "BasicAlleleInfo.h"
 
 /**
  * @brief The natif I/O format for poplib.

@@ -1,7 +1,7 @@
 /*
  * File PoplibIO.cpp
  * Author : Sylvain Gaillard <yragael2001@yahoo.fr>
- * Last modification : Wednesday July 21 2004
+ * Last modification : Thursday July 22 2004
  */
 
 #include "PoplibIO.h"
@@ -196,18 +196,7 @@ void PoplibIO::read(istream & is, DataSet & data_set) throw (Exception) {
 			AnalyzedLoci tmp_anloc(tmp_locinf.size());
 			for (unsigned int i = 0 ; i < tmp_locinf.size() ; i++)
 				tmp_anloc.setLocusInfo(i, tmp_locinf[i]);
-			cout << "tmp_anloc.getNumberOfLoci() = " << tmp_anloc.getNumberOfLoci() << endl;
-			for (unsigned int i = 0 ; i < tmp_anloc.getNumberOfLoci() ; i++)
-				cout << "Locus " << TextTools::toString(i) << " : " << tmp_anloc.getLocusInfoAtPosition(i)->getName() << endl;
 			data_set.setAnalyzedLoci(tmp_anloc);
-			try {
-				cout << "data_set.getNumberOfLoci() = " << data_set.getNumberOfLoci() << endl;
-			}
-			catch (Exception & e) {
-				cerr << "### ERROR ###" << endl << e.what() << endl;
-			}
-			cout << "DataSet OK" << endl;
-			cout << "_______________________________" << endl;
 		}
 		
 		// Individuals section --------------------------------
@@ -298,6 +287,7 @@ void PoplibIO::_parseLoci(const vector<string> & in, vector<LocusInfo> & locus_i
 			vector<string> v = _getValues(temp, "=");
 			string tmp_str_ploidy = TextTools::removeSurroundingWhiteSpaces(v[0]);
 			tmp_str_ploidy = TextTools::toUpper(tmp_str_ploidy);
+			cout << "ploidy : " << tmp_str_ploidy << endl;
 			if (tmp_str_ploidy == DIPLOID)
 				locinf_ploidy = LocusInfo::DIPLOID;
 			else if (tmp_str_ploidy == HAPLOID)
@@ -317,8 +307,6 @@ void PoplibIO::_parseIndividual(const vector<string> & in, DataSet & data_set, c
 	Individual tmp_indiv;
 	unsigned int tmp_group_pos = 0;
 	string temp = "";
-//	for (unsigned int i = 0 ; i < in.size() ; i++)
-//		cout << "_parsIndiv: " << in[i] << endl;
 	for (unsigned int i = 0 ; i < in.size() ; i++) {
 		// Get Individual Id
 		if (in[i].find(">", 0) != string::npos) {
@@ -332,34 +320,16 @@ void PoplibIO::_parseIndividual(const vector<string> & in, DataSet & data_set, c
 				data_set.addEmptyGroup(tmp_group_pos);
 			}
 			catch (...) {}
-/*			try {
-			cout << "Group id : " << tmp_group_pos << endl;
-			cout << "Group pos: " << data_set.getGroupPosition(tmp_group_pos) << endl;
-			}
-			catch (Exception & e) {
-				cout << e.what() << endl;
-			}
-*/
 		}
 		// Find the locality
 		if (in[i].find("Locality", 0) != string::npos) {
 			temp = in[i];
 			unsigned int sep_pos = temp.find("=", 0);
 			string loc_name = TextTools::removeSurroundingWhiteSpaces(string(temp.begin()+sep_pos+1, temp.end()));
-/*			cout << "### Locality: " << loc_name;
-			try {
-				cout << " - position: " << data_set.getLocalityPosition(loc_name) << endl;
-			}
-			catch (Exception & e) {
-				cout << endl << e.what() << endl;
-			}
-*/
 			try {
 				tmp_indiv.setLocality(data_set.getLocalityByName(loc_name));
 			}
-			catch (Exception & e) {
-//				cerr << "l.192:" << e.what() << endl;
-			}
+			catch (...) {}
 		}
 		// Set the coord
 		if (in[i].find("Coord", 0) != string::npos) {
@@ -374,7 +344,6 @@ void PoplibIO::_parseIndividual(const vector<string> & in, DataSet & data_set, c
 			d = TextTools::toInt(string(tmp_date.begin(), tmp_date.begin() + 2));
 			m = TextTools::toInt(string(tmp_date.begin() + 2, tmp_date.begin() + 4));
 			y = TextTools::toInt(string(tmp_date.begin() + 4, tmp_date.end()));
-//			cout << "l.210:" << Date(d, m, y).getDateStr() << endl;
 			tmp_indiv.setDate(Date(d, m, y));
 		}
 		// Now the sequences
@@ -383,30 +352,59 @@ void PoplibIO::_parseIndividual(const vector<string> & in, DataSet & data_set, c
 			temp = in[i];
 			vector<string> seq_pos_str = _getValues(temp, "");
 			for (unsigned int j = 0 ; j < seq_pos_str.size() ; j++) {
-//				cout << "_parseIndiv l.308 " <<  seq_pos_str[j];
 				try {
-					if (seq_pos_str[j] != getMissingDataSymbol()) {
-//						cout << endl;
+					if (seq_pos_str[j] != getMissingDataSymbol())
 						tmp_indiv.addSequence(j, *vsc.getSequence(TextTools::toInt(seq_pos_str[j])-1));
-//						cout << tmp_indiv.getNumberOfSequences();
-					}
-//					else
-//						cout << " is missing symbol !" << endl;
 				}
-				catch (Exception & e) {
-//					cout << e.what() << endl;
+				catch (...) {}
+			}
+		}
+		// Finally the loci
+		if (in[i].find("AllelicData", 0) != string::npos) {
+			string temp1 = in[++i];
+			string temp2 = in[++i];
+			vector<string> allele_pos_str1 = _getValues(temp1, "");
+			vector<string> allele_pos_str2 = _getValues(temp2, "");
+			const LocusInfo * locus_info;
+			try {
+				tmp_indiv.initGenotype(data_set.getNumberOfLoci());
+			}
+			catch (...) {}
+			if (allele_pos_str1.size() == allele_pos_str2.size()) {
+				for (unsigned int j = 0 ; j < allele_pos_str1.size() ; j++) {
+					locus_info = data_set.getLocusInfoAtPosition(j);
+					allele_pos_str1[j] = TextTools::removeSurroundingWhiteSpaces(allele_pos_str1[j]);
+					vector<string> tmp_alleles_id;
+					if (allele_pos_str1[j] != getMissingDataSymbol()) {
+						BasicAlleleInfo tmp_allele_info(allele_pos_str1[j]);
+						try {
+							data_set.addAlleleInfoByLocusPosition(j, tmp_allele_info);
+						}
+						catch (...) {}
+						tmp_alleles_id.push_back(allele_pos_str1[j]);
+					}
+					allele_pos_str2[j] = TextTools::removeSurroundingWhiteSpaces(allele_pos_str2[j]);
+					if (allele_pos_str2[j] != getMissingDataSymbol()) {
+						BasicAlleleInfo tmp_allele_info(allele_pos_str2[j]);
+						try {
+							data_set.addAlleleInfoByLocusPosition(j, tmp_allele_info);
+						}
+						catch (...) {}
+						tmp_alleles_id.push_back(allele_pos_str2[j]);
+					}
+					try {
+						tmp_indiv.setMonolocusGenotypeByAlleleId(j, tmp_alleles_id, * locus_info);
+					}
+					catch (...) {}
 				}
 			}
 		}
 	}
-//	cout << "nb grps : " << data_set.getNumberOfGroups() << endl;
 	if (tmp_indiv.getId() != "") {
 		try {
 			data_set.addIndividualToGroup(data_set.getGroupPosition(tmp_group_pos), tmp_indiv);
 		}
-		catch (Exception & e) {
-//			cout << "Et de une : " << e.what() << endl;
-		}
+		catch (...) {}
 	}
 }
 
@@ -454,6 +452,19 @@ void PoplibIO::write(ostream & os, const DataSet & data_set) const throw (Except
 	// AllelicData section ----------------------------------
 	if (data_set.hasAlleleicData()) {
 		os << endl << "[Loci]" << endl;
+		for (unsigned int i = 0 ; i < data_set.getNumberOfLoci() ; i++) {
+			const LocusInfo * tmp_locus_info = data_set.getLocusInfoAtPosition(i);
+			os << ">" << tmp_locus_info->getName() << endl;
+			os << "Ploidy = ";
+			if (tmp_locus_info->getPloidy() == LocusInfo::HAPLOID)
+				os << HAPLOID;
+			else if (tmp_locus_info->getPloidy() == LocusInfo::DIPLOID)
+				os << DIPLOID;
+			else if (tmp_locus_info->getPloidy() == LocusInfo::HAPLODIPLOID)
+				os << HAPLODIPLOID;
+			os << endl;
+			os << "NbAlleles = " << tmp_locus_info->getNumberOfAlleles() << endl;
+		}
 	}
 
 	// Individuals section ----------------------------------
@@ -483,7 +494,11 @@ void PoplibIO::write(ostream & os, const DataSet & data_set) const throw (Except
 				}
 				os << "}" << endl;
 			}
-			if (tmp_ind->hasGenotype()) os << "AllelicData = { ... to be continued" << endl;
+			if (tmp_ind->hasGenotype()) {
+				os << "AllelicData = {" << endl;
+				os << "... to be continued ..." << endl;
+				os << "}" << endl;
+			}
 		}
 }
 
