@@ -1,7 +1,7 @@
 /*
  * File PolymorphismMultiGContainer.cpp
  * Author : Sylvain Gaillard <yragael2001@yahoo.fr>
- * Last modification : Tuesday August 03 2004
+ * Last modification : Tuesday September 28 2004
  *
  * Copyright (C) 2004 Sylvain Gaillard and the
  *                    PopGenLib Development Core Team
@@ -75,6 +75,26 @@ void PolymorphismMultiGContainer::deleteMultilocusGenotype(unsigned int position
 	delete _multilocusGenotypes[position];
 	_multilocusGenotypes.erase(_multilocusGenotypes.begin() + position);
 	_groups.erase(_groups.begin() + position);
+}
+
+bool PolymorphismMultiGContainer::isAligned() const {
+	unsigned int value = 0;
+	for (unsigned int i = 0 ; i < size() ; i++) {
+		if (i == 0)
+			value = _multilocusGenotypes[i]->size();
+		else
+			if (_multilocusGenotypes[i]->size() != value)
+				return false;
+	}
+	return true;
+}
+
+unsigned int PolymorphismMultiGContainer::getNumberOfLoci() const throw (Exception) {
+	if (!isAligned())
+		throw Exception("MultilocusGenotypes are not aligned.");
+	if (size() < 1)
+		return 0;
+	return _multilocusGenotypes[0]->size();
 }
 
 unsigned int PolymorphismMultiGContainer::getGroupId(unsigned int position) const throw (IndexOutOfBoundsException) {

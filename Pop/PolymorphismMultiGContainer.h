@@ -1,7 +1,7 @@
 /*
  * File PolymorphismMultiGContainer.h
  * Author : Sylvain Gaillard <yragael2001@yahoo.fr>
- * Last modification : Tuesday August 03 2004
+ * Last modification : Tuesday September 28 2004
  *
  * Copyright (C) 2004 Sylvain Gaillard and the
  *                    PopGenLib Development Core Team
@@ -100,6 +100,18 @@ class PolymorphismMultiGContainer {
 		 * @throw IndexOutOfBoundsException if position excedes the size of the container.
 		 */
 		void deleteMultilocusGenotype(unsigned int position) throw (IndexOutOfBoundsException);
+
+		/**
+		 * @brief Tell if the MultilocusGenotypes are aligned (i.e. same size).
+		 */
+		bool isAligned() const;
+
+		/**
+		 * @brief Get the number of loci if the MultilocusGenotypes are aligned.
+		 *
+		 * @throw Exception if MultilocusGenotypes are not aligned.
+		 */
+		unsigned int getNumberOfLoci() const throw (Exception);
 
 		/**
 		 * @brief Get the Group of a MultilocusGenotype.
