@@ -1,7 +1,7 @@
 /*
  * File Individual.h
  * Author : Sylvain Gaillard <yragael2001@yahoo.fr>
- * Last modification : Friday July 09 2004
+ * Last modification : Wednesday July 21 2004
  */
 
 // Secured inclusion of header's file
@@ -285,6 +285,11 @@ class Individual : public Clonable {
 		 * @return FALSE if the container is empty or undifined.
 		 */
 		bool hasSequences() const;
+
+		/**
+		 * @brief Tell if the Individual has a sequence at a given position.
+		 */
+		bool hasSequenceAtPosition(unsigned int position) const;
 
 		/**
 		 * @brief Return the alphabet of the sequences.

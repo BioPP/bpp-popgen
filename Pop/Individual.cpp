@@ -1,7 +1,7 @@
 /*
  * File Individual.cpp
  * Author : Sylvain Gaillard <yragael2001@yahoo.fr>
- * Last modification : Monday July 19 2004
+ * Last modification : Wednesday July 21 2004
  */
 
 #include "Individual.h"
@@ -338,6 +338,16 @@ unsigned int Individual::getSequencePosition(const string & sequence_name) const
 	
 bool Individual::hasSequences() const {
 	return !(getNumberOfSequences() == 0);
+}
+
+bool Individual::hasSequenceAtPosition(unsigned int position) const {
+	if (hasSequences()) {
+		vector<unsigned int> pos = getSequencesPositions();
+		for (unsigned int i = 0 ; i < pos.size() ; i++)
+			if (pos[i] == position)
+				return true;
+	}
+	return false;
 }
 
 const Alphabet * Individual::getSequenceAlphabet() const throw (NullPointerException) {
