@@ -1,7 +1,7 @@
 /*
  * File PolymorphismMultiGContainer.h
  * Author : Sylvain Gaillard <yragael2001@yahoo.fr>
- * Last modification : Wednesday July 21 2004
+ * Last modification : Thursday July 22 2004
  */
 
 // Secured inclusion of header's file
@@ -18,6 +18,7 @@ using namespace std;
 // From Utils
 #include <Utils/Clonable.h>
 #include <Utils/Exceptions.h>
+#include <Utils/MapTools.h>
 
 // From poplib
 #include "MultilocusGenotype.h"
@@ -127,6 +128,13 @@ class PolymorphismMultiGContainer : public Clonable {
 		void clear();
 
 		/**
+		 * @brief Get all the alleles' id at one locus.
+		 *
+		 * @throw IndexOutOfBoundsException if locus_position excedes the number of loci of one MultilocusGenotype.
+		 */
+		vector<unsigned int> getAllelesIdsForAllGroups(unsigned int locus_position) const throw (IndexOutOfBoundsException);
+
+		/**
 		 * @brief Count the different alleles at one locus.
 		 *
 		 * @throw IndexOutOfBoundsException if locus_position excedes the number of loci of one MultilocusGenotype.
@@ -147,6 +155,28 @@ class PolymorphismMultiGContainer : public Clonable {
 		 * @throw IndexOutOfBoundsException if locus_position excedes the number of loci of one MultilocusGenotype.
 		 */
 		map<unsigned int, unsigned int> getAllelesMapForGroups(unsigned int locus_position, const set<unsigned int> & groups) const throw (IndexOutOfBoundsException);
+
+		/**
+		 * @brief Get the alleles frequencies at one locus for all groups.
+		 *
+		 * @throw IndexOutOfBoundsException if locus_position excedes the number of loci of one MultilocusGenotype.
+		 */
+		map<unsigned int, double> getAllelesFrqForAllGroups(unsigned int locus_position) const throw (IndexOutOfBoundsException);
+
+		/**
+		 * @brief Get the alleles frequencies at one locus for one group.
+		 *
+		 * @throw IndexOutOfBoundsException if locus_position excedes the number of loci of one MultilocusGenotype.
+		 * @throw GroupNotFoundException if group is not found in the container.
+		 */
+		map<unsigned int, double> getAllelesFrqForOneGroup(unsigned int locus_position, unsigned int group) const throw (Exception);
+		
+		/**
+		 * @brief Get the alleles frequencies at one locus for a set of groups.
+		 *
+		 * @throw IndexOutOfBoundsException if locus_position excedes the number of loci of one MultilocusGenotype.
+		 */
+		map<unsigned int, double> getAllelesFrqForGroups(unsigned int locus_position, const set<unsigned int> & groups) const throw (IndexOutOfBoundsException);
 
 		/**
 		 * @brief Count the number of non-missing data at a given locus.

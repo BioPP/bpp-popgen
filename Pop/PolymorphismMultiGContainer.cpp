@@ -1,7 +1,7 @@
 /*
  * File PolymorphismMultiGContainer.cpp
  * Author : Sylvain Gaillard <yragael2001@yahoo.fr>
- * Last modification : Wednesday July 21 2004
+ * Last modification : Thursday July 22 2004
  */
 
 #include "PolymorphismMultiGContainer.h"
@@ -119,6 +119,17 @@ void PolymorphismMultiGContainer::clear() {
 	_groups.clear();
 }
 
+vector<unsigned int> PolymorphismMultiGContainer::getAllelesIdsForAllGroups(unsigned int locus_position) const throw (IndexOutOfBoundsException) {
+	map<unsigned int, unsigned int> tmp_alleles;
+	try {
+		tmp_alleles = getAllelesMapForAllGroups(locus_position);
+	}
+	catch (IndexOutOfBoundsException & ioobe) {
+		throw IndexOutOfBoundsException("PolymorphismMultiGContainer::getAllelesIdsForAllGroups: locus_position out of bounds.", ioobe.getBadInteger(), ioobe.getBounds()[0], ioobe.getBounds()[1]);
+	}
+	return MapTools::getKeys(tmp_alleles);
+}
+
 map<unsigned int, unsigned int> PolymorphismMultiGContainer::getAllelesMapForAllGroups(unsigned int locus_position) const throw (IndexOutOfBoundsException) {
 	set<unsigned int> groups_ids = getAllGroupsIds();
 	try {
@@ -156,6 +167,47 @@ map<unsigned int, unsigned int> PolymorphismMultiGContainer::getAllelesMapForGro
 		}
 	}
 	return alleles_count;
+}
+
+map<unsigned int, double> PolymorphismMultiGContainer::getAllelesFrqForAllGroups(unsigned int locus_position) const throw (IndexOutOfBoundsException) {
+	set<unsigned int> groups_ids = getAllGroupsIds();
+	try {
+		return getAllelesFrqForGroups(locus_position, groups_ids);
+	}
+	catch (IndexOutOfBoundsException & ioobe) {
+		throw IndexOutOfBoundsException("PolymorphismMultiGContainer::getAllelesFrqForAllGroups: locus_position out of bounds.", ioobe.getBadInteger(), ioobe.getBounds()[0], ioobe.getBounds()[1]);
+	}
+}
+
+map<unsigned int, double> PolymorphismMultiGContainer::getAllelesFrqForOneGroup(unsigned int locus_position, unsigned int group) const throw (Exception) {
+	if (! groupExists(group))
+		throw GroupNotFoundException("PolymorphismMultiGContainer::getAllelesFrqForOneGroup: group not found.", group);
+	set<unsigned int> group_id;
+	group_id.insert(group);
+	try {
+		return getAllelesFrqForGroups(locus_position, group_id);
+	}
+	catch (IndexOutOfBoundsException & ioobe) {
+		throw IndexOutOfBoundsException("PolymorphismMultiGContainer::getAllelesFrqForOneGroup: locus_position out of bounds.", ioobe.getBadInteger(), ioobe.getBounds()[0], ioobe.getBounds()[1]);
+	}
+}
+
+map<unsigned int, double> PolymorphismMultiGContainer::getAllelesFrqForGroups(unsigned int locus_position, const set<unsigned int> & groups) const throw (IndexOutOfBoundsException) {
+	map<unsigned int, double> alleles_frq;
+	unsigned int nb_tot_allele = 0;
+	map<unsigned int, unsigned int> tmp_alleles;
+	try {
+		tmp_alleles = getAllelesMapForGroups(locus_position, groups);
+	}
+	catch (IndexOutOfBoundsException & ioobe) {
+		throw IndexOutOfBoundsException("PolymorphismMultiGContainer::getAllelesFrqForGroups: locus_position out of bounds.", ioobe.getBadInteger(), ioobe.getBounds()[0], ioobe.getBounds()[1]);
+	}
+	vector<unsigned int> counter = MapTools::getValues(tmp_alleles);
+	for (unsigned int i = 0 ; i < counter.size() ; i++)
+		nb_tot_allele += counter[i];
+	for (map<unsigned int, unsigned int>::iterator it = tmp_alleles.begin() ; it != tmp_alleles.end() ; it++)
+		alleles_frq[it->first] = it->second / nb_tot_allele;
+	return alleles_frq;
 }
 
 unsigned int PolymorphismMultiGContainer::countNonMissingForAllGroups(unsigned int locus_position) const throw (IndexOutOfBoundsException) {
