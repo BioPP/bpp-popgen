@@ -21,6 +21,7 @@ MonoAlleleMonolocusGenotype.h\
 MonolocusGenotype.h\
 MultilocusGenotype.h\
 ODataSet.h\
+PolymorphismMultiGContainer.h\
 PolymorphismSequenceContainer.h\
 PolymorphismSequenceContainerTools.h\
 PoplibIO.h\
@@ -46,6 +47,7 @@ LocusInfo.cpp\
 MonoAlleleMonolocusGenotype.cpp\
 MonolocusGenotype.cpp\
 MultilocusGenotype.cpp\
+PolymorphismMultiGContainer.cpp\
 PolymorphismSequenceContainer.cpp\
 PolymorphismSequenceContainerTools.cpp\
 PoplibIO.cpp\
