@@ -374,6 +374,26 @@ PolymorphismSequenceContainer * PolymorphismSequenceContainerTools::get3Prime(co
 
 }
 
+// Be carefull: To use before excluding gap
+PolymorphismSequenceContainer * PolymorphismSequenceContainerTools::getSelectedSites(const PolymorphismSequenceContainer & psc, const string &setName, bool phase) throw (Exception) {
+	try {
+        SiteContainer *pscc = MaseTools::getSelectedSites(psc, setName);
+	if (phase) {
+		for (unsigned int i=1; i < psc.getPhase(setName); i++) {
+			pscc -> deleteSite(i - 1);
+		}		
+	}		
+        PolymorphismSequenceContainer *psci = new PolymorphismSequenceContainer(*pscc);
+	for(unsigned int i = 0; i < psc.getNumberOfSequences(); i++) {
+		if (! psc.isIngroupMember(i))
+			psci -> setAsOutgroupMember(i);
+		psci -> setGroupId(i, psc.getGroupId(i));
+	}
+        delete pscc;
+        return psci;
+        }
+	catch(...) {}
+}
 
 
 

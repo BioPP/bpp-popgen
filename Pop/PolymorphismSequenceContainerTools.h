@@ -176,6 +176,16 @@ class PolymorphismSequenceContainerTools
 	     */
         static PolymorphismSequenceContainer * get3Prime(const PolymorphismSequenceContainer & psc, unsigned int start) throw (Exception);
 
+	/**
+	 * @brief Get a PolymorphismSequenceContainer corresponding to a site selection annotated in the mase comments
+	 *
+         * Assumed that the first coding site correspond to the first position
+	 * @param psc a PolymorphismSequenceContainer.
+	 * @param setName The name of the set to retrieve.
+	 * @param phase a boolean set to true if you want to take the phase into account during the extraction. It removes the useless sites.
+   	 */
+	static PolymorphismSequenceContainer * getSelectedSites(const PolymorphismSequenceContainer & psc, const string &setName, bool phase) throw (Exception);
+
 
 		/*******************************************************************************/
 };
