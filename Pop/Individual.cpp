@@ -1,7 +1,7 @@
 /*
  * File Individual.cpp
  * Author : Sylvain Gaillard <yragael2001@yahoo.fr>
- * Last modification : Monday May 24 2004
+ * Last modification : Wednesday June 09 2004
  */
 
 #include "Individual.h"
@@ -13,6 +13,7 @@ Individual::Individual() {
 	_date = NULL;
 	_coord = NULL;
 	_locality = NULL;
+	_genotype = NULL;
 }
 
 Individual::Individual(const string id,
@@ -33,6 +34,12 @@ Individual::Individual(const Individual &ind) {
 	this->_date = ind.hasDate() ? new Date(* ind.getDate()) : NULL;
 	this->_coord = ind.hasCoord() ? new Coord<double>(* ind.getCoord()) : NULL;
 	this->_locality = ind.getLocality();
+	if (ind.hasSequences()) {
+		vector<string> keys = ind.getSequencesKeys();
+		for (unsigned int i = 0 ; i < keys.size() ; i++)
+			_sequences[keys[i]] = new VectorSequenceContainer(* const_cast<const VectorSequenceContainer *>(ind.getVectorSequenceContainer(keys[i])));
+	}
+	this->_genotype = ind.hasGenotype() ? new Genotype(* ind.getGenotype()) : NULL;
 }
 
 //** Class destructor: *******************************************************/
@@ -52,6 +59,12 @@ Individual & Individual::operator= (const Individual & ind) {
 	this->_date = ind.hasDate() ? new Date(* ind.getDate()) : NULL;
 	this->_coord = ind.hasCoord() ? new Coord<double>(* ind.getCoord()) : NULL;
 	this->_locality = ind.getLocality();
+	if (ind.hasSequences()) {
+		vector<string> keys = ind.getSequencesKeys();
+		for (unsigned int i = 0 ; i < keys.size() ; i++)
+			_sequences[keys[i]] = new VectorSequenceContainer(* const_cast<const VectorSequenceContainer *>(ind.getVectorSequenceContainer(keys[i])));
+	}
+	this->_genotype = ind.hasGenotype() ? new Genotype(* ind.getGenotype()) : NULL;
 	return * this;
 }
 
@@ -169,6 +182,18 @@ bool Individual::hasLocality() const {
 }
 
 // Sequences
+const VectorSequenceContainer * Individual::getVectorSequenceContainer(const string & id) const throw (Exception) {
+	map<string, VectorSequenceContainer *>::const_iterator it;
+	it = _sequences.find(id);
+	// Test existence of id in the map.
+	if (it == _sequences.end()) {
+		string mes = "Individual::getSequence: sequence set not found (" + id
+			+ ").";
+		throw(Exception(mes));
+	}
+	return const_cast<const VectorSequenceContainer *>(it->second);
+}
+
 void Individual::addSequence(const string & id, const Sequence & sequence)
 throw (Exception) {
 	try {
@@ -226,4 +251,40 @@ vector<string> Individual::getSequencesKeys() const {
 	for (it = _sequences.begin() ; it != _sequences.end() ; it++)
 		keys.push_back(it->first);
 	return keys;
+}
+
+bool Individual::hasSequences() const {
+	return _sequences.size() != 0;
+}
+
+unsigned int Individual::getNumberOfSequenceSet() const {
+	return _sequences.size();
+}
+
+unsigned int Individual::getNumberOfSequences(const string & id) const
+	throw (Exception) {
+	map<string, VectorSequenceContainer *>::const_iterator it;
+	it = _sequences.find(id);
+	// Test existence of id in the map.
+	if (it == _sequences.end()) {
+		string mes = "Individual::getSequence: sequence set not found (" + id
+			+ ").";
+		throw(Exception(mes));
+	}
+	
+	return const_cast<const VectorSequenceContainer *>(it->second)->getNumberOfSequences();
+}
+
+// Genotype
+
+void Individual::addGenotype(const Genotype & genotype) {
+	_genotype = new Genotype(genotype);
+}
+
+const Genotype * Individual::getGenotype() const throw (NullPointerException) {
+		return _genotype;
+}
+
+bool Individual::hasGenotype() const {
+	return _genotype != NULL;
 }

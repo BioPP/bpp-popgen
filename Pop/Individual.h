@@ -1,7 +1,7 @@
 /*
  * File Individual.h
  * Author : Sylvain Gaillard <yragael2001@yahoo.fr>
- * Last modification : Monday May 24 2004
+ * Last modification : Friday June 11 2004
  */
 
 // Secured inclusion of header's file
@@ -25,6 +25,7 @@
 #include "Locality.h"
 #include "Coord.h"
 #include "Date.h"
+#include "Genotype.h"
 
 /**
  * @brief The Individual class.
@@ -212,6 +213,14 @@ class Individual : public Clonable {
 		bool hasLocality() const;
 
 		/**
+		 * @brief Get a pointer to the VectorSequenceContainer at a named locus.
+		 *
+		 * @param id The id of the sequence set (i.e. locus).
+		 */
+		const VectorSequenceContainer * getVectorSequenceContainer(const string & id) const
+			throw (Exception);
+
+		/**
 		 * @brief Add a sequence in a named sequence set.
 		 *
 		 * @param id The id of the sequence set.
@@ -267,6 +276,39 @@ class Individual : public Clonable {
 		 */
 		void deleteSequence(const string & id, const string & name);
 
+		/**
+		 * @brief Tell if the Individual has some sequences.
+		 */
+		bool hasSequences() const;
+
+		/**
+		 * @brief Count the number of sequece set.
+		 */
+		unsigned int getNumberOfSequenceSet() const;
+
+		/**
+		 * @brief Get the number of sequences in a sequence set.
+		 */
+		unsigned int getNumberOfSequences(const string & id) const
+			throw (Exception);
+
+		/**
+		 * @brief Add a genotype.
+		 *
+		 * @param genotype The Genotype to add.
+		 */
+		void addGenotype(const Genotype & genotype);
+
+		/**
+		 * @brief Get the genotype.
+		 */
+		const Genotype * getGenotype() const throw (NullPointerException);
+
+		/**
+		 * @brief Tell if the Individual has a Genotype.
+		 */
+		bool hasGenotype() const;
+	
 	protected:
 		string _id;
 		unsigned short _sex;
@@ -274,5 +316,6 @@ class Individual : public Clonable {
 		Coord<double> * _coord;
 		Locality<double> * _locality;
 		map<string,VectorSequenceContainer *> _sequences;
+		Genotype * _genotype;
 };
 #endif // _INDIVIDUAL_H_
