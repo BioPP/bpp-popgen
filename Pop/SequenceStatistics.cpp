@@ -173,14 +173,15 @@ double SequenceStatistics::watterson75(const PolymorphismSequenceContainer & psc
 // Arguments: a PolymorphismSequenceContainer
 // Return: theta of Tajima (1983)
 double SequenceStatistics::tajima83(const PolymorphismSequenceContainer & psc, bool gapflag) {
-	unsigned int alphabet_size = (psc.getAlphabet())->getSize();
+	PolymorphismSequenceContainer *psci = PolymorphismSequenceContainerTools::extractIngroup(psc);
+	unsigned int alphabet_size = (psci->getAlphabet())->getSize();
 	const Site * site;
 	SiteIterator *si;
 	double value2 = 0.;
 	if (gapflag)
-		si = new CompleteSiteIterator(psc);
+		si = new CompleteSiteIterator(*psci);
 	else
-		si = new SimpleSiteIterator(psc);
+		si = new SimpleSiteIterator(*psci);
 	while (si->hasMoreSites()) {
 		site = si->nextSite();
 		if (! SiteTools::isConstant(* site)) {
@@ -198,6 +199,7 @@ double SequenceStatistics::tajima83(const PolymorphismSequenceContainer & psc, b
 			value2 += 1. - value;
 		}
 	}
+	delete psci;
 	return value2;
 }
 
