@@ -143,6 +143,7 @@ class SequenceStatistics
 		/**
 		 * @brief Return the Tajima's D test (Tajima 1989).
 		 *
+		 * Calculation using the number of polymorphic (segregating) sites.
 		 * @f[
 		 * D=\frac{\hat{\theta}_\pi-\hat{\theta}_S}{\sqrt{\textrm{V}\left(\hat{\theta}_\pi-\hat{\theta}_S\right)}}
 		 * =\frac{\hat{\theta}_\pi-\hat{\theta}_S}{\sqrt{e_1S+e_2S(S-1)}}
@@ -151,7 +152,20 @@ class SequenceStatistics
 		 * @param gapflag flag set by default to true if you don't want to
 		 * take gap into account
 		 */
-		static double tajimaD(const PolymorphismSequenceContainer & psc, bool gapflag = true);
+		static double tajimaDSS(const PolymorphismSequenceContainer & psc, bool gapflag = true);
+
+		/**
+		 * @brief Return the Tajima's D test (Tajima 1989).
+		 *
+		 * Calculation using the total number of mutation.
+		 * @f[
+		 * D=\frac{\hat{\theta}_\pi-\frac{\eta}{a_1}}{\sqrt{e_1\eta+e_2\eta(\eta-1)}}
+		 * @f]
+		 * @param psc a PolymorphismSequenceContainer
+		 * @param gapflag flag set by default to true if you don't want to
+		 * take gap into account
+		 */
+		static double tajimaDTNM(const PolymorphismSequenceContainer & psc, bool gapflag = true);
 
 		/**
 		 * @brief Return the Fu and Li D test (1993).

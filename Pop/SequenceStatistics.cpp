@@ -193,7 +193,7 @@ double SequenceStatistics::tajima83(const PolymorphismSequenceContainer & psc, b
 // Method to compute Tajima D test (1989)
 // Arguments: a PolymorphismSequenceContainer
 // Return: Tajima's D (1989)
-double SequenceStatistics::tajimaD(const PolymorphismSequenceContainer & psc, bool gapflag) {
+double SequenceStatistics::tajimaDSS(const PolymorphismSequenceContainer & psc, bool gapflag) {
 	SiteIterator * si;
 	if (gapflag)
 		si = new NoGapSiteIterator(psc);
@@ -205,6 +205,23 @@ double SequenceStatistics::tajimaD(const PolymorphismSequenceContainer & psc, bo
 	unsigned int n = psc.getNumberOfSequences();
 	map<string, double> values = _getUsefullValues(n);
 	return (tajima - watterson) / sqrt((values["e1"] * S) + (values["e2"] * S * (S - 1)));
+}
+
+// Method to compute Tajima D test (1989)
+// Arguments: a PolymorphismSequenceContainer
+// Return: Tajima's D (1989)
+double SequenceStatistics::tajimaDTNM(const PolymorphismSequenceContainer & psc, bool gapflag) {
+	SiteIterator * si;
+	if (gapflag)
+		si = new NoGapSiteIterator(psc);
+	else
+		si = new CompleteSiteIterator(psc);
+	unsigned int eta = totNumberMutations(* si);
+	double tajima = tajima83(psc, gapflag);
+	unsigned int n = psc.getNumberOfSequences();
+	map<string, double> values = _getUsefullValues(n);
+	double eta_a1 = (double) eta / values["a1"];
+	return (tajima - eta_a1) / sqrt((values["e1"] * eta) + (values["e2"] * eta * (eta - 1)));
 }
 
 // Return the number of haplotype in the sample. Depaulis and Veuille (1998)
