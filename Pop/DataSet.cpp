@@ -657,8 +657,8 @@ void DataSet::setAnalyzedLoci(const AnalyzedLoci & analyzedLoci) throw (Exceptio
 		catch (Exception & e) {
 			throw Exception ("DataSet::setAnalyzedLoci: at least one individual has a genotype of the actual AnalyzedLoci.");
 		}
-	_analyzedLoci = new AnalyzedLoci(analyzedLoci);
 	}
+	_analyzedLoci = new AnalyzedLoci(analyzedLoci);
 }
 
 void DataSet::initAnalyzedLoci(unsigned int number_of_loci) throw (Exception) {
