@@ -1,7 +1,7 @@
 /*
  * File MonolocusGenotype.h
  * Author : Sylvain Gaillard <yragael2001@yahoo.fr>
- * Last modification : Monday June 07 2004
+ * Last modification : Tuesday June 22 2004
  */
 
 // Secured inclusion of header's file
@@ -35,5 +35,10 @@ class MonolocusGenotype : public Clonable {
 		 * @brief Get the ploidy of the locus.
 		 */
 		virtual unsigned int getPloidy() const = 0;
+
+		/**
+		 * @brief Get the maximum number of allele that con be stored.
+		 */
+		virtual unsigned int getSize() const  = 0;
 };
 #endif // _MONOLOCUSGENOTYPE_H_

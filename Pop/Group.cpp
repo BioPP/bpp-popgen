@@ -1,7 +1,7 @@
 /*
  * File Group.cpp
  * Author : Sylvain Gaillard <yragael2001@yahoo.fr>
- * Last modification : Monday June 21 2004
+ * Last modification : Tuesday June 22 2004
  */
 
 #include "Group.h"
@@ -179,51 +179,233 @@ const Locality<double> * Group::getIndividualLocalityByIndex(unsigned int indivi
 	}
 }
 
-vector<string> Group::getIndividualSequencesKeys(unsigned int individual_index) const throw (IndexOutOfBoundsException) {
+void Group::addIndividualSequenceByIndex(unsigned int individual_index, const Sequence & sequence) throw (Exception) {
 	if (individual_index >= getNumberOfIndividuals())
-		throw IndexOutOfBoundsException("Group::getIndividualSequencesKeys: individual_index out of bounds.", individual_index, 0, getNumberOfIndividuals());
-	return _individuals[individual_index]->getSequencesKeys();
-}
-
-void Group::addSequenceToIndividualByIndex(unsigned int individual_index, const string & seq_set, const Sequence & sequence) throw (Exception) {
-	if (individual_index >= getNumberOfIndividuals())
-		throw IndexOutOfBoundsException("Group::addSequenceToIndividualByIndex: individual_index out of bounds.", individual_index, 0, getNumberOfIndividuals());
+		throw IndexOutOfBoundsException("Group::addIndividualSequenceByIndex: individual_index out of bounds.", individual_index, 0, getNumberOfIndividuals());
 	try {
-		_individuals[individual_index]->addSequence(seq_set, sequence);
+		_individuals[individual_index]->addSequence(sequence);
 	}
 	catch (AlphabetMismatchException ame) {
-		throw AlphabetMismatchException("Group::addSequenceToIndividualByIndex: sequence's alphabet doesn't match.", ame.getAlphabets()[0], ame.getAlphabets()[1]);
+		throw AlphabetMismatchException("Group::addIndividualSequenceByIndex: sequence's alphabet doesn't match.", ame.getAlphabets()[0], ame.getAlphabets()[1]);
 	}
 	catch (BadIdentifierException bie) {
-		throw BadIdentifierException("Group::addSequenceToIndividualByIndex: sequence's name already in use.", bie.getIdentifier());
+		throw BadIdentifierException("Group::addIndividualSequenceByIndex: sequence's name already in use.", bie.getIdentifier());
 	}
 }
 
-//-- Dealing with sequence containers ---------------------
-VectorSequenceContainer * Group::getVectorSequenceContainer(const string & seqset_id) const  throw (Exception) {
-	if (_individuals.size() == 0)
-		throw Exception("Group::getVectorSequenceContainer: this group is empty.");
-	VectorSequenceContainer * vsc = new VectorSequenceContainer(_individuals[0]->getVectorSequenceContainer(seqset_id)->getAlphabet());
-	for (unsigned int i = 0 ; i < _individuals.size() ; i++) {
-		try {
-			SequenceContainerTools::append<VectorSequenceContainer>(*vsc, *(_individuals[i]->getVectorSequenceContainer(seqset_id)));
-		}
-		catch (Exception & e) {
-			throw e;
-		}
+const Sequence * Group::getIndividualSequenceByName(unsigned int individual_index, const string & sequence_name) const throw (Exception) {
+	if (individual_index >= getNumberOfIndividuals())
+		throw IndexOutOfBoundsException("Group::getIndividualSequenceByName: individual_index out of bounds.", individual_index, 0, getNumberOfIndividuals());
+	try {
+		return _individuals[individual_index]->getSequenceByName(sequence_name);
+	}
+	catch (NullPointerException npe) {
+		throw NullPointerException("Group::getIndividualSequenceByName: no sequence data in individual.");
+	}
+	catch (SequenceNotFoundException snfe) {
+		throw SequenceNotFoundException("Group::getIndividualSequenceByName: sequence_name not found.", snfe.getSequenceId());
 	}
 }
 
-VectorSiteContainer * Group::getVectorSiteContainer(const string & seqset_id) const  throw (Exception) {
-	if (_individuals.size() == 0)
-		throw Exception("Group::getVectorSequenceContainer: this group is empty.");
-	VectorSiteContainer * vsc = new VectorSiteContainer(_individuals[0]->getVectorSequenceContainer(seqset_id)->getAlphabet());
-	for (unsigned int i = 0 ; i < _individuals.size() ; i++) {
-		try {
-			SequenceContainerTools::append<VectorSiteContainer>(*vsc, *(_individuals[i]->getVectorSequenceContainer(seqset_id)));
-		}
-		catch (Exception & e) {
-			throw e;
-		}
+const Sequence * Group::getIndividualSequenceByIndex(unsigned int individual_index, unsigned int sequence_index) const throw (Exception) {
+	if (individual_index >= getNumberOfIndividuals())
+		 throw IndexOutOfBoundsException("Group::getIndividualByIndex: individual_index out of bounds.", individual_index, 0, getNumberOfIndividuals());
+	try {
+		return _individuals[individual_index]->getSequenceByIndex(sequence_index);
+	}
+	catch (NullPointerException npe) {
+		throw NullPointerException("Group::getIndividualSequenceByIndex: no sequence data in individual.");
+	}
+	catch (IndexOutOfBoundsException ioobe) {
+		throw IndexOutOfBoundsException("Group::getIndividualSequenceByIndex: sequence_index out of bounds.", ioobe.getBadInteger(), ioobe.getBounds()[0], ioobe.getBounds()[1]);
+	}
+}
+
+void Group::deleteIndividualSequenceByName(unsigned int individual_index, const string & sequence_name) throw (Exception) {
+	if (individual_index >= getNumberOfIndividuals())
+		throw IndexOutOfBoundsException("Group::deleteIndividualSequenceByName: individual_index out of bounds.", individual_index, 0, getNumberOfIndividuals());
+	try {
+		_individuals[individual_index]->deleteSequenceByName(sequence_name);
+	}
+	catch (NullPointerException npe) {
+		throw NullPointerException("Group::deleteSequenceByName: no sequence data in individual.");
+	}
+	catch (SequenceNotFoundException snfe) {
+		throw SequenceNotFoundException("Group::deleteSequenceByName: sequence_name not found.", snfe.getSequenceId());
+	}
+}
+
+void Group::deleteIndividualSequenceByIndex(unsigned int individual_index, unsigned int sequence_index) throw (Exception) {
+	if (individual_index >= getNumberOfIndividuals())
+		throw IndexOutOfBoundsException("Group::deleteIndividualSequenceByIndex: individual_index out of bounds.", individual_index, 0, getNumberOfIndividuals());
+	try {
+		_individuals[individual_index]->deleteSequenceByIndex(sequence_index);
+	}
+	catch (NullPointerException npe) {
+		throw NullPointerException("Group::deleteSequenceByIndex: no sequence data in individual.");
+	}
+	catch (IndexOutOfBoundsException ioobe) {
+		throw IndexOutOfBoundsException("Group::deleteSequenceByIndex: sequence_index out of bounds.", ioobe.getBadInteger(), ioobe.getBounds()[0], ioobe.getBounds()[1]);
+	}
+}
+
+bool Group::hasIndividualSequences(unsigned int individual_index) const throw (IndexOutOfBoundsException) {
+	if (individual_index >= getNumberOfIndividuals())
+		throw IndexOutOfBoundsException("Group::hasIndividualSequences: individual_index out of bounds.", individual_index, 0, getNumberOfIndividuals());
+	return _individuals[individual_index]->hasSequences();
+}
+
+vector<string> Group::getIndividualSequencesNames(unsigned int individual_index) const throw (Exception) {
+	if (individual_index >= getNumberOfIndividuals())
+		throw IndexOutOfBoundsException("Group::getIndividualSequencesNames: individual_index out of bounds.", individual_index, 0, getNumberOfIndividuals());
+	try {
+		return _individuals[individual_index]->getSequencesNames();
+	}
+	catch (NullPointerException & npe) {
+		throw NullPointerException("Group::getSequencesNames: no sequence data in individual.");
+	}
+}
+
+unsigned int Group::getIndividualSequencePosition(unsigned int individual_index, const string & sequence_name) const throw (Exception) {
+	if (individual_index >= getNumberOfIndividuals())
+		throw IndexOutOfBoundsException("Group::getIndividualSequencePosition: individual_index out of bounds.", individual_index, 0, getNumberOfIndividuals());
+	try {
+		return _individuals[individual_index]->getSequencePosition(sequence_name);
+	}
+	catch (NullPointerException & npe) {
+		throw NullPointerException("Group::getSequencePosition: no sequence data in individual.");
+	}
+	catch (SequenceNotFoundException snfe) {
+		throw SequenceNotFoundException("Group::getSequencePosition: sequence_name not found.", snfe.getSequenceId());
+	}
+}
+
+unsigned int Group::getIndividualNumberOfSequences(unsigned int individual_index) const throw (Exception) {
+	if (individual_index >= getNumberOfIndividuals())
+		throw IndexOutOfBoundsException("Group::getIndividualNumberOfSequences: individual_index out of bounds.", individual_index, 0, getNumberOfIndividuals());
+	try {
+		return _individuals[individual_index]->getNumberOfSequences();
+	}
+	catch (NullPointerException & npe) {
+		throw NullPointerException("Group::getIndividualNumberOfSequences: no sequence data in individual.");
+	}
+}
+
+void Group::setIndividualSequences(unsigned int individual_index, const OrderedSequenceContainer & osc) throw (IndexOutOfBoundsException) {
+	if (individual_index >= getNumberOfIndividuals())
+		throw IndexOutOfBoundsException("Group::setIndividualSequences: individual_index out of bounds.", individual_index, 0, getNumberOfIndividuals());
+	_individuals[individual_index]->setSequences(osc);
+}
+
+void Group::addIndividualGenotype(unsigned int individual_index, const Genotype & genotype) throw (Exception) {
+	if (individual_index >= getNumberOfIndividuals())
+		throw IndexOutOfBoundsException("Group::addIndividualGenotype: individual_index out of bounds.", individual_index, 0, getNumberOfIndividuals());
+	try {
+		_individuals[individual_index]->addGenotype(genotype);
+	}
+	catch (Exception) {
+		throw Exception("Group::addIndividualGenotype: individual already has a genotype.");
+	}
+}
+
+void Group::initIndividualGenotype(unsigned int individual_index, const AnalyzedLoci * analyzed_loci) throw (Exception) {
+	if (individual_index >= getNumberOfIndividuals())
+		throw IndexOutOfBoundsException("Group::initIndividualGenotype: individual_index out of bounds.", individual_index, 0, getNumberOfIndividuals());
+	try {
+		_individuals[individual_index]->initGenotype(analyzed_loci);
+	}
+	catch (NullPointerException & npe) {
+		throw NullPointerException("Group::initIndividualGenotype: analyzed_loci is NULL.");
+	}
+	catch (Exception) {
+		throw Exception("Group::initIndividualGenotype: individual already has a genotype.");
+	}
+}
+
+void Group::deleteIndividualGenotype(unsigned int individual_index) throw (IndexOutOfBoundsException) {
+	if (individual_index >= getNumberOfIndividuals())
+		throw IndexOutOfBoundsException("Group::deleteIndividualGenotype: individual_index out of bounds.", individual_index, 0, getNumberOfIndividuals());
+	_individuals[individual_index]->deleteGenotype();
+}
+
+bool Group::hasIndividualGenotype(unsigned int individual_index) const throw (IndexOutOfBoundsException) {
+	if (individual_index >= getNumberOfIndividuals())
+		throw IndexOutOfBoundsException("Group::hasIndividualGenotype: individual_index out of bounds.", individual_index, 0, getNumberOfIndividuals());
+	_individuals[individual_index]->hasGenotype();
+}
+
+void Group::setIndividualMonolocusGenotype(unsigned int individual_index, unsigned int locus_index, const MonolocusGenotype & monogen) throw (Exception) {
+	if (individual_index >= getNumberOfIndividuals())
+		throw IndexOutOfBoundsException("Group::setIndividualMonolocusGenotype: individual_index out of bounds.", individual_index, 0, getNumberOfIndividuals());
+	try {
+		_individuals[individual_index]->setMonolocusGenotype(locus_index, monogen);
+	}
+	catch (NullPointerException & npe) {
+		throw NullPointerException("Group::setIndividualMonolocusGenotype: individual has no genotype.");
+	}
+	catch (IndexOutOfBoundsException & ioobe) {
+		throw IndexOutOfBoundsException("Group::setIndividualMonolocusGenotype: locus_index excedes the number of locus.", ioobe.getBadInteger(), ioobe.getBounds()[0], ioobe.getBounds()[1]);
+	}
+}
+
+void Group::setIndividualMonolocusGenotypeByAlleleKey(unsigned int individual_index, unsigned int locus_index, const vector<unsigned int> allele_keys) throw (Exception) {
+	if (individual_index >= getNumberOfIndividuals())
+		throw IndexOutOfBoundsException("Group::setIndividualMonolocusGenotypeByAlleleKey: individual_index out of bounds.", individual_index, 0, getNumberOfIndividuals());
+	try {
+		_individuals[individual_index]->setMonolocusGenotypeByAlleleKey(locus_index, allele_keys);
+	}
+	catch (NullPointerException & npe) {
+		throw NullPointerException("Group::setIndividualMonolocusGenotypeByAlleleKey: individual has no genotype.");
+	}
+	catch (IndexOutOfBoundsException & ioobe) {
+		throw IndexOutOfBoundsException("Group::setIndividualMonolocusGenotypeByAlleleKey: locus_index excedes the number of locus.", ioobe.getBadInteger(), ioobe.getBounds()[0], ioobe.getBounds()[1]);
+	}
+	catch (Exception) {
+		throw Exception("Group::setIndividualMonolocusGenotypeByAlleleKey: allele_keys.size() doesn't match ploidy.");
+	}
+}
+
+void Group::setIndividualMonolocusGenotypeByAlleleId(unsigned int individual_index, unsigned int locus_index, const vector<unsigned int> allele_id) throw (Exception) {
+	if (individual_index >= getNumberOfIndividuals())
+		throw IndexOutOfBoundsException("Group::setIndividualMonolocusGenotypeByAlleleId: individual_index out of bounds.", individual_index, 0, getNumberOfIndividuals());
+	try {
+		_individuals[individual_index]->setMonolocusGenotypeByAlleleId(locus_index, allele_id);
+	}
+	catch (NullPointerException & npe) {
+		throw NullPointerException("Group::setIndividualMonolocusGenotypeByAlleleId: individual has no genotype.");
+	}
+	catch (IndexOutOfBoundsException & ioobe) {
+		throw IndexOutOfBoundsException("Group::setIndividualMonolocusGenotypeByAlleleId: locus_index excedes the number of locus.", ioobe.getBadInteger(), ioobe.getBounds()[0], ioobe.getBounds()[1]);
+	}
+	catch (Exception) {
+		throw Exception("Group::setIndividualMonolocusGenotypeByAlleleId: allele_id.size() doesn't match ploidy.");
+	}
+}
+
+unsigned int Group::getIndividualPloidy(unsigned int individual_index, unsigned int locus_index) const throw (Exception) {
+	if (individual_index >= getNumberOfIndividuals())
+		throw IndexOutOfBoundsException("Group::getIndividualPloidy: individual_index out of bounds.", individual_index, 0, getNumberOfIndividuals());
+	try {
+		return _individuals[individual_index]->getPloidy(locus_index);
+	}
+	catch (NullPointerException & npe) {
+		throw NullPointerException("Group::getIndividualPloidy: individual has no genotype.");
+	}
+	catch (IndexOutOfBoundsException & ioobe) {
+		throw IndexOutOfBoundsException("Group::getIndividualPloidy: locus_index excedes the number of locus.", ioobe.getBadInteger(), ioobe.getBounds()[0], ioobe.getBounds()[1]);
+	}
+}
+
+const MonolocusGenotype *  Group::getIndividualMonolocusGenotype(unsigned int individual_index, unsigned int locus_index) const throw (Exception) {
+	if (individual_index >= getNumberOfIndividuals())
+		throw IndexOutOfBoundsException("Group::getIndividualMonolocusGenotype: individual_index out of bounds.", individual_index, 0, getNumberOfIndividuals());
+	try {
+		return _individuals[individual_index]->getMonolocusGenotype(locus_index);
+	}
+	catch (NullPointerException & npe) {
+		throw NullPointerException("Group::getIndividualMonolocusGenotype: individual has no genotype.");
+	}
+	catch (IndexOutOfBoundsException & ioobe) {
+		throw IndexOutOfBoundsException("Group::getIndividualMonolocusGenotype: locus_index excedes the number of locus.", ioobe.getBadInteger(), ioobe.getBounds()[0], ioobe.getBounds()[1]);
 	}
 }

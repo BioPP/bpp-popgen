@@ -1,7 +1,7 @@
 /*
  * File Individual.cpp
  * Author : Sylvain Gaillard <yragael2001@yahoo.fr>
- * Last modification : Monday June 21 2004
+ * Last modification : Tuesday June 22 2004
  */
 
 #include "Individual.h"
@@ -13,6 +13,7 @@ Individual::Individual() {
 	_date = NULL;
 	_coord = NULL;
 	_locality = NULL;
+	_sequences = NULL;
 	_genotype = NULL;
 }
 
@@ -22,6 +23,7 @@ Individual::Individual(const string & id) {
 	_date = NULL;
 	_coord = NULL;
 	_locality = NULL;
+	_sequences = NULL;
 	_genotype = NULL;
 }
 
@@ -35,6 +37,8 @@ Individual::Individual(const string & id,
 	_date = new Date(date);
 	_coord = new Coord<double>(coord);
 	_locality = locality;
+	_sequences = NULL;
+	_genotype = NULL;
 }
 
 Individual::Individual(const Individual &ind) {
@@ -58,10 +62,11 @@ Individual::Individual(const Individual &ind) {
 	catch (NullPointerException) {
 		_locality = NULL;
 	}
-	if (ind.hasSequences()) {
-		vector<string> keys = ind.getSequencesKeys();
-		for (unsigned int i = 0 ; i < keys.size() ; i++)
-			_sequences[keys[i]] = new VectorSequenceContainer(* const_cast<const VectorSequenceContainer *>(ind.getVectorSequenceContainer(keys[i])));
+	try {
+		setSequences(* ind.getSequences());
+	}
+	catch (NullPointerException) {
+		_sequences = NULL;
 	}
 	this->_genotype = ind.hasGenotype() ? new Genotype(* ind.getGenotype()) : NULL;
 }
@@ -98,10 +103,11 @@ Individual & Individual::operator= (const Individual & ind) {
 	catch (NullPointerException) {
 		_locality = NULL;
 	}
-	if (ind.hasSequences()) {
-		vector<string> keys = ind.getSequencesKeys();
-		for (unsigned int i = 0 ; i < keys.size() ; i++)
-			_sequences[keys[i]] = new VectorSequenceContainer(* const_cast<const VectorSequenceContainer *>(ind.getVectorSequenceContainer(keys[i])));
+	try {
+		setSequences(* ind.getSequences());
+	}
+	catch (NullPointerException) {
+		_sequences = NULL;
 	}
 	this->_genotype = ind.hasGenotype() ? new Genotype(* ind.getGenotype()) : NULL;
 	return * this;
@@ -224,22 +230,12 @@ bool Individual::hasLocality() const {
 }
 
 // Sequences
-const VectorSequenceContainer * Individual::getVectorSequenceContainer(const string & id) const throw (Exception) {
-	map<string, VectorSequenceContainer *>::const_iterator it;
-	it = _sequences.find(id);
-	// Test existence of id in the map.
-	if (it == _sequences.end()) {
-		string mes = "Individual::getSequence: sequence set not found (" + id
-			+ ").";
-		throw(Exception(mes));
-	}
-	return const_cast<const VectorSequenceContainer *>(it->second);
-}
-
-void Individual::addSequence(const string & id, const Sequence & sequence)
+void Individual::addSequence(const Sequence & sequence)
 throw (Exception) {
+	if (_sequences == NULL)
+		_sequences = new VectorSequenceContainer(sequence.getAlphabet());
 	try {
-		_sequences[id]->addSequence(sequence);
+		_sequences->addSequence(sequence);
 	}
 	catch (AlphabetMismatchException & ame)
 	{
@@ -251,82 +247,181 @@ throw (Exception) {
 	}
 }
 
-const Sequence * Individual::getSequence(const string & id, const string & name)
-const throw(Exception){
-	map<string, VectorSequenceContainer *>::const_iterator it;
-	it = _sequences.find(id);
-	// Test existence of id in the map.
-	if (it == _sequences.end()) {
-		string mes = "Individual::getSequence: sequence set not found (" + id
-			+ ").";
-		throw(Exception(mes));
-	}
+const Sequence * Individual::getSequenceByName(const string & sequence_name)
+const throw (Exception) {
+	if (_sequences == NULL)
+		throw NullPointerException("Individual::getSequenceByName: no sequence data.");
 	try {
-		return const_cast<const VectorSequenceContainer *>(it->second)->getSequence(name);
+		return const_cast<const VectorSequenceContainer *>(_sequences)->getSequence(sequence_name);
 	}
 	catch (SequenceNotFoundException & snfe) {
-		throw(snfe);
+		throw SequenceNotFoundException("Individual::getSequenceByName: sequence_name not found.", snfe.getSequenceId());
 	}
 }
 
-const Sequence * Individual::getSequence(const string & id, unsigned int i)
-const throw(Exception) {
-	map<string, VectorSequenceContainer *>::const_iterator it;
-	it = _sequences.find(id);
-	// Test existence of id in the map.
-	if (it == _sequences.end()) {
-		string mes = "Individual::getSequence: sequence set not found (" + id
-			+ ").";
-		throw(Exception(mes));
-	}
+const Sequence * Individual::getSequenceByIndex(unsigned int sequence_index)
+const throw (Exception) {
+	if (_sequences == NULL)
+		throw NullPointerException("Individual::getSequenceByIndex: no sequence data.");
 	try {
-		return const_cast<const VectorSequenceContainer *>(it->second)->getSequence(i);
+		return const_cast<const VectorSequenceContainer *>(_sequences)->getSequence(sequence_index);
 	}
 	catch (IndexOutOfBoundsException & ioobe) {
-		throw(ioobe);
+		throw IndexOutOfBoundsException("Individual::getSequenceByIndex: sequence_index out of bouds.", ioobe.getBadInteger(), ioobe.getBounds()[0], ioobe.getBounds()[1]);
 	}
 }
 
-vector<string> Individual::getSequencesKeys() const {
-	vector<string> keys;
-	map<string, VectorSequenceContainer *>::const_iterator it;
-	for (it = _sequences.begin() ; it != _sequences.end() ; it++)
-		keys.push_back(it->first);
-	return keys;
-}
-
-bool Individual::hasSequences() const {
-	return _sequences.size() != 0;
-}
-
-unsigned int Individual::getNumberOfSequenceSet() const {
-	return _sequences.size();
-}
-
-unsigned int Individual::getNumberOfSequences(const string & id) const
-	throw (Exception) {
-	map<string, VectorSequenceContainer *>::const_iterator it;
-	it = _sequences.find(id);
-	// Test existence of id in the map.
-	if (it == _sequences.end()) {
-		string mes = "Individual::getSequence: sequence set not found (" + id
-			+ ").";
-		throw(Exception(mes));
+void Individual::deleteSequenceByName(const string & sequence_name) throw (Exception) {
+	if (_sequences == NULL)
+		throw NullPointerException("Individual::deleteSequenceByName: no sequence data.");
+	try {
+		_sequences->deleteSequence(sequence_name);
 	}
+	catch (SequenceNotFoundException & snfe) {
+		throw SequenceNotFoundException("Individual::deleteSequenceByName: sequence_name not found.", snfe.getSequenceId());
+	}
+}
+
+void Individual::deleteSequenceByIndex(unsigned int sequence_index) throw (Exception) {
+	if (_sequences == NULL)
+		throw NullPointerException("Individual::deleteSequenceByIndex: no sequence data.");
+	try {
+		_sequences->deleteSequence(sequence_index);
+	}
+	catch (IndexOutOfBoundsException & ioobe) {
+		throw IndexOutOfBoundsException("Individual::deleteSequenceByIndex: sequence_index out of bounds.", ioobe.getBadInteger(), ioobe.getBounds()[0], ioobe.getBounds()[1]);
+	}
+}
+
+vector<string> Individual::getSequencesNames() const throw (NullPointerException) {
+	if (_sequences == NULL)
+		throw NullPointerException("Individual::getSequencesNames: no sequence data.");
+	return _sequences->getSequencesNames();
+}
+
+unsigned int Individual::getSequencePosition(const string & sequence_name) const throw (Exception) {
+	if (_sequences == NULL)
+		throw NullPointerException("Individual::getSequencePosition: no sequence data.");
+	try {
+		return _sequences->getSequencePosition(sequence_name);
+	}
+	catch (SequenceNotFoundException & snfe) {
+		throw SequenceNotFoundException("Individual::getSequencePosition: sequence_name not found.", snfe.getSequenceId());
+	}
+}
 	
-	return const_cast<const VectorSequenceContainer *>(it->second)->getNumberOfSequences();
+bool Individual::hasSequences() const {
+	return (_sequences != NULL && _sequences->getNumberOfSequences() != 0);
+}
+
+unsigned int Individual::getNumberOfSequences() const throw (NullPointerException) {
+	if (_sequences == NULL)
+		throw NullPointerException("Individual::getNumberOfSequences: no sequence data.");
+	return const_cast<const VectorSequenceContainer *>(_sequences)->getNumberOfSequences();
+}
+
+void Individual::setSequences(const OrderedSequenceContainer & osc) {
+	if (_sequences != NULL)
+		delete(_sequences);
+	_sequences = new VectorSequenceContainer(osc);
+}
+
+const OrderedSequenceContainer * Individual::getSequences() const throw (NullPointerException) {
+	if (_sequences == NULL)
+		throw NullPointerException("Individual::getSequences: no sequence data.");
+	return _sequences;
 }
 
 // Genotype
 
-void Individual::addGenotype(const Genotype & genotype) {
+void Individual::addGenotype(const Genotype & genotype) throw (Exception) {
+	if (hasGenotype())
+		throw Exception("Individual::addGenotype: individual already has a genotype.");
 	_genotype = new Genotype(genotype);
 }
 
+void Individual::initGenotype(const AnalyzedLoci * analyzed_loci) throw (Exception) {
+	if (hasGenotype())
+		throw Exception("Individual::initGenotype: individual already has a genotype.");
+	try {
+		_genotype = new Genotype(analyzed_loci);
+	}
+	catch (NullPointerException) {
+		throw NullPointerException("Individual::initGenotype: analyzed_loci is NULL.");
+	}
+}
+
 const Genotype * Individual::getGenotype() const throw (NullPointerException) {
-		return _genotype;
+	if (!hasGenotype())
+		throw NullPointerException("Individual::getGenotype: individual has no genotype.");
+	return _genotype;
+}
+
+void Individual::deleteGenotype() {
+	if (hasGenotype()) delete _genotype;
 }
 
 bool Individual::hasGenotype() const {
 	return _genotype != NULL;
+}
+
+void Individual::setMonolocusGenotype(unsigned int locus_index, const MonolocusGenotype & monogen) throw (Exception) {
+	if (!hasGenotype())
+		throw NullPointerException("Individual::setMonolocusGenotype: individual has no genotype.");
+	try {
+		_genotype->setMonolocusGenotype(locus_index, monogen);
+	}
+	catch (IndexOutOfBoundsException & ioobe) {
+		throw IndexOutOfBoundsException("Individual::setMonolocusGenotype: locus_index out of boubds.", ioobe.getBadInteger(), ioobe.getBounds()[0], ioobe.getBounds()[1]);
+	}
+}
+
+void Individual::setMonolocusGenotypeByAlleleKey(unsigned int locus_index, const vector<unsigned int> allele_keys) throw (Exception) {
+	if (!hasGenotype())
+		throw NullPointerException("Individual::setMonolocusGenotypeByAlleleKey: individual has no genotype.");
+	try {
+		_genotype->setMonolocusGenotypeByAlleleKey(locus_index, allele_keys);
+	}
+	catch (IndexOutOfBoundsException & ioobe) {
+		throw IndexOutOfBoundsException("Individual::setMonolocusGenotypeByAlleleKey: locus_index out of bounds.", ioobe.getBadInteger(), ioobe.getBounds()[0], ioobe.getBounds()[1]);
+	}
+	catch (Exception) {
+		throw Exception("Individual::setMonolocusGenotypeByAlleleKey: allele_keys.size() doesn't match ploidy.");
+	}
+}
+
+void Individual::setMonolocusGenotypeByAlleleId(unsigned int locus_index, const vector<unsigned int> allele_id) throw (Exception) {
+	if (!hasGenotype())
+		throw NullPointerException("Individual::setMonolocusGenotypeByAlleleId: individual has no genotype.");
+	try {
+		_genotype->setMonolocusGenotypeByAlleleId(locus_index, allele_id);
+	}
+	catch (IndexOutOfBoundsException & ioobe) {
+		throw IndexOutOfBoundsException("Individual::setMonolocusGenotypeByAlleleId: locus_index out of bounds.", ioobe.getBadInteger(), ioobe.getBounds()[0], ioobe.getBounds()[1]);
+	}
+	catch (Exception) {
+		throw Exception("Individual::setMonolocusGenotypeByAlleleId: allele_keys.size() doesn't match ploidy.");
+	}
+}
+
+unsigned int Individual::getPloidy(unsigned int locus_index) throw (Exception) {
+	if (!hasGenotype())
+		throw NullPointerException("Individual::getPloidy: individual has no genotype.");
+	try {
+		return _genotype->getPloidy(locus_index);
+	}
+	catch (IndexOutOfBoundsException & ioobe) {
+		throw IndexOutOfBoundsException("Individual::getPloidy: locus_index out of bounds.", ioobe.getBadInteger(), ioobe.getBounds()[0], ioobe.getBounds()[1]);
+	}
+}
+
+const MonolocusGenotype * Individual::getMonolocusGenotype(unsigned int locus_index) throw (Exception) {
+	if (!hasGenotype())
+		throw NullPointerException("Individual::getMonolocusGenotype: individual has no genotype.");
+	try {
+		return _genotype->getMonolocusGenotype(locus_index);
+	}
+	catch (IndexOutOfBoundsException & ioobe) {
+		throw IndexOutOfBoundsException("Individual::getMonolocusGenotype: locus_index out of bounds.", ioobe.getBadInteger(), ioobe.getBounds()[0], ioobe.getBounds()[1]);
+	}
 }

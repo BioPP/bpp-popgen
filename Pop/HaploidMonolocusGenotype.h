@@ -1,7 +1,7 @@
 /*
  * File HaploidMonolocusGenotype.h
  * Author : Sylvain Gaillard <yragael2001@yahoo.fr>
- * Last modification : Monday June 07 2004
+ * Last modification : Tuesday June 22 2004
  */
 
 // Secured inclusion of header's file
@@ -39,15 +39,11 @@ class HaploidMonolocusGenotype : public MonolocusGenotype {
 		 * @{
 		 */
 		
-		/**
-		 * @brief Get the allele key.
-		 */
 		unsigned int getAlleleKey() const;
-
-		/**
-		 * @brief Get the ploidy of the locus.
-		 */
+		
 		unsigned int getPloidy() const;
+
+		unsigned int getSize() const;
 
 		/** @} */
 

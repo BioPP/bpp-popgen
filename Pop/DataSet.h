@@ -1,7 +1,7 @@
 /*
  * File DataSet.h
  * Author : Sylvain Gaillard <yragael2001@yahoo.fr>
- * Last modification : Friday June 18 2004
+ * Last modification : Tuesday June 22 2004
  */
 
 // Secured inclusion of header's file
@@ -125,16 +125,16 @@ class DataSet {
 		/**
 		 * @brief Get a group.
 		 *
-		 * @throw IndexOutOfBoundsException if index excedes the number of groups.
+		 * @throw IndexOutOfBoundsException if group_index excedes the number of groups.
 		 */
-		const Group * getGroup(unsigned int index) const throw (IndexOutOfBoundsException);
+		const Group * getGroup(unsigned int group_index) const throw (IndexOutOfBoundsException);
 
 		/**
 		 * @brief Delete a Group from the DataSet.
 		 *
-		 * @throw IndexOutOfBoundsException if index excedes the number of groups.
+		 * @throw IndexOutOfBoundsException if group_index excedes the number of groups.
 		 */
-		void deleteGroup(unsigned int index) throw (IndexOutOfBoundsException);
+		void deleteGroup(unsigned int group_index) throw (IndexOutOfBoundsException);
 
 		/**
 		 * @brief Get the number of Groups.
@@ -153,57 +153,311 @@ class DataSet {
 		 */
 		void mergeGroups(vector<unsigned int> & groups) throw (IndexOutOfBoundsException);
 
+//** Individuals manipulation ************************************************/
 		/**
 		 * @brief Add an Individual to a Group.
 		 *
-		 * @throw IndexOutOfBoundsException if group excedes the number of groups.
+		 * @throw IndexOutOfBoundsException if group_index excedes the number of groups.
 		 * @throw BadIdentifierException if the individual's id is already in use.
 		 */
-		void addIndividualToGroup(unsigned int group, const Individual & individual) throw (Exception);
+		void addIndividualToGroup(unsigned int group_index, const Individual & individual) throw (Exception);
+
+		/**
+		 * @brief Add an empty Individual to a Group.
+		 *
+		 * @throw IndexOutOfBoundsException if group_index excedes the number of groups.
+		 * @throw BadIdentifierException if the individual's id is already in use.
+		 */
+		void addEmptyIndividualToGroup(unsigned int group_index, const string & individual_id) throw (Exception);
+
+		/**
+		 * @brief Get the number of Individuals in a Group.
+		 *
+		 * @throw IndexOutOfBoundsException if group_index excedes the number of groups.
+		 */
+		unsigned int getNumberOfIndividualsInGroup(unsigned int group_index) const
+			throw (IndexOutOfBoundsException);
 
 		/**
 		 * @brief Get the position (index) of an Individual in a Group.
 		 *
-		 * @throw IndexOutOfBoundsException if group excedes the number of groups.
+		 * @throw IndexOutOfBoundsException if group_index excedes the number of groups.
 		 * @throw IndividualNotFoundException if individual_id is not found.
 		 */
-		unsigned int getIndividualPositionFromGroup(const string & individual_id, unsigned int group) const
+		unsigned int getIndividualPositionInGroup(unsigned int group_index, const string & individual_id) const
 			throw (Exception);
 
 		/**
 		 * @brief Get an Individual from a Group.
 		 *
-		 * @throw IndexOutOfBoundsException if group excedes the number of groups.
+		 * @throw IndexOutOfBoundsException if group_index excedes the number of groups.
 		 * @throw IndexOutOfBoundsException if individual_index excedes the number of individual in the group.
 		 */
-		const Individual * getIndividualByIndexFromGroup(unsigned int individual_index, unsigned int group) const
+		const Individual * getIndividualByIndexFromGroup(unsigned int group_index, unsigned int individual_index) const
 			throw (IndexOutOfBoundsException);
 
 		/**
 		 * @brief Get an Individual from a Group.
 		 *
-		 * @throw IndexOutOfBoundsException if group excedes the number of groups.
+		 * @throw IndexOutOfBoundsException if group_index excedes the number of groups.
 		 * @throw IndividualNotFoundException if individual_id is not found.
 		 */
-		const Individual * getIndividualByIdFromGroup(const string & individual_id, unsigned int group) const
+		const Individual * getIndividualByIdFromGroup(unsigned int group_index, const string & individual_id) const
 			throw (Exception);
 
 		/**
 		 * @brief Delete an Individual from a group.
 		 *
-		 * @throw IndexOutOfBoundsException if group excedes the number of groups.
+		 * @throw IndexOutOfBoundsException if group_index excedes the number of groups.
 		 * @throw IndexOutOfBoundsException if individual_index excedes the number of individual in the group.
 		 */
-		void deleteIndividualByIndexFromGroup(unsigned int individual_index, unsigned int group)
+		void deleteIndividualByIndexFromGroup(unsigned int group_index, unsigned int individual_index)
 			throw (IndexOutOfBoundsException);
 		
 		/**
 		 * @brief Delete an Individual from a group.
 		 *
-		 * @throw IndexOutOfBoundsException if group excedes the number of groups.
+		 * @throw IndexOutOfBoundsException if group_index excedes the number of groups.
 		 * @throw IndividualNotFoundException if individual_id is not found.
 		 */
-		void deleteIndividualByIdFromGroup(const string & individual_id, unsigned int group)
+		void deleteIndividualByIdFromGroup(unsigned int group_index, const string & individual_id)
+			throw (Exception);
+
+		/**
+		 * @brief Set the sex of an Individual in a Group.
+		 *
+		 * @throw IndexOutOfBoundsException if group_index excedes the number of groups.
+		 * @throw IndexOutOfBoundsException if individual_index excedes the number of individual in the group.
+		 */
+		void setIndividualSexInGroup(unsigned int group_index, unsigned int individual_index, const unsigned short sex)
+			throw (IndexOutOfBoundsException);
+
+		/**
+		 * @brief Get the sex of an Individual in a Group.
+		 *
+		 * @throw IndexOutOfBoundsException if group_index excedes the number of groups.
+		 * @throw IndexOutOfBoundsException if individual_index excedes the number of individual in the group.
+		 */
+		unsigned short getIndividualSexInGroup(unsigned int group_index, unsigned int individual_index) const
+			throw (IndexOutOfBoundsException);
+
+		/**
+		 * @brief Set the Date of an Individual in a Group.
+		 *
+		 * @throw IndexOutOfBoundsException if group_index excedes the number of groups.
+		 * @throw IndexOutOfBoundsException if individual_index excedes the number of individual in the group.
+		 */
+		void setIndividualDateInGroup(unsigned int group_index, unsigned int individual_index, const Date & date)
+			throw (IndexOutOfBoundsException);
+
+		/**
+		 * @brief Get the Date of an Individual in a Group.
+		 *
+		 * @throw IndexOutOfBoundsException if group_index excedes the number of groups.
+		 * @throw IndexOutOfBoundsException if individual_index excedes the number of individual in the group.
+		 * @throw NullPointerException if the individual has no date.
+		 */
+		const Date * getIndividualDateInGroup(unsigned int group_index, unsigned int individual_index) const
+			throw (Exception);
+
+		/**
+		 * @brief Set the coordinates of an Individual in a Group.
+		 *
+		 * @throw IndexOutOfBoundsException if group_index excedes the number of groups.
+		 * @throw IndexOutOfBoundsException if individual_index excedes the number of individual in the group.
+		 */
+		void setIndividualCoordInGroup(unsigned int group_index, unsigned int individual_index, const Coord<double> & coord)
+			throw (IndexOutOfBoundsException);
+
+		/**
+		 * @brief Get the coordinate of an Individual in a Group.
+		 *
+		 * @throw IndexOutOfBoundsException if group_index excedes the number of groups.
+		 * @throw IndexOutOfBoundsException if individual_index excedes the number of individual in the group.
+		 * @throw NullPointerException if the individual has no coordinate.
+		 */
+		const Coord<double> * getIndividualCoordInGroup(unsigned int group_index, unsigned int individual_index) const
+			throw (Exception);
+
+		/**
+		 * @brief Set the Locality of an Individual in a Group.
+		 *
+		 * @throw IndexOutOfBoundsException if group_index excedes the number of groups.
+		 * @throw IndexOutOfBoundsException if individual_index excedes the number of individual in the group.
+		 */
+		void setIndividualLocalityInGroup(unsigned int group_index, unsigned int individual_index, const Locality<double> * locality)
+			throw (IndexOutOfBoundsException);
+
+		/**
+		 * @brief Get the Locality of an Individual in a Group.
+		 *
+		 * @throw IndexOutOfBoundsException if group_index excedes the number of groups.
+		 * @throw IndexOutOfBoundsException if individual_index excedes the number of individual in the group.
+		 * @throw NullPointerException if the individual has no locality.
+		 */
+		const Locality<double> * getIndividualLocalityInGroup(unsigned int group_index, unsigned int individual_index) const
+			throw (Exception);
+
+		/**
+		 * @brief Add a Sequence to an Individual in a Group.
+		 *
+		 * @throw IndexOutOfBoundsException if group_index excedes the number of groups.
+		 * @throw IndexOutOfBoundsException if individual_index excedes the number of individual in the group.
+		 * @throw AlphabetMismatchException if the sequence's alphabet doesn't match the container's alphabet.
+		 * @throw BadIdentifierException if the sequence's name is already in use.
+		 */
+		void addIndividualSequenceInGroup(unsigned int group_index, unsigned int individual_index, const Sequence & sequence)
+			throw (Exception);
+
+		/**
+		 * @brief Get a Sequence from an Individual of a Group.
+		 *
+		 * @throw IndexOutOfBoundsException if group_index excedes the number of groups.
+		 * @throw IndexOutOfBoundsException if individual_index excedes the number of individual in the group.
+		 * @throw NullPointerException if the individual has no sequences.
+		 * @throw SequenceNotFoundException if sequence_name is not found.
+		 */
+		const Sequence * getIndividualSequenceByNameInGroup(unsigned int group_index, unsigned int individual_index, const string & sequence_name) const
+			throw (Exception);
+
+		/**
+		 * @brief Get a Sequence from an Individual of a Group.
+		 *
+		 * @throw IndexOutOfBoundsException if group_index excedes the number of groups.
+		 * @throw IndexOutOfBoundsException if individual_index excedes the number of individual in the group.
+		 * @throw NullPointerException if the individual has no sequences.
+		 * @throw IndexOutOfBoundsException if sequence_index excedes the number of sequences.
+		 */
+		const Sequence * getIndividualSequenceByIndexInGroup(unsigned int group_index, unsigned int individual_index, unsigned int sequence_index) const
+			throw (Exception);
+
+		/**
+		 * @brief Delete a Sequence of an Individual of a Group.
+		 *
+		 * @throw IndexOutOfBoundsException if group_index excedes the number of groups.
+		 * @throw IndexOutOfBoundsException if individual_index excedes the number of individual in the group.
+		 * @throw NullPointerException if the individual has no sequences.
+		 * @throw SequenceNotFoundException if sequence_name is not found.
+		 */
+		void deleteIndividualSequenceByNameInGroup(unsigned int group_index, unsigned int individual_index, const string & sequence_name)
+			throw (Exception);
+
+		/**
+		 * @brief Delete a Sequence of an Individual of a Group.
+		 *
+		 * @throw IndexOutOfBoundsException if group_index excedes the number of groups.
+		 * @throw IndexOutOfBoundsException if individual_index excedes the number of individual in the group.
+		 * @throw NullPointerException if the individual has no sequences.
+		 * @throw IndexOutOfBoundsException if sequence_index excedes the number of sequences.
+		 */
+		void deleteIndividualSequenceByIndexInGroup(unsigned int group_index, unsigned int individual_index, unsigned int sequence_index)
+			throw (Exception);
+
+		/**
+		 * @brief Get the Sequences' names from an Individual of a Group.
+		 *
+		 * @throw IndexOutOfBoundsException if group_index excedes the number of groups.
+		 * @throw IndexOutOfBoundsException if individual_index excedes the number of individual in the group.
+		 * @throw NullPointerException if the individual has no sequences.
+		 */
+		vector<string> getIndividualSequencesNamesInGroup(unsigned int group_index, unsigned int individual_index) const
+			throw (Exception);
+
+		/**
+		 * @brief Get the position (index) of a Sequence in an Individual of a Group.
+		 *
+		 * @throw IndexOutOfBoundsException if group_index excedes the number of groups.
+		 * @throw IndexOutOfBoundsException if individual_index excedes the number of individual in the group.
+		 * @throw NullPointerException if the individual has no sequences.
+		 * @throw SequenceNotFoundException if sequence_name is not found.
+		 */
+		unsigned int getIndividualSequencePositionInGroup(unsigned int group_index, unsigned int individual_index, const string & sequence_name) const
+			throw (Exception);
+
+		/**
+		 * @brief Get the number of Sequences in an Individual of a Group.
+		 *
+		 * @throw IndexOutOfBoundsException if group_index excedes the number of groups.
+		 * @throw IndexOutOfBoundsException if individual_index excedes the number of individual in the group.
+		 * @throw NullPointerException if the individual has no sequences.
+		 */
+		unsigned int getIndividualNumberOfSequencesInGroup(unsigned int group_index, unsigned int individual_index) const
+			throw (Exception);
+
+		/**
+		 * @brief Add a Genotype to an Individual in a Group.
+		 *
+		 * @throw IndexOutOfBoundsException if group_index excedes the number of groups.
+		 * @throw IndexOutOfBoundsException if individual_index excedes the number of individual in the group.
+		 * @throw Exception if the individual already has a genotype.
+		 */
+		void addIndividualGenotypeInGroup(unsigned int group_index, unsigned int individual_index, const Genotype & genotype)
+			throw (Exception);
+
+		/**
+		 * @brief Initialyze the genotype of an Individual in a Group.
+		 *
+		 * @throw IndexOutOfBoundsException if group_index excedes the number of groups.
+		 * @throw IndexOutOfBoundsException if individual_index excedes the number of individual in the group.
+		 * @throw NullPointerException if analyzed_loci is NULL.
+		 * @throw Exception if the individual already has a genotype.
+		 */
+		void initIndividualGenotypeInGroup(unsigned int group_index, unsigned int individual_index, const AnalyzedLoci * analyzed_loci)
+			throw (Exception);
+
+		/**
+		 * @brief Delete the Genotype of an Individual from a Group.
+		 *
+		 * @throw IndexOutOfBoundsException if group_index excedes the number of groups.
+		 * @throw IndexOutOfBoundsException if individual_index excedes the number of individual in the group.
+		 */
+		void deleteIndividualGenotypeInGroup(unsigned int group_index, unsigned int individual_index)
+			throw (IndexOutOfBoundsException);
+		
+		/**
+		 * @brief Set a MonolocusGenotype of an Individual from a group.
+		 *
+		 * @throw IndexOutOfBoundsException if group_index excedes the number of groups.
+		 * @throw IndexOutOfBoundsException if individual_index excedes the number of individual in the group.
+		 * @throw NullPointerException if the individual has no genotype.
+		 * @throw IndexOutOfBoundsException if locus_index excedes the number of locus.
+		 */
+		void setIndividualMonolocusGenotypeInGroup(unsigned int group_index, unsigned int individual_index, unsigned int locus_index, const MonolocusGenotype & monogen)
+			throw (Exception);
+
+		/**
+		 * @brief Set a MonolocusGenotype of an Individual from a group.
+		 *
+		 * @throw IndexOutOfBoundsException if group_index excedes the number of groups.
+		 * @throw IndexOutOfBoundsException if individual_index excedes the number of individual in the group.
+		 * @throw NullPointerException if the individual has no genotype.
+		 * @throw IndexOutOfBoundsException if locus_index excedes the number of locus.
+		 * @throw Exception if the ploidy doesn't match.
+		 */
+		void setIndividualMonolocusGenotypeByAlleleKeyInGroup(unsigned int group_index, unsigned int individual_index, unsigned int locus_index, const vector<unsigned int> allele_keys)
+			throw (Exception);
+
+		/**
+		 * @brief Set a MonolocusGenotype of an Individual from a group.
+		 *
+		 * @throw IndexOutOfBoundsException if group_index excedes the number of groups.
+		 * @throw IndexOutOfBoundsException if individual_index excedes the number of individual in the group.
+		 * @throw NullPointerException if the individual has no genotype.
+		 * @throw IndexOutOfBoundsException if locus_index excedes the number of locus.
+		 * @throw Exception if the ploidy doesn't match.
+		 */
+		void setIndividualMonolocusGenotypeByAlleleIdInGroup(unsigned int group_index, unsigned int individual_index, unsigned int locus_index, const vector<unsigned int> allele_id)
+			throw (Exception);
+
+		/**
+		 * @brief Get a MonolocusGenotype from an Individual of a Group.
+		 *
+		 * @throw IndexOutOfBoundsException if group_index excedes the number of groups.
+		 * @throw IndexOutOfBoundsException if individual_index excedes the number of individual in the group.
+		 * @throw NullPointerException if the individual has no genotype.
+		 * @throw IndexOutOfBoundsException if locus_index excedes the number of locus.
+		 */
+		const MonolocusGenotype * getIndividualMonolocusGenotypeInGroup(unsigned int group_index, unsigned int individual_index, unsigned int locus_index) const
 			throw (Exception);
 
 //** AnalyzedLoci manipulation ***********************************************/

@@ -1,7 +1,7 @@
 /*
  * File Genotype.h
  * Author : Sylvain Gaillard <yragael2001@yahoo.fr>
- * Last modification : Wednesday June 09 2004
+ * Last modification : Tuesday June 22 2004
  */
 
 // Secured inclusion of header's file
@@ -32,8 +32,10 @@ class Genotype {
 	public: // Constructors and Destructor
 		/**
 		 * @brief Build a Genotype linked to an AnalyzedLoci object.
+		 *
+		 * @throw NullPointerException if analyzed_loci is NULL.
 		 */
-		Genotype(AnalyzedLoci * analyzed_loci);
+		Genotype(const AnalyzedLoci * analyzed_loci) throw (NullPointerException);
 
 		/**
 		 * @brief Copy constructor.
@@ -82,7 +84,7 @@ class Genotype {
 		const AnalyzedLoci * getAnalyzedLoci();
 
 	protected:
-		AnalyzedLoci * _analyzedLoci;
+		const AnalyzedLoci * _analyzedLoci;
 		vector<MonolocusGenotype *> _loci;
 };
 #endif // _GENOTYPE_H_

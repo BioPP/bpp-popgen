@@ -1,7 +1,7 @@
 /*
  * File HaploidMonolocusGenotype.cpp
  * Author : Sylvain Gaillard <yragael2001@yahoo.fr>
- * Last modification : Monday June 07 2004
+ * Last modification : Tuesday June 22 2004
  */
 
 #include "HaploidMonolocusGenotype.h"
@@ -25,6 +25,10 @@ unsigned int HaploidMonolocusGenotype::getAlleleKey() const {
 
 unsigned int HaploidMonolocusGenotype::getPloidy() const {
 	return LocusInfo::HAPLOID;
+}
+
+unsigned int HaploidMonolocusGenotype::getSize() const {
+	return 1;
 }
 
 Clonable * HaploidMonolocusGenotype::clone() const {

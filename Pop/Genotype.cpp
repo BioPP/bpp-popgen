@@ -1,13 +1,15 @@
 /*
  * File Genotype.cpp
  * Author : Sylvain Gaillard <yragael2001@yahoo.fr>
- * Last modification : Friday June 18 2004
+ * Last modification : Tuesday June 22 2004
  */
 
 #include "Genotype.h"
 
 //** Class constructor: *******************************************************/
-Genotype::Genotype(AnalyzedLoci * analyzed_loci) {
+Genotype::Genotype(const AnalyzedLoci * analyzed_loci) throw (NullPointerException) {
+	if (analyzed_loci == NULL)
+		throw NullPointerException("Genotype::Genotype: analyzed_loci is NULL.");
 	_analyzedLoci = analyzed_loci;
 
 	// Set the _loci size to the right number of loci
@@ -77,8 +79,11 @@ void Genotype::setMonolocusGenotypeByAlleleId(unsigned int locus_index,
 	try {
 		setMonolocusGenotypeByAlleleKey(locus_index, allele_keys);
 	}
+	catch (IndexOutOfBoundsException & ioobe) {
+		throw IndexOutOfBoundsException("Genotype::setMonolocusGenotypeByAlleleId: locus_index out of bounds.", ioobe.getBadInteger(), ioobe.getBounds()[0], ioobe.getBounds()[1]);
+	}
 	catch (Exception & e) {
-		throw e;
+		throw Exception("Genotype::setMonolocusGenotypeByAlleleId: allele_keys.size() doesn't match ploidy.");
 	}
 }
 

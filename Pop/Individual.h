@@ -18,6 +18,7 @@
 
 // From SeqLib
 #include <Seq/Sequence.h>
+#include <Seq/OrderedSequenceContainer.h>
 #include <Seq/VectorSequenceContainer.h>
 #include <Seq/SequenceExceptions.h>
 
@@ -32,6 +33,9 @@
  * @brief The Individual class.
  *
  * This class is designed to store data on a single individual.
+ * This individual has only one sequence for each locus ... no information
+ * about diploid sequence data.
+ * See the no more in use MultiSeqIndividual documentation for an alternative.
  */
 class Individual : public Clonable {
 	public: // Constructors and destructor :
@@ -219,103 +223,174 @@ class Individual : public Clonable {
 		bool hasLocality() const;
 
 		/**
-		 * @brief Get a pointer to the VectorSequenceContainer at a named locus.
+		 * @brief Add a sequence to the Individual.
 		 *
-		 * @param id The id of the sequence set (i.e. locus).
-		 */
-		const VectorSequenceContainer * getVectorSequenceContainer(const string & id) const
-			throw (Exception);
-
-		/**
-		 * @brief Add a sequence in a named sequence set.
+		 * Creates the sequence container when adding the first sequence.
+		 * Otherwize add the sequence to the end of the sequence container.
 		 *
-		 * @param id The id of the sequence set.
 		 * @param sequence The sequence to add.
 		 * @throw AlphabetMismatchException if the sequence's alphabet doesn't match the container's alphabet.
 		 * @throw BadIdentifierException if sequence's name is already in use.
 		 */
-		void addSequence(const string & id, const Sequence & sequence)
+		void addSequence(const Sequence & sequence)
 			throw (Exception);
 		
 		/**
-		 * @brief Get a named sequence from a named sequence set.
+		 * @brief Get a sequence by its name.
 		 *
-		 * @param id The id of the sequence set.
-		 * @param name The name of the sequence.
-		 *
+		 * @param sequence_name The name of the sequence.
 		 * @return A pointer to the sequence.
+		 * @throw NullPointerException if there is no sequence container defined.
+		 * @throw SequenceNotFoundException if sequence_name is not found.
 		 */
-		const Sequence * getSequence(const string & id, const string & name)
+		const Sequence * getSequenceByName(const string & sequence_name)
 			const throw(Exception);
 
 		/**
-		 * @brief Get an indexed sequence from a named sequence set.
+		 * @brief Get a sequence by its position (index).
 		 *
-		 * @param id The id of the sequence set.
-		 * @param i The index of the sequence in the sequence set.
-		 *
-		 * @return A pointer tothe sequence.
+		 * @param sequence_index The index of the sequence in the sequence set.
+		 * @return A pointer to the sequence.
+		 * @throw NullPointerException if there is no sequence container defined.
+		 * @throw IndexOutOfBoundsException if sequence_index excedes the number of sequences.
 		 */
-		const Sequence * getSequence(const string & id, const unsigned int i)
+		const Sequence * getSequenceByIndex(const unsigned int sequence_index)
 			const throw(Exception);
 		 
 		/**
-		 * @brief Get the sequence set ids.
+		 * @brief Delete a sequence.
 		 *
-		 * @return All the keys of the sequence sets in a vector.
+		 * @param sequence_name The name of the sequence.
+		 * @throw NullPointerException if there is no sequence container defined.
+		 * @throw SequenceNotFoundException if sequence_name is not found.
 		 */
-		vector<string> getSequencesKeys() const;
+		void deleteSequenceByName(const string & sequence_name) throw (Exception);
 
 		/**
-		 * @brief Remove a named sequence from a named sequence set.
+		 * @brief Delete a sequence.
 		 *
-		 * @param id The id of the sequence set.
-		 * @param name The name of the sequence.
-		 *
-		 * @return A pointer to a copy of the removed sequence.
+		 * @param sequence_index The index of the sequence.
+		 * @throw NullPointerException if there is no sequence container defined.
+		 * @throw IndexOutOfBoundsException if sequence_index excedes the number of sequences.
 		 */
-		Sequence * removeSequence(const string & id, const string & name);
-
-		/**
-		 * @brief Delete a named sequence from a named sequence set.
-		 *
-		 * @param id The id of the sequence set.
-		 * @param name The name of the sequence.
-		 */
-		void deleteSequence(const string & id, const string & name);
-
+		void deleteSequenceByIndex(unsigned int sequence_index) throw (Exception);
+		
 		/**
 		 * @brief Tell if the Individual has some sequences.
+		 *
+		 * @return TRUE if the individual has at least one sequence.
+		 * @return FALSE if the container is empty or undifined.
 		 */
 		bool hasSequences() const;
 
 		/**
-		 * @brief Count the number of sequece set.
+		 * @brief Get the sequences' names.
+		 *
+		 * @return All the sequences' names of the individual in a vector of string.
+		 * @throw NullPointerException if there is no sequence container defined.
 		 */
-		unsigned int getNumberOfSequenceSet() const;
+		vector<string> getSequencesNames() const throw (NullPointerException);
 
 		/**
-		 * @brief Get the number of sequences in a sequence set.
+		 * @brief Get the position (index) of a sequence.
+		 *
+		 * @throw NullPointerException if there is no sequence container defined.
+		 * @throw SequenceNotFoundException if sequence_name is not found.
 		 */
-		unsigned int getNumberOfSequences(const string & id) const
-			throw (Exception);
+		unsigned int getSequencePosition(const string & sequence_name) const throw (Exception);
+		
+		/**
+		 * @brief Get the number of sequences.
+		 *
+		 * @throw NullPointerException if there is no sequence container defined.
+		 */
+		unsigned int getNumberOfSequences() const throw (NullPointerException);
 
+		/**
+		 * @brief Set all the sequences with an ordered sequence container.
+		 */
+		void setSequences(const OrderedSequenceContainer & osc);
+
+		/**
+		 * @brief Get a pointer to the sequence container.
+		 *
+		 * @throw NullPointerException if there is no sequence container defined.
+		 */
+		const OrderedSequenceContainer * getSequences() const throw (NullPointerException);
+		
 		/**
 		 * @brief Add a genotype.
 		 *
 		 * @param genotype The Genotype to add.
 		 */
-		void addGenotype(const Genotype & genotype);
+		void addGenotype(const Genotype & genotype) throw (Exception);
+
+		/**
+		 * @brief Init the genotype.
+		 *
+		 * @throw NullPointerException if analyzed_loci is NULL.
+		 */
+		void initGenotype(const AnalyzedLoci * analyzed_loci) throw (Exception);
 
 		/**
 		 * @brief Get the genotype.
 		 */
 		const Genotype * getGenotype() const throw (NullPointerException);
+		
+		/**
+		 * @brief Delete the genotype of the individual.
+		 */
+		void deleteGenotype();
 
 		/**
 		 * @brief Tell if the Individual has a Genotype.
 		 */
 		bool hasGenotype() const;
+
+		/**
+		 * @brief Set a MonolocusGenotype.
+		 *
+		 * @throw NullPointerException if there is no genotype defined.
+		 * @throw IndexOutOfBoundsException if locus_index excedes the number of loci.
+		 */
+		void setMonolocusGenotype(unsigned int locus_index, const MonolocusGenotype & monogen)
+			throw (Exception);
+
+		/**
+		 * @brief Set a MonolocusGenotype.
+		 *
+		 * @throw NullPointerException if there is no genotype defined.
+		 * @throw IndexOutOfBoundsException if locus_index excedes the number of loci.
+		 * @throw Exception if the ploidy doesn't match.
+		 */
+		void setMonolocusGenotypeByAlleleKey(unsigned int locus_index, const vector<unsigned int> allele_keys)
+			throw (Exception);
+
+		/**
+		 * @brief Set a MonolocusGenotype.
+		 *
+		 * @throw NullPointerException if there is no genotype defined.
+		 * @throw IndexOutOfBoundsException if locus_index excedes the number of loci.
+		 * @throw Exception if the ploidy doesn' match.
+		 */
+		void setMonolocusGenotypeByAlleleId(unsigned int locus_index, const vector<unsigned int> allele_id)
+			throw (Exception);
+
+		/**
+		 * @brief Get the ploidy of a locus.
+		 *
+		 * @throw NullPointerException if there is no genotype defined.
+		 * @throw IndexOutOfBoundsException if locus_index excedes the number of loci.
+		 */
+		unsigned int getPloidy(unsigned int locus_index) throw (Exception);
+
+		/**
+		 * @brief Get a MonolocusGenotype.
+		 *
+		 * @throw NullPointerException if there is no genotype defined.
+		 * @throw IndexOutOfBoundsException if locus_index excedes the number of loci.
+		 */
+		const MonolocusGenotype * getMonolocusGenotype(unsigned int locus_index) throw (Exception);
 	
 	protected:
 		string _id;
@@ -323,7 +398,7 @@ class Individual : public Clonable {
 		Date * _date;
 		Coord<double> * _coord;
 		const Locality<double> * _locality;
-		map<string,VectorSequenceContainer *> _sequences;
+		VectorSequenceContainer * _sequences;
 		Genotype * _genotype;
 };
 #endif // _INDIVIDUAL_H_

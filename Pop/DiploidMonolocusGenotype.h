@@ -1,7 +1,7 @@
 /*
  * File DiploidMonolocusGenotype.h
  * Author : Sylvain Gaillard <yragael2001@yahoo.fr>
- * Last modification : Monday June 07 2004
+ * Last modification : Tuesday June 22 2004
  */
 
 // Secured inclusion of header's file
@@ -58,15 +58,11 @@ class DiploidMonolocusGenotype : public MonolocusGenotype {
 		 * @{
 		 */
 		
-		/**
-		 * @brief Get the first allele key.
-		 */
 		unsigned int getAlleleKey() const;
 
-		/**
-		 * @brief Get the ploidy of the locus.
-		 */
 		unsigned int getPloidy() const;
+
+		unsigned int getSize() const;
 
 		/** @} */
 
@@ -83,6 +79,6 @@ class DiploidMonolocusGenotype : public MonolocusGenotype {
 
 		/** @} **/
 	protected:
-		vector<unsigned int> _allelekeys;
+		vector<unsigned int> _allele_keys;
 };
 #endif // _DIPLOIDMONOLOCUSGENOTYPE_H_
