@@ -1,15 +1,19 @@
 /*
  * File PoplibIO.cpp
  * Author : Sylvain Gaillard <yragael2001@yahoo.fr>
- * Last modification : Monday July 19 2004
+ * Last modification : Wednesday July 21 2004
  */
 
 #include "PoplibIO.h"
 
-const string PoplibIO::WHITESPACE = "WHITESPACE";
-const string PoplibIO::TAB = "TAB";
-const string PoplibIO::COMA = "COMA";
-const string PoplibIO::SEMICOLON = "SEMICOLON";
+const string PoplibIO::WHITESPACE = string("WHITESPACE");
+const string PoplibIO::TAB = string("TAB");
+const string PoplibIO::COMA = string("COMA");
+const string PoplibIO::SEMICOLON = string("SEMICOLON");
+
+const string PoplibIO::DIPLOID = string("DIPLOID");
+const string PoplibIO::HAPLOID = string("HAPLOID");
+const string PoplibIO::HAPLODIPLOID = string("HAPLODIPLOID");
 
 PoplibIO::PoplibIO() {
 	setDataSeparator(WHITESPACE);
@@ -91,6 +95,7 @@ void PoplibIO::read(istream & is, DataSet & data_set) throw (Exception) {
 	stringstream tmp_ss;
 	VectorSequenceContainer * tmp_vsc = NULL;
 	Locality<double> tmp_locality("tmp");
+	vector<LocusInfo> tmp_locinf;
 	Individual tmp_indiv;
 	bool section1 = true;
 	bool section2 = true;
@@ -175,8 +180,34 @@ void PoplibIO::read(istream & is, DataSet & data_set) throw (Exception) {
 		}
 
 		// Loci section ---------------------------------------
-		if (current_section == 4) {
+		if (current_section == 4 && previous_section <4) {
+			if (temp.find(">", 0) != string::npos) {
+				_parseLoci(temp_v, tmp_locinf);
+				temp_v.clear();
+				temp_v.push_back(temp);
+			}
+			else
+				temp_v.push_back(temp);
+		}
+		if (section4 && current_section != 4 && previous_section == 4) {
 			section4 = false;
+			_parseLoci(temp_v, tmp_locinf);
+			temp_v.clear();
+			AnalyzedLoci tmp_anloc(tmp_locinf.size());
+			for (unsigned int i = 0 ; i < tmp_locinf.size() ; i++)
+				tmp_anloc.setLocusInfo(i, tmp_locinf[i]);
+			cout << "tmp_anloc.getNumberOfLoci() = " << tmp_anloc.getNumberOfLoci() << endl;
+			for (unsigned int i = 0 ; i < tmp_anloc.getNumberOfLoci() ; i++)
+				cout << "Locus " << TextTools::toString(i) << " : " << tmp_anloc.getLocusInfoAtPosition(i)->getName() << endl;
+			data_set.setAnalyzedLoci(tmp_anloc);
+			try {
+				cout << "data_set.getNumberOfLoci() = " << data_set.getNumberOfLoci() << endl;
+			}
+			catch (Exception & e) {
+				cerr << "### ERROR ###" << endl << e.what() << endl;
+			}
+			cout << "DataSet OK" << endl;
+			cout << "_______________________________" << endl;
 		}
 		
 		// Individuals section --------------------------------
@@ -229,7 +260,7 @@ void PoplibIO::_parseLocality(const vector<string> & in, DataSet & data_set) {
 	string temp;
 	while (!is.eof() && in.size() != 0) {
 		temp = FileTools::getNextLine(is);
-		//cout << "_parseLocality: " << temp << endl;
+//		cout << "_parseLocality: " << temp << endl;
 		if (temp.find(">", 0) != string::npos) {
 			tmp_locality.setName(TextTools::removeSurroundingWhiteSpaces(string(temp.begin() + 1, temp.end())));
 		}
@@ -251,12 +282,43 @@ void PoplibIO::_parseSequence(const vector<string> & in, VectorSequenceContainer
 	ifasta.read(is, vsc);
 }
 
+void PoplibIO::_parseLoci(const vector<string> & in, vector<LocusInfo> & locus_info) {
+	stringstream is;
+	for (unsigned int i = 0 ; i < in.size() ; i++)
+		is << in[i] << endl;
+	string locinf_name = "";
+	unsigned int locinf_ploidy = LocusInfo::DIPLOID;
+	string temp;
+	while (!is.eof()) {
+		temp = FileTools::getNextLine(is);
+		if (temp.find(">", 0) != string::npos) {
+			locinf_name = TextTools::removeSurroundingWhiteSpaces(string(temp.begin() + 1, temp.end()));
+		}
+		if (temp.find("Ploidy", 0) != string::npos) {
+			vector<string> v = _getValues(temp, "=");
+			string tmp_str_ploidy = TextTools::removeSurroundingWhiteSpaces(v[0]);
+			tmp_str_ploidy = TextTools::toUpper(tmp_str_ploidy);
+			if (tmp_str_ploidy == DIPLOID)
+				locinf_ploidy = LocusInfo::DIPLOID;
+			else if (tmp_str_ploidy == HAPLOID)
+				locinf_ploidy = LocusInfo::HAPLOID;
+			else if (tmp_str_ploidy == HAPLODIPLOID)
+				locinf_ploidy = LocusInfo::HAPLODIPLOID;
+		}
+		if (temp.find("NbAlleles", 0) != string::npos) {
+			// not used ...
+		}
+	}
+	if (locinf_name != "")
+		locus_info.push_back(LocusInfo(locinf_name, locinf_ploidy));
+}
+
 void PoplibIO::_parseIndividual(const vector<string> & in, DataSet & data_set, const VectorSequenceContainer & vsc) {
 	Individual tmp_indiv;
 	unsigned int tmp_group_pos = 0;
 	string temp = "";
-	for (unsigned int i = 0 ; i < in.size() ; i++)
-		cout << "_parsIndiv: " << in[i] << endl;
+//	for (unsigned int i = 0 ; i < in.size() ; i++)
+//		cout << "_parsIndiv: " << in[i] << endl;
 	for (unsigned int i = 0 ; i < in.size() ; i++) {
 		// Get Individual Id
 		if (in[i].find(">", 0) != string::npos) {
@@ -270,31 +332,33 @@ void PoplibIO::_parseIndividual(const vector<string> & in, DataSet & data_set, c
 				data_set.addEmptyGroup(tmp_group_pos);
 			}
 			catch (...) {}
-			try {
+/*			try {
 			cout << "Group id : " << tmp_group_pos << endl;
 			cout << "Group pos: " << data_set.getGroupPosition(tmp_group_pos) << endl;
 			}
 			catch (Exception & e) {
 				cout << e.what() << endl;
 			}
+*/
 		}
 		// Find the locality
 		if (in[i].find("Locality", 0) != string::npos) {
 			temp = in[i];
 			unsigned int sep_pos = temp.find("=", 0);
 			string loc_name = TextTools::removeSurroundingWhiteSpaces(string(temp.begin()+sep_pos+1, temp.end()));
-			cout << "### Locality: " << loc_name;
+/*			cout << "### Locality: " << loc_name;
 			try {
 				cout << " - position: " << data_set.getLocalityPosition(loc_name) << endl;
 			}
 			catch (Exception & e) {
 				cout << endl << e.what() << endl;
 			}
+*/
 			try {
 				tmp_indiv.setLocality(data_set.getLocalityByName(loc_name));
 			}
 			catch (Exception & e) {
-				cout << "l.192:" << e.what() << endl;
+//				cerr << "l.192:" << e.what() << endl;
 			}
 		}
 		// Set the coord
@@ -310,7 +374,7 @@ void PoplibIO::_parseIndividual(const vector<string> & in, DataSet & data_set, c
 			d = TextTools::toInt(string(tmp_date.begin(), tmp_date.begin() + 2));
 			m = TextTools::toInt(string(tmp_date.begin() + 2, tmp_date.begin() + 4));
 			y = TextTools::toInt(string(tmp_date.begin() + 4, tmp_date.end()));
-			cout << "l.210:" << Date(d, m, y).getDateStr() << endl;
+//			cout << "l.210:" << Date(d, m, y).getDateStr() << endl;
 			tmp_indiv.setDate(Date(d, m, y));
 		}
 		// Now the sequences
@@ -319,29 +383,29 @@ void PoplibIO::_parseIndividual(const vector<string> & in, DataSet & data_set, c
 			temp = in[i];
 			vector<string> seq_pos_str = _getValues(temp, "");
 			for (unsigned int j = 0 ; j < seq_pos_str.size() ; j++) {
-				cout << "_parseIndiv l.308 " <<  seq_pos_str[j];
+//				cout << "_parseIndiv l.308 " <<  seq_pos_str[j];
 				try {
 					if (seq_pos_str[j] != getMissingDataSymbol()) {
-						cout << endl;
+//						cout << endl;
 						tmp_indiv.addSequence(j, *vsc.getSequence(TextTools::toInt(seq_pos_str[j])-1));
-						cout << tmp_indiv.getNumberOfSequences();
+//						cout << tmp_indiv.getNumberOfSequences();
 					}
-					else
-						cout << " is missing symbol !" << endl;
+//					else
+//						cout << " is missing symbol !" << endl;
 				}
 				catch (Exception & e) {
-					cout << e.what() << endl;
+//					cout << e.what() << endl;
 				}
 			}
 		}
 	}
-	cout << "nb grps : " << data_set.getNumberOfGroups() << endl;
+//	cout << "nb grps : " << data_set.getNumberOfGroups() << endl;
 	if (tmp_indiv.getId() != "") {
 		try {
 			data_set.addIndividualToGroup(data_set.getGroupPosition(tmp_group_pos), tmp_indiv);
 		}
 		catch (Exception & e) {
-			cout << "Et de une : " << e.what() << endl;
+//			cout << "Et de une : " << e.what() << endl;
 		}
 	}
 }

@@ -1,7 +1,7 @@
 /*
  * File PoplibIO.h
  * Author : Sylvain Gaillard <yragael2001@yahoo.fr>
- * Last modification : Thursday July 08 2004
+ * Last modification : Wednesday July 21 2004
  */
 
 // Secured inclusion of header's file
@@ -30,6 +30,10 @@ class PoplibIO : public AbstractIDataSet, public AbstractODataSet {
 		static const string TAB;
 		static const string COMA;
 		static const string SEMICOLON;
+
+		static const string DIPLOID;
+		static const string HAPLOID;
+		static const string HAPLODIPLOID;
 
 	public: // Constructor and destructor
 		PoplibIO();
@@ -130,7 +134,7 @@ class PoplibIO : public AbstractIDataSet, public AbstractODataSet {
 		void _parseGeneral(const vector<string> & in, DataSet & data_set);
 		void _parseLocality(const vector<string> & in, DataSet & data_set);
 		void _parseSequence(const vector<string> & in, VectorSequenceContainer & vsc);
-		void _parseLoci(const vector<string> & in, DataSet & data_set);
+		void _parseLoci(const vector<string> & in, vector<LocusInfo> & locus_info);
 		void _parseIndividual(const vector<string> & in, DataSet & data_set, const VectorSequenceContainer & vsc);
 };
 
