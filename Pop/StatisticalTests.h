@@ -32,7 +32,7 @@ class StatisticalTests
          * Gaps are consider as mutations so if you want number of
 	 * polymorphic site, you have to give a NonGapSiteIterator
 	 *
-         * @param a SiteIterator
+         * @param si a SiteIterator
          */ 
 	 static int polymorphicSiteNumber( SiteIterator & si );
 
@@ -41,29 +41,29 @@ class StatisticalTests
          *
 	 * Gaps are consider as mutation variant
 	 *
-         * @param a SiteContainer
+         * @param v a SiteContainer
          */
 	 static int polymorphicSiteNumber( const SiteContainer & v );
 
         /**
          * @brief Compute diversity estimator Theta of Watterson (1975)
          *
-         * @param a SiteContainer
+         * @param v a SiteContainer
          */
 	 static double watterson75( const SiteContainer & v );
 
         /**
          * @brief Compute diversity estimator Theta of Tajima (1983)
          *
-         * @param a SiteContainer
+         * @param v a SiteContainer
          */ 
 	 static double tajima83( const SiteContainer & v );
 
         /**
          * @brief Compute diversity estimator Theta of Watterson (1975)
          *
-         * @param a PolymorphismSequenceContainer
-	 * @param gapflag: flag set by default to true if you don't want to
+         * @param v a PolymorphismSequenceContainer
+	 * @param gapflag flag set by default to true if you don't want to
 	 * take gap into account
          */	    
 	 static double watterson75( const PolymorphismSequenceContainer & v, bool gapflag = true );
@@ -71,11 +71,11 @@ class StatisticalTests
         /**
          * @brief Compute diversity estimator Theta of Tajima (1983)
          *
-         * @param a PolymorphismSequenceContainer
-	 * @param gapflag: flag set by default to true if you don't want to
+         * @param v a PolymorphismSequenceContainer
+	 * @param gapflag flag set by default to true if you don't want to
 	 * take gap into account
          */ 
-	 static double tajima83( const PolymorphismSequenceContainer & v, bool gapflag = true );	
+	 static double tajima83( const PolymorphismSequenceContainer & v, bool gapflag = true );
 	        
         /*******************************************************************************/
 };

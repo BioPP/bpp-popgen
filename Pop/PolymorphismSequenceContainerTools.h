@@ -45,8 +45,7 @@ class PolymorphismSequenceContainerTools
          * @brief Extract ingroup sequences from a PolymorphismSequenceContainer and create a new
 	 * one.
          *
-         * @param path Path to the Mase+ file
-         * @param alpha Sequence Alphabet
+         * @param psc a PolymorphismSequenceContainer reference
          */
 	 static PolymorphismSequenceContainer * extractIngroup (const PolymorphismSequenceContainer & psc ) throw (Exception);
         /*******************************************************************************/
