@@ -1,7 +1,7 @@
 /*
  * File PolymorphismMultiGContainerTools.h
  * Author : Sylvain Gailard <yragael2001@yahoo.fr>
- * Last modification : Wednesday September 22 2004
+ * Last modification : Friday September 24 2004
  *
  * Copyright (C) 2004 Sylvain Gaillard and the
  *                    PopGenLib Development Core Team
@@ -44,19 +44,6 @@ class PolymorphismMultiGContainerTools {
 	public:
 		static PolymorphismMultiGContainer permutMultiG(const PolymorphismMultiGContainer & pmgc);
 
-		template<class T> static vector<T> getSample(const vector<T> & v, unsigned int size) {
-			vector<unsigned int> hat;
-			for (unsigned int i = 0 ; i < v.size() ; i++)
-				hat.push_back(i);
-			vector<T> sample;
-			for (unsigned int i = 0 ; i < size ; i++) {
-				unsigned int pos = RandomTools::giveIntRandomNumberBetweenZeroAndEntry(hat.size());
-				sample.push_back(v[hat[pos]]);
-				hat[pos] = hat[hat.size() - 1];
-				hat.pop_back();
-			}
-			return sample;
-		}
 };
 
 #endif // _POLYMORPHISMMULTIGCONTAINERTOOLS_H_

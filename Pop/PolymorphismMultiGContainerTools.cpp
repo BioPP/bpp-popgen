@@ -1,7 +1,7 @@
 /*
  * File PolymorphismMultiGContainerTools.cpp
  * Author : Sylvain Gailard <yragael2001@yahoo.fr>
- * Last modification : Wednesday September 22 2004
+ * Last modification : Friday September 24 2004
  *
  * Copyright (C) 2004 Sylvain Gaillard and the
  *                    PopGenLib Development Core Team
@@ -32,7 +32,7 @@ PolymorphismMultiGContainer PolymorphismMultiGContainerTools::permutMultiG(const
 	vector<unsigned int> groups;
 	for (unsigned int i = 0 ; i < permuted_pmgc.size() ; i++)
 		groups.push_back(permuted_pmgc.getGroupId(i));
-	groups = getSample(groups, groups.size());
+	groups = RandomTools::getSample(groups, groups.size());
 	for (unsigned int i = 0 ; i < permuted_pmgc.size() ; i++)
 		permuted_pmgc.setGroupId(i, groups[i]);
 	return permuted_pmgc;
