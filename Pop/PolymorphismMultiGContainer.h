@@ -1,12 +1,15 @@
 /*
  * File PolymorphismMultiGContainer.h
  * Author : Sylvain Gaillard <yragael2001@yahoo.fr>
- * Last modification : Thursday July 22 2004
+ * Last modification : Friday July 23 2004
  */
 
 // Secured inclusion of header's file
 #ifndef _POLYMORPHYSMMULTIGCONTAINER_H_
 #define _POLYMORPHYSMMULTIGCONTAINER_H_
+
+// From C library
+#include <cmath>
 
 // From STL
 #include <vector>
@@ -135,11 +138,18 @@ class PolymorphismMultiGContainer : public Clonable {
 		vector<unsigned int> getAllelesIdsForAllGroups(unsigned int locus_position) const throw (IndexOutOfBoundsException);
 
 		/**
-		 * @brief Count the number of allele at a locus for a set of groups.
+		 * @brief Get the alleles' id at one locus for a set of groups.
 		 *
 		 * @throw IndexOutOfBoundsException if locus_position excedes the number of loci of one MultilocusGenotype.
 		 */
-		unsigned int countAllelesForGroups(unsigned int locus_position, const set<unsigned int> & groups) const throw (IndexOutOfBoundsException);
+		vector<unsigned int> getAllelesIdsForGroups(unsigned int locus_position, const set<unsigned int> & groups) const throw (IndexOutOfBoundsException);
+
+		/**
+		 * @brief Count the number of allele (gametes) at a locus for a set of groups.
+		 *
+		 * @throw IndexOutOfBoundsException if locus_position excedes the number of loci of one MultilocusGenotype.
+		 */
+		unsigned int countGametesForGroups(unsigned int locus_position, const set<unsigned int> & groups) const throw (IndexOutOfBoundsException);
 
 		/**
 		 * @brief Count the different alleles at one locus.
@@ -167,14 +177,16 @@ class PolymorphismMultiGContainer : public Clonable {
 		 * @brief Get the alleles frequencies at one locus for all groups.
 		 *
 		 * @throw IndexOutOfBoundsException if locus_position excedes the number of loci of one MultilocusGenotype.
+		 * @throw ZeroDivisionException if the number of considered alleles = 0.
 		 */
-		map<unsigned int, double> getAllelesFrqForAllGroups(unsigned int locus_position) const throw (IndexOutOfBoundsException);
+		map<unsigned int, double> getAllelesFrqForAllGroups(unsigned int locus_position) const throw (Exception);
 
 		/**
 		 * @brief Get the alleles frequencies at one locus for one group.
 		 *
 		 * @throw IndexOutOfBoundsException if locus_position excedes the number of loci of one MultilocusGenotype.
 		 * @throw GroupNotFoundException if group is not found in the container.
+		 * @throw ZeroDivisionException if the number of considered alleles = 0.
 		 */
 		map<unsigned int, double> getAllelesFrqForOneGroup(unsigned int locus_position, unsigned int group) const throw (Exception);
 		
@@ -182,8 +194,9 @@ class PolymorphismMultiGContainer : public Clonable {
 		 * @brief Get the alleles frequencies at one locus for a set of groups.
 		 *
 		 * @throw IndexOutOfBoundsException if locus_position excedes the number of loci of one MultilocusGenotype.
+		 * @throw ZeroDivisionException if the number of considered alleles = 0.
 		 */
-		map<unsigned int, double> getAllelesFrqForGroups(unsigned int locus_position, const set<unsigned int> & groups) const throw (IndexOutOfBoundsException);
+		map<unsigned int, double> getAllelesFrqForGroups(unsigned int locus_position, const set<unsigned int> & groups) const throw (Exception);
 
 		/**
 		 * @brief Count the number of non-missing data at a given locus.
@@ -255,14 +268,16 @@ class PolymorphismMultiGContainer : public Clonable {
 		 * @brief Get the heterozygous frequencies for each allele at a locus.
 		 *
 		 * @throw IndexOutOfBoundsException if locus_position excedes the number of loci of one MultilocusGenotype.
+		 * @throw ZeroDivisionException if the number of considered alleles = 0.
 		 */
-		map<unsigned int, double> getHeterozygousFrqForAllGroups(unsigned int locus_position) const throw (IndexOutOfBoundsException);
+		map<unsigned int, double> getHeterozygousFrqForAllGroups(unsigned int locus_position) const throw (Exception);
 
 		/**
 		 * @brief Get the heterozygous frequencies for each allele at a locus for one group.
 		 *
 		 * @throw IndexOutOfBoundsException if locus_position excedes the number of loci of one MultilocusGenotype.
 		 * @throw GroupNotFoundException if group is not found in the container.
+		 * @throw ZeroDivisionException if the number of considered alleles = 0.
 		 */
 		map<unsigned int, double> getHeterozygousFrqForOneGroup(unsigned int locus_position, unsigned int group) const throw (Exception);
 
@@ -270,16 +285,18 @@ class PolymorphismMultiGContainer : public Clonable {
 		 * @brief Get the heterozygous frequencies for each allele at a locus in a set of groups.
 		 *
 		 * @throw IndexOutOfBoundsException if locus_position excedes the number of loci of one MultilocusGenotype.
+		 * @throw ZeroDivisionException if the number of considered alleles = 0.
 		 */
-		map<unsigned int, double> getHeterozygousFrqForGroups(unsigned int locus_position, const set<unsigned int> & groups) const throw (IndexOutOfBoundsException);
+		map<unsigned int, double> getHeterozygousFrqForGroups(unsigned int locus_position, const set<unsigned int> & groups) const throw (Exception);
 
 		/**
-		 * @brief Compute the opserved heterozygosity for one locus.
+		 * @brief Compute the observed heterozygosity for one locus.
 		 *
 		 * This is the mean value of the getHeterozygousFrqForGroups map.
 		 * @throw IndexOutOfBoundsException if locus_position excedes the number of loci of one MultilocusGenotype.
+		 * @throw ZeroDivisionException if the number of considered alleles = 0.
 		 */
-		double getHoptForGroups(unsigned int locus_position, const set<unsigned int> & groups) const throw (IndexOutOfBoundsException);
+		double getHobsForGroups(unsigned int locus_position, const set<unsigned int> & groups) const throw (Exception);
 
 		/**
 		 * @brief Compute the expected heterozygosity for one locus.
@@ -290,8 +307,9 @@ class PolymorphismMultiGContainer : public Clonable {
 		 * @f]
 		 * where @f$x_i@f$ is the frequency of the i<sup>th</sup> allele and @f$n@f$ the number of alleles.
 		 * @throw IndexOutOfBoundsException if locus_position excedes the number of loci of one MultilocusGenotype.
+		 * @throw ZeroDivisionException if the number of considered alleles = 0.
 		 */
-		double getHexpForGroups(unsigned int locus_position, const set<unsigned int> & groups) const throw (IndexOutOfBoundsException);
+		double getHexpForGroups(unsigned int locus_position, const set<unsigned int> & groups) const throw (Exception);
 
 		/**
 		 * @brief Compute the expected non biased heterozygosity for one locus.
@@ -302,8 +320,46 @@ class PolymorphismMultiGContainer : public Clonable {
 		 * @f]
 		 * where @f$x_i@f$ is the frequency of the i<sup>th</sup> allele and @f$n@f$ the number of alleles.
 		 * @throw IndexOutOfBoundsException if locus_position excedes the number of loci of one MultilocusGenotype.
+		 * @throw ZeroDivisionException if the number of considered alleles = 0.
 		 */
-		double getHnbForGroups(unsigned int locus_position, const set<unsigned int> & groups) const throw (IndexOutOfBoundsException);
+		double getHnbForGroups(unsigned int locus_position, const set<unsigned int> & groups) const throw (Exception);
+
+		/**
+		 * @brief Compute the Nei distance between two groups at one locus.
+		 *
+		 * Nei 1972
+		 * @f[
+		 * \hat{D}_1=-\ln \left[\frac{\displaystyle\sum_{i=1}^{n}\left(x_i\times y_i\right)}
+		 * {\sqrt{\displaystyle\sum_{i=1}^{n}x_i^2\times \displaystyle\sum_{i=1}^{n}y_i^2}}\right]
+		 * @f]
+		 * where @f$x_i@f$ and @f$y_i@f$ are respectively the i<sup>th</sup> allele's frequency of the first and second group
+		 * and @f$n@f$ the total number of alleles of both groups.
+		 * @throw IndexOutOfBoundsException if locus_position excedes the number of loci of one MultilocusGenotype.
+		 * @throw ZeroDivisionException if the number of considered alleles = 0.
+		 */
+		double getDnei72(unsigned int locus_position, unsigned int grp1, unsigned int grp2) const throw (Exception);
+
+		/**
+		 * @brief Compute the Nei unbiased distance between two groups at one locus.
+		 *
+		 * Nei 1978
+		 * @f[
+		 * \hat{D}=-\ln \left[\frac{\displaystyle\sum_{i=1}^{n}\left(x_i\times y_i\right)}
+		 * {\sqrt{\frac{2n_XJ_X-1}{2n_X-1}\times\frac{2n_YJ_Y-1}{2n_YJ_Y}}}
+		 * \right]
+		 * @f]
+		 * where @f$x_i@f$ and @f$y_i@f$ are respectively the i<sup>th</sup> allele's frequency of the first and second group,
+		 * @f$n@f$ the total number of alleles of both groups, @f$n_X@f$ and @f$n_Y@f$ the number of alleles in the first and second group
+		 * and
+		 * @f[
+		 * J_X=\sum_{i=1}^{n}x_i^2
+		 * \qquad\textrm{and}\qquad
+		 * J_Y=\sum_{i=1}^{n}y_i^2
+		 * @f]
+		 * @throw IndexOutOfBoundsException if locus_position excedes the number of loci of one MultilocusGenotype.
+		 * @throw ZeroDivisionException if the number of considered alleles = 0.
+		 */
+		 double getDnei78(unsigned int locus_position, unsigned int grp1, unsigned int grp2) const throw (Exception);
 
 	protected:
 		vector<MultilocusGenotype *> _multilocusGenotypes;
