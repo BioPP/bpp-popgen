@@ -1,7 +1,7 @@
 /*
  * File DataSet.cpp
  * Author : Sylvain Gaillard <yragael2001@yahoo.fr>
- * Last modification : Monday July 26 2004
+ * Last modification : Wednesday July 28 2004
  */
 
 #include "DataSet.h"
@@ -813,6 +813,7 @@ PolymorphismSequenceContainer * DataSet::getPolymorphismSequenceConstainer(const
 			i = getGroupPosition(it->first);
 		}
 		catch (GroupNotFoundException & gnfe) {
+			delete psc;
 			throw gnfe;
 		}
 		for (unsigned int j = 0 ; j < it->second.size() ; j++) {
@@ -821,10 +822,14 @@ PolymorphismSequenceContainer * DataSet::getPolymorphismSequenceConstainer(const
 				tmp_ind = getIndividualAtPositionFromGroup(i, j);
 			}
 			catch (IndexOutOfBoundsException & ioobe) {
+				delete psc;
 				throw ioobe;
 			}
-			if (tmp_ind->hasSequenceAtPosition(sequence_position))
-				psc->addSequence(* tmp_ind->getSequenceAtPosition(sequence_position), 1, false);
+			if (tmp_ind->hasSequenceAtPosition(sequence_position)) {
+				const Sequence * tmp_seq = tmp_ind->getSequenceAtPosition(sequence_position);
+				psc->addSequence(* tmp_seq, 1, false);
+				psc->setGroupId(tmp_seq->getName(), i);
+			}
 		}
 	}
 	return psc;
