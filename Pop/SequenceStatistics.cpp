@@ -159,13 +159,11 @@ double SequenceStatistics::tajima83( const SiteContainer & v ) {
 // Arguments: a PolymorphismSequenceContainer
 // Return: theta of Watterson (1975)
 double SequenceStatistics::watterson75(const PolymorphismSequenceContainer & psc, bool gapflag) {
-	PolymorphismSequenceContainer *psci = PolymorphismSequenceContainerTools::extractIngroup(psc);
 	double ThetaW;
-	unsigned int n = psci->getNumberOfSequences();
-	unsigned int S = polymorphicSiteNumber(*psci, gapflag);
+	unsigned int n = psc.getNumberOfSequences();
+	unsigned int S = polymorphicSiteNumber(psc, gapflag);
 	map<string, double> values = _getUsefullValues(n);
-	ThetaW = (double) S / values["a1"];
-	delete psci;	
+	ThetaW = (double) S / values["a1"];	
 	return ThetaW;
 }
 
@@ -173,15 +171,14 @@ double SequenceStatistics::watterson75(const PolymorphismSequenceContainer & psc
 // Arguments: a PolymorphismSequenceContainer
 // Return: theta of Tajima (1983)
 double SequenceStatistics::tajima83(const PolymorphismSequenceContainer & psc, bool gapflag) {
-	PolymorphismSequenceContainer *psci = PolymorphismSequenceContainerTools::extractIngroup(psc);
-	unsigned int alphabet_size = (psci->getAlphabet())->getSize();
+	unsigned int alphabet_size = (psc.getAlphabet())->getSize();
 	const Site * site;
 	SiteIterator *si;
 	double value2 = 0.;
 	if (gapflag)
-		si = new CompleteSiteIterator(*psci);
+		si = new CompleteSiteIterator(psc);
 	else
-		si = new SimpleSiteIterator(*psci);
+		si = new SimpleSiteIterator(psc);
 	while (si->hasMoreSites()) {
 		site = si->nextSite();
 		if (! SiteTools::isConstant(* site)) {
@@ -199,7 +196,6 @@ double SequenceStatistics::tajima83(const PolymorphismSequenceContainer & psc, b
 			value2 += 1. - value;
 		}
 	}
-	delete psci;
 	return value2;
 }
 
