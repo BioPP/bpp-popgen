@@ -1,9 +1,9 @@
-//
-// File: PolymorphismSequenceContainer.h
-// Authors: bazin <bazin@univ-montp2.fr>
-//          Sylvain Gaillard <yragael2001@yahoo.fr>
-// Last modification : Monday July 26 2004
-//
+/*
+ * File: PolymorphismSequenceContainer.h
+ * Authors: bazin <bazin@univ-montp2.fr>
+ *          Sylvain Gaillard <yragael2001@yahoo.fr>
+ * Last modification : Wednesday July 28 2004
+ */
 
 #ifndef _POLYMORPHISMSEQUENCECONTAINER_H_
 #define _POLYMORPHISMSEQUENCECONTAINER_H_
@@ -72,7 +72,7 @@ class PolymorphismSequenceContainer : public VectorSiteContainer
 		/**
 		 * @brief Remove a sequence by name and return a pointer to this removed sequence.
 		 *
-		 * @brief throw SequenceNotFoundException if name is not found among the sequences' names.
+		 * @throw SequenceNotFoundException if name is not found among the sequences' names.
 		 */
 		Sequence * removeSequence(const string &name) throw (SequenceNotFoundException);
 		
@@ -86,7 +86,7 @@ class PolymorphismSequenceContainer : public VectorSiteContainer
 		/**
 		 * @brief Delete a sequence by name.
 		 *
-		 * @brief throw SequenceNotFoundException if name is not found among the sequences' names.
+		 * @throw SequenceNotFoundException if name is not found among the sequences' names.
 		 */
 		void deleteSequence(const string &name) throw (SequenceNotFoundException);
 		
@@ -114,7 +114,7 @@ class PolymorphismSequenceContainer : public VectorSiteContainer
 		/**
 		 * @brief Get the group identifier of a sequence.
 		 *
-		 * @brief throw SequenceNotFoundException if name is not found among the sequences' names.
+		 * @throw SequenceNotFoundException if name is not found among the sequences' names.
 		 */
 		unsigned int getGroupId(const string & name) const throw (SequenceNotFoundException);
 
@@ -128,7 +128,7 @@ class PolymorphismSequenceContainer : public VectorSiteContainer
 		/**
 		 * @brief Set the group identifier of a sequence.
 		 *
-		 * @brief throw SequenceNotFoundException if name is not found among the sequences' names.
+		 * @throw SequenceNotFoundException if name is not found among the sequences' names.
 		 */
 		void setGroupId(const string & name, unsigned int group_id) throw (SequenceNotFoundException);
 		
@@ -142,7 +142,7 @@ class PolymorphismSequenceContainer : public VectorSiteContainer
 		/**
 		 * @brief Tell if a sequence is ingroup by name.
 		 *
-		 * @brief throw SequenceNotFoundException if name is not found among the sequences' names.
+		 * @throw SequenceNotFoundException if name is not found among the sequences' names.
 		 */
 		bool isIngroupMember(const string &name) const throw (SequenceNotFoundException);
 		
@@ -156,7 +156,7 @@ class PolymorphismSequenceContainer : public VectorSiteContainer
 		/**
 		 * @brief Set a sequence as ingroup member by name.
 		 *
-		 * @brief throw SequenceNotFoundException if name is not found among the sequences' names.
+		 * @throw SequenceNotFoundException if name is not found among the sequences' names.
 		 */
 		void setAsIngroupMember(const string &name) throw (SequenceNotFoundException);
 		
@@ -170,7 +170,7 @@ class PolymorphismSequenceContainer : public VectorSiteContainer
 		/**
 		 * @brief Set a sequence as outgroup member by name.
 		 *
-		 * @brief throw SequenceNotFoundException if name is not found among the sequences' names.
+		 * @throw SequenceNotFoundException if name is not found among the sequences' names.
 		 */
 		void setAsOutgroupMember(const string &name) throw (SequenceNotFoundException);
 		
