@@ -85,8 +85,10 @@ PolymorphismSequenceContainer * PolymorphismSequenceContainerTools::extractIngro
 		delete psci;
 		throw Exception("PolymorphismSequenceContainerTools::extractIngroup: no Ingroup sequences found.");
 	}
-	for(unsigned int i = ss.size() - 1 ; i <= 0 ; i--)
+	for(int i = ss.size() - 1; i >= 0 ; i--)
+		{
 		psci->deleteSequence(ss[i]);
+		}
 	return psci;
 }
 
@@ -100,7 +102,7 @@ PolymorphismSequenceContainer * PolymorphismSequenceContainerTools::extractOutgr
 		delete psci;
 		throw Exception("PolymorphismSequenceContainerTools::extractOutgroup: no Outgroup sequences found.");
 	}
-	for(unsigned int i = ss.size() - 1; i <= 0; i--) {
+	for(int i = ss.size() - 1; i >= 0; i--) {
 		psci->deleteSequence(ss[i]);
 	}
 	return psci;
@@ -116,7 +118,7 @@ PolymorphismSequenceContainer * PolymorphismSequenceContainerTools::extractGroup
 		delete psci;
 		throw GroupNotFoundException("PolymorphismSequenceContainerTools::extractGroup: group_id not found.", group_id);
 	}
-	for (unsigned int i = ss.size() - 1 ; i <= 0 ; i--)
+	for (int i = ss.size() - 1 ; i >= 0 ; i--)
 		psci->deleteSequence(ss[i]);
 	return psci;
 }
