@@ -1,7 +1,7 @@
 /*
  * File LocusInfo.cpp
  * Author : Sylvain Gaillard <yragael2001@yahoo.fr>
- * Last modification : Friday June 18 2004
+ * Last modification : Saturday July 03 2004
  */
 
 // From Utils
@@ -22,9 +22,9 @@ LocusInfo::LocusInfo(const string &name, const unsigned int ploidy) {
 
 //** Class destructor: *******************************************************/
 LocusInfo::~LocusInfo() {
-	for (map<unsigned int, AlleleInfo *>::iterator it = _alleles.begin() ;
-			it != _alleles.end() ; it++)
-		delete it->second;
+	for (unsigned int i = 0 ; i < _alleles.size() ; i++)
+		delete _alleles[i];
+	_alleles.clear();
 }
 
 //** Other methodes: *********************************************************/
@@ -41,61 +41,40 @@ unsigned int LocusInfo::getPloidy() const {
 // AlleleInfos
 void LocusInfo::addAlleleInfo(const AlleleInfo &allele) throw (BadIdentifierException) {
 	// Check if the allele id is not already in use
-	for (map<unsigned int, AlleleInfo *>::const_iterator it = _alleles.begin() ;
-			it != _alleles.end() ; it++)
-		if (it->second->getId() == allele.getId())
+	for (unsigned int i = 0 ; i < _alleles.size() ; i++)
+		if (_alleles[i]->getId() == allele.getId())
 			throw BadIdentifierException("LocusInfo::addAlleleInfo: Id already in use.",allele.getId());
-	if (_alleles.size() == 0)
-		_alleles.insert(make_pair(1, dynamic_cast<AlleleInfo *>(allele.clone())));
-	else
-		_alleles.insert(make_pair(_alleles.rbegin()->first + 1,
-				dynamic_cast<AlleleInfo *>(allele.clone())));
+	_alleles.push_back(dynamic_cast<AlleleInfo *>(allele.clone()));
 }
 
-AlleleInfo * LocusInfo::getAlleleInfoById(unsigned int id) const
+AlleleInfo * LocusInfo::getAlleleInfoById(const string & id) const
 throw (AlleleNotFoundException) {
-	for (map<unsigned int, AlleleInfo *>::const_iterator it = _alleles.begin() ;
-			it != _alleles.end() ; it++) {
-		if (it->second->getId() == id)
-			return it->second;
-	}
+	for (unsigned int i = 0 ; i < _alleles.size() ; i++)
+		if (_alleles[i]->getId() == id)
+			return _alleles[i];
 	throw AlleleNotFoundException("LocusInfo::getAlleleInfoById: AlleleInfo id unknown.", id);
 }
 
-AlleleInfo * LocusInfo::getAlleleInfoByKey(unsigned int key) const throw (BadIntegerException) {
-	map<unsigned int, AlleleInfo *>::const_iterator it = _alleles.find(key);
-	if (it == _alleles.end())
-		throw BadIntegerException("LocusInfo::getAlleleInfoByKey: Unknown key.", key);
-	return it->second;
+AlleleInfo * LocusInfo::getAlleleInfoByKey(unsigned int key) const throw (IndexOutOfBoundsException) {
+	if (key >= _alleles.size())
+		throw IndexOutOfBoundsException("LocusInfo::getAlleleInfoByKey: key out of bounds.", key, 0, _alleles.size());
+	return _alleles[key];
 }
 
-unsigned int LocusInfo::getAlleleInfoKey(unsigned int id) const
+unsigned int LocusInfo::getAlleleInfoKey(const string & id) const
 throw (AlleleNotFoundException) {
-	for (map<unsigned int, AlleleInfo *>::const_iterator it = _alleles.begin() ;
-			it != _alleles.end() ; it++) {
-		if (it->second->getId() == id)
-			return it->first;
-	}
-	throw AlleleNotFoundException("LocusInfo::getAlleleInfoKey: AlleleInfo id not found.",
-			id);
+	for (unsigned int i = 0 ; i < _alleles.size() ; i++)
+		if (_alleles[i]->getId() == id)
+			return i;
+	throw AlleleNotFoundException("LocusInfo::getAlleleInfoKey: AlleleInfo id not found.", id);
 }
 
 unsigned int LocusInfo::getNumberOfAlleles() const {
 	return _alleles.size();
 }
 
-vector<unsigned int> LocusInfo::getAlleleInfosKeys() const throw (Exception) {
-	vector<unsigned int> keys;
-	for (map<unsigned int, AlleleInfo *>::const_iterator it = _alleles.begin() ;
-			it != _alleles.end() ; it++)
-		keys.push_back(it->first);
-	if (keys.size() == 0) throw Exception("LocusInfo::getAlleleInfosKeys: No AlleleInfo in this LocusInfo.");
-	return keys;
-}
-
 void LocusInfo::clear() {
-	for (map<unsigned int, AlleleInfo *>::const_iterator it = _alleles.begin() ;
-			it != _alleles.end() ; it++)
-		delete it->second;
+	for (unsigned int i = 0 ; i < _alleles.size() ; i++)
+		delete _alleles[i];
 	_alleles.clear();
 }

@@ -1,7 +1,7 @@
 /*
  * File DataSet.cpp
  * Author : Sylvain Gaillard <yragael2001@yahoo.fr>
- * Last modification : Friday June 25 2004
+ * Last modification : Saturday July 03 2004
  */
 
 #include "DataSet.h"
@@ -432,7 +432,7 @@ unsigned int DataSet::getIndividualNumberOfSequencesInGroup(unsigned int group_i
 	}
 }
 
-void DataSet::addIndividualGenotypeInGroup(unsigned int group_index, unsigned int individual_index, const Genotype & genotype) throw (Exception) {
+void DataSet::addIndividualGenotypeInGroup(unsigned int group_index, unsigned int individual_index, const MultilocusGenotype & genotype) throw (Exception) {
 	if (group_index >= getNumberOfGroups())
 		throw IndexOutOfBoundsException("DataSet::getIndividualNumberOfSequencesInGroup: group_index out of bounds.", group_index, 0, getNumberOfGroups());
 	try {
@@ -446,14 +446,17 @@ void DataSet::addIndividualGenotypeInGroup(unsigned int group_index, unsigned in
 	}
 }
 
-void DataSet::initIndividualGenotypeInGroup(unsigned int group_index, unsigned int individual_index, const AnalyzedLoci * analyzed_loci) throw (Exception) {
+void DataSet::initIndividualGenotypeInGroup(unsigned int group_index, unsigned int individual_index) throw (Exception) {
 	if (group_index >= getNumberOfGroups())
 		throw IndexOutOfBoundsException("DataSet::initIndividualGenotypeInGroup: group_index out of bounds.", group_index, 0, getNumberOfGroups());
 	try {
-		_groups[group_index]->initIndividualGenotype(individual_index, analyzed_loci);
+		_groups[group_index]->initIndividualGenotype(individual_index, getNumberOfLoci());
 	}
 	catch (IndexOutOfBoundsException & ioobe) {
 		throw IndexOutOfBoundsException("DataSet::initIndividualGenotypeInGroup: individual_index out of bounds.", ioobe.getBadInteger(), ioobe.getBounds()[0], ioobe.getBounds()[1]);
+	}
+	catch (BadIntegerException & bie) {
+		throw BadIntegerException("DataSet::initIndividualGenotypeInGroup: number of loci must be > 0.", bie.getBadInteger());
 	}
 	catch (NullPointerException) {
 		throw NullPointerException("DataSet::initIndividualGenotypeInGroup: analyzed_loci is NULL.");
@@ -509,15 +512,16 @@ void DataSet::setIndividualMonolocusGenotypeByAlleleKeyInGroup(unsigned int grou
 		throw NullPointerException("DataSet::setIndividualMonolocusGenotypeByAlleleKeyInGroup: individual has no genotype.");
 	}
 	catch (Exception) {
-		throw Exception("DataSet::setIndividualMonolocusGenotypeByAlleleKeyInGroup: allele_keys.size() doesn't match ploidy.");
+		throw Exception("DataSet::setIndividualMonolocusGenotypeByAlleleKeyInGroup: no key in allele_keys.");
 	}
 }
 
-void DataSet::setIndividualMonolocusGenotypeByAlleleIdInGroup(unsigned int group_index, unsigned int individual_index, unsigned int locus_index, const vector<unsigned int> allele_id) throw (Exception) {
+void DataSet::setIndividualMonolocusGenotypeByAlleleIdInGroup(unsigned int group_index, unsigned int individual_index, unsigned int locus_index, const vector<string> allele_id) throw (Exception) {
 	if (group_index >= getNumberOfGroups())
 		throw IndexOutOfBoundsException("DataSet::setIndividualMonolocusGenotypeByAlleleIdInGroup: group_index out of bounds.", group_index, 0, getNumberOfGroups());
+	const LocusInfo * locus_info = getLocusInfoByIndex(locus_index);
 	try {
-		_groups[group_index]->setIndividualMonolocusGenotypeByAlleleId(individual_index, locus_index, allele_id);
+		_groups[group_index]->setIndividualMonolocusGenotypeByAlleleId(individual_index, locus_index, allele_id, *locus_info);
 	}
   catch (IndexOutOfBoundsException & ioobe) {
 		if (string(ioobe.what()).find("individual_index") < string(ioobe.what()).size())
@@ -529,8 +533,8 @@ void DataSet::setIndividualMonolocusGenotypeByAlleleIdInGroup(unsigned int group
 	catch (NullPointerException) {
 		throw NullPointerException("DataSet::setIndividualMonolocusGenotypeByAlleleIdInGroup: individual has no genotype.");
 	}
-	catch (Exception) {
-		throw Exception("DataSet::setIndividualMonolocusGenotypeByAlleleIdInGroup: allele_id.size() doesn't match ploidy.");
+	catch (AlleleNotFoundException & anfe) {
+		throw AlleleNotFoundException("DataSet::setIndividualMonolocusGenotypeByAlleleIdInGroup: id not found.", anfe.getIdentifier());
 	}
 }
 
@@ -553,7 +557,7 @@ const MonolocusGenotype * DataSet::getIndividualMonolocusGenotypeInGroup(unsigne
 }
 
 // Dealing with AnalyzedLoci -------------------------------
-void DataSet::setAnalyzedLoci(AnalyzedLoci & analyzeLoci) throw (Exception) {
+void DataSet::setAnalyzedLoci(AnalyzedLoci & analyzedLoci) throw (Exception) {
 	if (_analyzedLoci != NULL) {
 		try {
 			deleteAnalyzedLoci();
@@ -561,7 +565,7 @@ void DataSet::setAnalyzedLoci(AnalyzedLoci & analyzeLoci) throw (Exception) {
 		catch (Exception & e) {
 			throw Exception ("DataSet::setAnalyzedLoci: at least one individual has a genotype of the actual AnalyzedLoci.");
 		}
-	_analyzedLoci = new AnalyzedLoci(analyzeLoci);
+	_analyzedLoci = new AnalyzedLoci(analyzedLoci);
 	}
 }
 

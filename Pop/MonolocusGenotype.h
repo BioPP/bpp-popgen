@@ -1,14 +1,18 @@
 /*
  * File MonolocusGenotype.h
  * Author : Sylvain Gaillard <yragael2001@yahoo.fr>
- * Last modification : Tuesday June 22 2004
+ * Last modification : Monday July 05 2004
  */
 
 // Secured inclusion of header's file
 #ifndef _MONOLOCUSGENOTYPE_H_
 #define _MONOLOCUSGENOTYPE_H_
 
-//From Utils
+// From STL
+#include <vector>
+using namespace std;
+
+// From Utils
 #include <Utils/Clonable.h>
 
 /**
@@ -27,18 +31,15 @@ class MonolocusGenotype : public Clonable {
 		
 	public: // Methodes
 		/**
-		 * @brief Get the first allele's key.
+		 * @brief Get the alleles' index.
+		 *
+		 * The alleles' index are the position of the AlleleInfo in a LocusInfo object.
+		 * If no LocusInfo is used, the index are just numbers to identify the alleles.
+		 *
+		 * @return A vector of unsigned int.
+		 *
+		 * The size of the vector corresponds to the number of alleles at this locus.
 		 */
-		virtual unsigned int getAlleleKey() const = 0;
-
-		/**
-		 * @brief Get the ploidy of the locus.
-		 */
-		virtual unsigned int getPloidy() const = 0;
-
-		/**
-		 * @brief Get the maximum number of allele that con be stored.
-		 */
-		virtual unsigned int getSize() const  = 0;
+		virtual vector<unsigned int> getAlleleIndex() const = 0;
 };
 #endif // _MONOLOCUSGENOTYPE_H_

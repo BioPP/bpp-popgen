@@ -1,7 +1,7 @@
 /*
  * File Individual.cpp
  * Author : Sylvain Gaillard <yragael2001@yahoo.fr>
- * Last modification : Thursday June 24 2004
+ * Last modification : Saturday July 03 2004
  */
 
 #include "Individual.h"
@@ -68,13 +68,21 @@ Individual::Individual(const Individual &ind) {
 	catch (NullPointerException) {
 		_sequences = NULL;
 	}
-	this->_genotype = ind.hasGenotype() ? new Genotype(* ind.getGenotype()) : NULL;
+	this->_genotype = ind.hasGenotype() ? new MultilocusGenotype(* ind.getGenotype()) : NULL;
 }
 
 //** Class destructor: *******************************************************/
 Individual::~Individual () {
-	delete this->_date;
-	delete this->_coord;
+	if (_date != NULL)
+		delete _date;
+	if (_coord != NULL)
+		delete _coord;
+	if (_locality != NULL)
+		delete _locality;
+	if (_sequences != NULL)
+		delete _sequences;
+	if (_genotype != NULL)
+		delete _genotype;
 }
 
 //** Other methodes: *********************************************************/
@@ -109,7 +117,7 @@ Individual & Individual::operator= (const Individual & ind) {
 	catch (NullPointerException) {
 		_sequences = NULL;
 	}
-	this->_genotype = ind.hasGenotype() ? new Genotype(* ind.getGenotype()) : NULL;
+	this->_genotype = ind.hasGenotype() ? new MultilocusGenotype(* ind.getGenotype()) : NULL;
 	return * this;
 }
 
@@ -352,26 +360,26 @@ const OrderedSequenceContainer * Individual::getSequences() const throw (NullPoi
 	return _sequences;
 }
 
-// Genotype
+// MultilocusGenotype
 
-void Individual::addGenotype(const Genotype & genotype) throw (Exception) {
+void Individual::addGenotype(const MultilocusGenotype & genotype) throw (Exception) {
 	if (hasGenotype())
 		throw Exception("Individual::addGenotype: individual already has a genotype.");
-	_genotype = new Genotype(genotype);
+	_genotype = new MultilocusGenotype(genotype);
 }
 
-void Individual::initGenotype(const AnalyzedLoci * analyzed_loci) throw (Exception) {
+void Individual::initGenotype(unsigned int loci_number) throw (Exception) {
 	if (hasGenotype())
 		throw Exception("Individual::initGenotype: individual already has a genotype.");
 	try {
-		_genotype = new Genotype(analyzed_loci);
+		_genotype = new MultilocusGenotype(loci_number);
 	}
-	catch (NullPointerException) {
-		throw NullPointerException("Individual::initGenotype: analyzed_loci is NULL.");
+	catch (BadIntegerException & bie) {
+		throw BadIntegerException("Individual::initGenotype: loci_number must be > 0.", bie.getBadInteger());
 	}
 }
 
-const Genotype * Individual::getGenotype() const throw (NullPointerException) {
+const MultilocusGenotype * Individual::getGenotype() const throw (NullPointerException) {
 	if (!hasGenotype())
 		throw NullPointerException("Individual::getGenotype: individual has no genotype.");
 	return _genotype;
@@ -406,32 +414,21 @@ void Individual::setMonolocusGenotypeByAlleleKey(unsigned int locus_index, const
 		throw IndexOutOfBoundsException("Individual::setMonolocusGenotypeByAlleleKey: locus_index out of bounds.", ioobe.getBadInteger(), ioobe.getBounds()[0], ioobe.getBounds()[1]);
 	}
 	catch (Exception) {
-		throw Exception("Individual::setMonolocusGenotypeByAlleleKey: allele_keys.size() doesn't match ploidy.");
+		throw Exception("Individual::setMonolocusGenotypeByAlleleKey: no key in allele_keys.");
 	}
 }
 
-void Individual::setMonolocusGenotypeByAlleleId(unsigned int locus_index, const vector<unsigned int> allele_id) throw (Exception) {
+void Individual::setMonolocusGenotypeByAlleleId(unsigned int locus_index, const vector<string> allele_id, const LocusInfo & locus_info) throw (Exception) {
 	if (!hasGenotype())
 		throw NullPointerException("Individual::setMonolocusGenotypeByAlleleId: individual has no genotype.");
 	try {
-		_genotype->setMonolocusGenotypeByAlleleId(locus_index, allele_id);
+		_genotype->setMonolocusGenotypeByAlleleId(locus_index, allele_id, locus_info);
 	}
 	catch (IndexOutOfBoundsException & ioobe) {
 		throw IndexOutOfBoundsException("Individual::setMonolocusGenotypeByAlleleId: locus_index out of bounds.", ioobe.getBadInteger(), ioobe.getBounds()[0], ioobe.getBounds()[1]);
 	}
-	catch (Exception) {
-		throw Exception("Individual::setMonolocusGenotypeByAlleleId: allele_keys.size() doesn't match ploidy.");
-	}
-}
-
-unsigned int Individual::getPloidy(unsigned int locus_index) throw (Exception) {
-	if (!hasGenotype())
-		throw NullPointerException("Individual::getPloidy: individual has no genotype.");
-	try {
-		return _genotype->getPloidy(locus_index);
-	}
-	catch (IndexOutOfBoundsException & ioobe) {
-		throw IndexOutOfBoundsException("Individual::getPloidy: locus_index out of bounds.", ioobe.getBadInteger(), ioobe.getBounds()[0], ioobe.getBounds()[1]);
+	catch (AlleleNotFoundException & anfe) {
+		throw AlleleNotFoundException("Individual::setMonolocusGenotypeByAlleleId: id not found.", anfe.getIdentifier());
 	}
 }
 

@@ -1,7 +1,7 @@
 /*
  * File DataSet.h
  * Author : Sylvain Gaillard <yragael2001@yahoo.fr>
- * Last modification : Friday June 25 2004
+ * Last modification : Saturday July 03 2004
  */
 
 // Secured inclusion of header's file
@@ -22,6 +22,7 @@ using namespace std;
 #include "Individual.h"
 #include "Locality.h"
 #include "GeneralExceptions.h"
+#include "AnalyzedLoci.h"
 
 /**
  * @brief The DataSet class.
@@ -382,13 +383,13 @@ class DataSet {
 			throw (Exception);
 
 		/**
-		 * @brief Add a Genotype to an Individual in a Group.
+		 * @brief Add a MultilocusGenotype to an Individual in a Group.
 		 *
 		 * @throw IndexOutOfBoundsException if group_index excedes the number of groups.
 		 * @throw IndexOutOfBoundsException if individual_index excedes the number of individual in the group.
 		 * @throw Exception if the individual already has a genotype.
 		 */
-		void addIndividualGenotypeInGroup(unsigned int group_index, unsigned int individual_index, const Genotype & genotype)
+		void addIndividualGenotypeInGroup(unsigned int group_index, unsigned int individual_index, const MultilocusGenotype & genotype)
 			throw (Exception);
 
 		/**
@@ -396,14 +397,15 @@ class DataSet {
 		 *
 		 * @throw IndexOutOfBoundsException if group_index excedes the number of groups.
 		 * @throw IndexOutOfBoundsException if individual_index excedes the number of individual in the group.
+		 * @throw BadIntegerException if the number of loci is < 1;
 		 * @throw NullPointerException if analyzed_loci is NULL.
 		 * @throw Exception if the individual already has a genotype.
 		 */
-		void initIndividualGenotypeInGroup(unsigned int group_index, unsigned int individual_index, const AnalyzedLoci * analyzed_loci)
+		void initIndividualGenotypeInGroup(unsigned int group_index, unsigned int individual_index)
 			throw (Exception);
 
 		/**
-		 * @brief Delete the Genotype of an Individual from a Group.
+		 * @brief Delete the MultilocusGenotype of an Individual from a Group.
 		 *
 		 * @throw IndexOutOfBoundsException if group_index excedes the number of groups.
 		 * @throw IndexOutOfBoundsException if individual_index excedes the number of individual in the group.
@@ -441,9 +443,9 @@ class DataSet {
 		 * @throw IndexOutOfBoundsException if individual_index excedes the number of individual in the group.
 		 * @throw NullPointerException if the individual has no genotype.
 		 * @throw IndexOutOfBoundsException if locus_index excedes the number of locus.
-		 * @throw Exception if the ploidy doesn't match.
+		 * @throw Exception if there is no key in allele_keys.
 		 */
-		void setIndividualMonolocusGenotypeByAlleleIdInGroup(unsigned int group_index, unsigned int individual_index, unsigned int locus_index, const vector<unsigned int> allele_id)
+		void setIndividualMonolocusGenotypeByAlleleIdInGroup(unsigned int group_index, unsigned int individual_index, unsigned int locus_index, const vector<string> allele_id)
 			throw (Exception);
 
 		/**
@@ -453,6 +455,7 @@ class DataSet {
 		 * @throw IndexOutOfBoundsException if individual_index excedes the number of individual in the group.
 		 * @throw NullPointerException if the individual has no genotype.
 		 * @throw IndexOutOfBoundsException if locus_index excedes the number of locus.
+		 * @throw AlleleNotFoundException if at least one of the id is not found.
 		 */
 		const MonolocusGenotype * getIndividualMonolocusGenotypeInGroup(unsigned int group_index, unsigned int individual_index, unsigned int locus_index) const
 			throw (Exception);
@@ -463,7 +466,7 @@ class DataSet {
 		 *
 		 * @throw Exception if at least one Individual has a genotype refering to the actual AnalyzedLoci.
 		 */
-		void setAnalyzedLoci(AnalyzedLoci & analyzeLoci) throw (Exception);
+		void setAnalyzedLoci(AnalyzedLoci & analyzedLoci) throw (Exception);
 
 		/**
 		 * @brief Initialize the AnalyzedLoci for number of loci.

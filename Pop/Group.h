@@ -1,7 +1,7 @@
 /*
  * File Group.h
  * Author : Sylvain Gaillard <yragael2001@yahoo.fr>
- * Last modification : Friday June 25 2004
+ * Last modification : Saturday July 03 2004
  */
 
 // Secured inclusion of header's file
@@ -344,16 +344,16 @@ class Group {
 		 * @throw IndexOutOfBoundsException if individual_index excedes the number of individuals.
 		 * @throw Exception if the individual already has a genotype.
 		 */
-		void addIndividualGenotype(unsigned int individual_index, const Genotype & genotype) throw (Exception);
+		void addIndividualGenotype(unsigned int individual_index, const MultilocusGenotype & genotype) throw (Exception);
 
 		/**
 		 * @brief Initialyze the genotype of an Individual.
 		 *
 		 * @throw IndexOutOfBoundsException if individual_index excedes the number of individuals.
-		 * @throw NullPointerException if analyzed_loci is NULL.
+		 * @throw BadIntegerException if loci_number < 1.
 		 * @throw Exception if the individual already has a genotype.
 		 */
-		void initIndividualGenotype(unsigned int individual_index, const AnalyzedLoci * analyzed_loci)
+		void initIndividualGenotype(unsigned int individual_index, unsigned int loci_number)
 			throw (Exception);
 
 		/**
@@ -386,7 +386,7 @@ class Group {
 		 * @throw IndexOutOfBoundsException if individual_index excedes the number of individuals.
 		 * @throw NullPointerException if the individual has no genotype.
 		 * @throw IndexOutOfBoundsException if locus_index excedes the number of locus.
-		 * @throw Exception if the ploidy doesn't match.
+		 * @throw Exception if there is no key in allele_keys.
 		 */
 		void setIndividualMonolocusGenotypeByAlleleKey(unsigned int individual_index, unsigned int locus_index,
 				const vector<unsigned int> allele_keys) throw (Exception);
@@ -397,20 +397,10 @@ class Group {
 		 * @throw IndexOutOfBoundsException if individual_index excedes the number of individuals.
 		 * @throw NullPointerException if the individual has no genotype.
 		 * @throw IndexOutOfBoundsException if locus_index excedes the number of locus.
-		 * @throw Exception if the ploidy doesn't match.
+		 * @throw AlleleNotFoundException if at least one id is not found in locus_info.
 		 */
 		void setIndividualMonolocusGenotypeByAlleleId(unsigned int individual_index, unsigned int locus_index,
-				const vector<unsigned int> allele_id) throw (Exception);
-
-		/**
-		 * @brief Get the locus' ploidy of an Individual.
-		 *
-		 * @throw IndexOutOfBoundsException if individual_index excedes the number of individuals.
-		 * @throw NullPointerException if the individual has no genotype.
-		 * @throw IndexOutOfBoundsException if locus_index excedes the number of locus.
-		 */
-		unsigned int getIndividualPloidy(unsigned int individual_index, unsigned int locus_index) const
-			throw (Exception);
+				const vector<string> allele_id, const LocusInfo & locus_info) throw (Exception);
 
 		/**
 		 * @brief Get a MonolocusGenotype of an Individual.

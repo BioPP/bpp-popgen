@@ -1,7 +1,7 @@
 /*
  * File Group.cpp
  * Author : Sylvain Gaillard <yragael2001@yahoo.fr>
- * Last modification : Friday June 25 2004
+ * Last modification : Saturday July 03 2004
  */
 
 #include "Group.h"
@@ -310,7 +310,7 @@ void Group::setIndividualSequences(unsigned int individual_index, const MapSeque
 	_individuals[individual_index]->setSequences(msc);
 }
 
-void Group::addIndividualGenotype(unsigned int individual_index, const Genotype & genotype) throw (Exception) {
+void Group::addIndividualGenotype(unsigned int individual_index, const MultilocusGenotype & genotype) throw (Exception) {
 	if (individual_index >= getNumberOfIndividuals())
 		throw IndexOutOfBoundsException("Group::addIndividualGenotype: individual_index out of bounds.", individual_index, 0, getNumberOfIndividuals());
 	try {
@@ -321,14 +321,14 @@ void Group::addIndividualGenotype(unsigned int individual_index, const Genotype 
 	}
 }
 
-void Group::initIndividualGenotype(unsigned int individual_index, const AnalyzedLoci * analyzed_loci) throw (Exception) {
+void Group::initIndividualGenotype(unsigned int individual_index, unsigned int loci_number) throw (Exception) {
 	if (individual_index >= getNumberOfIndividuals())
 		throw IndexOutOfBoundsException("Group::initIndividualGenotype: individual_index out of bounds.", individual_index, 0, getNumberOfIndividuals());
 	try {
-		_individuals[individual_index]->initGenotype(analyzed_loci);
+		_individuals[individual_index]->initGenotype(loci_number);
 	}
-	catch (NullPointerException & npe) {
-		throw NullPointerException("Group::initIndividualGenotype: analyzed_loci is NULL.");
+	catch (BadIntegerException & bie) {
+		throw BadIntegerException("Group::initIndividualGenotype: loci_number must be > 0.", bie.getBadInteger());
 	}
 	catch (Exception) {
 		throw Exception("Group::initIndividualGenotype: individual already has a genotype.");
@@ -374,15 +374,15 @@ void Group::setIndividualMonolocusGenotypeByAlleleKey(unsigned int individual_in
 		throw IndexOutOfBoundsException("Group::setIndividualMonolocusGenotypeByAlleleKey: locus_index excedes the number of locus.", ioobe.getBadInteger(), ioobe.getBounds()[0], ioobe.getBounds()[1]);
 	}
 	catch (Exception) {
-		throw Exception("Group::setIndividualMonolocusGenotypeByAlleleKey: allele_keys.size() doesn't match ploidy.");
+		throw Exception("Group::setIndividualMonolocusGenotypeByAlleleKey: no key in allele_keys.");
 	}
 }
 
-void Group::setIndividualMonolocusGenotypeByAlleleId(unsigned int individual_index, unsigned int locus_index, const vector<unsigned int> allele_id) throw (Exception) {
+void Group::setIndividualMonolocusGenotypeByAlleleId(unsigned int individual_index, unsigned int locus_index, const vector<string> allele_id, const LocusInfo & locus_info) throw (Exception) {
 	if (individual_index >= getNumberOfIndividuals())
 		throw IndexOutOfBoundsException("Group::setIndividualMonolocusGenotypeByAlleleId: individual_index out of bounds.", individual_index, 0, getNumberOfIndividuals());
 	try {
-		_individuals[individual_index]->setMonolocusGenotypeByAlleleId(locus_index, allele_id);
+		_individuals[individual_index]->setMonolocusGenotypeByAlleleId(locus_index, allele_id, locus_info);
 	}
 	catch (NullPointerException & npe) {
 		throw NullPointerException("Group::setIndividualMonolocusGenotypeByAlleleId: individual has no genotype.");
@@ -390,22 +390,8 @@ void Group::setIndividualMonolocusGenotypeByAlleleId(unsigned int individual_ind
 	catch (IndexOutOfBoundsException & ioobe) {
 		throw IndexOutOfBoundsException("Group::setIndividualMonolocusGenotypeByAlleleId: locus_index excedes the number of locus.", ioobe.getBadInteger(), ioobe.getBounds()[0], ioobe.getBounds()[1]);
 	}
-	catch (Exception) {
-		throw Exception("Group::setIndividualMonolocusGenotypeByAlleleId: allele_id.size() doesn't match ploidy.");
-	}
-}
-
-unsigned int Group::getIndividualPloidy(unsigned int individual_index, unsigned int locus_index) const throw (Exception) {
-	if (individual_index >= getNumberOfIndividuals())
-		throw IndexOutOfBoundsException("Group::getIndividualPloidy: individual_index out of bounds.", individual_index, 0, getNumberOfIndividuals());
-	try {
-		return _individuals[individual_index]->getPloidy(locus_index);
-	}
-	catch (NullPointerException & npe) {
-		throw NullPointerException("Group::getIndividualPloidy: individual has no genotype.");
-	}
-	catch (IndexOutOfBoundsException & ioobe) {
-		throw IndexOutOfBoundsException("Group::getIndividualPloidy: locus_index excedes the number of locus.", ioobe.getBadInteger(), ioobe.getBounds()[0], ioobe.getBounds()[1]);
+	catch (AlleleNotFoundException & anfe) {
+		throw AlleleNotFoundException("Group::setIndividualMonolocusGenotypeByAlleleId: id not found.", anfe.getIdentifier());
 	}
 }
 

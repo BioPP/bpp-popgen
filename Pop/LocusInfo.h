@@ -1,7 +1,7 @@
 /*
  * File LocusInfo.h
  * Author : Sylvain Gaillard <yragael2001@yahoo.fr>
- * Last modification : Friday June 18 2004
+ * Last modification : Saturday July 03 2004
  */
 
 // Secured inclusion of header's file
@@ -9,7 +9,6 @@
 #define _LOCUSINFO_H_
 
 //From STL
-#include <map>
 #include <vector>
 using namespace std;
 
@@ -72,23 +71,23 @@ class LocusInfo {
 		 *
 		 * @throw AlleleNotFoundException if the id is not found.
 		 */
-		AlleleInfo * getAlleleInfoById(unsigned int id) const
+		AlleleInfo * getAlleleInfoById(const string & id) const
 			throw (AlleleNotFoundException);
 
 		/**
 		 * @brief Retrieve an AlleleInfo object of the LocusInfo.
 		 *
-		 * @throw BadIntegerException if the key doesn't match any referenced key.
+		 * @throw IndexOutOfBoundsException if key excedes the number of alleles.
 		 */
 		AlleleInfo * getAlleleInfoByKey(unsigned int key) const
-			throw (BadIntegerException);
+			throw (IndexOutOfBoundsException);
 
 		/**
 		 * @brief Get the position of an AlleleInfo.
 		 *
 		 * @throw AlleleNotFoundException if the AlleleInfo's id is not found.
 		 */
-		unsigned int getAlleleInfoKey(unsigned int id) const
+		unsigned int getAlleleInfoKey(const string & id) const
 			throw (AlleleNotFoundException);
 		
 		/**
@@ -97,21 +96,14 @@ class LocusInfo {
 		unsigned int getNumberOfAlleles() const;
 
 		/**
-		 * @brief Get the identity number of each allele in the locus.
-		 *
-		 * @throw Exception if there is no AlleleInfo in the LocusInfo.
-		 */
-		vector<unsigned int> getAlleleInfosKeys() const throw (Exception);
-
-		/**
-		 * @brief Remove all alleles from the locus.
+		 * @brief Delete all alleles from the locus.
 		 */
 		void clear();
 
 	protected:
 		string _name;
 		unsigned int _ploidy;
-		map<unsigned int, AlleleInfo *> _alleles;
+		vector <AlleleInfo *> _alleles;
 };
 
 #endif // _LOCUSINFO_H_

@@ -1,7 +1,7 @@
 /*
  * File Individual.h
  * Author : Sylvain Gaillard <yragael2001@yahoo.fr>
- * Last modification : Friday June 25 2004
+ * Last modification : Saturday July 03 2004
  */
 
 // Secured inclusion of header's file
@@ -27,7 +27,7 @@
 #include "Locality.h"
 #include "Coord.h"
 #include "Date.h"
-#include "Genotype.h"
+#include "MultilocusGenotype.h"
 #include "GeneralExceptions.h"
 
 /**
@@ -339,21 +339,22 @@ class Individual : public Clonable {
 		/**
 		 * @brief Add a genotype.
 		 *
-		 * @param genotype The Genotype to add.
+		 * @param genotype The MultilocusGenotype to add.
 		 */
-		void addGenotype(const Genotype & genotype) throw (Exception);
+		void addGenotype(const MultilocusGenotype & genotype) throw (Exception);
 
 		/**
 		 * @brief Init the genotype.
 		 *
-		 * @throw NullPointerException if analyzed_loci is NULL.
+		 * @throw Exception if the Individual already has a Genotype.
+		 * @throw BadIntegerException if loci_number < 1.
 		 */
-		void initGenotype(const AnalyzedLoci * analyzed_loci) throw (Exception);
+		void initGenotype(unsigned int loci_number) throw (Exception);
 
 		/**
 		 * @brief Get the genotype.
 		 */
-		const Genotype * getGenotype() const throw (NullPointerException);
+		const MultilocusGenotype * getGenotype() const throw (NullPointerException);
 		
 		/**
 		 * @brief Delete the genotype of the individual.
@@ -361,7 +362,7 @@ class Individual : public Clonable {
 		void deleteGenotype();
 
 		/**
-		 * @brief Tell if the Individual has a Genotype.
+		 * @brief Tell if the Individual has a MultilocusGenotype.
 		 */
 		bool hasGenotype() const;
 
@@ -379,7 +380,7 @@ class Individual : public Clonable {
 		 *
 		 * @throw NullPointerException if there is no genotype defined.
 		 * @throw IndexOutOfBoundsException if locus_index excedes the number of loci.
-		 * @throw Exception if the ploidy doesn't match.
+		 * @throw Exception if there is no key in allele_keys.
 		 */
 		void setMonolocusGenotypeByAlleleKey(unsigned int locus_index, const vector<unsigned int> allele_keys)
 			throw (Exception);
@@ -389,18 +390,10 @@ class Individual : public Clonable {
 		 *
 		 * @throw NullPointerException if there is no genotype defined.
 		 * @throw IndexOutOfBoundsException if locus_index excedes the number of loci.
-		 * @throw Exception if the ploidy doesn' match.
+		 * @throw AlleleNotFoundException if at least one the id is not found in the LocusInfo.
 		 */
-		void setMonolocusGenotypeByAlleleId(unsigned int locus_index, const vector<unsigned int> allele_id)
+		void setMonolocusGenotypeByAlleleId(unsigned int locus_index, const vector<string> allele_id, const LocusInfo & locus_info)
 			throw (Exception);
-
-		/**
-		 * @brief Get the ploidy of a locus.
-		 *
-		 * @throw NullPointerException if there is no genotype defined.
-		 * @throw IndexOutOfBoundsException if locus_index excedes the number of loci.
-		 */
-		unsigned int getPloidy(unsigned int locus_index) throw (Exception);
 
 		/**
 		 * @brief Get a MonolocusGenotype.
@@ -417,6 +410,6 @@ class Individual : public Clonable {
 		Coord<double> * _coord;
 		const Locality<double> * _locality;
 		MapSequenceContainer * _sequences;
-		Genotype * _genotype;
+		MultilocusGenotype * _genotype;
 };
 #endif // _INDIVIDUAL_H_
