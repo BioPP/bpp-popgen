@@ -1,7 +1,7 @@
 /*
  * File Group.cpp
  * Author : Sylvain Gaillard <yragael2001@yahoo.fr>
- * Last modification : Monday April 05 2004
+ * Last modification : Wednesday June 01 2004
  */
 
 #include "Group.h"
@@ -14,10 +14,13 @@ Group::~Group () {}
 
 //** Assignation opperators: *************************************************/
 void Group::addIndividual(const Individual & ind) {
-	int a = 0;
+	_individuals.push_back(new Individual(ind));
 }
 
 void Group::clear() {
-	int i = 0;
+	_individuals.clear();
 }
 //** Consultation opperators: ************************************************/
+int Group::getNumberOfIndividuals() {
+	return _individuals.size();
+}
