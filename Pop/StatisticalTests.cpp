@@ -91,7 +91,6 @@ double StatisticalTests::tajima83( const SiteContainer & v ) {
 	}
 	ThetaPi = S - somme;
 	delete si;
-	delete site;
 	return ThetaPi;
 }
 
@@ -126,7 +125,7 @@ double StatisticalTests::tajima83( const PolymorphismSequenceContainer & psc ) {
 	double etha[20];
 	double somme = 0.0;
 	SiteIterator *si = new NoGapSiteIterator( *psci );
-	while ( si->hasMoreSites() ) {
+	while ( si -> hasMoreSites() ) {
 		site = si->nextSite();
 	if ( !SiteTools::isConstant(*site) ) {
 			S++;
@@ -143,7 +142,6 @@ double StatisticalTests::tajima83( const PolymorphismSequenceContainer & psc ) {
 	}
 	ThetaPi = (double) S - somme;
 	delete si;
-	delete site;
 	delete psci;
 	return ThetaPi;
 }
