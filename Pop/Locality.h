@@ -122,7 +122,7 @@ template <class T> Locality<T> & Locality<T>::operator= (const Locality<T> & loc
 
 //** Comparison operators: ***************************************************/
 template <class T> bool Locality<T>::operator== (const Locality<T> & locality) const {
-	if (_x == locality.getX() && _y == locality.getY())
+	if (_x == locality.getX() && _y == locality.getY() && _name == locality.getName())
 		return true;
 	else
 		return false;
