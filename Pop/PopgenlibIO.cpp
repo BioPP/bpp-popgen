@@ -525,7 +525,7 @@ void PopgenlibIO::write(ostream & os, const DataSet & data_set) const throw (Exc
 					}
 					else {
 						vector<unsigned int> tmp_all_ind = tmp_genotype->getMonolocusGenotype(k)->getAlleleIndex();
-						output[k][0] = data_set.getLocusInfoAtPosition(k)->getAlleleInfoByKey(tmp_all_ind[1])->getId();
+						output[k][0] = data_set.getLocusInfoAtPosition(k)->getAlleleInfoByKey(tmp_all_ind[0])->getId();
 						if (tmp_all_ind.size() > 1)
 							output[k][1] = data_set.getLocusInfoAtPosition(k)->getAlleleInfoByKey(tmp_all_ind[1])->getId();
 						else
