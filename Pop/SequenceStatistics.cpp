@@ -2,7 +2,7 @@
  * File SequenceStatistics.cpp
  * Author : Eric Bazin <bazin@univ-montp2.fr>
  *          Sylvain Gailard <yragael2001@yahoo.fr>
- * Last modification : Friday July 30 2004
+ * Last modification : Thursday August 05 2004
  *
  * Copyright (C) 2004 Eric Bazin, Sylvain Gaillard and the
  *                    PopLib Development Core Team
@@ -31,12 +31,11 @@
 #include <ctype.h>
 #include <cmath>
 #include <iostream>
+using namespace std;
 
 // From SeqLib:
 #include <Seq/Site.h>	
 #include <Seq/SiteTools.h>
-
-using namespace std;
 
 SequenceStatistics::~SequenceStatistics() {}
 
@@ -318,13 +317,38 @@ double SequenceStatistics::fuliDstar(const PolymorphismSequenceContainer & group
 	unsigned int n = group.getNumberOfSequences();
 	double nn = (double) n;
 	map<string, double> values = _getUsefullValues(n);
+	
+// Fu & Li 1993
 	double _n = nn / (nn - 1.);
-	double vDs = (_n * _n * values["a2"] + values["a1"] * values["a1"] * values["dn"] - 2. * (nn * values["a1"] * (values["a1"] + 1.) / ((nn - 1.) * (nn - 1.)))) / (pow(values["a1"], 2) + values["a2"]);
+	double vDs = (
+	               (_n * _n * values["a2"])
+	             + (values["a1"] * values["a1"] * values["dn"])
+	             - (2. * (nn * values["a1"] * (values["a1"] + 1.) / ((nn - 1.) * (nn - 1.))))
+	             )
+	             /
+		           (pow(values["a1"], 2) + values["a2"]);
 	double uDs = _n * (values["a1"] - _n) - vDs;
+
+// Simonsen et al. 1995
+/*	double vDs = (
+	               (values["a2"] / pow(values["a1"], 2))
+	             - (2./nn) * (1. + 1./values["a1"] - values["a1"] + values["a1"]/nn)
+	             - 1./(nn*nn)
+	             )
+	             /
+	             (pow(values["a1"], 2) + values["a2"]);
+	double uDs = (((nn - 1.)/nn - 1./values["a1"]) / values["a1"]) - vDs;
+*/
 	CompleteSiteIterator csi = group;
+	CompleteSiteIterator csi2 = group;
 	double eta = (double) totNumberMutations(csi);
-	double etas = (double) countSingleton(csi);
-	return (_n * eta - values["a1"] * etas) / sqrt(uDs * eta + vDs * eta * eta);
+	double etas = (double) countSingleton(csi2);
+	
+// Fu & Li 1993
+	return ((_n * eta) - (values["a1"] * etas)) / sqrt(uDs * eta + vDs * eta * eta);
+
+// Simonsen et al. 1995
+//	return ((eta / values["a1"]) - (etas * ((n - 1) / n))) / sqrt(uDs * eta + vDs * eta * eta);
 }
 
 double SequenceStatistics::fuliF(const PolymorphismSequenceContainer & ingroup, const PolymorphismSequenceContainer & outgroup) {
@@ -333,7 +357,7 @@ double SequenceStatistics::fuliF(const PolymorphismSequenceContainer & ingroup, 
 	map<string, double> values = _getUsefullValues(n);
 	double pi = tajima83(ingroup, true);
 	double vF = (values["cn"] + values["b2"] - 2. / (nn - 1.)) / (pow(values["a1"], 2) + values["a2"]);
-	double uF = (1. + values["b1"] - (4. * ((nn + 1.) / ((nn - 1.) * (nn - 1.)))) * (values["a1n"] - (2. * nn) / (nn + 1.))) / (values["a1"] - vF);
+	double uF = ((1. + values["b1"] - (4. * ((nn + 1.) / ((nn - 1.) * (nn - 1.)))) * (values["a1n"] - (2. * nn) / (nn + 1.))) / values["a1"]) - vF;
 	CompleteSiteIterator csii = ingroup;
 	CompleteSiteIterator csio = outgroup;
 	double eta = (double) totNumberMutations(csii);
@@ -346,12 +370,22 @@ double SequenceStatistics::fuliFstar(const PolymorphismSequenceContainer & group
 	double nn = (double) n;
 	map<string, double> values = _getUsefullValues(n);
 	double pi = tajima83(group, true);
-	double vFs = (values["dn"] + values["b2"] - (2. / (nn - 1.)) * (4. * values["a2"] - 6. + 8. / nn)) / (pow(values["a1"], 2) + values["a2"]);
-	double uFs = ((nn / (nn - 1.)) + values["b1"] - (4. / (nn * (nn - 1.))) + 2. * ((nn + 1.) / (pow((nn - 1.), 2))) * (values["a1n"] - 2. * nn / (nn + 1.))) / (values["a1"] - vFs);
+
+// Fu & Li 1993
+//	double vFs = (values["dn"] + values["b2"] - (2. / (nn - 1.)) * (4. * values["a2"] - 6. + 8. / nn)) / (pow(values["a1"], 2) + values["a2"]);
+//	double uFs = (((nn / (nn - 1.)) + values["b1"] - (4. / (nn * (nn - 1.))) + 2. * ((nn + 1.) / (pow((nn - 1.), 2))) * (values["a1n"] - 2. * nn / (nn + 1.))) / values["a1"]) - vFs;
+
+// Simonsen et al. 1995
+	double vFs = (((2*nn*nn*nn + 110*nn*nn - 255*nn + 153) / (9*nn*nn*(nn-1))) + ((2*(n-1)*values["a1"]) / (nn*nn)) - 8*values["a2"]/nn) / (pow(values["a1"], 2) + values["a2"]);
+	double uFs = (((4*nn*nn + 19*nn + 3 - 12*(nn+1.)*values["a1n"]) / (3*nn*(n-1))) / values["a1"]) - vFs;
+
 	CompleteSiteIterator csi = group;
+	CompleteSiteIterator csi2 = group;
 	double eta = (double) totNumberMutations(csi);
-	double etas = (double) countSingleton(csi);
-	return (pi - (nn - 1.) / nn * etas) / sqrt(uFs * eta + vFs * eta * eta);
+	double etas = (double) countSingleton(csi2);
+// Fu & Li 1993
+// Simonsen et al. 1995
+	return (pi - ((nn - 1.) / nn * etas)) / sqrt(uFs * eta + vFs * eta * eta);
 }
 
 unsigned int SequenceStatistics::_getMutationNumber(const Site & site) {
