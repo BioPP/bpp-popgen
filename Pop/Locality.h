@@ -20,13 +20,21 @@ using namespace std;
 template <class T> class Locality : public Coord <T> {
 	public: // Constructors and destructor
 		/**
-		 * @brief Build a new locality with name and coordonates.
+		 * @brief Build a new locality with name and coordinates.
 		 *
 		 * @param name The name of the locality.
 		 * @param x The longitude.
 		 * @param y The latitude.
 		 */
 		Locality(const string name, const T x=0, const T y=0);
+		
+		/**
+		 * @brief Build a new locality with name and coordinates.
+		 *
+		 * @param name The name of the locality.
+		 * @param coord The coordinates of the locality.
+		 */
+		Locality(const string name, const Coord<T> coord);
 		
 		/**
 		 * @brief Destroy a locality.
@@ -52,6 +60,12 @@ template <class T> Locality<T>::Locality(const string name, const T x, const T y
 	_name = name;
 	_x = x;
 	_y = y;
+}
+
+template <class T> Locality<T>::Locality(const string name, const Coord<T> coord) {
+	_name = name;
+	_x = coord.getX();
+	_y = coord.getY();
 }
 
 //** Class destructor: *******************************************************/
