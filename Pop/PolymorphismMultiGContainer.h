@@ -135,6 +135,13 @@ class PolymorphismMultiGContainer : public Clonable {
 		vector<unsigned int> getAllelesIdsForAllGroups(unsigned int locus_position) const throw (IndexOutOfBoundsException);
 
 		/**
+		 * @brief Count the number of allele at a locus for a set of groups.
+		 *
+		 * @throw IndexOutOfBoundsException if locus_position excedes the number of loci of one MultilocusGenotype.
+		 */
+		unsigned int countAllelesForGroups(unsigned int locus_position, const set<unsigned int> & groups) const throw (IndexOutOfBoundsException);
+
+		/**
 		 * @brief Count the different alleles at one locus.
 		 *
 		 * @throw IndexOutOfBoundsException if locus_position excedes the number of loci of one MultilocusGenotype.
@@ -265,6 +272,38 @@ class PolymorphismMultiGContainer : public Clonable {
 		 * @throw IndexOutOfBoundsException if locus_position excedes the number of loci of one MultilocusGenotype.
 		 */
 		map<unsigned int, double> getHeterozygousFrqForGroups(unsigned int locus_position, const set<unsigned int> & groups) const throw (IndexOutOfBoundsException);
+
+		/**
+		 * @brief Compute the opserved heterozygosity for one locus.
+		 *
+		 * This is the mean value of the getHeterozygousFrqForGroups map.
+		 * @throw IndexOutOfBoundsException if locus_position excedes the number of loci of one MultilocusGenotype.
+		 */
+		double getHoptForGroups(unsigned int locus_position, const set<unsigned int> & groups) const throw (IndexOutOfBoundsException);
+
+		/**
+		 * @brief Compute the expected heterozygosity for one locus.
+		 *
+		 * Nei 1977
+		 * @f[
+		 * H_{exp}=1-\sum_{i=1}^{n}x_i^2
+		 * @f]
+		 * where @f$x_i@f$ is the frequency of the i<sup>th</sup> allele and @f$n@f$ the number of alleles.
+		 * @throw IndexOutOfBoundsException if locus_position excedes the number of loci of one MultilocusGenotype.
+		 */
+		double getHexpForGroups(unsigned int locus_position, const set<unsigned int> & groups) const throw (IndexOutOfBoundsException);
+
+		/**
+		 * @brief Compute the expected non biased heterozygosity for one locus.
+		 *
+		 * Nei 1978
+		 * @f[
+		 * H_{nb}=\frac{2n}{2n-1}\left(1-\sum_{i=1}^{n}x_i^2\right)=\frac{2n}{2n-1}H_{exp}
+		 * @f]
+		 * where @f$x_i@f$ is the frequency of the i<sup>th</sup> allele and @f$n@f$ the number of alleles.
+		 * @throw IndexOutOfBoundsException if locus_position excedes the number of loci of one MultilocusGenotype.
+		 */
+		double getHnbForGroups(unsigned int locus_position, const set<unsigned int> & groups) const throw (IndexOutOfBoundsException);
 
 	protected:
 		vector<MultilocusGenotype *> _multilocusGenotypes;

@@ -130,6 +130,21 @@ vector<unsigned int> PolymorphismMultiGContainer::getAllelesIdsForAllGroups(unsi
 	return MapTools::getKeys(tmp_alleles);
 }
 
+unsigned int PolymorphismMultiGContainer::countAllelesForGroups(unsigned int locus_position, const set<unsigned int> & groups) const throw (IndexOutOfBoundsException) {
+	map<unsigned int, unsigned int> allele_count;
+	unsigned int nb_tot_allele = 0;
+	try {
+		allele_count = getAllelesMapForGroups(locus_position, groups);
+	}
+	catch (IndexOutOfBoundsException & ioobe) {
+		throw IndexOutOfBoundsException("PolymorphismMultiGContainer::countAllelesForGroups: locus_position out of bounds.", ioobe.getBadInteger(), ioobe.getBounds()[0], ioobe.getBounds()[1]);
+	}
+	vector<unsigned int> counter = MapTools::getValues(allele_count);
+	for (unsigned int i = 0 ; i < counter.size() ; i++)
+		nb_tot_allele += counter[i];
+	return nb_tot_allele;
+}
+
 map<unsigned int, unsigned int> PolymorphismMultiGContainer::getAllelesMapForAllGroups(unsigned int locus_position) const throw (IndexOutOfBoundsException) {
 	set<unsigned int> groups_ids = getAllGroupsIds();
 	try {
@@ -375,4 +390,31 @@ map<unsigned int, double> PolymorphismMultiGContainer::getHeterozygousFrqForGrou
 	for (map<unsigned int, double>::iterator i = freq.begin() ; i != freq.end() ; i++)
 		i->second = i->second / counter;
 	return freq;
+}
+
+double PolymorphismMultiGContainer::getHexpForGroups(unsigned int locus_position, const set<unsigned int> & groups) const throw (IndexOutOfBoundsException) {
+	map<unsigned int, double> allele_frq;
+	double frqsqr = 0.;
+	try {
+		allele_frq = getAllelesFrqForGroups(locus_position, groups);
+	}
+	catch (IndexOutOfBoundsException & ioobe) {
+		throw IndexOutOfBoundsException("PolymorphismMultiGContainer::getHexpForGroups: locus_position out of bounds.", ioobe.getBadInteger(), ioobe.getBounds()[0], ioobe.getBounds()[1]);
+	}
+	for (map<unsigned int, double>::iterator it = allele_frq.begin() ; it != allele_frq.end() ; it++)
+		frqsqr += it->second * it->second;
+	return (1 - frqsqr);
+}
+
+double PolymorphismMultiGContainer::getHnbForGroups(unsigned int locus_position, const set<unsigned int> & groups) const throw (IndexOutOfBoundsException) {
+	unsigned int nb_alleles;
+	double Hexp;
+	try {
+		nb_alleles = countAllelesForGroups(locus_position, groups);
+		Hexp = getHexpForGroups(locus_position, groups);
+	}
+	catch (IndexOutOfBoundsException & ioobe) {
+		throw IndexOutOfBoundsException("PolymorphismMultiGContainer::getHnbForGroups: locus_position out of bounds.", ioobe.getBadInteger(), ioobe.getBounds()[0], ioobe.getBounds()[1]);
+	}
+	return (2 * nb_alleles * Hexp  / ((2 * nb_alleles) - 1));
 }
