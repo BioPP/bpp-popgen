@@ -1,7 +1,7 @@
 /*
  * File DataSet.cpp
  * Author : Sylvain Gaillard <yragael2001@yahoo.fr>
- * Last modification : Wednesday June 23 2004
+ * Last modification : Friday June 25 2004
  */
 
 #include "DataSet.h"
@@ -23,10 +23,6 @@ DataSet::~DataSet() {
 }
 
 //** Other methodes: *********************************************************/
-// Dealing with file ---------------------------------------
-void DataSet::readFile(const string & path) {}
-
-void DataSet::writeFile(const string & path) {}
 
 // Dealing with Localities ---------------------------------
 void DataSet::addLocality(Locality<double> & locality) throw (BadIdentifierException) {
@@ -76,9 +72,17 @@ unsigned int DataSet::getNumberOfLocalities() const {
 	return _localities.size();
 }
 
+bool DataSet::hasLocality() const {
+	return (getNumberOfLocalities() > 0);
+}
+
 // Dealing with groups -------------------------------------
 void DataSet::addGroup(const Group & group) {
 	_groups.push_back(new Group(group));
+}
+
+void DataSet::addEmptyGroup() {
+	_groups.push_back(new Group());
 }
 
 const Group * DataSet::getGroup(unsigned int index) const throw (IndexOutOfBoundsException) {
@@ -265,14 +269,17 @@ const Coord<double> * DataSet::getIndividualCoordInGroup(unsigned int group_inde
 	}
 }
 
-void DataSet::setIndividualLocalityInGroup(unsigned int group_index, unsigned int individual_index, const Locality<double> * locality) throw (IndexOutOfBoundsException) {
+void DataSet::setIndividualLocalityInGroupByName(unsigned int group_index, unsigned int individual_index, const string & locality_name) throw (Exception) {
 	if (group_index >= getNumberOfGroups())
 		throw IndexOutOfBoundsException("DataSet::setIndividualLocalityInGroup: group_index out of bounds.", group_index, 0, getNumberOfGroups());
 	try {
-		_groups[group_index]->setIndividualLocalityByIndex(individual_index, locality);
+		_groups[group_index]->setIndividualLocalityByIndex(individual_index, getLocalityByName(locality_name));
 	}
 	catch (IndexOutOfBoundsException & ioobe) {
 		throw IndexOutOfBoundsException("DataSet::setIndividualLocalityInGroup: individual_index out of bounds.", ioobe.getBadInteger(), ioobe.getBounds()[0], ioobe.getBounds()[1]);
+	}
+	catch (LocalityNotFoundException & lnfe) {
+		throw LocalityNotFoundException("DataSet::setIndividualLocalityInGroup: locality_name not found.", lnfe.getIdentifier());
 	}
 }
 
@@ -290,11 +297,11 @@ const Locality<double> * DataSet::getIndividualLocalityInGroup(unsigned int grou
 	}
 }
 
-void DataSet::addIndividualSequenceInGroup(unsigned int group_index, unsigned int individual_index, const Sequence & sequence) throw (Exception) {
+void DataSet::addIndividualSequenceInGroup(unsigned int group_index, unsigned int individual_index, unsigned int sequence_index, const Sequence & sequence) throw (Exception) {
 	if (group_index >= getNumberOfGroups())
 		throw IndexOutOfBoundsException("DataSet::addIndividualSequenceInGroup: group_index out of bounds.", group_index, 0, getNumberOfGroups());
 	try {
-		_groups[group_index]->addIndividualSequenceByIndex(individual_index, sequence);
+		_groups[group_index]->addIndividualSequenceByIndex(individual_index, sequence_index, sequence);
 	}
 	catch (IndexOutOfBoundsException & ioobe) {
 		throw IndexOutOfBoundsException("DataSet::addIndividualSequenceInGroup: individual_index out of bounds.", ioobe.getBadInteger(), ioobe.getBounds()[0], ioobe.getBounds()[1]);
@@ -304,6 +311,9 @@ void DataSet::addIndividualSequenceInGroup(unsigned int group_index, unsigned in
 	}
 	catch (BadIdentifierException & bie) {
 		throw BadIdentifierException("DataSet::addIndividualSequenceInGroup: sequence's name already in use.", bie.getIdentifier());
+	}
+	catch (BadIntegerException & bie) {
+		throw BadIntegerException("DataSet::addIndividualSequenceInGroup: sequence_index already in use.", bie.getBadInteger());
 	}
 }
 
@@ -665,4 +675,34 @@ unsigned int DataSet::getPloidyByLocusIndex(unsigned int locus_index) const thro
 	catch (IndexOutOfBoundsException & ioobe) {
 		throw IndexOutOfBoundsException("DataSet::getPloidyByLocusIndex: locus_index out of bounds.", ioobe.getBadInteger(), ioobe.getBounds()[0], ioobe.getBounds()[1]);
 	}
+}
+
+// General tests ------------------------------------------
+bool DataSet::hasSequenceData() const {
+	for (unsigned int i = 0 ; i < getNumberOfGroups() ; i++)
+		if (_groups[i]->hasSequenceData()) return true;
+	return false;
+}
+
+const Alphabet * DataSet::getAlphabet() const throw (NullPointerException) {
+	for (unsigned int i = 0 ; i < getNumberOfGroups() ; i++)
+		if (_groups[i]->hasSequenceData())
+			return _groups[i]->getAlphabet();
+	throw NullPointerException("DataSet::getAlphabet: no sequence data.");
+}
+
+bool DataSet::hasAlleleicData() const {
+	for (unsigned int i = 0 ; i < getNumberOfGroups() ; i++)
+		if (_groups[i]->hasAllelicData()) return true;
+	return false;
+}
+
+unsigned int DataSet::getNumberOfSequenceSets() const {
+	unsigned int nbss = 0;
+	unsigned int tmp;
+	for (unsigned int i = 0 ; i < getNumberOfGroups() ; i++) {
+		tmp = _groups[i]->getMaxNumberOfSequences();
+		if (nbss < tmp) nbss = tmp;
+	}
+	return nbss;
 }

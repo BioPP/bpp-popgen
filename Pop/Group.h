@@ -1,7 +1,7 @@
 /*
  * File Group.h
  * Author : Sylvain Gaillard <yragael2001@yahoo.fr>
- * Last modification : Tuesday June 22 2004
+ * Last modification : Friday June 25 2004
  */
 
 // Secured inclusion of header's file
@@ -81,6 +81,14 @@ class Group {
 		 * @return An integer as the number of Individual.
 		 */
 		unsigned int getNumberOfIndividuals() const;
+
+		/**
+		 * @brief Get the maximum number of sequence.
+		 *
+		 * Give the value of the highest sequence key. This value is usefull to
+		 * discover the missing sequences data for each individual.
+		 */
+		unsigned int getMaxNumberOfSequences() const;
 		
 		/**
 		 * @brief Get the position (index) of an Individual.
@@ -243,9 +251,10 @@ class Group {
 		 * @throw IndexOutOfBoundsException if individual_index excedes the number of individuals.
 		 * @throw AlphabetMismatchException if the sequence's alphabet doesn't match the container's alphabet.
 		 * @throw BadIdentifierException if the sequence's name is already in use.
+		 * @throw BadIntegerException if sequence_index is already in use.
 		 */
 		void addIndividualSequenceByIndex(unsigned int individual_index,
-				const Sequence & sequence)
+				unsigned int sequence_index, const Sequence & sequence)
 			throw (Exception);
 
 		/**
@@ -263,7 +272,7 @@ class Group {
 		 *
 		 * @throw IndexOutOfBoundsException if individual_index excedes the number of individuals.
 		 * @throw NullPointerException if there is no sequence container defined in the individual.
-		 * @throw IndexOutOfBoundsException if sequence_index excedes the number of sequences.
+		 * @throw SequenceNotFoundException if sequence_index is not found.
 		 */
 		const Sequence * getIndividualSequenceByIndex(unsigned int individual_index, unsigned int sequence_index) const
 			throw (Exception);
@@ -283,7 +292,7 @@ class Group {
 		 *
 		 * @throw IndexOutOfBoundsException if individual_index excedes the number of individuals.
 		 * @throw NullPointerException if there is no sequence container defined in the individual.
-		 * @throw IndexOutOfBoundsException if sequence_index excedes the number of sequences.
+		 * @throw SequenceNotFoundException if sequence_index is not found.
 		 */
 		void deleteIndividualSequenceByIndex(unsigned int individual_index, unsigned int sequence_index)
 			throw (Exception);
@@ -326,7 +335,7 @@ class Group {
 		 *
 		 * @throw IndexOutOfBoundsException if individual_index excedes the number of individuals.
 		 */
-		void setIndividualSequences(unsigned int individual_index, const OrderedSequenceContainer & osc)
+		void setIndividualSequences(unsigned int individual_index, const MapSequenceContainer & msc)
 			throw (IndexOutOfBoundsException);
 
 		/**
@@ -412,6 +421,21 @@ class Group {
 		 */
 		const MonolocusGenotype * getIndividualMonolocusGenotype(unsigned int individual_index,
 				unsigned int locus_index) const throw (Exception);
+
+		/**
+		 * @brief Tell if at least one individual has at least one sequence.
+		 */
+		bool hasSequenceData() const;
+
+		/**
+		 * @brief Get the alphabet used for the sequences.
+		 */
+		const Alphabet * getAlphabet() const throw (NullPointerException);
+
+		/**
+		 * @brief Tell if at least one individual has allelic data.
+		 */
+		bool hasAllelicData() const;
 
 	protected:
 		string _id;

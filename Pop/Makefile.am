@@ -1,4 +1,6 @@
 H_FILES = \
+AbstractIDataSet.h\
+AbstractODataSet.h\
 AlleleInfo.h\
 AnalyzedLoci.h\
 Coord.h\
@@ -12,11 +14,20 @@ Group.h\
 HaplodiploidMonolocusGenotype.h\
 HaploidMonolocusGenotype.h\
 Individual.h\
+IDataSet.h\
+IODataSet.h\
 Locality.h\
 LocusInfo.h\
-MonolocusGenotype.h
+MonolocusGenotype.h\
+ODataSet.h\
+PolymorphismSequenceContainer.h\
+PolymorphismSequenceContainerTools.h\
+Poplib.h\
+StatisticalTests.h
 
 CPP_FILES = \
+AbstractIDataSet.cpp\
+AbstractODataSet.cpp\
 AlleleInfo.cpp\
 AnalyzedLoci.cpp\
 DataSet.cpp\
@@ -28,8 +39,15 @@ Group.cpp\
 HaplodiploidMonolocusGenotype.cpp\
 HaploidMonolocusGenotype.cpp\
 Individual.cpp\
+IDataSet.cpp\
+IODataSet.cpp\
+ODataSet.cpp\
 LocusInfo.cpp\
-MonolocusGenotype.cpp
+MonolocusGenotype.cpp\
+PolymorphismSequenceContainer.cpp\
+PolymorphismSequenceContainerTools.cpp\
+Poplib.cpp\
+StatisticalTests.cpp
 
 lib_LTLIBRARIES = libpop.la
 libpop_la_SOURCES = $(H_FILES) $(CPP_FILES)

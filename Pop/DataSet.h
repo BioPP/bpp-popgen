@@ -1,7 +1,7 @@
 /*
  * File DataSet.h
  * Author : Sylvain Gaillard <yragael2001@yahoo.fr>
- * Last modification : Tuesday June 22 2004
+ * Last modification : Friday June 25 2004
  */
 
 // Secured inclusion of header's file
@@ -43,22 +43,6 @@ class DataSet {
 		
 	public: // Methodes
 
-//** File manipulation *******************************************************/
-		/**
-		 * @brief Read the DataSet from a file.
-		 *
-		 * @param path The path to the file which contains the data
-		 * to store in the DataSet.
-		 */
-		void readFile(const string & path);
-
-		/**
-		 * @brief Write the DataSet in a flat file.
-		 *
-		 * @param path The path to the file.
-		 */
-		void writeFile(const string & path);
-		
 //** Locality manipulation ***************************************************/
 		/**
 		 * @brief Add a locality to the DataSet.
@@ -111,6 +95,11 @@ class DataSet {
 		 * @brief Get the number of Localities.
 		 */
 		unsigned int getNumberOfLocalities() const;
+
+		/**
+		 * @brief Tell if there is at least one locality.
+		 */
+		bool hasLocality() const;
 		
 //** Group manipulation ******************************************************/
 		/**
@@ -122,6 +111,11 @@ class DataSet {
 		 */
 		void addGroup(const Group & group);
 
+		/**
+		 * @brief Add an empty Group to the DataSet.
+		 */
+		void addEmptyGroup();
+		
 		/**
 		 * @brief Get a group.
 		 *
@@ -284,9 +278,10 @@ class DataSet {
 		 *
 		 * @throw IndexOutOfBoundsException if group_index excedes the number of groups.
 		 * @throw IndexOutOfBoundsException if individual_index excedes the number of individual in the group.
+		 * @throw LocalityNotFoundException if locality_name is not found.
 		 */
-		void setIndividualLocalityInGroup(unsigned int group_index, unsigned int individual_index, const Locality<double> * locality)
-			throw (IndexOutOfBoundsException);
+		void setIndividualLocalityInGroupByName(unsigned int group_index, unsigned int individual_index, const string & locality_name)
+			throw (Exception);
 
 		/**
 		 * @brief Get the Locality of an Individual in a Group.
@@ -306,7 +301,8 @@ class DataSet {
 		 * @throw AlphabetMismatchException if the sequence's alphabet doesn't match the container's alphabet.
 		 * @throw BadIdentifierException if the sequence's name is already in use.
 		 */
-		void addIndividualSequenceInGroup(unsigned int group_index, unsigned int individual_index, const Sequence & sequence)
+		void addIndividualSequenceInGroup(unsigned int group_index, unsigned int individual_index,
+				unsigned int sequence_index, const Sequence & sequence)
 			throw (Exception);
 
 		/**
@@ -316,6 +312,7 @@ class DataSet {
 		 * @throw IndexOutOfBoundsException if individual_index excedes the number of individual in the group.
 		 * @throw NullPointerException if the individual has no sequences.
 		 * @throw SequenceNotFoundException if sequence_name is not found.
+		 * @throw BadIntegerException if sequence_index is already in use.
 		 */
 		const Sequence * getIndividualSequenceByNameInGroup(unsigned int group_index, unsigned int individual_index, const string & sequence_name) const
 			throw (Exception);
@@ -326,7 +323,7 @@ class DataSet {
 		 * @throw IndexOutOfBoundsException if group_index excedes the number of groups.
 		 * @throw IndexOutOfBoundsException if individual_index excedes the number of individual in the group.
 		 * @throw NullPointerException if the individual has no sequences.
-		 * @throw IndexOutOfBoundsException if sequence_index excedes the number of sequences.
+		 * @throw SequenceNotFoundException if sequence_index is not found.
 		 */
 		const Sequence * getIndividualSequenceByIndexInGroup(unsigned int group_index, unsigned int individual_index, unsigned int sequence_index) const
 			throw (Exception);
@@ -348,7 +345,7 @@ class DataSet {
 		 * @throw IndexOutOfBoundsException if group_index excedes the number of groups.
 		 * @throw IndexOutOfBoundsException if individual_index excedes the number of individual in the group.
 		 * @throw NullPointerException if the individual has no sequences.
-		 * @throw IndexOutOfBoundsException if sequence_index excedes the number of sequences.
+		 * @throw SequenceNotFoundException if sequence_index is not found.
 		 */
 		void deleteIndividualSequenceByIndexInGroup(unsigned int group_index, unsigned int individual_index, unsigned int sequence_index)
 			throw (Exception);
@@ -530,6 +527,29 @@ class DataSet {
 		 * @brief Get the ploidy of a locus.
 		 */
 		unsigned int getPloidyByLocusIndex(unsigned int locus_index) const throw (Exception);
+
+	//** General tests **********************************************************/
+		/**
+		 * @brief Tell if at least one individual has at least one sequence.
+		 */
+		bool hasSequenceData() const;
+
+		/**
+		 * @brief Get the alphabet if there is sequence data.
+		 *
+		 * @throw NullPointerException if there is no sequence data.
+		 */
+		const Alphabet * getAlphabet() const throw (NullPointerException);
+		
+		/**
+		 * @brief Tell if there is alelelic data.
+		 */
+		bool hasAlleleicData() const;
+		
+		/**
+		 * @brief Give the number of aligned set of sequences.
+		 */
+		unsigned int getNumberOfSequenceSets() const;
 		
 	protected:
 		AnalyzedLoci * _analyzedLoci;

@@ -1,7 +1,7 @@
 /*
  * File Group.cpp
  * Author : Sylvain Gaillard <yragael2001@yahoo.fr>
- * Last modification : Tuesday June 22 2004
+ * Last modification : Friday June 25 2004
  */
 
 #include "Group.h"
@@ -115,6 +115,16 @@ unsigned int Group::getNumberOfIndividuals() const {
 	return _individuals.size();
 }
 
+unsigned int Group::getMaxNumberOfSequences() const {
+	unsigned int maxnum = 0;
+	for (unsigned int i = 0 ; i < getNumberOfIndividuals() ; i++) {
+		vector<unsigned int> seqpos = _individuals[i]->getSequencesPositions();
+		for (unsigned int j = 0 ; j < seqpos.size() ; j++)
+			if (maxnum < seqpos[j]) maxnum = seqpos[j];
+	}
+	return maxnum + 1;
+}
+
 //-- Dealing with individual's properties -----------------
 void Group::setIndividualSexByIndex(unsigned int individual_index, const unsigned short sex) throw (IndexOutOfBoundsException) {
 	if (individual_index >= getNumberOfIndividuals())
@@ -140,7 +150,7 @@ const Date * Group::getIndividualDateByIndex(unsigned int individual_index) cons
 	try {
 		return _individuals[individual_index]->getDate();
 	}
-	catch (NullPointerException npe) {
+	catch (NullPointerException & npe) {
 		throw NullPointerException("Group::getIndividualDateByIndex: individual has no date.");
 	}
 }
@@ -157,7 +167,7 @@ const Coord<double> * Group::getIndividualCoordByIndex(unsigned int individual_i
 	try {
 		return _individuals[individual_index]->getCoord();
 	}
-	catch (NullPointerException npe) {
+	catch (NullPointerException & npe) {
 		throw NullPointerException("Group::getIndividualCoordByIndex: individual has no coordinates.");
 	}
 }
@@ -174,22 +184,25 @@ const Locality<double> * Group::getIndividualLocalityByIndex(unsigned int indivi
 	try {
 		return _individuals[individual_index]->getLocality();
 	}
-	catch (NullPointerException npe) {
+	catch (NullPointerException & npe) {
 		throw NullPointerException("Group::getIndividualLocalityByIndex: individuals has no locality.");
 	}
 }
 
-void Group::addIndividualSequenceByIndex(unsigned int individual_index, const Sequence & sequence) throw (Exception) {
+void Group::addIndividualSequenceByIndex(unsigned int individual_index, unsigned int sequence_index, const Sequence & sequence) throw (Exception) {
 	if (individual_index >= getNumberOfIndividuals())
 		throw IndexOutOfBoundsException("Group::addIndividualSequenceByIndex: individual_index out of bounds.", individual_index, 0, getNumberOfIndividuals());
 	try {
-		_individuals[individual_index]->addSequence(sequence);
+		_individuals[individual_index]->addSequence(sequence_index, sequence);
 	}
-	catch (AlphabetMismatchException ame) {
+	catch (AlphabetMismatchException & ame) {
 		throw AlphabetMismatchException("Group::addIndividualSequenceByIndex: sequence's alphabet doesn't match.", ame.getAlphabets()[0], ame.getAlphabets()[1]);
 	}
-	catch (BadIdentifierException bie) {
+	catch (BadIdentifierException & bie) {
 		throw BadIdentifierException("Group::addIndividualSequenceByIndex: sequence's name already in use.", bie.getIdentifier());
+	}
+	catch (BadIntegerException & bie) {
+		throw BadIntegerException("Group::addIndividualSequenceByIndex: sequence_index already in use.", bie.getBadInteger());
 	}
 }
 
@@ -199,10 +212,10 @@ const Sequence * Group::getIndividualSequenceByName(unsigned int individual_inde
 	try {
 		return _individuals[individual_index]->getSequenceByName(sequence_name);
 	}
-	catch (NullPointerException npe) {
+	catch (NullPointerException & npe) {
 		throw NullPointerException("Group::getIndividualSequenceByName: no sequence data in individual.");
 	}
-	catch (SequenceNotFoundException snfe) {
+	catch (SequenceNotFoundException & snfe) {
 		throw SequenceNotFoundException("Group::getIndividualSequenceByName: sequence_name not found.", snfe.getSequenceId());
 	}
 }
@@ -213,11 +226,11 @@ const Sequence * Group::getIndividualSequenceByIndex(unsigned int individual_ind
 	try {
 		return _individuals[individual_index]->getSequenceByIndex(sequence_index);
 	}
-	catch (NullPointerException npe) {
+	catch (NullPointerException & npe) {
 		throw NullPointerException("Group::getIndividualSequenceByIndex: no sequence data in individual.");
 	}
-	catch (IndexOutOfBoundsException ioobe) {
-		throw IndexOutOfBoundsException("Group::getIndividualSequenceByIndex: sequence_index out of bounds.", ioobe.getBadInteger(), ioobe.getBounds()[0], ioobe.getBounds()[1]);
+	catch (SequenceNotFoundException & snfe) {
+		throw SequenceNotFoundException("Group::getIndividualSequenceByIndex: sequence_index not found.", snfe.getSequenceId());
 	}
 }
 
@@ -227,10 +240,10 @@ void Group::deleteIndividualSequenceByName(unsigned int individual_index, const 
 	try {
 		_individuals[individual_index]->deleteSequenceByName(sequence_name);
 	}
-	catch (NullPointerException npe) {
+	catch (NullPointerException & npe) {
 		throw NullPointerException("Group::deleteSequenceByName: no sequence data in individual.");
 	}
-	catch (SequenceNotFoundException snfe) {
+	catch (SequenceNotFoundException & snfe) {
 		throw SequenceNotFoundException("Group::deleteSequenceByName: sequence_name not found.", snfe.getSequenceId());
 	}
 }
@@ -241,11 +254,11 @@ void Group::deleteIndividualSequenceByIndex(unsigned int individual_index, unsig
 	try {
 		_individuals[individual_index]->deleteSequenceByIndex(sequence_index);
 	}
-	catch (NullPointerException npe) {
+	catch (NullPointerException & npe) {
 		throw NullPointerException("Group::deleteSequenceByIndex: no sequence data in individual.");
 	}
-	catch (IndexOutOfBoundsException ioobe) {
-		throw IndexOutOfBoundsException("Group::deleteSequenceByIndex: sequence_index out of bounds.", ioobe.getBadInteger(), ioobe.getBounds()[0], ioobe.getBounds()[1]);
+	catch (SequenceNotFoundException & snfe) {
+		throw SequenceNotFoundException("Group::deleteSequenceByIndex: sequence_index not found.", snfe.getSequenceId());
 	}
 }
 
@@ -275,7 +288,7 @@ unsigned int Group::getIndividualSequencePosition(unsigned int individual_index,
 	catch (NullPointerException & npe) {
 		throw NullPointerException("Group::getSequencePosition: no sequence data in individual.");
 	}
-	catch (SequenceNotFoundException snfe) {
+	catch (SequenceNotFoundException & snfe) {
 		throw SequenceNotFoundException("Group::getSequencePosition: sequence_name not found.", snfe.getSequenceId());
 	}
 }
@@ -291,10 +304,10 @@ unsigned int Group::getIndividualNumberOfSequences(unsigned int individual_index
 	}
 }
 
-void Group::setIndividualSequences(unsigned int individual_index, const OrderedSequenceContainer & osc) throw (IndexOutOfBoundsException) {
+void Group::setIndividualSequences(unsigned int individual_index, const MapSequenceContainer & msc) throw (IndexOutOfBoundsException) {
 	if (individual_index >= getNumberOfIndividuals())
 		throw IndexOutOfBoundsException("Group::setIndividualSequences: individual_index out of bounds.", individual_index, 0, getNumberOfIndividuals());
-	_individuals[individual_index]->setSequences(osc);
+	_individuals[individual_index]->setSequences(msc);
 }
 
 void Group::addIndividualGenotype(unsigned int individual_index, const Genotype & genotype) throw (Exception) {
@@ -408,4 +421,23 @@ const MonolocusGenotype *  Group::getIndividualMonolocusGenotype(unsigned int in
 	catch (IndexOutOfBoundsException & ioobe) {
 		throw IndexOutOfBoundsException("Group::getIndividualMonolocusGenotype: locus_index excedes the number of locus.", ioobe.getBadInteger(), ioobe.getBounds()[0], ioobe.getBounds()[1]);
 	}
+}
+
+bool Group::hasSequenceData() const {
+	for (unsigned int i = 0 ; i < getNumberOfIndividuals() ; i++)
+		if (hasIndividualSequences(i)) return true;
+	return false;
+}
+
+const Alphabet * Group::getAlphabet() const throw (NullPointerException) {
+	for (unsigned int i = 0 ; i < getNumberOfIndividuals() ; i++)
+		if (hasIndividualSequences(i))
+			return _individuals[i]->getSequenceAlphabet();
+	throw NullPointerException("Group::getAlphabet: individual has no sequence data.");
+}
+
+bool Group::hasAllelicData() const {
+	for (unsigned int i = 0 ; i < getNumberOfIndividuals() ; i++)
+		if (hasIndividualGenotype(i)) return true;
+	return false;
 }

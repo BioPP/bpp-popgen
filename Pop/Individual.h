@@ -1,7 +1,7 @@
 /*
  * File Individual.h
  * Author : Sylvain Gaillard <yragael2001@yahoo.fr>
- * Last modification : Monday June 21 2004
+ * Last modification : Friday June 25 2004
  */
 
 // Secured inclusion of header's file
@@ -15,11 +15,12 @@
 // From Utils
 #include <Utils/Clonable.h>
 #include <Utils/Exceptions.h>
+#include <Utils/TextTools.h>
 
 // From SeqLib
 #include <Seq/Sequence.h>
 #include <Seq/OrderedSequenceContainer.h>
-#include <Seq/VectorSequenceContainer.h>
+#include <Seq/MapSequenceContainer.h>
 #include <Seq/SequenceExceptions.h>
 
 // From PopLib
@@ -228,11 +229,13 @@ class Individual : public Clonable {
 		 * Creates the sequence container when adding the first sequence.
 		 * Otherwize add the sequence to the end of the sequence container.
 		 *
+		 * @param sequence_key the place where the sequence will be put.
 		 * @param sequence The sequence to add.
 		 * @throw AlphabetMismatchException if the sequence's alphabet doesn't match the container's alphabet.
 		 * @throw BadIdentifierException if sequence's name is already in use.
+		 * @throw BadIntegerException if sequence_index is already in use.
 		 */
-		void addSequence(const Sequence & sequence)
+		void addSequence(unsigned int sequence_key, const Sequence & sequence)
 			throw (Exception);
 		
 		/**
@@ -252,7 +255,7 @@ class Individual : public Clonable {
 		 * @param sequence_index The index of the sequence in the sequence set.
 		 * @return A pointer to the sequence.
 		 * @throw NullPointerException if there is no sequence container defined.
-		 * @throw IndexOutOfBoundsException if sequence_index excedes the number of sequences.
+		 * @throw SequenceNotFoundException if sequence_index is not found (i.e. missing data or not used).
 		 */
 		const Sequence * getSequenceByIndex(const unsigned int sequence_index)
 			const throw(Exception);
@@ -271,7 +274,7 @@ class Individual : public Clonable {
 		 *
 		 * @param sequence_index The index of the sequence.
 		 * @throw NullPointerException if there is no sequence container defined.
-		 * @throw IndexOutOfBoundsException if sequence_index excedes the number of sequences.
+		 * @throw SequenceNotFoundException if sequence_index is not found.
 		 */
 		void deleteSequenceByIndex(unsigned int sequence_index) throw (Exception);
 		
@@ -284,12 +287,27 @@ class Individual : public Clonable {
 		bool hasSequences() const;
 
 		/**
+		 * @brief Return the alphabet of the sequences.
+		 *
+		 * @throw NullPointerException if there is no sequence container defined.
+		 */
+		const Alphabet * getSequenceAlphabet() const throw (NullPointerException);
+
+		/**
 		 * @brief Get the sequences' names.
 		 *
 		 * @return All the sequences' names of the individual in a vector of string.
 		 * @throw NullPointerException if there is no sequence container defined.
 		 */
 		vector<string> getSequencesNames() const throw (NullPointerException);
+
+		/**
+		 * @brief Get the sequences' positions.
+		 *
+		 * @return All the positions where a sequence is found.
+		 * @throw NullPointerException if there is no sequence container defined.
+		 */
+		vector<unsigned int> getSequencesPositions() const throw (NullPointerException);
 
 		/**
 		 * @brief Get the position (index) of a sequence.
@@ -307,9 +325,9 @@ class Individual : public Clonable {
 		unsigned int getNumberOfSequences() const throw (NullPointerException);
 
 		/**
-		 * @brief Set all the sequences with an ordered sequence container.
+		 * @brief Set all the sequences with a map  sequence container.
 		 */
-		void setSequences(const OrderedSequenceContainer & osc);
+		void setSequences(const MapSequenceContainer & msc);
 
 		/**
 		 * @brief Get a pointer to the sequence container.
@@ -398,7 +416,7 @@ class Individual : public Clonable {
 		Date * _date;
 		Coord<double> * _coord;
 		const Locality<double> * _locality;
-		VectorSequenceContainer * _sequences;
+		MapSequenceContainer * _sequences;
 		Genotype * _genotype;
 };
 #endif // _INDIVIDUAL_H_

@@ -1,7 +1,7 @@
 /*
  * File Individual.cpp
  * Author : Sylvain Gaillard <yragael2001@yahoo.fr>
- * Last modification : Tuesday June 22 2004
+ * Last modification : Thursday June 24 2004
  */
 
 #include "Individual.h"
@@ -63,7 +63,7 @@ Individual::Individual(const Individual &ind) {
 		_locality = NULL;
 	}
 	try {
-		setSequences(* ind.getSequences());
+		setSequences(* dynamic_cast<const MapSequenceContainer *>(ind.getSequences()));
 	}
 	catch (NullPointerException) {
 		_sequences = NULL;
@@ -104,7 +104,7 @@ Individual & Individual::operator= (const Individual & ind) {
 		_locality = NULL;
 	}
 	try {
-		setSequences(* ind.getSequences());
+		setSequences(* dynamic_cast<const MapSequenceContainer *>(ind.getSequences()));
 	}
 	catch (NullPointerException) {
 		_sequences = NULL;
@@ -230,12 +230,12 @@ bool Individual::hasLocality() const {
 }
 
 // Sequences
-void Individual::addSequence(const Sequence & sequence)
+void Individual::addSequence(unsigned int sequence_key, const Sequence & sequence)
 throw (Exception) {
 	if (_sequences == NULL)
-		_sequences = new VectorSequenceContainer(sequence.getAlphabet());
+		_sequences = new MapSequenceContainer(sequence.getAlphabet());
 	try {
-		_sequences->addSequence(sequence);
+		_sequences->addSequence(TextTools::toString(sequence_key), sequence);
 	}
 	catch (AlphabetMismatchException & ame)
 	{
@@ -243,7 +243,11 @@ throw (Exception) {
 	}
 	catch (Exception & e)
 	{
-		throw(BadIdentifierException("Individual::addSequence: sequence's name already in use.", sequence.getName()));
+		if (string(e.what()).find("name") < string(e.what()).size())
+			throw(BadIdentifierException("Individual::addSequence: sequence's name already in use.", sequence.getName()));
+		// if (string(e.what()).find("key") < string(e.what()).size())
+		else
+			throw(BadIntegerException("Individual::addSequence: sequence_key already in use.", sequence_key));
 	}
 }
 
@@ -252,7 +256,7 @@ const throw (Exception) {
 	if (_sequences == NULL)
 		throw NullPointerException("Individual::getSequenceByName: no sequence data.");
 	try {
-		return const_cast<const VectorSequenceContainer *>(_sequences)->getSequence(sequence_name);
+		return const_cast<const MapSequenceContainer *>(_sequences)->getSequence(sequence_name);
 	}
 	catch (SequenceNotFoundException & snfe) {
 		throw SequenceNotFoundException("Individual::getSequenceByName: sequence_name not found.", snfe.getSequenceId());
@@ -264,10 +268,10 @@ const throw (Exception) {
 	if (_sequences == NULL)
 		throw NullPointerException("Individual::getSequenceByIndex: no sequence data.");
 	try {
-		return const_cast<const VectorSequenceContainer *>(_sequences)->getSequence(sequence_index);
+		return const_cast<const MapSequenceContainer *>(_sequences)->getSequenceByKey(TextTools::toString(sequence_index));
 	}
-	catch (IndexOutOfBoundsException & ioobe) {
-		throw IndexOutOfBoundsException("Individual::getSequenceByIndex: sequence_index out of bouds.", ioobe.getBadInteger(), ioobe.getBounds()[0], ioobe.getBounds()[1]);
+	catch (SequenceNotFoundException & snfe) {
+		throw SequenceNotFoundException("Individual::getSequenceByIndex: sequence_index not found", snfe.getSequenceId());
 	}
 }
 
@@ -286,10 +290,10 @@ void Individual::deleteSequenceByIndex(unsigned int sequence_index) throw (Excep
 	if (_sequences == NULL)
 		throw NullPointerException("Individual::deleteSequenceByIndex: no sequence data.");
 	try {
-		_sequences->deleteSequence(sequence_index);
+		_sequences->deleteSequenceByKey(TextTools::toString(sequence_index));
 	}
-	catch (IndexOutOfBoundsException & ioobe) {
-		throw IndexOutOfBoundsException("Individual::deleteSequenceByIndex: sequence_index out of bounds.", ioobe.getBadInteger(), ioobe.getBounds()[0], ioobe.getBounds()[1]);
+	catch (SequenceNotFoundException & snfe) {
+		throw SequenceNotFoundException("Individual::deleteSequenceByIndex: sequence_index not found.", snfe.getSequenceId());
 	}
 }
 
@@ -299,11 +303,21 @@ vector<string> Individual::getSequencesNames() const throw (NullPointerException
 	return _sequences->getSequencesNames();
 }
 
+vector<unsigned int> Individual::getSequencesPositions() const throw (NullPointerException) {
+	if (_sequences == NULL)
+		throw NullPointerException("Individual::getSequencesPositions: no sequence data.");
+	vector<unsigned int> seqpos;
+	vector<string> seqkeys = _sequences->getKeys();
+	for (unsigned int i = 0 ; i < seqkeys.size() ; i++)
+		seqpos.push_back((unsigned int) TextTools::toInt(seqkeys[i]));
+	return seqpos;
+}
+
 unsigned int Individual::getSequencePosition(const string & sequence_name) const throw (Exception) {
 	if (_sequences == NULL)
 		throw NullPointerException("Individual::getSequencePosition: no sequence data.");
 	try {
-		return _sequences->getSequencePosition(sequence_name);
+		return (unsigned int) TextTools::toInt(_sequences->getKey(getSequencePosition(sequence_name)));
 	}
 	catch (SequenceNotFoundException & snfe) {
 		throw SequenceNotFoundException("Individual::getSequencePosition: sequence_name not found.", snfe.getSequenceId());
@@ -314,16 +328,22 @@ bool Individual::hasSequences() const {
 	return (_sequences != NULL && _sequences->getNumberOfSequences() != 0);
 }
 
+const Alphabet * Individual::getSequenceAlphabet() const throw (NullPointerException) {
+	if (_sequences == NULL)
+		throw NullPointerException("Individual::getSequenceAlphabet: no sequence data.");
+	return _sequences->getAlphabet();
+}
+
 unsigned int Individual::getNumberOfSequences() const throw (NullPointerException) {
 	if (_sequences == NULL)
 		throw NullPointerException("Individual::getNumberOfSequences: no sequence data.");
-	return const_cast<const VectorSequenceContainer *>(_sequences)->getNumberOfSequences();
+	return const_cast<const MapSequenceContainer *>(_sequences)->getNumberOfSequences();
 }
 
-void Individual::setSequences(const OrderedSequenceContainer & osc) {
+void Individual::setSequences(const MapSequenceContainer & msc) {
 	if (_sequences != NULL)
 		delete(_sequences);
-	_sequences = new VectorSequenceContainer(osc);
+	_sequences = new MapSequenceContainer(msc);
 }
 
 const OrderedSequenceContainer * Individual::getSequences() const throw (NullPointerException) {
