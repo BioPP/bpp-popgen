@@ -1,7 +1,7 @@
 /*
  * File LocusInfo.h
  * Author : Sylvain Gaillard <yragael2001@yahoo.fr>
- * Last modification : Tuesday June 01 2004
+ * Last modification : Monday June 07 2004
  */
 
 // Secured inclusion of header's file
@@ -24,7 +24,7 @@ using namespace std;
  * @brief The LocusInfo class.
  *
  * This is an AlleleInfo container with additionnal data like a name,
- * the ploidie and some comments.
+ * the ploidy and some comments.
  */
 class LocusInfo {
 	public: // Constantes
@@ -37,9 +37,9 @@ class LocusInfo {
 		 * @brief Build a new LocusInfo object.
 		 *
 		 * @param name The name of the locus.
-		 * @param ploidie The ploidie of the locus.
+		 * @param ploidy The ploidy of the locus.
 		 */
-		LocusInfo(const string &name, const unsigned int ploidie = DIPLOID);
+		LocusInfo(const string &name, const unsigned int ploidy = DIPLOID);
 
 		/**
 		 * @brief Destroy the LocusInfo.
@@ -53,11 +53,11 @@ class LocusInfo {
 		string getName() const;
 
 		/**
-		 * @brief Get the ploidie of the locus.
+		 * @brief Get the ploidy of the locus.
 		 *
-		 * @return The ploidie as an unsigned integer.
+		 * @return The ploidy as an unsigned integer.
 		 */
-		unsigned int getPloidie() const;
+		unsigned int getPloidy() const;
 		
 		/**
 		 * @brief Add an AlleleInfo to the LocusInfo.
@@ -83,7 +83,7 @@ class LocusInfo {
 		/**
 		 * @brief Get the number of alleles at this locus.
 		 */
-		unsigned int getNumberOfAlleleInfos() const;
+		unsigned int getNumberOfAlleles() const;
 
 		/**
 		 * @brief Get the identity number of each allele in the locus.
@@ -97,7 +97,7 @@ class LocusInfo {
 
 	protected:
 		string _name;
-		unsigned int _ploidie;
+		unsigned int _ploidy;
 		map<unsigned int, AlleleInfo *> _alleles;
 };
 

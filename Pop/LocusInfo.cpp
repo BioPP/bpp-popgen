@@ -1,7 +1,7 @@
 /*
  * File LocusInfo.cpp
  * Author : Sylvain Gaillard <yragael2001@yahoo.fr>
- * Last modification : Tuesday June 01 2004
+ * Last modification : Monday June 07 2004
  */
 
 // From Utils
@@ -15,9 +15,9 @@ unsigned int LocusInfo::HAPLOID = 1;
 unsigned int LocusInfo::DIPLOID = 2;
 
 //** Class constructor: *******************************************************/
-LocusInfo::LocusInfo(const string &name, const unsigned int ploidie) {
+LocusInfo::LocusInfo(const string &name, const unsigned int ploidy) {
 	_name = name;
-	_ploidie = ploidie;
+	_ploidy = ploidy;
 }
 
 //** Class destructor: *******************************************************/
@@ -34,8 +34,8 @@ string LocusInfo::getName() const {
 }
 
 // Ploidie
-unsigned int LocusInfo::getPloidie() const {
-	return _ploidie;
+unsigned int LocusInfo::getPloidy() const {
+	return _ploidy;
 }
 
 // AlleleInfos
@@ -84,7 +84,7 @@ throw (AlleleInfoNotFoundException) {
 			id);
 }
 
-unsigned int LocusInfo::getNumberOfAlleleInfos() const {
+unsigned int LocusInfo::getNumberOfAlleles() const {
 	return _alleles.size();
 }
 
