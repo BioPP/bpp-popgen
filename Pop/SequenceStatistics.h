@@ -118,7 +118,7 @@ class SequenceStatistics
 		 *
 		 * @param v a PolymorphismSequenceContainer
 		 */
-		static double GCcontent(const PolymorphismSequenceContainer & psc);
+		static double gcContent(const PolymorphismSequenceContainer & psc);
 
 
 		/*
@@ -129,7 +129,7 @@ class SequenceStatistics
 		 * @param stopflag a boolean set by default to true if you don't want
 		 * to take stop codons into account
 		 */
-		static vector<unsigned int> GCpolymorphism(const PolymorphismSequenceContainer & psc, bool stopflag = true);
+		static vector<unsigned int> gcPolymorphism(const PolymorphismSequenceContainer & psc, bool stopflag = true);
 
 
 		/**
@@ -200,7 +200,7 @@ class SequenceStatistics
 		 * @param si a SiteIterator
 		 * @param alpha a CodonAlphabet
 		 */
-		static unsigned int StopCodonSiteNumber( SiteIterator & si, const CodonAlphabet & alpha );
+		static unsigned int stopCodonSiteNumber( SiteIterator & si, const CodonAlphabet & alpha );
 
 
 		/**
@@ -208,7 +208,7 @@ class SequenceStatistics
 		 * @param v a SiteContainer
 		 * @param gapfalg a boolean set by default to true if you don't want to take gaps into account
 		 */
-		static unsigned int StopCodonSiteNumber(const SiteContainer & v, bool gapflag = true);
+		static unsigned int stopCodonSiteNumber(const SiteContainer & v, bool gapflag = true);
 
 
 
@@ -386,7 +386,7 @@ class SequenceStatistics
 	     * @param keepsingleton a boolean (true by default, false to exclude singleton)
 	     * @param freqmin a float (to exlude site with the lowest allele frequency less than the threshold given by freqmin, 0 by default)
 	     */
-		static PolymorphismSequenceContainer * GenerateLDContainer(const PolymorphismSequenceContainer & psc, bool keepsingleton=true, double freqmin=0) throw (Exception);
+		static PolymorphismSequenceContainer * generateLDContainer(const PolymorphismSequenceContainer & psc, bool keepsingleton=true, double freqmin=0) throw (Exception);
 	    /**
 	     * @brief give the vector of the pairwise distances between site positions corresponding to a LD SequencePolymorphismContainer
 	     *
@@ -394,7 +394,7 @@ class SequenceStatistics
 	     * @param keepsingleton a boolean (true by default, false to exclude singleton)
 	     * @param freqmin a float (to exlude site with the lowest allele frequency less than the threshold given by freqmin, 0 by default)
 	     */
-		static Vdouble PairwiseDistances1(const PolymorphismSequenceContainer & psc, bool keepsingleton=true, double freqmin=0);
+		static Vdouble pairwiseDistances1(const PolymorphismSequenceContainer & psc, bool keepsingleton=true, double freqmin=0);
 
 
 	    /**
@@ -405,7 +405,7 @@ class SequenceStatistics
 	     * @param keepsingleton a boolean (true by default, false to exclude singleton)
 	     * @param freqmin a float (to exlude site with the lowest allele frequency less than the threshold given by freqmin, 0 by default)
 	     */
-		static Vdouble PairwiseDistances2(const PolymorphismSequenceContainer & psc, bool keepsingleton=true, double freqmin=0);
+		static Vdouble pairwiseDistances2(const PolymorphismSequenceContainer & psc, bool keepsingleton=true, double freqmin=0);
 
 
 	    /**
@@ -415,7 +415,7 @@ class SequenceStatistics
 	     * @param keepsingleton a boolean (true by default, false to exclude singleton)
 	     * @param freqmin a float (to exlude site with the lowest allele frequency less than the threshold given by freqmin, 0 by default)
 	     */
-		static Vdouble PairwiseD(const PolymorphismSequenceContainer & psc, bool keepsingleton=true, double freqmin=0);
+		static Vdouble pairwiseD(const PolymorphismSequenceContainer & psc, bool keepsingleton=true, double freqmin=0);
 
 	    /**
 	     * @brief give the vector of all mean pairwise D' value between two sites (Lewontin 1964)
@@ -424,7 +424,7 @@ class SequenceStatistics
 	     * @param keepsingleton a boolean (true by default, false to exclude singleton)
 	     * @param freqmin a float (to exlude site with the lowest allele frequency less than the threshold given by freqmin, 0 by default)
 	     */
-		static Vdouble PairwiseDprime(const PolymorphismSequenceContainer & psc, bool keepsingleton=true, double freqmin=0);
+		static Vdouble pairwiseDprime(const PolymorphismSequenceContainer & psc, bool keepsingleton=true, double freqmin=0);
 
 	    /**
 	     * @brief give the vector of all mean pairwise R� value between two sites (Hill&Robertson 1968)
@@ -433,7 +433,7 @@ class SequenceStatistics
 	     * @param keepsingleton a boolean (true by default, false to exclude singleton)
 	     * @param freqmin a float (to exlude site with the lowest allele frequency less than the threshold given by freqmin, 0 by default)
 	     */
-		static Vdouble PairwiseR2(const PolymorphismSequenceContainer & psc, bool keepsingleton=true, double freqmin=0);
+		static Vdouble pairwiseR2(const PolymorphismSequenceContainer & psc, bool keepsingleton=true, double freqmin=0);
 
 
 	    /**
@@ -443,7 +443,7 @@ class SequenceStatistics
 	     * @param keepsingleton a boolean (true by default, false to exclude singleton)
 	     * @param freqmin a float (to exlude site with the lowest allele frequency less than the threshold given by freqmin, 0 by default)
 	     */
-		static double MeanD(const PolymorphismSequenceContainer & psc, bool keepsingleton=true, double freqmin=0);
+		static double meanD(const PolymorphismSequenceContainer & psc, bool keepsingleton=true, double freqmin=0);
 
 	    /**
 	     * @brief give mean D' over all pairwise comparisons
@@ -452,7 +452,7 @@ class SequenceStatistics
 	     * @param keepsingleton a boolean (true by default, false to exclude singleton)
 	     * @param freqmin a float (to exlude site with the lowest allele frequency less than the threshold given by freqmin, 0 by default)
 	     */
-		static double MeanDprime(const PolymorphismSequenceContainer & psc, bool keepsingleton=true, double freqmin=0);
+		static double meanDprime(const PolymorphismSequenceContainer & psc, bool keepsingleton=true, double freqmin=0);
 
 	    /**
 	     * @brief give mean R� over all pairwise comparisons
@@ -461,7 +461,7 @@ class SequenceStatistics
 	     * @param keepsingleton a boolean (true by default, false to exclude singleton)
 	     * @param freqmin a float (to exlude site with the lowest allele frequency less than the threshold given by freqmin, 0 by default)
 	     */
-		static double MeanR2(const PolymorphismSequenceContainer & psc, bool keepsingleton=true, double freqmin=0);
+		static double meanR2(const PolymorphismSequenceContainer & psc, bool keepsingleton=true, double freqmin=0);
 
 	    /**
 	     * @brief give mean pairwise distances between sites / method 1: differences between sequences are not taken into account
@@ -470,7 +470,7 @@ class SequenceStatistics
 	     * @param keepsingleton a boolean (true by default, false to exclude singleton)
 	     * @param freqmin a float (to exlude site with the lowest allele frequency less than the threshold given by freqmin, 0 by default)
 	     */
-		static double MeanDistance1(const PolymorphismSequenceContainer & psc, bool keepsingleton=true, double freqmin=0);
+		static double meanDistance1(const PolymorphismSequenceContainer & psc, bool keepsingleton=true, double freqmin=0);
 
 	    /**
 	     * @brief give mean pairwise distances between sites / method 2: differences between sequences are taken into account
@@ -479,7 +479,7 @@ class SequenceStatistics
 	     * @param keepsingleton a boolean (true by default, false to exclude singleton)
 	     * @param freqmin a float (to exlude site with the lowest allele frequency less than the threshold given by freqmin, 0 by default)
 	     */
-		static double MeanDistance2(const PolymorphismSequenceContainer & psc, bool keepsingleton=true, double freqmin=0);
+		static double meanDistance2(const PolymorphismSequenceContainer & psc, bool keepsingleton=true, double freqmin=0);
 
 	    /**
 	     * @brief give the slope of the regression |D| = 1+a*distance
@@ -491,7 +491,7 @@ class SequenceStatistics
 	     * @param keepsingleton a boolean (true by default, false to exclude singleton)
 	     * @param freqmin a float (to exlude site with the lowest allele frequency less than the threshold given by freqmin, 0 by default)
 	     */
-                static double OriginRegressionD(const PolymorphismSequenceContainer & psc, bool distance1=false, bool keepsingleton=true, double freqmin=0);
+        static double originRegressionD(const PolymorphismSequenceContainer & psc, bool distance1=false, bool keepsingleton=true, double freqmin=0);
 
 
 	    /**
@@ -504,7 +504,7 @@ class SequenceStatistics
 	     * @param keepsingleton a boolean (true by default, false to exclude singleton)
 	     * @param freqmin a float (to exlude site with the lowest allele frequency less than the threshold given by freqmin, 0 by default)
 	     */
-                static double OriginRegressionDprime(const PolymorphismSequenceContainer & psc, bool distance1=false, bool keepsingleton=true, double freqmin=0);
+        static double originRegressionDprime(const PolymorphismSequenceContainer & psc, bool distance1=false, bool keepsingleton=true, double freqmin=0);
 
 	    /**
 	     * @brief give the slope of the regression R� = 1+a*distance
@@ -516,7 +516,7 @@ class SequenceStatistics
 	     * @param keepsingleton a boolean (true by default, false to exclude singleton)
 	     * @param freqmin a float (to exlude site with the lowest allele frequency less than the threshold given by freqmin, 0 by default)
 	     */
-                static double OriginRegressionR2(const PolymorphismSequenceContainer & psc, bool distance1=false, bool keepsingleton=true, double freqmin=0);
+        static double originRegressionR2(const PolymorphismSequenceContainer & psc, bool distance1=false, bool keepsingleton=true, double freqmin=0);
 
 	    /**
 	     * @brief give the slope and the origin of the regression |D| = a*distance+b
@@ -528,7 +528,7 @@ class SequenceStatistics
 	     * @param keepsingleton a boolean (true by default, false to exclude singleton)
 	     * @param freqmin a float (to exlude site with the lowest allele frequency less than the threshold given by freqmin, 0 by default)
 	     */
-                static Vdouble LinearRegressionD(const PolymorphismSequenceContainer & psc, bool distance1=false, bool keepsingleton=true, double freqmin=0);
+       static Vdouble linearRegressionD(const PolymorphismSequenceContainer & psc, bool distance1=false, bool keepsingleton=true, double freqmin=0);
 
 	    /**
 	     * @brief give the slope and the origin of the regression |D'| = a*distance+b
@@ -540,7 +540,7 @@ class SequenceStatistics
 	     * @param keepsingleton a boolean (true by default, false to exclude singleton)
 	     * @param freqmin a float (to exlude site with the lowest allele frequency less than the threshold given by freqmin, 0 by default)
 	     */
-                static Vdouble LinearRegressionDprime(const PolymorphismSequenceContainer & psc, bool distance1=false, bool keepsingleton=true, double freqmin=0);
+       static Vdouble linearRegressionDprime(const PolymorphismSequenceContainer & psc, bool distance1=false, bool keepsingleton=true, double freqmin=0);
 
 	    /**
 	     * @brief give the slope and the origin of the regression R� = a*distance+b
@@ -552,7 +552,7 @@ class SequenceStatistics
 	     * @param keepsingleton a boolean (true by default, false to exclude singleton)
 	     * @param freqmin a float (to exlude site with the lowest allele frequency less than the threshold given by freqmin, 0 by default)
 	     */
-                static Vdouble LinearRegressionR2(const PolymorphismSequenceContainer & psc, bool distance1=false, bool keepsingleton=true, double freqmin=0);
+        static Vdouble linearRegressionR2(const PolymorphismSequenceContainer & psc, bool distance1=false, bool keepsingleton=true, double freqmin=0);
 
 	    /**
 	     * @brief give the slope of the regression R� = 1/(1+a*distance)
@@ -565,7 +565,7 @@ class SequenceStatistics
 	     * @param keepsingleton a boolean (true by default, false to exclude singleton)
 	     * @param freqmin a float (to exlude site with the lowest allele frequency less than the threshold given by freqmin, 0 by default)
 	     */
-                static double InverseRegressionR2(const PolymorphismSequenceContainer & psc, bool distance1=false, bool keepsingleton=true, double freqmin=0);
+        static double inverseRegressionR2(const PolymorphismSequenceContainer & psc, bool distance1=false, bool keepsingleton=true, double freqmin=0);
 
 
 

@@ -27,6 +27,7 @@
 // from PolyLib
 #include "PolymorphismSequenceContainerTools.h"
 
+
 using namespace std;
 
 PolymorphismSequenceContainerTools::~PolymorphismSequenceContainerTools() {}
@@ -281,32 +282,28 @@ PolymorphismSequenceContainer * PolymorphismSequenceContainerTools::getOnePositi
 
 //Same as getNonCodgingSites but exclude 5' and 3' flanking regions if there are
 //Assumed that the first coding site correspond to the first position
-PolymorphismSequenceContainer * PolymorphismSequenceContainerTools::getIntrons(const PolymorphismSequenceContainer & psc) throw (Exception) {
+PolymorphismSequenceContainer * PolymorphismSequenceContainerTools::getIntrons(const PolymorphismSequenceContainer & psc, unsigned int start) throw (Exception) {
+        //Temporary: start (0,1,2) is used to indicated the begining of the first position of the firts codon
         try {
 	Comments maseFileHeader = psc.getGeneralComments();
         SiteSelection ss;
         SiteSelection codss = MaseTools::getCodingPositions(maseFileHeader);
-        unsigned int first, last;
+        unsigned int first=0, last=psc.getNumberOfSites();
         //Check the first Codon
 	if(psc.getSite(codss[0])->getValue(0)==0 &&
 	   psc.getSite(codss[1])->getValue(0)==3 &&
 	   psc.getSite(codss[2])->getValue(0)==2) first = codss[0];
-	else first=0;
 	//Check the last Codon
-	if(psc.getSite(codss[codss.size()-3])->getValue(0)==3) {
-		if(psc.getSite(codss[codss.size()-2])->getValue(0)==0) {
-			if(psc.getSite(codss[codss.size()-1])->getValue(0)==0 || psc.getSite(codss[codss.size()-1])->getValue(0)==2){
-				last = codss[codss.size()-1];
+	if(psc.getSite(codss[codss.size()-3-start])->getValue(0)==3) {
+		if(psc.getSite(codss[codss.size()-2-start])->getValue(0)==0) {
+                        if(psc.getSite(codss[codss.size()-1-start])->getValue(0)==0 || psc.getSite(codss[codss.size()-1-start])->getValue(0)==2){
+				last = codss[codss.size()-1-start];
 			}
-                       }
-		else {
-			if(psc.getSite(codss[codss.size()-2])->getValue(0)==2 && psc.getSite(codss[codss.size()-1])->getValue(0)==0) {
-				last = codss[codss.size()-1];
-			}
-			else last=psc.getNumberOfSites();
-                       }
-               }
-               else last=psc.getNumberOfSites();
+                }
+		if(psc.getSite(codss[codss.size()-2-start])->getValue(0)==2 && psc.getSite(codss[codss.size()-1-start])->getValue(0)==0) {
+                        last = codss[codss.size()-1-start];
+                }
+        }
         for(unsigned int i=first; i<last; i++) {
             if(find(codss.begin(),codss.end(),i)==codss.end()) {
                ss.push_back(i);
@@ -326,12 +323,11 @@ PolymorphismSequenceContainer * PolymorphismSequenceContainerTools::get5Prime(co
 	Comments maseFileHeader = psc.getGeneralComments();
         SiteSelection ss;
         SiteSelection codss = MaseTools::getCodingPositions(maseFileHeader);
-        unsigned int last;
+        unsigned int last=0;
         //Check the first Codon
         if(psc.getSite(codss[0])->getValue(0)==0 &&
 	   psc.getSite(codss[1])->getValue(0)==3 &&
 	   psc.getSite(codss[2])->getValue(0)==2) last = codss[0];
-	else last=0;
         for(unsigned int i=0; i<last; i++) {
                 if(find(codss.begin(),codss.end(),i)==codss.end()) {
                         ss.push_back(i);
@@ -346,27 +342,24 @@ PolymorphismSequenceContainer * PolymorphismSequenceContainerTools::get5Prime(co
 
 }
 
-PolymorphismSequenceContainer * PolymorphismSequenceContainerTools::get3Prime(const PolymorphismSequenceContainer & psc) throw (Exception) {
+PolymorphismSequenceContainer * PolymorphismSequenceContainerTools::get3Prime(const PolymorphismSequenceContainer & psc, unsigned int start) throw (Exception) {
+        //Temporary: start (0,1,2) is used to indicated the begining of the first position of the firts codon
         try {
 	Comments maseFileHeader = psc.getGeneralComments();
         SiteSelection ss;
         SiteSelection codss = MaseTools::getCodingPositions(maseFileHeader);
-        unsigned int first;
+        unsigned int first = psc.getNumberOfSites()-1;
 	//Check the last Codon
-	if(psc.getSite(codss[codss.size()-3])->getValue(0)==3) {
-		if(psc.getSite(codss[codss.size()-2])->getValue(0)==0) {
-			if(psc.getSite(codss[codss.size()-1])->getValue(0)==0 || psc.getSite(codss[codss.size()-1])->getValue(0)==2){
-				first = codss[codss.size()-1];
+	if(psc.getSite(codss[codss.size()-3-start])->getValue(0)==3) {
+		if(psc.getSite(codss[codss.size()-2-start])->getValue(0)==0) {
+                        if(psc.getSite(codss[codss.size()-1-start])->getValue(0)==0 || psc.getSite(codss[codss.size()-1-start])->getValue(0)==2){
+				first = codss[codss.size()-1-start];
 			}
-                       }
-		else {
-			if(psc.getSite(codss[codss.size()-2])->getValue(0)==2 && psc.getSite(codss[codss.size()-1])->getValue(0)==0) {
-				first = codss[codss.size()-1];
-			}
-			else first=psc.getNumberOfSites()-1;
-                       }
-               }
-               else first=psc.getNumberOfSites()-1;
+                }
+		if(psc.getSite(codss[codss.size()-2-start])->getValue(0)==2 && psc.getSite(codss[codss.size()-1-start])->getValue(0)==0) {
+                        first = codss[codss.size()-1-start];
+                }
+        }
         for(unsigned int i=first; i<psc.getNumberOfSites(); i++) {
                 if(find(codss.begin(),codss.end(),i)==codss.end()) {
                         ss.push_back(i);
@@ -380,3 +373,11 @@ PolymorphismSequenceContainer * PolymorphismSequenceContainerTools::get3Prime(co
         catch(...) {}
 
 }
+
+
+
+
+
+
+
+

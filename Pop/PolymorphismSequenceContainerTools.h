@@ -155,10 +155,10 @@ class PolymorphismSequenceContainerTools
 	     * @brief Retrieve intron sites
 	     *
 	     * Same as getNonCodgingSites but exclude 5' and 3' falnking regions if there are
-             * Assumed that the first coding site correspond to the first position
+         * Assumed that the first coding site correspond to the first position
 	     * @param psc a PolymorphismSequenceContainer
 	     */
-             static PolymorphismSequenceContainer * getIntrons(const PolymorphismSequenceContainer & psc) throw (Exception);
+        static PolymorphismSequenceContainer * getIntrons(const PolymorphismSequenceContainer & psc, unsigned int start) throw (Exception);
 
 	    /**
 	     * @brief Retrieve 5' sites
@@ -166,15 +166,17 @@ class PolymorphismSequenceContainerTools
              * Assumed that the first coding site correspond to the first position
 	     * @param psc a PolymorphismSequenceContainer
 	     */
-             static PolymorphismSequenceContainer * get5Prime(const PolymorphismSequenceContainer & psc) throw (Exception);
+        static PolymorphismSequenceContainer * get5Prime(const PolymorphismSequenceContainer & psc) throw (Exception);
 
 	    /**
 	     * @brief Retrieve 3' sites
 	     *
-             * Assumed that the first coding site correspond to the first position
+         * Assumed that the first coding site correspond to the first position
 	     * @param psc a PolymorphismSequenceContainer
 	     */
-             static PolymorphismSequenceContainer * get3Prime(const PolymorphismSequenceContainer & psc) throw (Exception);
+        static PolymorphismSequenceContainer * get3Prime(const PolymorphismSequenceContainer & psc, unsigned int start) throw (Exception);
+
+
 		/*******************************************************************************/
 };
 #endif // _POLYMORPHISMSEQUENCECONTAINERTOOL_H_
