@@ -2,25 +2,25 @@
  * File SequenceStatistics.h
  * Author : Eric Bazin <bazin@univ-montp2.fr>
  *          Sylvain Gaillard <yragael2001@yahoo.fr>
- * Last modification : Thursday July 29 2004
+ * Last modification : Friday August 06 2004
  *
  * Copyright (C) 2004 Eric Bazin, Sylvain Gaillard and the
- *                    PopLib Development Core Team
+ *                    PopGenLib Development Core Team
  *
- * This file is part of PopLib.
+ * This file is part of PopGenLib.
  *
- * PopLib is free software; you can redistribute it and/or modify
+ * PopGenLib is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation; either version 2 of the License, or
  * (at your option) any later version.
  *
- * PopLib is distributed in the hope that it will be useful,
+ * PopGenLib is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License
- * along with PopLib; if not, write to the Free Software
+ * along with PopGenLib; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
@@ -53,9 +53,11 @@ class SequenceStatistics
 		 * Gaps are consider as mutations so if you want number of
 		 * polymorphic site, you have to give a NonGapSiteIterator
 		 *
-		 * @param si a SiteIterator
+		 * @param psc a PolymorphismSequenceContainer
+		 * @param gapflag flag set by default to true if you don't want to
+		 * take gap into account
 		 */ 
-		static unsigned int polymorphicSiteNumber( SiteIterator & si );
+		static unsigned int polymorphicSiteNumber(const PolymorphismSequenceContainer & psc, bool gapflag = true);
 
 		/**
 		 * @brief Compute number of polymorphic site in an alignment
@@ -64,19 +66,26 @@ class SequenceStatistics
 		 *
 		 * @param v a SiteContainer
 		 */
-		static unsigned int polymorphicSiteNumber( const SiteContainer & v );
+		static unsigned int polymorphicSiteNumber(const SiteContainer & v);
 
 		/**
 		 * @brief Count the number of singleton nucleotides in an alignment.
+		 *
+		 * @param psc a PolymorphismSequenceContainer
+		 * @param gapflag flag set by default to true if you don't want to
+		 * take gap into account
 		 */
-		static unsigned int countSingleton(SiteIterator & si);
+		static unsigned int countSingleton(const PolymorphismSequenceContainer & psc, bool gapflag = true);
 
 		/**
 		 * @brief Count the total number of mutatuons in an alignment.
 		 *
 		 * This count is assumed to be under an infinite site model.
+		 * @param psc a PolymorphismSequenceContainer
+		 * @param gapflag flag set by default to true if you don't want to
+		 * take gap into account
 		 */
-		static unsigned int totNumberMutations(SiteIterator & si);
+		static unsigned int totNumberMutations(const PolymorphismSequenceContainer & psc, bool gapflag = true);
 
 		/**
 		 * @brief Compute diversity estimator Theta of Watterson (1975)

@@ -2,25 +2,25 @@
  * File SequenceStatistics.cpp
  * Author : Eric Bazin <bazin@univ-montp2.fr>
  *          Sylvain Gailard <yragael2001@yahoo.fr>
- * Last modification : Thursday August 05 2004
+ * Last modification : Friday August 06 2004
  *
  * Copyright (C) 2004 Eric Bazin, Sylvain Gaillard and the
- *                    PopLib Development Core Team
+ *                    PopGenLib Development Core Team
  *
- * This file is part of PopLib.
+ * This file is part of PopGenLib.
  *
- * PopLib is free software; you can redistribute it and/or modify
+ * PopGenLib is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation; either version 2 of the License, or
  * (at your option) any later version.
  *
- * PopLib is distributed in the hope that it will be useful,
+ * PopGenLib is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License
- * along with PopLib; if not, write to the Free Software
+ * along with PopGenLib; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
@@ -40,13 +40,17 @@ using namespace std;
 SequenceStatistics::~SequenceStatistics() {}
 
 // Method to compute number of polymorphic site in an alignment
-// Arguments: a SiteIterator
 // Return: Number of polymorphics sites	
-unsigned int SequenceStatistics::polymorphicSiteNumber( SiteIterator & si ) {
+unsigned int SequenceStatistics::polymorphicSiteNumber(const PolymorphismSequenceContainer & psc, bool gapflag) {
 	unsigned int S=0;
 	const Site *site;
-	while ( si.hasMoreSites() ) {
-		site=si.nextSite();
+	SiteIterator * si = NULL;
+	if (gapflag) 
+		si = new CompleteSiteIterator(psc);
+	else
+		si = new SimpleSiteIterator(psc);
+	while ( si->hasMoreSites() ) {
+		site=si->nextSite();
 		if ( !SiteTools::isConstant(*site) ) {
 			S++;
 		}
@@ -55,37 +59,49 @@ unsigned int SequenceStatistics::polymorphicSiteNumber( SiteIterator & si ) {
 }
 
 // Method to compute number of polymorphic site in an alignment
-// Arguments: a SiteContainer
 // Return: Number of polymorphics sites	
 unsigned int SequenceStatistics::polymorphicSiteNumber( const SiteContainer & v ) {
-
 	SiteIterator *si = new NoGapSiteIterator( v );
-	unsigned int S = SequenceStatistics::polymorphicSiteNumber( *si );
-	
+	const Site *site;
+	unsigned int S = 0;
+	while ( si->hasMoreSites() ) {
+		site=si->nextSite();
+		if ( !SiteTools::isConstant(*site) ) {
+			S++;
+		}
+	}
 	return S;
 }
 
 // Method to compute number of singleton nucleotides in an alignment
-// Arguments: a SiteIterator
 // Return: Number of singleton nucleotides
-unsigned int SequenceStatistics::countSingleton(SiteIterator & si) {
+unsigned int SequenceStatistics::countSingleton(const PolymorphismSequenceContainer & psc, bool gapflag) {
 	unsigned int nus = 0;
 	const Site * site;
-	while (si.hasMoreSites()) {
-		site = si.nextSite();
+	SiteIterator * si = NULL;
+	if (gapflag) 
+		si = new CompleteSiteIterator(psc);
+	else
+		si = new SimpleSiteIterator(psc);
+	while (si->hasMoreSites()) {
+		site = si->nextSite();
 		nus += _getSingletonNumber(* site);
 	}
 	return nus;
 }
 
 // Method to compute total number of mutation under an infinite site model in an alignment
-// Arguments: a SiteIterator
 // Return: Total number of mutations
-unsigned int SequenceStatistics::totNumberMutations(SiteIterator & si) {
+unsigned int SequenceStatistics::totNumberMutations(const PolymorphismSequenceContainer & psc, bool gapflag) {
 	unsigned int tnm = 0;
 	const Site * site;
-	while (si.hasMoreSites()) {
-		site = si.nextSite();
+	SiteIterator * si = NULL;
+	if (gapflag) 
+		si = new CompleteSiteIterator(psc);
+	else
+		si = new SimpleSiteIterator(psc);
+	while (si->hasMoreSites()) {
+		site = si->nextSite();
 		tnm += _getMutationNumber(* site);
 	}
 	return tnm;
@@ -99,7 +115,7 @@ double SequenceStatistics::watterson75( const SiteContainer & v ) {
 	int n = v.getNumberOfSequences();
 	double an = 0.0;
 	SiteIterator *si = new NoGapSiteIterator( v );
-	unsigned int S = polymorphicSiteNumber( *si );
+	unsigned int S = polymorphicSiteNumber( v );
 	for ( int i = 1; i < n; i++ ) {
 			an += (double) 1/i;
 	}	
@@ -145,15 +161,9 @@ double SequenceStatistics::tajima83( const SiteContainer & v ) {
 double SequenceStatistics::watterson75(const PolymorphismSequenceContainer & psc, bool gapflag) {
 	double ThetaW;
 	unsigned int n = psc.getNumberOfSequences();
-	SiteIterator * si = NULL;
-	if (gapflag) 
-		si = new CompleteSiteIterator(psc);
-	else
-		si = new SimpleSiteIterator(psc);
-	unsigned int S = polymorphicSiteNumber(* si);
+	unsigned int S = polymorphicSiteNumber(psc, gapflag);
 	map<string, double> values = _getUsefullValues(n);
 	ThetaW = (double) S / values["a1"];	
-	delete si;
 	return ThetaW;
 }
 
@@ -193,12 +203,7 @@ double SequenceStatistics::tajima83(const PolymorphismSequenceContainer & psc, b
 // Arguments: a PolymorphismSequenceContainer
 // Return: Tajima's D (1989)
 double SequenceStatistics::tajimaDSS(const PolymorphismSequenceContainer & psc, bool gapflag) {
-	SiteIterator * si;
-	if (gapflag)
-		si = new NoGapSiteIterator(psc);
-	else
-		si = new CompleteSiteIterator(psc);
-	unsigned int S = polymorphicSiteNumber(* si);
+	unsigned int S = polymorphicSiteNumber(psc, gapflag);
 	double tajima = tajima83(psc, gapflag);
 	double watterson = watterson75(psc, gapflag);
 	unsigned int n = psc.getNumberOfSequences();
@@ -210,12 +215,7 @@ double SequenceStatistics::tajimaDSS(const PolymorphismSequenceContainer & psc, 
 // Arguments: a PolymorphismSequenceContainer
 // Return: Tajima's D (1989)
 double SequenceStatistics::tajimaDTNM(const PolymorphismSequenceContainer & psc, bool gapflag) {
-	SiteIterator * si;
-	if (gapflag)
-		si = new NoGapSiteIterator(psc);
-	else
-		si = new CompleteSiteIterator(psc);
-	unsigned int eta = totNumberMutations(* si);
+	unsigned int eta = totNumberMutations(psc, gapflag);
 	double tajima = tajima83(psc, gapflag);
 	unsigned int n = psc.getNumberOfSequences();
 	map<string, double> values = _getUsefullValues(n);
@@ -306,10 +306,8 @@ double SequenceStatistics::fuliD(const PolymorphismSequenceContainer & ingroup, 
 	map<string, double> values = _getUsefullValues(n);
 	double vD = 1. + (pow(values["a1"], 2) / (values["a2"] + pow(values["a1"], 2))) * (values["cn"] - ((nn + 1.) / (nn - 1.)));
 	double uD = values["a1"] - 1. - vD;
-	CompleteSiteIterator csii = ingroup;
-	CompleteSiteIterator csio = outgroup;
-	double eta = (double) totNumberMutations(csii);
-	double etae = (double) countSingleton(csio);
+	double eta = (double) totNumberMutations(ingroup);
+	double etae = (double) countSingleton(outgroup);
 	return (eta - values["a1"] * etae) / sqrt((uD * eta) + (vD * eta * eta));
 }
 
@@ -339,10 +337,8 @@ double SequenceStatistics::fuliDstar(const PolymorphismSequenceContainer & group
 	             (pow(values["a1"], 2) + values["a2"]);
 	double uDs = (((nn - 1.)/nn - 1./values["a1"]) / values["a1"]) - vDs;
 */
-	CompleteSiteIterator csi = group;
-	CompleteSiteIterator csi2 = group;
-	double eta = (double) totNumberMutations(csi);
-	double etas = (double) countSingleton(csi2);
+	double eta = (double) totNumberMutations(group);
+	double etas = (double) countSingleton(group);
 	
 // Fu & Li 1993
 	return ((_n * eta) - (values["a1"] * etas)) / sqrt(uDs * eta + vDs * eta * eta);
@@ -358,10 +354,8 @@ double SequenceStatistics::fuliF(const PolymorphismSequenceContainer & ingroup, 
 	double pi = tajima83(ingroup, true);
 	double vF = (values["cn"] + values["b2"] - 2. / (nn - 1.)) / (pow(values["a1"], 2) + values["a2"]);
 	double uF = ((1. + values["b1"] - (4. * ((nn + 1.) / ((nn - 1.) * (nn - 1.)))) * (values["a1n"] - (2. * nn) / (nn + 1.))) / values["a1"]) - vF;
-	CompleteSiteIterator csii = ingroup;
-	CompleteSiteIterator csio = outgroup;
-	double eta = (double) totNumberMutations(csii);
-	double etae = (double) countSingleton(csio);
+	double eta = (double) totNumberMutations(ingroup);
+	double etae = (double) countSingleton(outgroup);
 	return (pi - etae) / sqrt(uF * eta + vF * eta * eta);
 }
 
@@ -379,10 +373,8 @@ double SequenceStatistics::fuliFstar(const PolymorphismSequenceContainer & group
 	double vFs = (((2*nn*nn*nn + 110*nn*nn - 255*nn + 153) / (9*nn*nn*(nn-1))) + ((2*(n-1)*values["a1"]) / (nn*nn)) - 8*values["a2"]/nn) / (pow(values["a1"], 2) + values["a2"]);
 	double uFs = (((4*nn*nn + 19*nn + 3 - 12*(nn+1.)*values["a1n"]) / (3*nn*(n-1))) / values["a1"]) - vFs;
 
-	CompleteSiteIterator csi = group;
-	CompleteSiteIterator csi2 = group;
-	double eta = (double) totNumberMutations(csi);
-	double etas = (double) countSingleton(csi2);
+	double eta = (double) totNumberMutations(group);
+	double etas = (double) countSingleton(group);
 // Fu & Li 1993
 // Simonsen et al. 1995
 	return (pi - ((nn - 1.) / nn * etas)) / sqrt(uFs * eta + vFs * eta * eta);

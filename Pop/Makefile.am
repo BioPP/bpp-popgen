@@ -28,7 +28,7 @@ ODataSet.h\
 PolymorphismMultiGContainer.h\
 PolymorphismSequenceContainer.h\
 PolymorphismSequenceContainerTools.h\
-PoplibIO.h\
+PopgenlibIO.h\
 SequenceStatistics.h
 
 CPP_FILES = \
@@ -58,12 +58,12 @@ MultiSeqIndividual.cpp\
 PolymorphismMultiGContainer.cpp\
 PolymorphismSequenceContainer.cpp\
 PolymorphismSequenceContainerTools.cpp\
-PoplibIO.cpp\
+PopgenlibIO.cpp\
 SequenceStatistics.cpp
 
 lib_LTLIBRARIES = libpop.la
 libpop_la_SOURCES = $(H_FILES) $(CPP_FILES)
-libpop_la_LDFLAGS = -version-info 1:0:0
+libpop_la_LDFLAGS = -version-info 0:1:0
 
 library_includedir=$(includedir)/Pop
 library_include_HEADERS = $(H_FILES)

@@ -1,31 +1,31 @@
 /*
- * File PoplibIO.h
+ * File PopgenlibIO.h
  * Author : Sylvain Gaillard <yragael2001@yahoo.fr>
  * Last modification : Thursday July 29 2004
  *
  * Copyright (C) 2004 Sylvain Gaillard and the
- *                    PopLib Development Core Team
+ *                    PopGenLib Development Core Team
  *
- * This file is part of PopLib.
+ * This file is part of PopGenLib.
  *
- * PopLib is free software; you can redistribute it and/or modify
+ * PopGenLib is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation; either version 2 of the License, or
  * (at your option) any later version.
  *
- * PopLib is distributed in the hope that it will be useful,
+ * PopGenLib is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License
- * along with PopLib; if not, write to the Free Software
+ * along with PopGenLib; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
 // Secured inclusion of header's file
-#ifndef _POPLIBIO_H_
-#define _POPLIBIO_H_
+#ifndef _POPULIBIO_H_
+#define _POPULIBIO_H_
 
 // From Utils
 #include <Utils/TextTools.h>
@@ -42,9 +42,9 @@
 #include "BasicAlleleInfo.h"
 
 /**
- * @brief The natif I/O format for poplib.
+ * @brief The natif I/O format for popgenlib.
  */
-class PoplibIO : public AbstractIDataSet, public AbstractODataSet {
+class PopgenlibIO : public AbstractIDataSet, public AbstractODataSet {
 	public: // Constantes
 		static const string WHITESPACE;
 		static const string TAB;
@@ -56,9 +56,9 @@ class PoplibIO : public AbstractIDataSet, public AbstractODataSet {
 		static const string HAPLODIPLOID;
 
 	public: // Constructor and destructor
-		PoplibIO();
-		PoplibIO(const string & missing_data_symbol, const string & data_separator) throw (Exception);
-		~PoplibIO();
+		PopgenlibIO();
+		PopgenlibIO(const string & missing_data_symbol, const string & data_separator) throw (Exception);
+		~PopgenlibIO();
 
 	public:
 		/**
@@ -158,4 +158,4 @@ class PoplibIO : public AbstractIDataSet, public AbstractODataSet {
 		void _parseIndividual(const vector<string> & in, DataSet & data_set, const VectorSequenceContainer & vsc);
 };
 
-#endif // _POPLIBIO_H_
+#endif // _POPULIBIO_H_
