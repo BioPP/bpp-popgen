@@ -824,7 +824,7 @@ PolymorphismMultiGContainer * DataSet::getPolymorphismMultiGContainer(const map<
 	return pmgc;
 }
 
-PolymorphismSequenceContainer * DataSet::getPolymorphismSequenceConstainer(const map<unsigned int, vector<unsigned int> > & selection, unsigned int sequence_position) const throw (Exception) {
+PolymorphismSequenceContainer * DataSet::getPolymorphismSequenceContainer(const map<unsigned int, vector<unsigned int> > & selection, unsigned int sequence_position) const throw (Exception) {
 	PolymorphismSequenceContainer * psc = new PolymorphismSequenceContainer(getAlphabet());
 	for (map<unsigned int, vector<unsigned int> >::const_iterator it = selection.begin() ; it != selection.end() ; it++) {
 		unsigned int i;
@@ -847,7 +847,7 @@ PolymorphismSequenceContainer * DataSet::getPolymorphismSequenceConstainer(const
 			if (tmp_ind->hasSequenceAtPosition(sequence_position)) {
 				const Sequence * tmp_seq = tmp_ind->getSequenceAtPosition(sequence_position);
 				psc->addSequence(* tmp_seq, 1, false);
-				psc->setGroupId(tmp_seq->getName(), i);
+				psc->setGroupId((const string) (tmp_seq->getName()), it->first);
 			}
 		}
 	}

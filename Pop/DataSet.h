@@ -625,7 +625,7 @@ class DataSet {
 		 * @param selection A map with groups id as keys and vector of individuals position in each group as values.
 		 * @param sequence_position The position of the sequence in the individuals;
 		 */
-		PolymorphismSequenceContainer * getPolymorphismSequenceConstainer(const map<unsigned int, vector<unsigned int> > & selection, unsigned int sequence_position) const throw (Exception);
+		PolymorphismSequenceContainer * getPolymorphismSequenceContainer(const map<unsigned int, vector<unsigned int> > & selection, unsigned int sequence_position) const throw (Exception);
 
 	//** General tests **********************************************************/
 		/**
