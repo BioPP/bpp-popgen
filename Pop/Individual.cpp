@@ -1,38 +1,44 @@
 /*
  * File Individual.cpp
  * Author : Sylvain Gaillard <yragael2001@yahoo.fr>
- * Last modification : Wednesday April 28 2004
+ * Last modification : Monday May 24 2004
  */
 
 #include "Individual.h"
 
 //** Class constructor: *******************************************************/
 Individual::Individual() {
-	this->_sex = 0;
-	this->_date = NULL;
-	this->_coord = NULL;
-	this->_locality = NULL;
+	_id = "";
+	_sex = 0;
+	_date = NULL;
+	_coord = NULL;
+	_locality = NULL;
 }
 
-Individual::Individual(const Date & date, const Coord<double> & coord, const Locality<double> & locality, const unsigned short sex) {
-	this->_sex = sex;
-	this->_date = new Date(date);
-	this->_coord = new Coord<double>(coord);
-	this->_locality = new Locality<double>(locality);
+Individual::Individual(const string id,
+                       const Date & date,
+                       const Coord<double> & coord,
+                       Locality<double> * locality,
+                       const unsigned short sex) {
+	_id = id;
+	_sex = sex;
+	_date = new Date(date);
+	_coord = new Coord<double>(coord);
+	_locality = locality;
 }
 
 Individual::Individual(const Individual &ind) {
+	this->_id = ind.getId();
 	this->_sex = ind.getSex();
 	this->_date = ind.hasDate() ? new Date(* ind.getDate()) : NULL;
 	this->_coord = ind.hasCoord() ? new Coord<double>(* ind.getCoord()) : NULL;
-	this->_locality = ind.hasLocality() ? new Locality<double>(* ind.getLocality()) : NULL;
+	this->_locality = ind.getLocality();
 }
 
 //** Class destructor: *******************************************************/
 Individual::~Individual () {
 	delete this->_date;
 	delete this->_coord;
-	delete this->_locality;
 }
 
 //** Other methodes: *********************************************************/
@@ -41,11 +47,21 @@ Clonable * Individual::clone() const {
 }
 
 Individual & Individual::operator= (const Individual & ind) {
+	this->_id = ind.getId();
 	this->_sex = ind.getSex();
 	this->_date = ind.hasDate() ? new Date(* ind.getDate()) : NULL;
 	this->_coord = ind.hasCoord() ? new Coord<double>(* ind.getCoord()) : NULL;
-	this->_locality = ind.hasLocality() ? new Locality<double>(* ind.getLocality()) : NULL;
+	this->_locality = ind.getLocality();
 	return * this;
+}
+
+// Id
+void Individual::setId(const string id) {
+	_id = id;
+}
+
+string Individual::getId() const {
+	return _id;
 }
 
 // Sex
@@ -140,40 +156,74 @@ double Individual::getY() const throw(NullPointerException) {
 }
 
 // Locality
-void Individual::setLocality(const Locality<double> & locality) {
-	if (!hasLocality())
-		_locality = new Locality<double>(locality);
-	else if (* _locality != locality) {
-		delete _locality;
-		_locality = new Locality<double>(locality);
-	}
+void Individual::setLocality(Locality<double> * locality) {
+	_locality = locality;
 }
 
-void Individual::setLocality(const string name, const Coord<double> & coord) {
-	if (!hasLocality())
-		_locality = new Locality<double>(name, coord);
-	else if (_locality->getName() != name || * (_locality->getCoord()) != coord) {
-		delete _locality;
-		_locality = new Locality<double>(name, coord);
-	}
-}
-
-void Individual::setLocality(const string name, const double x, const double y) {
-	if (!hasLocality())
-		_locality = new Locality<double>(name, x, y);
-	else if (_locality->getName() != name || _locality->getX() != x || _locality->getY() != y) {
-		delete _locality;
-		_locality = new Locality<double>(name, x, y);
-	}
-}
-
-Locality<double> * Individual::getLocality() const throw(NullPointerException) {
-	if (hasLocality())
-		return new Locality<double>(* _locality);
-	else
-		throw(NullPointerException("Individual::getLocality: no locality associated to this individual."));
+Locality<double> * Individual::getLocality() const {
+	return _locality;
 }
 
 bool Individual::hasLocality() const {
 	return _locality != NULL;
+}
+
+// Sequences
+void Individual::addSequence(const string & id, const Sequence & sequence)
+throw (Exception) {
+	try {
+		_sequences[id]->addSequence(sequence);
+	}
+	catch (AlphabetMismatchException ame)
+	{
+		throw(ame);
+	}
+	catch (Exception e)
+	{
+		throw(e);
+	}
+}
+
+const Sequence * Individual::getSequence(const string & id, const string & name)
+const throw(Exception){
+	map<string, VectorSequenceContainer *>::const_iterator it;
+	it = _sequences.find(id);
+	// Test existence of id in the map.
+	if (it == _sequences.end()) {
+		string mes = "Individual::getSequence: sequence set not found (" + id
+			+ ").";
+		throw(Exception(mes));
+	}
+	try {
+		return const_cast<const VectorSequenceContainer *>(it->second)->getSequence(name);
+	}
+	catch (SequenceNotFoundException snfe) {
+		throw(snfe);
+	}
+}
+
+const Sequence * Individual::getSequence(const string & id, unsigned int i)
+const throw(Exception) {
+	map<string, VectorSequenceContainer *>::const_iterator it;
+	it = _sequences.find(id);
+	// Test existence of id in the map.
+	if (it == _sequences.end()) {
+		string mes = "Individual::getSequence: sequence set not found (" + id
+			+ ").";
+		throw(Exception(mes));
+	}
+	try {
+		return const_cast<const VectorSequenceContainer *>(it->second)->getSequence(i);
+	}
+	catch (IndexOutOfBoundsException ioobe) {
+		throw(ioobe);
+	}
+}
+
+vector<string> Individual::getSequencesKeys() const {
+	vector<string> keys;
+	map<string, VectorSequenceContainer *>::const_iterator it;
+	for (it = _sequences.begin() ; it != _sequences.end() ; it++)
+		keys.push_back(it->first);
+	return keys;
 }
