@@ -14,12 +14,17 @@
 using namespace std;
 
 // From SeqLib
-#include <VectorSequenceContainer>
+#include <Seq/VectorSequenceContainer.h>
+#include <Seq/VectorSiteContainer.h>
+
+// From local
+#include "Individual.h"
 
 /**
  * @brief The Group class.
  *
- * A Group is a set of Individuals with some statistics like  the average allele number.
+ * A Group is an ensemble of Individuals with some statistics like the average
+ * allele number.
  */
 class Group {
 	public: // Constructors and destructor :
