@@ -1,7 +1,7 @@
 /*
  * File MultiSeqIndividual.h
  * Author : Sylvain Gaillard <yragael2001@yahoo.fr>
- * Last modification : Thursday July 29 2004
+ * Last modification : Tuesday August 03 2004
  *
  * Copyright (C) 2004 Sylvain Gaillard and the
  *                    PopLib Development Core Team
@@ -44,7 +44,7 @@
 #include "Locality.h"
 #include "Coord.h"
 #include "Date.h"
-#include "Genotype.h"
+#include "MultilocusGenotype.h"
 #include "GeneralExceptions.h"
 
 /**
@@ -57,7 +57,7 @@
  * We have replaced it with a simplest individual with only one sequence per
  * locus.
  */
-class MultiSeqIndividual : public Clonable {
+class MultiSeqIndividual {
 	public: // Constructors and destructor :
 		
 		/**
@@ -98,11 +98,6 @@ class MultiSeqIndividual : public Clonable {
 
 	public: // Methodes
 		
-		/**
-		 * @brief Implement the Clonable interface.
-		 */
-		Clonable * clone() const;
-
 		/**
 		 * @brief The MultiSeqIndividual copy operator.
 		 *
@@ -327,17 +322,17 @@ class MultiSeqIndividual : public Clonable {
 		/**
 		 * @brief Add a genotype.
 		 *
-		 * @param genotype The Genotype to add.
+		 * @param genotype The MultilocusGenotype to add.
 		 */
-		void addGenotype(const Genotype & genotype);
+		void addGenotype(const MultilocusGenotype & genotype);
 
 		/**
 		 * @brief Get the genotype.
 		 */
-		const Genotype * getGenotype() const throw (NullPointerException);
+		const MultilocusGenotype * getGenotype() const throw (NullPointerException);
 
 		/**
-		 * @brief Tell if the MultiSeqIndividual has a Genotype.
+		 * @brief Tell if the MultiSeqIndividual has a MultilocusGenotype.
 		 */
 		bool hasGenotype() const;
 	
@@ -348,6 +343,6 @@ class MultiSeqIndividual : public Clonable {
 		Coord<double> * _coord;
 		const Locality<double> * _locality;
 		map<string,VectorSequenceContainer *> _sequences;
-		Genotype * _genotype;
+		MultilocusGenotype * _genotype;
 };
 #endif // _MULTISEQINDIVIDUAL_H_

@@ -1,7 +1,7 @@
 /*
  * File MultiSeqIndividual.cpp
  * Author : Sylvain Gaillard <yragael2001@yahoo.fr>
- * Last modification : Thursday July 29 2004
+ * Last modification : Tuesday August 03 2004
  *
  * Copyright (C) 2004 Sylvain Gaillard and the
  *                    PopLib Development Core Team
@@ -82,7 +82,7 @@ MultiSeqIndividual::MultiSeqIndividual(const MultiSeqIndividual &ind) {
 		for (unsigned int i = 0 ; i < keys.size() ; i++)
 			_sequences[keys[i]] = new VectorSequenceContainer(* const_cast<const VectorSequenceContainer *>(ind.getVectorSequenceContainer(keys[i])));
 	}
-	this->_genotype = ind.hasGenotype() ? new Genotype(* ind.getGenotype()) : NULL;
+	this->_genotype = ind.hasGenotype() ? new MultilocusGenotype(* ind.getGenotype()) : NULL;
 }
 
 //** Class destructor: *******************************************************/
@@ -92,10 +92,6 @@ MultiSeqIndividual::~MultiSeqIndividual () {
 }
 
 //** Other methodes: *********************************************************/
-Clonable * MultiSeqIndividual::clone() const {
-	return new MultiSeqIndividual(* this);
-}
-
 MultiSeqIndividual & MultiSeqIndividual::operator= (const MultiSeqIndividual & ind) {
 	setId(ind.getId());
 	setSex(ind.getSex());
@@ -122,7 +118,7 @@ MultiSeqIndividual & MultiSeqIndividual::operator= (const MultiSeqIndividual & i
 		for (unsigned int i = 0 ; i < keys.size() ; i++)
 			_sequences[keys[i]] = new VectorSequenceContainer(* const_cast<const VectorSequenceContainer *>(ind.getVectorSequenceContainer(keys[i])));
 	}
-	this->_genotype = ind.hasGenotype() ? new Genotype(* ind.getGenotype()) : NULL;
+	this->_genotype = ind.hasGenotype() ? new MultilocusGenotype(* ind.getGenotype()) : NULL;
 	return * this;
 }
 
@@ -336,13 +332,13 @@ unsigned int MultiSeqIndividual::getNumberOfSequences(const string & id) const
 	return const_cast<const VectorSequenceContainer *>(it->second)->getNumberOfSequences();
 }
 
-// Genotype
+// MultilocusGenotype
 
-void MultiSeqIndividual::addGenotype(const Genotype & genotype) {
-	_genotype = new Genotype(genotype);
+void MultiSeqIndividual::addGenotype(const MultilocusGenotype & genotype) {
+	_genotype = new MultilocusGenotype(genotype);
 }
 
-const Genotype * MultiSeqIndividual::getGenotype() const throw (NullPointerException) {
+const MultilocusGenotype * MultiSeqIndividual::getGenotype() const throw (NullPointerException) {
 		return _genotype;
 }
 
