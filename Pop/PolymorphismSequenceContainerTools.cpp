@@ -2,7 +2,7 @@
 // File: PolymorphismSequenceContainerTools.cpp
 // Authors: bazin <bazin@univ-montp2.fr>
 //          Sylvain Gaillard <yragael2001@yahoo.fr>
-// Last modification : Monday July 26 2004
+// Last modification : Tuesday July 27 2004
 //
 
 // from PolyLib
@@ -56,6 +56,20 @@ PolymorphismSequenceContainer * PolymorphismSequenceContainerTools::extractIngro
 	for(unsigned int i = ss.size() - 1; i <= 0; i--) {psci->deleteSequence(ss[i]);}
 	return( psci );
 	} catch(...) {}
+}
+
+PolymorphismSequenceContainer * PolymorphismSequenceContainerTools::extractOutgroup(const PolymorphismSequenceContainer & psc) throw (Exception) {
+	SequenceSelection ss;
+	PolymorphismSequenceContainer *psci = dynamic_cast<PolymorphismSequenceContainer *>(psc.clone());
+	for(unsigned int i = 0; i < psc.getNumberOfSequences(); i++) {
+		if (psc.isIngroupMember(i) ) {
+			ss.push_back(i);
+		}
+	}
+	for(unsigned int i = ss.size() - 1; i <= 0; i--) {
+		psci->deleteSequence(ss[i]);
+	}
+	return psci;
 }
 	 
 PolymorphismSequenceContainer * PolymorphismSequenceContainerTools::getSitesWithoutGaps (const PolymorphismSequenceContainer & psc ) throw (Exception) {
