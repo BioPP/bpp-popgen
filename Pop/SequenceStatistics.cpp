@@ -310,6 +310,7 @@ double SequenceStatistics::tajima83(const PolymorphismSequenceContainer & psc, b
 					tmp_k[it->first] = it->second * (it->second - 1);
 					tmp_n += it->second;
 				}
+			if (tmp_n == 0 || tmp_n == 1) continue;
 			for(map<int, unsigned int>::iterator it = tmp_k.begin() ; it != tmp_k.end() ; it++)
 				value += (double) it->second / (tmp_n * (tmp_n - 1));
 			value2 += 1. - value;
