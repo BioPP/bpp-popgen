@@ -37,9 +37,8 @@ class PolymorphismSequenceContainerTools
          *
          * @param path Path to the Mase+ file
          * @param alpha Sequence Alphabet 
-         * @throw Exception *ToDo*.
          */        
-	static VectorSiteContainer * read(const string & path,
+	static PolymorphismSequenceContainer * read(const string & path,
 	const Alphabet *alpha) throw (Exception);
 
         /**
@@ -47,8 +46,7 @@ class PolymorphismSequenceContainerTools
 	 * one.
          *
          * @param path Path to the Mase+ file
-         * @param alpha Sequence Alphabet 
-         * @throw Exception *ToDo*.
+         * @param alpha Sequence Alphabet
          */
 	 static PolymorphismSequenceContainer * extractIngroup (const PolymorphismSequenceContainer & psc ) throw (Exception);
         /*******************************************************************************/

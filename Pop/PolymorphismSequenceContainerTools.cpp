@@ -13,12 +13,12 @@ using namespace std;
 PolymorphismSequenceContainerTools::~PolymorphismSequenceContainerTools() {}
 
 // Read a mase+ format
-VectorSiteContainer * PolymorphismSequenceContainerTools::read(const string & path, const Alphabet *
+PolymorphismSequenceContainer * PolymorphismSequenceContainerTools::read(const string & path, const Alphabet *
 alpha) throw (Exception) {
+	try {
 	Mase ms;
 	string clef;
 	unsigned int n;
-	unsigned int i;
 	const VectorSequenceContainer *seqc = ms.read( path, alpha );
 	VectorSiteContainer *sitec = new VectorSiteContainer( *seqc );
 	PolymorphismSequenceContainer *psc = new PolymorphismSequenceContainer( *sitec );
@@ -27,28 +27,32 @@ alpha) throw (Exception) {
 	for(map< string, unsigned int >::iterator mi = groupMap.begin(); mi != groupMap.end(); mi++) {
 		clef = mi -> first;
 		n = mi -> second;
-		if (! clef.compare(0, 8, "OUTGROUP")) {
-			cout << "OUTGROUP" << '\t' << n << endl;
+		if ( clef.compare(0, 8, "OUTGROUP") == 0 ) {
 			SequenceSelection ss = MaseTools::getSequenceSet(maseFileHeader, clef);
-			for (i = 0; i != ss.size(); i++)
-				psc -> toggleIngroup(ss[i]);
+			for (unsigned int i = 0; i != ss.size(); i++) {
+				psc -> setAsOutgroupMember(ss[i]);
+			}			
 		}
 	}
 	return(psc);
+	}
+	catch(...) {}
 }
 	 
-PolymorphismSequenceContainer * PolymorphismSequenceContainerTools::extractIngroup (const
-PolymorphismSequenceContainer & psc ) throw (Exception) {
-	SequenceSelection s;
+PolymorphismSequenceContainer * PolymorphismSequenceContainerTools::extractIngroup (const PolymorphismSequenceContainer & psc ) throw (Exception) {
+	try {
+	SequenceSelection ss;	
 	PolymorphismSequenceContainer *psci = dynamic_cast<PolymorphismSequenceContainer *>(psc.clone());
-	for(unsigned int i=0; i < psc.getNumberOfSequences() ; i++){
-		if ( psc.isIngroup(i) ) {
-			s.push_back(i);
+	for(unsigned int i = 0; i < psc.getNumberOfSequences(); i++){
+		if ( psc.isIngroupMember(i) ) {
+			ss.push_back(i);
 		}
 	}
 	SequenceContainerTools::keepOnlySelectedSequences(
-		dynamic_cast<const OrderedSequenceContainer &>(
-			dynamic_cast<const SiteContainer &>(*psci))
-		, s );
+		* dynamic_cast<const OrderedSequenceContainer *>(
+			dynamic_cast<const SiteContainer *>(psci)), ss );
 	return( psci );
+	}
+	catch(...) {}
 }
+
