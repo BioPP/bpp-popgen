@@ -22,6 +22,7 @@ MultilocusGenotype.h\
 ODataSet.h\
 PolymorphismSequenceContainer.h\
 PolymorphismSequenceContainerTools.h\
+PoplibIO.h\
 StatisticalTests.h
 
 CPP_FILES = \
@@ -45,6 +46,7 @@ MonolocusGenotype.cpp\
 MultilocusGenotype.cpp\
 PolymorphismSequenceContainer.cpp\
 PolymorphismSequenceContainerTools.cpp\
+PoplibIO.cpp\
 StatisticalTests.cpp
 
 lib_LTLIBRARIES = libpop.la
