@@ -27,6 +27,7 @@ MultilocusGenotypeStatistics.h\
 MultiSeqIndividual.h\
 ODataSet.h\
 PolymorphismMultiGContainer.h\
+PolymorphismMultiGContainerTools.h\
 PolymorphismSequenceContainer.h\
 PolymorphismSequenceContainerTools.h\
 PopgenlibIO.h\
@@ -58,6 +59,7 @@ MultilocusGenotype.cpp\
 MultilocusGenotypeStatistics.cpp\
 MultiSeqIndividual.cpp\
 PolymorphismMultiGContainer.cpp\
+PolymorphismMultiGContainerTools.cpp\
 PolymorphismSequenceContainer.cpp\
 PolymorphismSequenceContainerTools.cpp\
 PopgenlibIO.cpp\
