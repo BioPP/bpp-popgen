@@ -1,7 +1,7 @@
 /*
  * File Individual.cpp
  * Author : Sylvain Gaillard <yragael2001@yahoo.fr>
- * Last modification : Tuesday July 06 2004
+ * Last modification : Friday July 09 2004
  */
 
 #include "Individual.h"
@@ -73,16 +73,26 @@ Individual::Individual(const Individual &ind) {
 
 //** Class destructor: *******************************************************/
 Individual::~Individual () {
-	if (_date != NULL)
+	if (_date != NULL) {
 		delete _date;
-	if (_coord != NULL)
+		_date = NULL;
+	}
+	if (_coord != NULL) {
 		delete _coord;
-	if (_locality != NULL)
+		_coord = NULL;
+	}
+	if (_locality != NULL) {
 		delete _locality;
-	if (_sequences != NULL)
+		_locality = NULL;
+	}
+	if (_sequences != NULL) {
 		delete _sequences;
-	if (_genotype != NULL)
+		_sequences = NULL;
+	}
+	if (_genotype != NULL) {
 		delete _genotype;
+		_genotype = NULL;
+	}
 }
 
 //** Other methodes: *********************************************************/
@@ -333,7 +343,7 @@ unsigned int Individual::getSequencePosition(const string & sequence_name) const
 }
 	
 bool Individual::hasSequences() const {
-	return (_sequences != NULL && _sequences->getNumberOfSequences() != 0);
+	return !(getNumberOfSequences() == 0);
 }
 
 const Alphabet * Individual::getSequenceAlphabet() const throw (NullPointerException) {
@@ -342,15 +352,17 @@ const Alphabet * Individual::getSequenceAlphabet() const throw (NullPointerExcep
 	return _sequences->getAlphabet();
 }
 
-unsigned int Individual::getNumberOfSequences() const throw (NullPointerException) {
+unsigned int Individual::getNumberOfSequences() const {
 	if (_sequences == NULL)
-		throw NullPointerException("Individual::getNumberOfSequences: no sequence data.");
+		return 0;
 	return const_cast<const MapSequenceContainer *>(_sequences)->getNumberOfSequences();
 }
 
 void Individual::setSequences(const MapSequenceContainer & msc) {
-	if (_sequences != NULL)
+	if (hasSequences()) {
 		delete(_sequences);
+		_sequences = NULL;
+	}
 	_sequences = new MapSequenceContainer(msc);
 }
 

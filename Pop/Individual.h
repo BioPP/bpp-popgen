@@ -1,7 +1,7 @@
 /*
  * File Individual.h
  * Author : Sylvain Gaillard <yragael2001@yahoo.fr>
- * Last modification : Tuesday July 06 2004
+ * Last modification : Friday July 09 2004
  */
 
 // Secured inclusion of header's file
@@ -319,10 +319,8 @@ class Individual : public Clonable {
 		
 		/**
 		 * @brief Get the number of sequences.
-		 *
-		 * @throw NullPointerException if there is no sequence container defined.
 		 */
-		unsigned int getNumberOfSequences() const throw (NullPointerException);
+		unsigned int getNumberOfSequences() const;
 
 		/**
 		 * @brief Set all the sequences with a map  sequence container.
