@@ -24,8 +24,8 @@ template <class T> class Coord : public Clonable {
 		 * 
 		 * The two values are set to 0 if no parametre is given to the constructor.
 		 *
-		 * @param x The longitude or abscice.
-		 * @param y The latitude or ordonne.
+		 * @param x The longitude or abscissa.
+		 * @param y The latitude or ordinate.
 		 */
 		Coord(const T x=0, const T y=0);
 		
