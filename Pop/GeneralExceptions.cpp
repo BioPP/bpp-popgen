@@ -1,7 +1,7 @@
 /*
  * File GeneralExceptions.cpp
  * Author : Sylvain Gaillard <yragael2001@yahoo.fr>
- * Last modification : Monday June 21 2004
+ * Last modification : Tuesday July 06 2004
  */
 
 #include "GeneralExceptions.h"
@@ -141,5 +141,32 @@ IndividualNotFoundException::IndividualNotFoundException(const string &text,
 IndividualNotFoundException::~IndividualNotFoundException() throw() {}
 
 const string IndividualNotFoundException::getIdentifier() const {
+	return BadIdentifierException::getIdentifier();
+}
+
+//** GroupNotFoundException **************************************************/
+GroupNotFoundException::GroupNotFoundException(const char *text,
+		const unsigned int id): BadIdentifierException("GroupNotFoundException: " +
+			string(text) + "(" + TextTools::toString(id) + ")",
+			id) {}
+			
+GroupNotFoundException::GroupNotFoundException(const string &text,
+		const unsigned int id): BadIdentifierException("GroupNotFoundException: " +
+			text + "(" + TextTools::toString(id) + ")",
+			id) {}
+
+GroupNotFoundException::GroupNotFoundException(const char *text,
+		const string &id): BadIdentifierException("GroupNotFoundException: " + string(text) +
+			"(" + id + ")",
+			id) {}
+
+GroupNotFoundException::GroupNotFoundException(const string &text,
+		const string &id): BadIdentifierException("GroupNotFoundException: " + text +
+			"(" + id + ")",
+			id) {}
+			
+GroupNotFoundException::~GroupNotFoundException() throw() {}
+
+const string GroupNotFoundException::getIdentifier() const {
 	return BadIdentifierException::getIdentifier();
 }

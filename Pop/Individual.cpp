@@ -1,7 +1,7 @@
 /*
  * File Individual.cpp
  * Author : Sylvain Gaillard <yragael2001@yahoo.fr>
- * Last modification : Monday July 05 2004
+ * Last modification : Tuesday July 06 2004
  */
 
 #include "Individual.h"
@@ -271,15 +271,15 @@ const throw (Exception) {
 	}
 }
 
-const Sequence * Individual::getSequenceByIndex(unsigned int sequence_index)
+const Sequence * Individual::getSequenceAtPosition(unsigned int sequence_position)
 const throw (Exception) {
 	if (_sequences == NULL)
-		throw NullPointerException("Individual::getSequenceByIndex: no sequence data.");
+		throw NullPointerException("Individual::getSequenceAtPosition: no sequence data.");
 	try {
-		return const_cast<const MapSequenceContainer *>(_sequences)->getSequenceByKey(TextTools::toString(sequence_index));
+		return const_cast<const MapSequenceContainer *>(_sequences)->getSequenceByKey(TextTools::toString(sequence_position));
 	}
 	catch (SequenceNotFoundException & snfe) {
-		throw SequenceNotFoundException("Individual::getSequenceByIndex: sequence_index not found", snfe.getSequenceId());
+		throw SequenceNotFoundException("Individual::getSequenceAtPosition: sequence_position not found", snfe.getSequenceId());
 	}
 }
 
@@ -294,14 +294,14 @@ void Individual::deleteSequenceByName(const string & sequence_name) throw (Excep
 	}
 }
 
-void Individual::deleteSequenceByIndex(unsigned int sequence_index) throw (Exception) {
+void Individual::deleteSequenceAtPosition(unsigned int sequence_position) throw (Exception) {
 	if (_sequences == NULL)
-		throw NullPointerException("Individual::deleteSequenceByIndex: no sequence data.");
+		throw NullPointerException("Individual::deleteSequenceAtPosition: no sequence data.");
 	try {
-		_sequences->deleteSequenceByKey(TextTools::toString(sequence_index));
+		_sequences->deleteSequenceByKey(TextTools::toString(sequence_position));
 	}
 	catch (SequenceNotFoundException & snfe) {
-		throw SequenceNotFoundException("Individual::deleteSequenceByIndex: sequence_index not found.", snfe.getSequenceId());
+		throw SequenceNotFoundException("Individual::deleteSequenceAtPosition: sequence_position not found.", snfe.getSequenceId());
 	}
 }
 
@@ -393,53 +393,53 @@ bool Individual::hasGenotype() const {
 	return _genotype != NULL;
 }
 
-void Individual::setMonolocusGenotype(unsigned int locus_index, const MonolocusGenotype & monogen) throw (Exception) {
+void Individual::setMonolocusGenotype(unsigned int locus_position, const MonolocusGenotype & monogen) throw (Exception) {
 	if (!hasGenotype())
 		throw NullPointerException("Individual::setMonolocusGenotype: individual has no genotype.");
 	try {
-		_genotype->setMonolocusGenotype(locus_index, monogen);
+		_genotype->setMonolocusGenotype(locus_position, monogen);
 	}
 	catch (IndexOutOfBoundsException & ioobe) {
-		throw IndexOutOfBoundsException("Individual::setMonolocusGenotype: locus_index out of boubds.", ioobe.getBadInteger(), ioobe.getBounds()[0], ioobe.getBounds()[1]);
+		throw IndexOutOfBoundsException("Individual::setMonolocusGenotype: locus_position out of boubds.", ioobe.getBadInteger(), ioobe.getBounds()[0], ioobe.getBounds()[1]);
 	}
 }
 
-void Individual::setMonolocusGenotypeByAlleleKey(unsigned int locus_index, const vector<unsigned int> allele_keys) throw (Exception) {
+void Individual::setMonolocusGenotypeByAlleleKey(unsigned int locus_position, const vector<unsigned int> allele_keys) throw (Exception) {
 	if (!hasGenotype())
 		throw NullPointerException("Individual::setMonolocusGenotypeByAlleleKey: individual has no genotype.");
 	try {
-		_genotype->setMonolocusGenotypeByAlleleKey(locus_index, allele_keys);
+		_genotype->setMonolocusGenotypeByAlleleKey(locus_position, allele_keys);
 	}
 	catch (IndexOutOfBoundsException & ioobe) {
-		throw IndexOutOfBoundsException("Individual::setMonolocusGenotypeByAlleleKey: locus_index out of bounds.", ioobe.getBadInteger(), ioobe.getBounds()[0], ioobe.getBounds()[1]);
+		throw IndexOutOfBoundsException("Individual::setMonolocusGenotypeByAlleleKey: locus_position out of bounds.", ioobe.getBadInteger(), ioobe.getBounds()[0], ioobe.getBounds()[1]);
 	}
 	catch (Exception) {
 		throw Exception("Individual::setMonolocusGenotypeByAlleleKey: no key in allele_keys.");
 	}
 }
 
-void Individual::setMonolocusGenotypeByAlleleId(unsigned int locus_index, const vector<string> allele_id, const LocusInfo & locus_info) throw (Exception) {
+void Individual::setMonolocusGenotypeByAlleleId(unsigned int locus_position, const vector<string> allele_id, const LocusInfo & locus_info) throw (Exception) {
 	if (!hasGenotype())
 		throw NullPointerException("Individual::setMonolocusGenotypeByAlleleId: individual has no genotype.");
 	try {
-		_genotype->setMonolocusGenotypeByAlleleId(locus_index, allele_id, locus_info);
+		_genotype->setMonolocusGenotypeByAlleleId(locus_position, allele_id, locus_info);
 	}
 	catch (IndexOutOfBoundsException & ioobe) {
-		throw IndexOutOfBoundsException("Individual::setMonolocusGenotypeByAlleleId: locus_index out of bounds.", ioobe.getBadInteger(), ioobe.getBounds()[0], ioobe.getBounds()[1]);
+		throw IndexOutOfBoundsException("Individual::setMonolocusGenotypeByAlleleId: locus_position out of bounds.", ioobe.getBadInteger(), ioobe.getBounds()[0], ioobe.getBounds()[1]);
 	}
 	catch (AlleleNotFoundException & anfe) {
 		throw AlleleNotFoundException("Individual::setMonolocusGenotypeByAlleleId: id not found.", anfe.getIdentifier());
 	}
 }
 
-const MonolocusGenotype * Individual::getMonolocusGenotype(unsigned int locus_index) throw (Exception) {
+const MonolocusGenotype * Individual::getMonolocusGenotype(unsigned int locus_position) throw (Exception) {
 	if (!hasGenotype())
 		throw NullPointerException("Individual::getMonolocusGenotype: individual has no genotype.");
 	try {
-		return _genotype->getMonolocusGenotype(locus_index);
+		return _genotype->getMonolocusGenotype(locus_position);
 	}
 	catch (IndexOutOfBoundsException & ioobe) {
-		throw IndexOutOfBoundsException("Individual::getMonolocusGenotype: locus_index out of bounds.", ioobe.getBadInteger(), ioobe.getBounds()[0], ioobe.getBounds()[1]);
+		throw IndexOutOfBoundsException("Individual::getMonolocusGenotype: locus_position out of bounds.", ioobe.getBadInteger(), ioobe.getBounds()[0], ioobe.getBounds()[1]);
 	}
 }
 

@@ -1,7 +1,7 @@
 /*
  * File GeneralExceptions.h
  * Author : Sylvain Gaillard <yragael2001@yahoo.fr>
- * Last modification : Monday June 21 2004
+ * Last modification : Tuesday July 06 2004
  */
 
 // Secured inclusion of header's file
@@ -192,6 +192,43 @@ class IndividualNotFoundException : public BadIdentifierException {
 
 		// Class destructor
 		~IndividualNotFoundException() throw();
+
+	public:
+		/**
+		 * @brief Return the value of the identifier as a string.
+		 */
+		virtual const string getIdentifier() const;
+};
+
+//*****************************************************************************
+/**
+ * @brief The GroupNotFoundException class.
+ */
+class GroupNotFoundException : public BadIdentifierException {
+	public:
+		// Class constructor
+		/**
+		 * @brief Build the exception with a numerical identifier.
+		 */
+		GroupNotFoundException(const char *text, const unsigned int id);
+		
+		/**
+		 * @brief Build the exception with a numerical identifier.
+		 */
+		GroupNotFoundException(const string &text, const unsigned int id);
+		
+		/**
+		 * @brief Build the exception with a textual identifier.
+		 */
+		GroupNotFoundException(const char *text, const string &id);
+		
+		/**
+		 * @brief Build the exception with a textual identifier.
+		 */
+		GroupNotFoundException(const string &text, const string &id);
+
+		// Class destructor
+		~GroupNotFoundException() throw();
 
 	public:
 		/**

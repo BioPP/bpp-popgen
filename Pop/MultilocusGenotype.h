@@ -1,7 +1,7 @@
 /*
  * File MultilocusGenotype.h
  * Author : Sylvain Gaillard <yragael2001@yahoo.fr>
- * Last modification : Monday July 05 2004
+ * Last modification : Tuesday July 06 2004
  */
 
 // Secured inclusion of header's file
@@ -49,45 +49,45 @@ class MultilocusGenotype {
 		/**
 		 * @brief Set a MonolocusGenotype.
 		 */
-		void setMonolocusGenotype(unsigned int locus_index,
+		void setMonolocusGenotype(unsigned int locus_position,
 				const MonolocusGenotype & monogen) throw (IndexOutOfBoundsException);
 
 		/**
 		 * @brief Set a MonolocusGenotype by allele keys.
 		 *
-		 * @throw IndexOutOfBoundsException if locus_index excedes the number of loci.
+		 * @throw IndexOutOfBoundsException if locus_position excedes the number of loci.
 		 * @throw Exception if there is no key in allele_keys.
 		 */
-		void setMonolocusGenotypeByAlleleKey(unsigned int locus_index,
+		void setMonolocusGenotypeByAlleleKey(unsigned int locus_position,
 				const vector<unsigned int> allele_keys) throw (Exception);
 
 		/**
 		 * @brief Set a MonolocusGenotype by allele id.
 		 *
-		 * @throw IndexOutOfBoundsException if locus_index excedes the number of loci.
+		 * @throw IndexOutOfBoundsException if locus_position excedes the number of loci.
 		 * @throw AlleleNotFoundException if at least one of the id is not found in the LocusInfo.
 		 */
-		void setMonolocusGenotypeByAlleleId(unsigned int locus_index,
+		void setMonolocusGenotypeByAlleleId(unsigned int locus_position,
 				const vector<string> allele_id, const LocusInfo & locus_info) throw (Exception);
 
 		/**
 		 * @brief Set a MonolocusGenotype as missing data.
 		 *
-		 * @throw IndexOutOfBoundsException if locus_index excedes the number of loci.
+		 * @throw IndexOutOfBoundsException if locus_position excedes the number of loci.
 		 */
-		void setMonolocusGenotypeAsMissing(unsigned int locus_index) throw (IndexOutOfBoundsException);
+		void setMonolocusGenotypeAsMissing(unsigned int locus_position) throw (IndexOutOfBoundsException);
 
 		/**
 		 * @brief Tell if a MonolocusGenotype is a missing data.
 		 *
-		 * @throw IndexOutOfBoundsException if locus_index excedes the number of loci.
+		 * @throw IndexOutOfBoundsException if locus_position excedes the number of loci.
 		 */
-		bool isMonolocusGenotypeMissing(unsigned int locus_index) throw (IndexOutOfBoundsException);
+		bool isMonolocusGenotypeMissing(unsigned int locus_position) const throw (IndexOutOfBoundsException);
 		
 		/**
 		 * @brief Get a MonolocusGenotype.
 		 */
-		const MonolocusGenotype * getMonolocusGenotype(unsigned int locus_index) const
+		const MonolocusGenotype * getMonolocusGenotype(unsigned int locus_position) const
 			throw (IndexOutOfBoundsException);
 
 		/**

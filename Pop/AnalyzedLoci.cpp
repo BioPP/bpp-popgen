@@ -1,7 +1,7 @@
 /*
  * File AnalyzedLoci.cpp
  * Author : Sylvain Gaillard <yragael2001@yahoo.fr>
- * Last modification : Friday June 18 2004
+ * Last modification : Tuesday July 06 2004
  */
 
 #include "AnalyzedLoci.h"
@@ -21,13 +21,13 @@ AnalyzedLoci::~AnalyzedLoci() {
 
 //** Other methodes: *********************************************************/
 // LocusInfo
-void AnalyzedLoci::setLocusInfo(unsigned int locus_index, const LocusInfo & locus)
+void AnalyzedLoci::setLocusInfo(unsigned int locus_position, const LocusInfo & locus)
 throw (IndexOutOfBoundsException) {
-	if (locus_index >= 0 && locus_index < _loci.size())
-		_loci[locus_index] = new LocusInfo(locus);
+	if (locus_position >= 0 && locus_position < _loci.size())
+		_loci[locus_position] = new LocusInfo(locus);
 	else
-		throw IndexOutOfBoundsException("AnalyzedLoci::setLocusInfo: locus_index out of bounds",
-				locus_index, 0, _loci.size());
+		throw IndexOutOfBoundsException("AnalyzedLoci::setLocusInfo: locus_position out of bounds",
+				locus_position, 0, _loci.size());
 }
 
 unsigned int AnalyzedLoci::getLocusInfoPosition(const string & locus_name) const
@@ -47,12 +47,12 @@ throw (BadIdentifierException) {
 			locus_name);
 }
 
-const LocusInfo * AnalyzedLoci::getLocusInfoByIndex(unsigned int locus_index) const
+const LocusInfo * AnalyzedLoci::getLocusInfoAtPosition(unsigned int locus_position) const
 throw (Exception) {
-	if (locus_index >= _loci.size())
-		throw IndexOutOfBoundsException("AnalyzedLoci::getLocusInfoByIndex: locus_index out of bounds.", locus_index, 0, _loci.size());
-	if (_loci[locus_index] != NULL)
-		return _loci[locus_index];
+	if (locus_position >= _loci.size())
+		throw IndexOutOfBoundsException("AnalyzedLoci::getLocusInfoAtPosition: locus_position out of bounds.", locus_position, 0, _loci.size());
+	if (_loci[locus_position] != NULL)
+		return _loci[locus_position];
 	else
 		throw NullPointerException("AnalyzedLoci::getLocusInfo: no locus defined here.");
 }
@@ -79,20 +79,20 @@ throw (Exception) {
 				locus_name);
 }
 
-void AnalyzedLoci::addAlleleInfoByLocusIndex(unsigned int locus_index,
+void AnalyzedLoci::addAlleleInfoByLocusPosition(unsigned int locus_position,
 		const AlleleInfo & allele)
 throw (Exception) {
-	if (locus_index >= 0 && locus_index < _loci.size()) {
+	if (locus_position >= 0 && locus_position < _loci.size()) {
 		try {
-			_loci[locus_index]->addAlleleInfo(allele);
+			_loci[locus_position]->addAlleleInfo(allele);
 		}
 		catch (BadIdentifierException & bie) {
-			throw BadIdentifierException("AnalyzedLoci::addAlleleInfoByLocusIndex: allele id is already in use.", bie.getIdentifier());
+			throw BadIdentifierException("AnalyzedLoci::addAlleleInfoByLocusPosition: allele id is already in use.", bie.getIdentifier());
 		}
 	}
 	else
-		throw IndexOutOfBoundsException("AnalyzedLoci::addAlleleInfoByLocusIndex: locus_index out of bounds.",
-				locus_index, 0, _loci.size());
+		throw IndexOutOfBoundsException("AnalyzedLoci::addAlleleInfoByLocusPosition: locus_position out of bounds.",
+				locus_position, 0, _loci.size());
 }
 
 // General
@@ -116,9 +116,9 @@ throw (LocusNotFoundException) {
 			locus_name);
 }
 
-unsigned int AnalyzedLoci::getPloidyByLocusIndex(unsigned int locus_index) const
+unsigned int AnalyzedLoci::getPloidyByLocusPosition(unsigned int locus_position) const
 throw (IndexOutOfBoundsException) {
-	if (locus_index >= _loci.size())
-		throw IndexOutOfBoundsException("AnalyzedLoci::getPloidyByLocusIndex: locus_index out of bounds.", locus_index, 0, _loci.size());
-	return _loci[locus_index]->getPloidy();
+	if (locus_position >= _loci.size())
+		throw IndexOutOfBoundsException("AnalyzedLoci::getPloidyByLocusPosition: locus_position out of bounds.", locus_position, 0, _loci.size());
+	return _loci[locus_position]->getPloidy();
 }

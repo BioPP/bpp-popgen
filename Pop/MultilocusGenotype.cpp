@@ -1,7 +1,7 @@
 /*
  * File MultilocusGenotype.cpp
  * Author : Sylvain Gaillard <yragael2001@yahoo.fr>
- * Last modification : Monday July 05 2004
+ * Last modification : Tuesday July 06 2004
  */
 
 #include "MultilocusGenotype.h"
@@ -31,32 +31,32 @@ MultilocusGenotype::~MultilocusGenotype() {
 }
 
 //** Other methodes: *********************************************************/
-void MultilocusGenotype::setMonolocusGenotype(unsigned int locus_index,
+void MultilocusGenotype::setMonolocusGenotype(unsigned int locus_position,
 		const MonolocusGenotype & monogen) throw (IndexOutOfBoundsException) {
-	if (locus_index < _loci.size())
-		_loci[locus_index] = dynamic_cast<MonolocusGenotype *>(monogen.clone());
+	if (locus_position < _loci.size())
+		_loci[locus_position] = dynamic_cast<MonolocusGenotype *>(monogen.clone());
 	else
-		throw IndexOutOfBoundsException("MultilocusGenotype::setMonolocusGenotype: locus_index out of bounds.",
-				locus_index, 0, _loci.size());
+		throw IndexOutOfBoundsException("MultilocusGenotype::setMonolocusGenotype: locus_position out of bounds.",
+				locus_position, 0, _loci.size());
 }
 
-void MultilocusGenotype::setMonolocusGenotypeByAlleleKey(unsigned int locus_index,
+void MultilocusGenotype::setMonolocusGenotypeByAlleleKey(unsigned int locus_position,
 		const vector<unsigned int> allele_keys) throw (Exception) {
 	if (allele_keys.size() < 1)
 		throw Exception("MultilocusGenotype::setMonolocusGenotypeByAlleleKey: no key in allele_keys.");
 	
-	if (locus_index < _loci.size()) {
+	if (locus_position < _loci.size()) {
 		if (allele_keys.size() == 1)
-			setMonolocusGenotype(locus_index, MonoAlleleMonolocusGenotype(allele_keys));
+			setMonolocusGenotype(locus_position, MonoAlleleMonolocusGenotype(allele_keys));
 		if (allele_keys.size() > 1)
-			setMonolocusGenotype(locus_index, BiAlleleMonolocusGenotype(allele_keys));
+			setMonolocusGenotype(locus_position, BiAlleleMonolocusGenotype(allele_keys));
 	}
 	else
-		throw IndexOutOfBoundsException("MultilocusGenotype::setMonolocusGenotype: locus_index out of bounds.",
-				locus_index, 0, _loci.size());
+		throw IndexOutOfBoundsException("MultilocusGenotype::setMonolocusGenotype: locus_position out of bounds.",
+				locus_position, 0, _loci.size());
 }
 
-void MultilocusGenotype::setMonolocusGenotypeByAlleleId(unsigned int locus_index,
+void MultilocusGenotype::setMonolocusGenotypeByAlleleId(unsigned int locus_position,
 		const vector<string> allele_id, const LocusInfo & locus_info) throw (Exception) {
 	vector<unsigned int> allele_keys;
 	for (unsigned int i = 0 ; i < allele_id.size() ; i++) {
@@ -68,31 +68,31 @@ void MultilocusGenotype::setMonolocusGenotypeByAlleleId(unsigned int locus_index
 		}
 	}
 	try {
-		setMonolocusGenotypeByAlleleKey(locus_index, allele_keys);
+		setMonolocusGenotypeByAlleleKey(locus_position, allele_keys);
 	}
 	catch (IndexOutOfBoundsException & ioobe) {
-		throw IndexOutOfBoundsException("MultilocusGenotype::setMonolocusGenotypeByAlleleId: locus_index out of bounds.", ioobe.getBadInteger(), ioobe.getBounds()[0], ioobe.getBounds()[1]);
+		throw IndexOutOfBoundsException("MultilocusGenotype::setMonolocusGenotypeByAlleleId: locus_position out of bounds.", ioobe.getBadInteger(), ioobe.getBounds()[0], ioobe.getBounds()[1]);
 	}
 }
 
-void MultilocusGenotype::setMonolocusGenotypeAsMissing(unsigned int locus_index) throw (IndexOutOfBoundsException) {
-	if (locus_index >= _loci.size())
-		throw IndexOutOfBoundsException("MultilocusGenotype::setMonolocusGenotypeAsMissing: locus_index out of bounds.", locus_index, 0, _loci.size());
-	if (_loci[locus_index] != NULL)
-		delete _loci[locus_index];
-	_loci[locus_index] = NULL;
+void MultilocusGenotype::setMonolocusGenotypeAsMissing(unsigned int locus_position) throw (IndexOutOfBoundsException) {
+	if (locus_position >= _loci.size())
+		throw IndexOutOfBoundsException("MultilocusGenotype::setMonolocusGenotypeAsMissing: locus_position out of bounds.", locus_position, 0, _loci.size());
+	if (_loci[locus_position] != NULL)
+		delete _loci[locus_position];
+	_loci[locus_position] = NULL;
 }
 
-bool MultilocusGenotype::isMonolocusGenotypeMissing(unsigned int locus_index) throw (IndexOutOfBoundsException) {
-	if (locus_index >= _loci.size())
-		throw IndexOutOfBoundsException("MultilocusGenotype::isMonolocusGenotypeMissing: locus_index out of bounds.", locus_index, 0, _loci.size());
-	return _loci[locus_index] == NULL;
+bool MultilocusGenotype::isMonolocusGenotypeMissing(unsigned int locus_position) const throw (IndexOutOfBoundsException) {
+	if (locus_position >= _loci.size())
+		throw IndexOutOfBoundsException("MultilocusGenotype::isMonolocusGenotypeMissing: locus_position out of bounds.", locus_position, 0, _loci.size());
+	return _loci[locus_position] == NULL;
 }
 
-const MonolocusGenotype * MultilocusGenotype::getMonolocusGenotype(unsigned int locus_index) const throw (IndexOutOfBoundsException) {
-	if (locus_index >= _loci.size())
-		throw IndexOutOfBoundsException("MultilocusGenotype::getMonolocusGenotype: locus_index out of bounds", locus_index, 0, _loci.size());
-	return _loci[locus_index];
+const MonolocusGenotype * MultilocusGenotype::getMonolocusGenotype(unsigned int locus_position) const throw (IndexOutOfBoundsException) {
+	if (locus_position >= _loci.size())
+		throw IndexOutOfBoundsException("MultilocusGenotype::getMonolocusGenotype: locus_position out of bounds", locus_position, 0, _loci.size());
+	return _loci[locus_position];
 }
 
 unsigned int MultilocusGenotype::countNonMissingLoci() const {

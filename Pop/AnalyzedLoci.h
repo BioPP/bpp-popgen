@@ -1,7 +1,7 @@
 /*
  * File AnalyzedLoci.h
  * Author : Sylvain Gaillard <yragael2001@yahoo.fr>
- * Last modification : Friday June 18 2004
+ * Last modification : Tuesday July 06 2004
  */
 
 // Secured inclusion of header's file
@@ -42,13 +42,13 @@ class AnalyzedLoci {
 		/**
 		 * @brief Set a LocusInfo.
 		 *
-		 * @throw IndexOutOfBoundsException if locus_index is out of bounds.
+		 * @throw IndexOutOfBoundsException if locus_position is out of bounds.
 		 */
-		void setLocusInfo(unsigned int locus_index, const LocusInfo & locus)
+		void setLocusInfo(unsigned int locus_position, const LocusInfo & locus)
 			throw (IndexOutOfBoundsException);
 
 		/**
-		 * @brief Get the position (index) of a LocusInfo.
+		 * @brief Get the position of a LocusInfo.
 		 *
 		 * @throw BadIdentifierException if locus_name is not found.
 		 */
@@ -64,12 +64,12 @@ class AnalyzedLoci {
 			throw (BadIdentifierException);
 
 		/**
-		 * @brief Get a LocusInfo by index.
+		 * @brief Get a LocusInfo by its position.
 		 *
 		 * @throw NullPointerException if the LocusInfo is not difined.
-		 * @throw IndexOutOfBoundsException if locus_index is out of bounds.
+		 * @throw IndexOutOfBoundsException if locus_position is out of bounds.
 		 */
-		const LocusInfo * getLocusInfoByIndex(unsigned int locus_index) const
+		const LocusInfo * getLocusInfoAtPosition(unsigned int locus_position) const
 			throw (Exception);
 
 		/**
@@ -83,12 +83,12 @@ class AnalyzedLoci {
 			throw (Exception);
 
 		/**
-		 * @brief Add an AlleleInfo to a LocusInfo by index.
+		 * @brief Add an AlleleInfo to a LocusInfo by its position.
 		 *
 		 * @throw BadIdentifierException if the allele's id is already in use.
-		 * @throw IndexOutOfBoundsException if locus_index is out of bounds.
+		 * @throw IndexOutOfBoundsException if locus_position is out of bounds.
 		 */
-		void addAlleleInfoByLocusIndex(unsigned int locus_index,
+		void addAlleleInfoByLocusPosition(unsigned int locus_position,
 				const AlleleInfo & allele)
 			throw (Exception);
 
@@ -111,11 +111,11 @@ class AnalyzedLoci {
 			throw (LocusNotFoundException);
 
 		/**
-		 * @brief Get the ploidy of a locus by index.
+		 * @brief Get the ploidy of a locus by its position.
 		 *
-		 * @throw IndexOutOfBoundsException if locus_index is out of bounds.
+		 * @throw IndexOutOfBoundsException if locus_position is out of bounds.
 		 */
-		unsigned int getPloidyByLocusIndex(unsigned int locus_index) const
+		unsigned int getPloidyByLocusPosition(unsigned int locus_position) const
 			throw (IndexOutOfBoundsException);
 		
 	protected:

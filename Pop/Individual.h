@@ -1,7 +1,7 @@
 /*
  * File Individual.h
  * Author : Sylvain Gaillard <yragael2001@yahoo.fr>
- * Last modification : Monday July 05 2004
+ * Last modification : Tuesday July 06 2004
  */
 
 // Secured inclusion of header's file
@@ -233,7 +233,7 @@ class Individual : public Clonable {
 		 * @param sequence The sequence to add.
 		 * @throw AlphabetMismatchException if the sequence's alphabet doesn't match the container's alphabet.
 		 * @throw BadIdentifierException if sequence's name is already in use.
-		 * @throw BadIntegerException if sequence_index is already in use.
+		 * @throw BadIntegerException if sequence_position is already in use.
 		 */
 		void addSequence(unsigned int sequence_key, const Sequence & sequence)
 			throw (Exception);
@@ -250,14 +250,14 @@ class Individual : public Clonable {
 			const throw(Exception);
 
 		/**
-		 * @brief Get a sequence by its position (index).
+		 * @brief Get a sequence by its position.
 		 *
-		 * @param sequence_index The index of the sequence in the sequence set.
+		 * @param sequence_position The position of the sequence in the sequence set.
 		 * @return A pointer to the sequence.
 		 * @throw NullPointerException if there is no sequence container defined.
-		 * @throw SequenceNotFoundException if sequence_index is not found (i.e. missing data or not used).
+		 * @throw SequenceNotFoundException if sequence_position is not found (i.e. missing data or not used).
 		 */
-		const Sequence * getSequenceByIndex(const unsigned int sequence_index)
+		const Sequence * getSequenceAtPosition(const unsigned int sequence_position)
 			const throw(Exception);
 		 
 		/**
@@ -272,11 +272,11 @@ class Individual : public Clonable {
 		/**
 		 * @brief Delete a sequence.
 		 *
-		 * @param sequence_index The index of the sequence.
+		 * @param sequence_position The position of the sequence.
 		 * @throw NullPointerException if there is no sequence container defined.
-		 * @throw SequenceNotFoundException if sequence_index is not found.
+		 * @throw SequenceNotFoundException if sequence_postion is not found.
 		 */
-		void deleteSequenceByIndex(unsigned int sequence_index) throw (Exception);
+		void deleteSequenceAtPosition(unsigned int sequence_position) throw (Exception);
 		
 		/**
 		 * @brief Tell if the Individual has some sequences.
@@ -310,7 +310,7 @@ class Individual : public Clonable {
 		vector<unsigned int> getSequencesPositions() const throw (NullPointerException);
 
 		/**
-		 * @brief Get the position (index) of a sequence.
+		 * @brief Get the position of a sequence.
 		 *
 		 * @throw NullPointerException if there is no sequence container defined.
 		 * @throw SequenceNotFoundException if sequence_name is not found.
@@ -370,38 +370,38 @@ class Individual : public Clonable {
 		 * @brief Set a MonolocusGenotype.
 		 *
 		 * @throw NullPointerException if there is no genotype defined.
-		 * @throw IndexOutOfBoundsException if locus_index excedes the number of loci.
+		 * @throw IndexOutOfBoundsException if locus_position excedes the number of loci.
 		 */
-		void setMonolocusGenotype(unsigned int locus_index, const MonolocusGenotype & monogen)
+		void setMonolocusGenotype(unsigned int locus_position, const MonolocusGenotype & monogen)
 			throw (Exception);
 
 		/**
 		 * @brief Set a MonolocusGenotype.
 		 *
 		 * @throw NullPointerException if there is no genotype defined.
-		 * @throw IndexOutOfBoundsException if locus_index excedes the number of loci.
+		 * @throw IndexOutOfBoundsException if locus_position excedes the number of loci.
 		 * @throw Exception if there is no key in allele_keys.
 		 */
-		void setMonolocusGenotypeByAlleleKey(unsigned int locus_index, const vector<unsigned int> allele_keys)
+		void setMonolocusGenotypeByAlleleKey(unsigned int locus_position, const vector<unsigned int> allele_keys)
 			throw (Exception);
 
 		/**
 		 * @brief Set a MonolocusGenotype.
 		 *
 		 * @throw NullPointerException if there is no genotype defined.
-		 * @throw IndexOutOfBoundsException if locus_index excedes the number of loci.
+		 * @throw IndexOutOfBoundsException if locus_position excedes the number of loci.
 		 * @throw AlleleNotFoundException if at least one the id is not found in the LocusInfo.
 		 */
-		void setMonolocusGenotypeByAlleleId(unsigned int locus_index, const vector<string> allele_id, const LocusInfo & locus_info)
+		void setMonolocusGenotypeByAlleleId(unsigned int locus_position, const vector<string> allele_id, const LocusInfo & locus_info)
 			throw (Exception);
 
 		/**
 		 * @brief Get a MonolocusGenotype.
 		 *
 		 * @throw NullPointerException if there is no genotype defined.
-		 * @throw IndexOutOfBoundsException if locus_index excedes the number of loci.
+		 * @throw IndexOutOfBoundsException if locus_position excedes the number of loci.
 		 */
-		const MonolocusGenotype * getMonolocusGenotype(unsigned int locus_index) throw (Exception);
+		const MonolocusGenotype * getMonolocusGenotype(unsigned int locus_position) throw (Exception);
 
 		/**
 		 * @brief Count the number of non missing MonolocusGenotype.
