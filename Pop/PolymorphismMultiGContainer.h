@@ -11,6 +11,8 @@
 // From STL
 #include <vector>
 #include <map>
+#include <set>
+#include <algorithm>
 using namespace std;
 
 // From Utils
@@ -87,12 +89,32 @@ class PolymorphismMultiGContainer : public Clonable {
 		 *
 		 * @throw IndexOutOfBoundsException if position excedes the size of the container.
 		 */
-		unsigned int getGroup(unsigned int position) const throw (IndexOutOfBoundsException);
+		unsigned int getGroupId(unsigned int position) const throw (IndexOutOfBoundsException);
+
+		/**
+		 * @brief Get the groups' ids.
+		 */
+		set<unsigned int> getAllGroupsIds() const;
 
 		/**
 		 * @brief Tell if a group exists.
 		 */
 		bool groupExists(unsigned int group) const;
+
+		/**
+		 * @brief Get the number of groups.
+		 */
+		unsigned int getNumberOfGroups() const;
+
+		/**
+		 * @brief Get group size.
+		 */
+		unsigned int getGroupSize(unsigned int group) const;
+
+		/**
+		 * @brief Get the size of a group for a given locus.
+		 */
+		unsigned int getGroupSize(unsigned int group, unsigned int locus_position) const;
 		
 		/**
 		 * @brief Get the number of MultilocusGenotype.
@@ -109,7 +131,7 @@ class PolymorphismMultiGContainer : public Clonable {
 		 *
 		 * @throw IndexOutOfBoundsException if locus_position excedes the number of loci of one MultilocusGenotype.
 		 */
-		map<unsigned int, unsigned int> countAlleles(unsigned int locus_position) const throw (IndexOutOfBoundsException);
+		map<unsigned int, unsigned int> getAllelesMapForAllGroups(unsigned int locus_position) const throw (IndexOutOfBoundsException);
 
 		/**
 		 * @brief Count the different alleles at one locus for one group.
@@ -117,14 +139,21 @@ class PolymorphismMultiGContainer : public Clonable {
 		 * @throw IndexOutOfBoundsException if locus_position excedes the number of loci of one MultilocusGenotype.
 		 * @throw GroupNotFoundException if group is not found in the container.
 		 */
-		map<unsigned int, unsigned int> countAlleles(unsigned int locus_position, unsigned int group) const throw (Exception);
+		map<unsigned int, unsigned int> getAllelesMapForOneGroup(unsigned int locus_position, unsigned int group) const throw (Exception);
+
+		/**
+		 * @brief Get a map of allele count for a set of groups.
+		 *
+		 * @throw IndexOutOfBoundsException if locus_position excedes the number of loci of one MultilocusGenotype.
+		 */
+		map<unsigned int, unsigned int> getAllelesMapForGroups(unsigned int locus_position, const set<unsigned int> & groups) const throw (IndexOutOfBoundsException);
 
 		/**
 		 * @brief Count the number of non-missing data at a given locus.
 		 *
 		 * @throw IndexOutOfBoundsException if locus_position excedes the number of loci of one MultilocusGenotype.
 		 */
-		unsigned int countNonMissing(unsigned int locus_position) const throw (IndexOutOfBoundsException);
+		unsigned int countNonMissingForAllGroups(unsigned int locus_position) const throw (IndexOutOfBoundsException);
 
 		/**
 		 * @brief Count the number of non-missing data at a given locus for one group.
@@ -132,14 +161,21 @@ class PolymorphismMultiGContainer : public Clonable {
 		 * @throw IndexOutOfBoundsException if locus_position excedes the number of loci of one MultilocusGenotype.
 		 * @throw GroupNotFoundException if group is not found in the container.
 		 */
-		unsigned int countNonMissing(unsigned int locus_position, unsigned int group) const throw (Exception);
+		unsigned int countNonMissingForOneGroup(unsigned int locus_position, unsigned int group) const throw (Exception);
+
+		/**
+		 * @brief Count the number of non-missing data at a given locus for a set of groups.
+		 *
+		 * @throw IndexOutOfBoundsException if locus_position excedes the number of loci of one MultilocusGenotype.
+		 */
+		unsigned int countNonMissingForGroups(unsigned int locus_position, const set<unsigned int> & groups) const throw (IndexOutOfBoundsException);
 
 		/**
 		 * @brief Count the number of bi-allelic MonolocusGenotype at a given locus.
 		 *
 		 * @throw IndexOutOfBoundsException if locus_position excedes the number of loci of one MultilocusGenotype.
 		 */
-		unsigned int countBiAllelic(unsigned int locus_position) const throw (IndexOutOfBoundsException);
+		unsigned int countBiAllelicForAllGroups(unsigned int locus_position) const throw (IndexOutOfBoundsException);
 
 		/**
 		 * @brief Count the number of bi-allelic MonolocusGenotype at a given locus for one group.
@@ -147,14 +183,21 @@ class PolymorphismMultiGContainer : public Clonable {
 		 * @throw IndexOutOfBoundsException if locus_position excedes the number of loci of one MultilocusGenotype.
 		 * @throw GroupNotFoundException if group is not found in the container.
 		 */
-		unsigned int countBiAllelic(unsigned int locus_position, unsigned int group) const throw (Exception);
+		unsigned int countBiAllelicForOneGroup(unsigned int locus_position, unsigned int group) const throw (Exception);
+
+		/**
+		 * @brief Counr the number of bi-allelic MonolocusGenotype at a given locus for a set of groups.
+		 *
+		 * @throw IndexOutOfBoundsException if locus_position excedes the number of loci of one MultilocusGenotype.
+		 */
+		unsigned int countBiAllelicForGroups(unsigned int locus_position, const set<unsigned int> & groups) const throw (IndexOutOfBoundsException);
 		
 		/**
 		 * @brief Count how many times each allele is found in an heterozygous MonolocusGenotype.
 		 *
 		 * @throw IndexOutOfBoundsException if locus_position excedes the number of loci of one MultilocusGenotype.
 		 */
-		map<unsigned int, unsigned int> countHeterozygous(unsigned int locus_position) const throw (IndexOutOfBoundsException);
+		map<unsigned int, unsigned int> countHeterozygousForAllGroups(unsigned int locus_position) const throw (IndexOutOfBoundsException);
 
 		/**
 		 * @brief Count how many times each allele is found in an heterozygous MonolocusGenotype in one group.
@@ -162,7 +205,36 @@ class PolymorphismMultiGContainer : public Clonable {
 		 * @throw IndexOutOfBoundsException if locus_position excedes the number of loci of one MultilocusGenotype.
 		 * @throw GroupNotFoundException if group is not found in the container.
 		 */
-		map<unsigned int, unsigned int> countHeterozygous(unsigned int locus_position, unsigned int group) const throw (Exception);
+		map<unsigned int, unsigned int> countHeterozygousForOneGroup(unsigned int locus_position, unsigned int group) const throw (Exception);
+
+		/**
+		 * @brief Count how many times each allele is found in an heterozygous MonolocusGenotype in a set of groups.
+		 *
+		 * @throw IndexOutOfBoundsException if locus_position excedes the number of loci of one MultilocusGenotype.
+		 */
+		map<unsigned int, unsigned int> countHeterozygousForGroups(unsigned int locus_position, const set<unsigned int> & groups) const throw (IndexOutOfBoundsException);
+
+		/**
+		 * @brief Get the heterozygous frequencies for each allele at a locus.
+		 *
+		 * @throw IndexOutOfBoundsException if locus_position excedes the number of loci of one MultilocusGenotype.
+		 */
+		map<unsigned int, double> getHeterozygousFrqForAllGroups(unsigned int locus_position) const throw (IndexOutOfBoundsException);
+
+		/**
+		 * @brief Get the heterozygous frequencies for each allele at a locus for one group.
+		 *
+		 * @throw IndexOutOfBoundsException if locus_position excedes the number of loci of one MultilocusGenotype.
+		 * @throw GroupNotFoundException if group is not found in the container.
+		 */
+		map<unsigned int, double> getHeterozygousFrqForOneGroup(unsigned int locus_position, unsigned int group) const throw (Exception);
+
+		/**
+		 * @brief Get the heterozygous frequencies for each allele at a locus in a set of groups.
+		 *
+		 * @throw IndexOutOfBoundsException if locus_position excedes the number of loci of one MultilocusGenotype.
+		 */
+		map<unsigned int, double> getHeterozygousFrqForGroups(unsigned int locus_position, const set<unsigned int> & groups) const throw (IndexOutOfBoundsException);
 
 	protected:
 		vector<MultilocusGenotype *> _multilocusGenotypes;
