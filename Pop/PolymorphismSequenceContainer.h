@@ -2,7 +2,7 @@
  * File: PolymorphismSequenceContainer.h
  * Authors: Eric Bazin <bazin@univ-montp2.fr>
  *          Sylvain Gaillard <yragael2001@yahoo.fr>
- * Last modification : Thursday July 29 2004
+ * Last modification : Wednesday August 04 2004
  *
  * Copyright (C) 2004 Eric Bazin, Sylvain Gaillard and the
  *                    PopLib Development Core Team
@@ -26,6 +26,9 @@
 
 #ifndef _POLYMORPHISMSEQUENCECONTAINER_H_
 #define _POLYMORPHISMSEQUENCECONTAINER_H_
+
+#include <set>
+using namespace std;
 
 #include <Utils/Clonable.h>
 #include <Seq/VectorSiteContainer.h>
@@ -138,6 +141,11 @@ class PolymorphismSequenceContainer : public VectorSiteContainer
 		unsigned int getGroupId(const string & name) const throw (SequenceNotFoundException);
 
 		/**
+		 * @brief Get all the groups identifiers.
+		 */
+		set<unsigned int> getAllGroupsIds() const;
+		
+		/**
 		 * @brief Set the group identifier of a sequence.
 		 *
 		 * @throw IndexOutOfBoundsException if index excedes the number of sequences in the container.
@@ -151,6 +159,11 @@ class PolymorphismSequenceContainer : public VectorSiteContainer
 		 */
 		void setGroupId(const string & name, unsigned int group_id) throw (SequenceNotFoundException);
 		
+		/**
+		 * @brief Get the number of groups.
+		 */
+		unsigned int getNumberOfGroups() const;
+
 		/**
 		 * @brief Tell if the sequence is ingroup by index.
 		 *

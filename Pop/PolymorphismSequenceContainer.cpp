@@ -2,7 +2,7 @@
  * File: PolymorphismSequenceContainer.h
  * Authors: Eric Bazin <bazin@univ-montp2.fr>
  *          Sylvain Gaillard <yragael2001@yahoo.fr>
- * Last modification : Thursday July 29 2004
+ * Last modification : Wednesday August 04 2004
  *
  * Copyright (C) 2004 Eric Bazin, Sylvain Gaillard and the
  *                    PopLib Development Core Team
@@ -175,6 +175,13 @@ unsigned int PolymorphismSequenceContainer::getGroupId(const string &name) const
 	}
 }
 
+set<unsigned int> PolymorphismSequenceContainer::getAllGroupsIds() const {
+	set<unsigned int> grp_ids;
+	for (unsigned int i = 0 ; i < _group.size() ; i++)
+		grp_ids.insert(_group[i]);
+	return grp_ids;
+}
+
 void PolymorphismSequenceContainer::setGroupId(unsigned int index, unsigned int group_id) throw (IndexOutOfBoundsException) {
 	if (index >= getNumberOfSequences())
 		throw IndexOutOfBoundsException("PolymorphismSequenceContainer::setGroupId: index out of bounds.", index, 0, getNumberOfSequences());
@@ -188,6 +195,10 @@ void PolymorphismSequenceContainer::setGroupId(const string &name, unsigned int 
 	catch (SequenceNotFoundException & snfe) {
 		throw SequenceNotFoundException("PolymorphismSequenceContainer::setGroupId.", name);
 	}
+}
+
+unsigned int PolymorphismSequenceContainer::getNumberOfGroups() const {
+	return getAllGroupsIds().size();
 }
 
 bool PolymorphismSequenceContainer::isIngroupMember(unsigned int index) const throw (IndexOutOfBoundsException) {
