@@ -33,6 +33,13 @@ template <class T> class Coord {
 		~Coord();
 
 		/**
+		 * @brief The Coord copy operator.
+		 *
+		 * @return A ref toward the assigned Coord.
+		 */
+		Coord & operator= (const Coord & coord);
+		
+		/**
 		 * @brief Set the two values.
 		 */
 		void setCoord(const T x, const T y);
@@ -70,6 +77,12 @@ template <class T> Coord<T>::Coord(const T x, const T y) {
 
 //** Class destructor: *******************************************************/
 template <class T> Coord<T>::~Coord() {}
+
+//** Copy operator: **********************************************************/
+template <class T> Coord<T> & Coord<T>::operator= (const Coord<T> & coord) {
+	this->_x = coord.getX();
+	this->_y = coord.getY();
+}
 
 //** Assignation opperators: *************************************************/
 template <class T> void Coord<T>::setCoord(const T x, const T y) {
