@@ -1,7 +1,7 @@
 /*
  * File MultilocusGenotypeStatistics.cpp
  * Author : Sylvain Gaillard <yragael2001@yahoo.fr>
- * Last modification : Tuesday August 03 2004
+ * Last modification : Wednesday August 04 2004
  *
  * Copyright (C) 2004 Sylvain Gaillard and the
  *                    PopLib Development Core Team
@@ -24,6 +24,9 @@
  */
 
 #include "MultilocusGenotypeStatistics.h"
+
+#include <iostream>
+using namespace std;
 
 vector<unsigned int> MultilocusGenotypeStatistics::getAllelesIdsForGroups(const PolymorphismMultiGContainer & pmgc, unsigned int locus_position, const set<unsigned int> & groups) throw (IndexOutOfBoundsException) {
 	map<unsigned int, unsigned int> tmp_alleles;
@@ -214,7 +217,7 @@ double MultilocusGenotypeStatistics::getHnbForGroups(const PolymorphismMultiGCon
 	return (2 * nb_alleles * Hexp  / ((2 * nb_alleles) - 1));
 }
 
-double MultilocusGenotypeStatistics::getDnei72(const PolymorphismMultiGContainer & pmgc, unsigned int locus_position, unsigned int grp1, unsigned int grp2) throw (Exception) {
+double MultilocusGenotypeStatistics::getDnei72(const PolymorphismMultiGContainer & pmgc, vector<unsigned int> locus_positions, unsigned int grp1, unsigned int grp2) throw (Exception) {
 	map<unsigned int, double> allele_frq1, allele_frq2;
 	vector<unsigned int> allele_ids;
 	set<unsigned int> group1_id;
@@ -227,27 +230,34 @@ double MultilocusGenotypeStatistics::getDnei72(const PolymorphismMultiGContainer
 	group2_id.insert(grp2);
 	groups_id.insert(grp1);
 	groups_id.insert(grp2);
-	try {
-		allele_ids = getAllelesIdsForGroups(pmgc, locus_position, groups_id);
-		allele_frq1 = getAllelesFrqForGroups(pmgc, locus_position, group1_id);
-		allele_frq2 = getAllelesFrqForGroups(pmgc, locus_position, group2_id);
+	for (unsigned int i = 0 ; i < locus_positions.size() ; i++) {
+		allele_ids.clear();
+		allele_frq1.clear();
+		allele_frq2.clear();
+		try {
+			allele_ids = getAllelesIdsForGroups(pmgc, locus_positions[i], groups_id);
+			allele_frq1 = getAllelesFrqForGroups(pmgc, locus_positions[i], group1_id);
+			allele_frq2 = getAllelesFrqForGroups(pmgc, locus_positions[i], group2_id);
+		}
+		catch (Exception & e) {
+			throw e;
+		}
+		for (unsigned int j = 0 ; j < allele_ids.size() ; j++) {
+			map<unsigned int, double>::iterator it1 = allele_frq1.find(allele_ids[j]);
+			map<unsigned int, double>::iterator it2 = allele_frq2.find(allele_ids[j]);
+			double tmp_frq1 = (it1 != allele_frq1.end()) ? it1->second : 0.;
+			double tmp_frq2 = (it2 != allele_frq2.end()) ? it2->second : 0.;
+			Jx += tmp_frq1 * tmp_frq1;
+			Jy += tmp_frq2 * tmp_frq2;
+			Jxy += tmp_frq1 * tmp_frq2;
+		}
 	}
-	catch (Exception & e) {
-		throw e;
-	}
-	for (unsigned int i = 0 ; i < allele_ids.size() ; i++) {
-		map<unsigned int, double>::iterator it1 = allele_frq1.find(i);
-		map<unsigned int, double>::iterator it2 = allele_frq2.find(i);
-		double tmp_frq1 = (it1 != allele_frq1.end()) ? it1->second : 0;
-		double tmp_frq2 = (it2 != allele_frq2.end()) ? it2->second : 0;
-		Jx += tmp_frq1 * tmp_frq1;
-		Jy += tmp_frq2 * tmp_frq2;
-		Jxy += tmp_frq1 * tmp_frq2;
-	}
+	if (Jx * Jy == 0.)
+		throw ZeroDivisionException("MultilocusGenotypeStatistics::getDnei72.");
 	return -log(Jxy / sqrt(Jx * Jy));
 }
 
-double MultilocusGenotypeStatistics::getDnei78(const PolymorphismMultiGContainer & pmgc, unsigned int locus_position, unsigned int grp1, unsigned int grp2) throw (Exception) {
+double MultilocusGenotypeStatistics::getDnei78(const PolymorphismMultiGContainer & pmgc, vector<unsigned int> locus_positions, unsigned int grp1, unsigned int grp2) throw (Exception) {
 	map<unsigned int, double> allele_frq1, allele_frq2;
 	vector<unsigned int> allele_ids;
 	set<unsigned int> group1_id;
@@ -256,31 +266,43 @@ double MultilocusGenotypeStatistics::getDnei78(const PolymorphismMultiGContainer
 	double Jx = 0.;
 	double Jy = 0.;
 	double Jxy = 0.;
-	unsigned int nx, ny;
+	unsigned int nx = 0, ny = 0;
 	group1_id.insert(grp1);
 	group2_id.insert(grp2);
 	groups_id.insert(grp1);
 	groups_id.insert(grp2);
-	try {
-		allele_ids = getAllelesIdsForGroups(pmgc, locus_position, groups_id);
-		allele_frq1 = getAllelesFrqForGroups(pmgc, locus_position, group1_id);
-		allele_frq2 = getAllelesFrqForGroups(pmgc, locus_position, group2_id);
-		nx = countBiAllelicForGroups(pmgc, locus_position, group1_id);
-		ny = countBiAllelicForGroups(pmgc, locus_position, group2_id);
+	for (unsigned int i = 0 ; i < locus_positions.size() ; i++) {
+		allele_ids.clear();
+		allele_frq1.clear();
+		allele_frq2.clear();
+		try {
+			allele_ids = getAllelesIdsForGroups(pmgc, locus_positions[i], groups_id);
+			allele_frq1 = getAllelesFrqForGroups(pmgc, locus_positions[i], group1_id);
+			allele_frq2 = getAllelesFrqForGroups(pmgc, locus_positions[i], group2_id);
+			nx = countBiAllelicForGroups(pmgc, locus_positions[i], group1_id);
+			ny = countBiAllelicForGroups(pmgc, locus_positions[i], group2_id);
+		}
+		catch (Exception & e) {
+			throw e;
+		}
+		double tmp_Jx = 0.;
+		double tmp_Jy = 0.;
+		for (unsigned int j = 0 ; j < allele_ids.size() ; j++) {
+			map<unsigned int, double>::iterator it1 = allele_frq1.find(allele_ids[j]);
+			map<unsigned int, double>::iterator it2 = allele_frq2.find(allele_ids[j]);
+			double tmp_frq1 = (it1 != allele_frq1.end()) ? it1->second : 0.;
+			double tmp_frq2 = (it2 != allele_frq2.end()) ? it2->second : 0.;
+			tmp_Jx += tmp_frq1 * tmp_frq1;
+			tmp_Jy += tmp_frq2 * tmp_frq2;
+			Jxy += tmp_frq1 * tmp_frq2;
+		}
+		Jx += ((2. * (double) nx * tmp_Jx) - 1.) / ((2. * (double) nx) - 1.);
+		Jy += ((2. * (double) ny * tmp_Jy) - 1.) / ((2. * (double) ny) - 1.);
 	}
-	catch (Exception & e) {
-		throw e;
-	}
-	for (unsigned int i = 0 ; i < allele_ids.size() ; i++) {
-		map<unsigned int, double>::iterator it1 = allele_frq1.find(i);
-		map<unsigned int, double>::iterator it2 = allele_frq2.find(i);
-		double tmp_frq1 = (it1 != allele_frq1.end()) ? it1->second : 0;
-		double tmp_frq2 = (it2 != allele_frq2.end()) ? it2->second : 0;
-		Jx += tmp_frq1 * tmp_frq1;
-		Jy += tmp_frq2 * tmp_frq2;
-		Jxy += tmp_frq1 * tmp_frq2;
-	}
-	return -log(Jxy / sqrt((((2 * nx * Jx) - 1)/((2 * nx) -1)) * (((2 * ny * Jy) - 1)/((2 * ny) -1))));
+	double denom = Jx * Jy;
+	if (denom == 0.)
+		throw ZeroDivisionException("MultilocusGenotypeStatistics::getDnei78.");
+	return -log(Jxy / sqrt(denom));
 }
 
 map<unsigned int, MultilocusGenotypeStatistics::Fstats> MultilocusGenotypeStatistics::getAllelesFstats(const PolymorphismMultiGContainer & pmgc, unsigned int locus_position, const set<unsigned int> & groups) throw (Exception) {

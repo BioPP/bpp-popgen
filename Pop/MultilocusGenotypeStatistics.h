@@ -1,7 +1,7 @@
 /*
  * File MultilocusGenotypeStatistics.h
  * Author : Sylvain Gaillard <yragael2001@yahoo.fr>
- * Last modification : Tuesday August 03 2004
+ * Last modification : Wednesday August 04 2004
  *
  * Copyright (C) 2004 Sylvain Gaillard and the
  *                    PopLib Development Core Team
@@ -171,7 +171,7 @@ class MultilocusGenotypeStatistics {
 		 * @throw IndexOutOfBoundsException if locus_position excedes the number of loci of one MultilocusGenotype.
 		 * @throw ZeroDivisionException if the number of considered alleles = 0.
 		 */
-		static double getDnei72(const PolymorphismMultiGContainer & pmgc, unsigned int locus_position, unsigned int grp1, unsigned int grp2) throw (Exception);
+		static double getDnei72(const PolymorphismMultiGContainer & pmgc, vector<unsigned int> locus_positions, unsigned int grp1, unsigned int grp2) throw (Exception);
 
 		/**
 		 * @brief Compute the Nei unbiased distance between two groups at one locus.
@@ -193,7 +193,7 @@ class MultilocusGenotypeStatistics {
 		 * @throw IndexOutOfBoundsException if locus_position excedes the number of loci of one MultilocusGenotype.
 		 * @throw ZeroDivisionException if the number of considered alleles = 0.
 		 */
-		static double getDnei78(const PolymorphismMultiGContainer & pmgc, unsigned int locus_position, unsigned int grp1, unsigned int grp2) throw (Exception);
+		static double getDnei78(const PolymorphismMultiGContainer & pmgc, vector<unsigned int> locus_positions, unsigned int grp1, unsigned int grp2) throw (Exception);
 
 		/**
 		 * @brief Compute the three F statistics of Weir and Cockerham.
