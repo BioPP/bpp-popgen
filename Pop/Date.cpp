@@ -1,7 +1,7 @@
 /*
  * File Date.cpp
  * Author : Sylvain Gaillard <yragael2001@yahoo.fr>
- * Last modification : Thursday April 22 2004
+ * Last modification : Wednesday April 28 2004
  */
 
 // From Utils
@@ -55,7 +55,11 @@ void Date::setDay(const int day) {
 	_day = day;
 }
 
-string Date::getDate() const {
+Date * Date::getDate() const {
+	return new Date(* this);
+}
+
+string Date::getDateStr() const {
 	string date, uDay="", uMonth="";
 	if (_day < 10) uDay="0";
 	if (_month < 10) uMonth="0";

@@ -1,12 +1,12 @@
 /*
  * File Date.h
  * Author : Sylvain Gaillard <yragael2001@yahoo.fr>
- * Last modification : Thursday April 22 2004
+ * Last modification : Wednesday April 28 2004
  */
 
 // Secured inclusion of header's file
 #ifndef _DATE_H_
-#define _DATE_h_
+#define _DATE_H_
 
 // From Utils
 #include <Utils/Clonable.h>
@@ -75,9 +75,16 @@ class Date : public Clonable {
 		void setDay(const int day);
 
 		/**
+		 * @brief Get the Date.
+		 *
+		 * @return A pointer to a Date object.
+		 */
+		Date * getDate() const;
+
+		/**
 		 * @brief Get the Date as a string.
 		 */
-		string getDate() const;
+		string getDateStr() const;
 
 		/**
 		 * @brief Get the Year as an int.
