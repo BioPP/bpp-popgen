@@ -32,7 +32,6 @@
 #include <ctype.h>
 #include <cmath>
 #include <iostream>
-#include <math>
 
 
 using namespace std;
@@ -743,16 +742,18 @@ PolymorphismSequenceContainer * SequenceStatistics::generateLDContainer(const Po
 		// Assign 1 to the more frequent and 0 to the less frequent alleles
 		for(unsigned int i=0; i<sc->getNumberOfSites(); i++){
 			const Site* site = sc->getSite(i);
+			Site* siteclone =  new Site(*site);
 			bool deletesite = false;
-			map<int, double> freqs = SymbolListTools::getFrequencies(*site);
+			map<int, double> freqs = SymbolListTools::getFrequencies(*siteclone);
 			for(unsigned int j=0; j<sc->getNumberOfSequences(); j++){
-				if(freqs[site->getValue(j)]>=0.5){
-					if(freqs[site->getValue(j)]<1-freqmin) site->setElement(j,1);
+				if(freqs[siteclone->getValue(j)]>=0.5){
+					if(freqs[siteclone->getValue(j)]<1-freqmin) siteclone->setElement(j,1);
 					else deletesite = true;
 				}
-				else site->setElement(j,0);
+				else siteclone->setElement(j,0);
 			}
-                        if(!deletesite)	ldpsc->addSite(*site);
+                        if(!deletesite)	ldpsc->addSite(*siteclone);
+			delete siteclone;
 		}
                 delete alpha;
 		return ldpsc;
