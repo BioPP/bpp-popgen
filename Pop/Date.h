@@ -1,7 +1,7 @@
 /*
  * File Date.h
  * Author : Sylvain Gaillard <yragael2001@yahoo.fr>
- * Last modification : Thursday April 29 2004
+ * Last modification : Wednesday May 05 2004
  */
 
 // Secured inclusion of header's file
@@ -10,6 +10,7 @@
 
 // From Utils
 #include <Utils/Clonable.h>
+#include <Utils/Exceptions.h>
 
 /**
  * @brief The Date class
@@ -28,7 +29,7 @@ class Date : public Clonable {
 		 * @param month The month between 1 and 12.
 		 * @param year The year as a signed int.
 		 */
-		Date(const int day=1, const int month=1, const int year=2000);
+		Date(const int day=1, const int month=1, const int year=2000) throw(BadIntegerException);
 
 		/**
 		 * @brief The Date copy constructor.
@@ -61,7 +62,7 @@ class Date : public Clonable {
 		 * @param month The month as an integer between 1 and 12.
 		 * @param year The year as an integer.
 		 */
-		void setDate(const int day, const int month, const int year);
+		void setDate(const int day, const int month, const int year) throw(BadIntegerException);
 
 		/**
 		 * @brief Set the year.
@@ -75,14 +76,14 @@ class Date : public Clonable {
 		 *
 		 * @param month The month as an integer between 1 and 12.
 		 */
-		void setMonth(const int month);
+		void setMonth(const int month) throw(BadIntegerException);
 
 		/**
 		 * @brief Set the day.
 		 *
 		 * @param day The day as an integer between 1 and 31.
 		 */
-		void setDay(const int day);
+		void setDay(const int day) throw(BadIntegerException);
 
 		/**
 		 * @brief Get the Date.
@@ -153,4 +154,4 @@ class Date : public Clonable {
 		int _year;
 };
 
-#endif // -DATE_H_
+#endif // _DATE_H_

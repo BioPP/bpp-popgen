@@ -1,7 +1,7 @@
 /*
  * File Date.cpp
  * Author : Sylvain Gaillard <yragael2001@yahoo.fr>
- * Last modification : Wednesday April 28 2004
+ * Last modification : Wednesday May 05 2004
  */
 
 // From Utils
@@ -11,9 +11,15 @@
 #include "Date.h"
 
 //** Class constructor: *******************************************************/
-Date::Date(const int day, const int month, const int year) {
-	_day = day;
-	_month = month;
+Date::Date(const int day, const int month, const int year) throw(BadIntegerException) {
+	if (day >= 1 && day <= 31)
+		_day = day;
+	else
+		throw(BadIntegerException("Date::Date: day must be in [1;31].", day));
+	if (month >= 1 && month <= 12)
+		_month = month;
+	else
+		throw(BadIntegerException("Date::Date: month must be in [1;12].", month));
 	_year = year;
 }
 
@@ -37,9 +43,15 @@ Date & Date::operator= (const Date & date) {
 	return * this;
 }
 
-void Date::setDate(const int day, const int month, const int year) {
-	_day = day;
-	_month = month;
+void Date::setDate(const int day, const int month, const int year) throw(BadIntegerException) {
+	if (day >= 1 && day <= 31)
+		_day = day;
+	else
+		throw(BadIntegerException("Date::Date: day must be in [1;31].", day));
+	if (month >= 1 && month <= 12)
+		_month = month;
+	else
+		throw(BadIntegerException("Date::Date: month must be in [1;12].", month));
 	_year = year;
 }
 
@@ -47,12 +59,18 @@ void Date::setYear(const int year) {
 	_year = year;
 }
 
-void Date::setMonth(const int month) {
-	_month = month;
+void Date::setMonth(const int month) throw(BadIntegerException) {
+	if (month >= 1 && month <= 12)
+		_month = month;
+	else
+		throw(BadIntegerException("Date::Date: month must be in [1;12].", month));
 }
 
-void Date::setDay(const int day) {
-	_day = day;
+void Date::setDay(const int day) throw(BadIntegerException) {
+	if (day >= 1 && day <= 31)
+		_day = day;
+	else
+		throw(BadIntegerException("Date::Date: day must be in [1;31].", day));
 }
 
 Date * Date::getDate() const {
