@@ -1,23 +1,36 @@
 H_FILES = \
-AlleleInfo.h\
 AlleleInfoContainerExceptions.h\
+AlleleInfo.h\
 AnalyzedLoci.h\
 Coord.h\
+CoordsTools.h\
+DataSet.h\
 Date.h\
+DiploidMonolocusGenotype.h\
+Genotype.h\
+Group.h\
+HaplodiploidMonolocusGenotype.h\
+HaploidMonolocusGenotype.h\
 Individual.h\
 Locality.h\
-LocusInfo.h\
 LocusInfoContainerExceptions.h\
+LocusInfo.h\
 MonolocusGenotype.h
 
 CPP_FILES = \
-AlleleInfo.cpp\
 AlleleInfoContainerExceptions.cpp\
+AlleleInfo.cpp\
 AnalyzedLoci.cpp\
+DataSet.cpp\
 Date.cpp\
+DiploidMonolocusGenotype.cpp\
+Genotype.cpp\
+Group.cpp\
+HaplodiploidMonolocusGenotype.cpp\
+HaploidMonolocusGenotype.cpp\
 Individual.cpp\
-LocusInfo.cpp\
 LocusInfoContainerExceptions.cpp\
+LocusInfo.cpp\
 MonolocusGenotype.cpp
 
 lib_LTLIBRARIES = libpop.la
