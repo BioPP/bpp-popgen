@@ -25,27 +25,39 @@
  */
 
 #include "SequenceStatistics.h" // class's header file
-#include "PolymorphismSequenceContainerTools.h" 
+#include "PolymorphismSequenceContainerTools.h"
+#include "PolymorphismSequenceContainer.h"
 
 // From the STL:
 #include <ctype.h>
 #include <cmath>
 #include <iostream>
+
+
 using namespace std;
 
 // From SeqLib:
-#include <Seq/Site.h>	
+#include <Seq/Site.h>
 #include <Seq/SiteTools.h>
+#include <Seq/StringSequenceTools.h>
+#include <Seq/CodonSiteTools.h>
+#include <Seq/DNA.h>
+#include <Seq/StandardCodonAlphabet.h>
+#include <Seq/StandardGeneticCode.h>
 
 SequenceStatistics::~SequenceStatistics() {}
 
+//******************************************************************************************************************
+//Basic statistics
+//******************************************************************************************************************
+
 // Method to compute number of polymorphic site in an alignment
-// Return: Number of polymorphics sites	
+// Return: Number of polymorphics sites
 unsigned int SequenceStatistics::polymorphicSiteNumber(const PolymorphismSequenceContainer & psc, bool gapflag) {
 	unsigned int S=0;
 	const Site *site;
 	SiteIterator * si = NULL;
-	if (gapflag) 
+	if (gapflag)
 		si = new CompleteSiteIterator(psc);
 	else
 		si = new SimpleSiteIterator(psc);
@@ -55,23 +67,39 @@ unsigned int SequenceStatistics::polymorphicSiteNumber(const PolymorphismSequenc
 			S++;
 		}
 	}
+        delete si;
 	return S;
 }
 
-// Method to compute number of polymorphic site in an alignment
-// Return: Number of polymorphics sites	
-unsigned int SequenceStatistics::polymorphicSiteNumber( const SiteContainer & v ) {
-	SiteIterator *si = new NoGapSiteIterator( v );
+
+
+// Method to compute number of parsimony informative sites in an alignment
+// Arguments: a SiteIterator
+// Return: Number of parsimony informative site
+unsigned int SequenceStatistics::parsimonyInformativeSiteNumber( SiteIterator & si ) {
+	unsigned int S=0;
 	const Site *site;
-	unsigned int S = 0;
-	while ( si->hasMoreSites() ) {
-		site=si->nextSite();
-		if ( !SiteTools::isConstant(*site) ) {
+	while ( si.hasMoreSites() ) {
+		site=si.nextSite();
+		if (SiteTools::isParsimonyInformativeSite(*site)) {
 			S++;
 		}
 	}
 	return S;
 }
+
+// Method to compute number of parsimony informative sites in an alignment
+// Arguments: a SiteContainer   a boolean (gapflag: true: do not count site with gap or undetermined)
+// Return: Number of parsimony informative site
+unsigned int SequenceStatistics::parsimonyInformativeSiteNumber(const SiteContainer & v, bool gapflag) {
+        SiteIterator *si;
+        if(gapflag) si = new CompleteSiteIterator(v);
+	else si = new SimpleSiteIterator(v);
+	unsigned int S = SequenceStatistics::parsimonyInformativeSiteNumber(*si);
+        delete si;
+	return S;
+}
+
 
 // Method to compute number of singleton nucleotides in an alignment
 // Return: Number of singleton nucleotides
@@ -79,7 +107,7 @@ unsigned int SequenceStatistics::countSingleton(const PolymorphismSequenceContai
 	unsigned int nus = 0;
 	const Site * site;
 	SiteIterator * si = NULL;
-	if (gapflag) 
+	if (gapflag)
 		si = new CompleteSiteIterator(psc);
 	else
 		si = new SimpleSiteIterator(psc);
@@ -87,8 +115,41 @@ unsigned int SequenceStatistics::countSingleton(const PolymorphismSequenceContai
 		site = si->nextSite();
 		nus += _getSingletonNumber(* site);
 	}
+        delete si;
 	return nus;
 }
+
+
+// Method to compute number of triplet sites in an alignment
+// Arguments: a SiteIterator
+// Return: Number of triplet sites
+unsigned int SequenceStatistics::tripletNumber( SiteIterator & si ) {
+	int S=0;
+	const Site *site;
+	while ( si.hasMoreSites() ) {
+		site=si.nextSite();
+		if ( SiteTools::isTriplet(*site) ) {
+			S++;
+		}
+	}
+	return S;
+}
+
+
+// Method to compute number of triplet sites in an alignment
+// Arguments: a SiteContainer
+// Return: Number of triplet sites
+unsigned int SequenceStatistics::tripletNumber(const SiteContainer & v, bool gapflag) {
+        SiteIterator *si;
+        if(gapflag) si = new CompleteSiteIterator(v);
+	else si = new SimpleSiteIterator(v);
+	int S = SequenceStatistics::tripletNumber( *si );
+        delete si;
+	return S;
+}
+
+
+
 
 // Method to compute total number of mutation under an infinite site model in an alignment
 // Return: Total number of mutations
@@ -96,7 +157,7 @@ unsigned int SequenceStatistics::totNumberMutations(const PolymorphismSequenceCo
 	unsigned int tnm = 0;
 	const Site * site;
 	SiteIterator * si = NULL;
-	if (gapflag) 
+	if (gapflag)
 		si = new CompleteSiteIterator(psc);
 	else
 		si = new SimpleSiteIterator(psc);
@@ -104,8 +165,27 @@ unsigned int SequenceStatistics::totNumberMutations(const PolymorphismSequenceCo
 		site = si->nextSite();
 		tnm += _getMutationNumber(* site);
 	}
+        delete si;
 	return tnm;
 }
+
+
+// Method to compute mean GC content in an alignement
+// Return: mean GC content
+double SequenceStatistics::GCcontent(const PolymorphismSequenceContainer & psc) {
+        SiteContainer* sc = new VectorSiteContainer(psc);
+        map<int, double> freqs = SequenceContainerTools::getFrequencies(*sc);
+        delete sc;
+        return (freqs[1] + freqs[2]) / (freqs[0] + freqs[1] + freqs[2] + freqs[3]);
+}
+
+
+
+
+
+//******************************************************************************************************************
+//Diversity statistics
+//******************************************************************************************************************
 
 // Method to compute diversity estimator Theta of Watterson (1975)
 // Arguments: a SiteContainer
@@ -118,7 +198,7 @@ double SequenceStatistics::watterson75( const SiteContainer & v ) {
 	unsigned int S = polymorphicSiteNumber( v );
 	for ( int i = 1; i < n; i++ ) {
 			an += (double) 1/i;
-	}	
+	}
 	ThetaW = (double) S / an;
 	delete si;
 	return ThetaW;
@@ -144,7 +224,7 @@ double SequenceStatistics::tajima83( const SiteContainer & v ) {
 			}
 			for ( int j = 0; j < n; j++ ) {
 				etha[site->getValue( j )]++;
-			}			
+			}
 			for ( int i = 0; i < 4; i++ ) {
 				somme += (etha[i] * (etha[i] - 1)) / (n * (n  - 1));
 			}
@@ -163,7 +243,7 @@ double SequenceStatistics::watterson75(const PolymorphismSequenceContainer & psc
 	unsigned int n = psc.getNumberOfSequences();
 	unsigned int S = polymorphicSiteNumber(psc, gapflag);
 	map<string, double> values = _getUsefullValues(n);
-	ThetaW = (double) S / values["a1"];	
+	ThetaW = (double) S / values["a1"];
 	return ThetaW;
 }
 
@@ -196,8 +276,291 @@ double SequenceStatistics::tajima83(const PolymorphismSequenceContainer & psc, b
 			value2 += 1. - value;
 		}
 	}
+        delete si;
 	return value2;
 }
+
+
+// Return the number of haplotype in the sample. Depaulis and Veuille (1998)
+// Arguments: a PolymorphismSequenceContainer
+// Return: K (Depaulis and Veuille 1998)
+unsigned int SequenceStatistics::DVK( const PolymorphismSequenceContainer & psc, bool gapflag ) {
+	PolymorphismSequenceContainer *sc;
+	if (gapflag)
+		sc = PolymorphismSequenceContainerTools::getSitesWithoutGaps(psc);
+	else
+		sc = new PolymorphismSequenceContainer(psc);
+	int K = 0;
+	vector<string> pscvector;
+	pscvector.push_back(sc->toString(0));
+	K++;
+	for ( unsigned int i = 1; i < sc->getNumberOfSequences(); i++ ) {
+		bool uniq = true;
+		string query = sc->toString(i);
+		for ( vector<string>::iterator it = pscvector.begin(); it != pscvector.end(); it++ ) {
+			if ( query.compare(*it) == 0 ) {
+				uniq = false;
+				break;
+			}
+		}
+		if (uniq) {
+			K++;
+			pscvector.push_back(query);
+		}
+	}
+	delete sc;
+	return K;
+}
+
+// Return the haplotype diversity of a sample. Depaulis and Veuille (1998)
+// Arguments: a PolymorphismSequenceContainer
+// Return: H (Depaulis and Veuille 1998)
+double SequenceStatistics::DVH( const PolymorphismSequenceContainer & psc, bool gapflag ) {
+	PolymorphismSequenceContainer *sc;
+	if (gapflag)
+		sc = PolymorphismSequenceContainerTools::getSitesWithoutGaps(psc);
+	else
+		sc = new PolymorphismSequenceContainer(psc);
+	double H = 0.0;
+	unsigned int nbSeq;
+	vector<string> pscvector;
+	vector<int> effvector;
+	pscvector.push_back(sc -> toString(0));
+	effvector.push_back(sc -> getSequenceCount(0));
+	nbSeq = sc -> getSequenceCount(0);
+	for ( unsigned int i = 1; i < sc->getNumberOfSequences(); i++ ) {
+		nbSeq += sc -> getSequenceCount(i);
+		bool uniq = true;
+		string query = sc -> toString(i);
+		for ( vector<string>::iterator it = pscvector.begin(); it != pscvector.end(); it++ ) {
+			if ( query.compare(*it) == 0 ) {
+				effvector[effvector.size() - 1] += sc -> getSequenceCount(i);
+				uniq = false;
+				break;
+			}
+		}
+		if (uniq) {
+			pscvector.push_back(query);
+			effvector.push_back(sc -> getSequenceCount(i));
+		}
+	}
+	for ( unsigned int i = 0; i < effvector.size(); i++ ) {
+		H -= ( (double) effvector[i] / (double) nbSeq ) * ( (double) effvector[i] / (double) nbSeq );
+	}
+	H += 1.0;
+	delete sc;
+	return H;
+}
+
+
+//******************************************************************************************************************
+//Synonymous and non-synonymous polymorphism
+//******************************************************************************************************************
+
+
+// Method to compute the number of codon sites with stop codon
+// Arguments: a SiteIterator
+// Return: Number of codon sites with stop codon
+unsigned int SequenceStatistics::StopCodonSiteNumber(SiteIterator & si, const CodonAlphabet & alpha) {
+	unsigned int S=0;
+	const Site *site;
+	while ( si.hasMoreSites() ) {
+		site=si.nextSite();
+		if (CodonSiteTools::hasStop(*site,alpha)) {
+			S++;
+		}
+	}
+	return S;
+}
+
+// Method to compute the number of codon sites with stop codon
+// Arguments: a SiteContainer, a boolean
+// Return: Number of codon sites with stop codon
+unsigned int SequenceStatistics::StopCodonSiteNumber(const SiteContainer & v, bool gapflag) {
+    SiteIterator *si = NULL;
+    const NucleicAlphabet* na = new DNA();
+    const CodonAlphabet* ca = new StandardCodonAlphabet(na);
+    if(gapflag) si = new NoGapSiteIterator(v);
+    else si = new SimpleSiteIterator(v);
+    unsigned int S = SequenceStatistics::StopCodonSiteNumber(*si,*ca);
+    delete si;
+    delete na;
+    delete ca;
+    return S;
+}
+
+
+// Method to compute the number of polymorphic codon with only one mutated site
+// Arguments: a SiteIterator, a NucleicAlphabet, a CodonAlphabet (Alphabets are given by the following method)
+// Return: Number of monosite polymorphic codons
+unsigned int SequenceStatistics::monoSitePolymorphicCodonNumber(SiteIterator & si, const NucleicAlphabet & na, const CodonAlphabet & ca) {
+	unsigned int S=0;
+	const Site *site;
+	while ( si.hasMoreSites() ) {
+		site=si.nextSite();
+		if (CodonSiteTools::isMonoSitePolymorphic(*site,na,ca)) {
+			S++;
+		}
+	}
+	return S;
+}
+
+// Method to compute the number of polymorphic codon with only one mutated site
+// Arguments: a SiteContainer, two booleans
+// Return: Number of monosite polymorphic codons
+unsigned int SequenceStatistics::monoSitePolymorphicCodonNumber(const SiteContainer & v, bool stopflag, bool gapflag) {
+    SiteIterator *si = NULL;
+    const NucleicAlphabet* na = new DNA();
+    const CodonAlphabet* ca = new StandardCodonAlphabet(na);
+    if(stopflag) si = new CompleteSiteIterator(v);
+    else {
+		if(gapflag) si = new NoGapSiteIterator(v);
+		else si = new SimpleSiteIterator(v);
+	}
+    unsigned int S = SequenceStatistics::monoSitePolymorphicCodonNumber(*si,*na,*ca);
+    delete si;
+    delete na;
+    delete ca;
+    return S;
+}
+
+
+// Method to compute the number of synonymous polymorphic codon sites
+// Arguments: a SiteIterator, a NucleicAlphabet, a CodonAlphabet (Alphabets are given by the following method)
+// Return: Number of synonymous codon sites
+unsigned int SequenceStatistics::synonymousPolymorphicCodonNumber(SiteIterator & si, const NucleicAlphabet & na, const CodonAlphabet & ca) {
+	unsigned int S=0;
+	const Site *site;
+	while ( si.hasMoreSites() ) {
+		site=si.nextSite();
+		if (CodonSiteTools::isSynonymousPolymorphic(*site,na,ca)) {
+			S++;
+		}
+	}
+	return S;
+}
+
+// Method to compute the number of synonymous polymorphic codon sites
+// Arguments: a SiteContainer, a boolean
+// Return: Number of synonymous codon sites
+unsigned int SequenceStatistics::synonymousPolymorphicCodonNumber(const SiteContainer & v, bool stopflag) {
+    SiteIterator* si = NULL;
+    const NucleicAlphabet* na = new DNA();
+    const CodonAlphabet* ca = new StandardCodonAlphabet(na);
+    if(stopflag) si = new CompleteSiteIterator(v);
+    else new NoGapSiteIterator(v);
+    unsigned int S = SequenceStatistics::synonymousPolymorphicCodonNumber(*si,*na,*ca);
+    delete si;
+    delete na;
+    delete ca;
+    return S;
+}
+
+
+// Method to compute the synonymous nucleotide diversity pi
+// Arguments: a SiteIterator, a CodonAlphabet, a GeneticCode (given by the following method)
+// Return: pi synonymous
+double SequenceStatistics::piSynonymous(SiteIterator & si, const CodonAlphabet & ca, const GeneticCode & gc, bool minchange) {
+	double S=0;
+	const Site *site;
+	while(si.hasMoreSites()) {
+		site=si.nextSite();
+                S += CodonSiteTools::piSynonymous(*site,ca,gc,minchange);
+	}
+	return S;
+}
+
+
+// Method to compute the synonymous nucleotide diversity pi
+// Arguments: a SiteContainer, a boolean
+// Return: pi synonymous
+double SequenceStatistics::piSynonymous(const SiteContainer & v, bool stopflag, bool minchange) {
+    SiteIterator *si = NULL;
+    NucleicAlphabet* na = new DNA();
+    CodonAlphabet* ca = new StandardCodonAlphabet(na);
+    GeneticCode* gc = new StandardGeneticCode(na);
+    if(stopflag) si = new CompleteSiteIterator(v);
+    else si = new NoGapSiteIterator(v);
+    double S = SequenceStatistics::piSynonymous(*si,*ca,*gc,minchange);
+    delete si;
+    delete na;
+    delete ca;
+    delete gc;
+    return S;
+}
+
+
+// Method to compute the non-synonymous nucleotide diversity pi
+// Arguments: a SiteIterator
+// Return: pi synonymous
+double SequenceStatistics::piNonSynonymous(SiteIterator & si, const NucleicAlphabet & na, const CodonAlphabet & ca, const GeneticCode & gc, bool minchange) {
+	double S=0;
+	const Site *site;
+	while(si.hasMoreSites()) {
+		site=si.nextSite();
+                S += CodonSiteTools::piNonSynonymous(*site,na,ca,gc,minchange);
+	}
+	return S;
+}
+
+
+// Method to compute the non-synonymous nucleotide diversity pi
+// Arguments: a SiteContainer, a boolean
+// Return: pi synonymous
+double SequenceStatistics::piNonSynonymous(const SiteContainer & v, bool stopflag, bool minchange) {
+    SiteIterator *si = NULL;
+    NucleicAlphabet* na = new DNA();
+    CodonAlphabet* ca = new StandardCodonAlphabet(na);
+    GeneticCode* gc = new StandardGeneticCode(na);
+    if(stopflag) si = new CompleteSiteIterator(v);
+    else si = new NoGapSiteIterator(v);
+    double S = SequenceStatistics::piNonSynonymous(*si,*na,*ca,*gc,minchange);
+    delete si;
+    delete na;
+    delete ca;
+    delete gc;
+    return S;
+}
+
+// Method to compute the mean number of synonymous site in an alignment
+// Arguments: a SiteIterator
+// Return: mean number of synonymous site
+double SequenceStatistics::meanSynonymousSitesNumber(SiteIterator & si, const CodonAlphabet & ca, const GeneticCode &gc, double ratio) {
+	double S=0;
+	const Site *site;
+	while(si.hasMoreSites()) {
+		site=si.nextSite();
+                S += CodonSiteTools::MeanNumberOfSynonymousPositions(*site,ca,gc,ratio);
+	}
+	return S;
+}
+
+
+// Method to compute the mean number of synonymous site in an alignment
+// Arguments: a SiteIterator, a boolean
+// Return: mean number of synonymous site
+double SequenceStatistics::meanSynonymousSitesNumber(const SiteContainer & v, double ratio, bool stopflag) {
+    SiteIterator *si = NULL;
+    NucleicAlphabet* na = new DNA();
+    CodonAlphabet* ca = new StandardCodonAlphabet(na);
+    GeneticCode* gc = new StandardGeneticCode(na);
+    if(stopflag) si = new CompleteSiteIterator(v);
+    else si = new NoGapSiteIterator(v);
+    double S = SequenceStatistics::meanSynonymousSitesNumber(*si,*ca,*gc,ratio);
+    delete si;
+    delete na;
+    delete ca;
+    delete gc;
+    return S;
+}
+
+
+
+
+//******************************************************************************************************************
+//Statistical tests
+//******************************************************************************************************************
+
 
 // Method to compute Tajima D test (1989)
 // Arguments: a PolymorphismSequenceContainer
@@ -223,83 +586,6 @@ double SequenceStatistics::tajimaDTNM(const PolymorphismSequenceContainer & psc,
 	return (tajima - eta_a1) / sqrt((values["e1"] * eta) + (values["e2"] * eta * (eta - 1)));
 }
 
-// Return the number of haplotype in the sample. Depaulis and Veuille (1998)
-// Arguments: a PolymorphismSequenceContainer
-// Return: K (Depaulis and Veuille 1998)
-unsigned int SequenceStatistics::DVK( const PolymorphismSequenceContainer & psc, bool gapflag ) {
-	PolymorphismSequenceContainer *psci = PolymorphismSequenceContainerTools::extractIngroup(psc);
-	PolymorphismSequenceContainer *sc;
-	if (gapflag)
-		sc = PolymorphismSequenceContainerTools::getSitesWithoutGaps ( *psci );
-	else
-		sc = psci;
-	int K = 0;
-	vector<string> pscvector;
-	pscvector.push_back(sc->toString(0));
-	K++;
-	for ( unsigned int i = 1; i < sc->getNumberOfSequences(); i++ ) {
-		bool uniq = true;	
-		string query = sc->toString(i);
-		for ( vector<string>::iterator it = pscvector.begin(); it != pscvector.end(); it++ ) {
-			if ( query.compare(*it) == 0 ) {
-				uniq = false;
-				break;
-			}	
-		}
-		if (uniq) {
-			K++;
-			pscvector.push_back(query);
-		}				
-	}
-	delete sc;
-	if(gapflag)
-		delete psci;	
-	return K;
-}
-
-// Return the haplotype diversity of a sample. Depaulis and Veuille (1998)
-// Arguments: a PolymorphismSequenceContainer
-// Return: H (Depaulis and Veuille 1998)
-double SequenceStatistics::DVH( const PolymorphismSequenceContainer & psc, bool gapflag ) {
-	PolymorphismSequenceContainer *psci = PolymorphismSequenceContainerTools::extractIngroup(psc);
-	PolymorphismSequenceContainer *sc;
-	if (gapflag)
-		sc = PolymorphismSequenceContainerTools::getSitesWithoutGaps ( *psci );
-	else
-		sc = psci;
-	double H = 0.0;
-	unsigned int nbSeq;
-	vector<string> pscvector;
-	vector<int> effvector;
-	pscvector.push_back(sc -> toString(0));
-	effvector.push_back(sc -> getSequenceCount(0));
-	nbSeq = sc -> getSequenceCount(0);
-	for ( unsigned int i = 1; i < sc->getNumberOfSequences(); i++ ) {
-		nbSeq += sc -> getSequenceCount(i);
-		bool uniq = true;	
-		string query = sc -> toString(i);
-		for ( vector<string>::iterator it = pscvector.begin(); it != pscvector.end(); it++ ) {
-			if ( query.compare(*it) == 0 ) {
-				effvector[effvector.size() - 1] += sc -> getSequenceCount(i);
-				uniq = false;
-				break;
-			}	
-		}
-		if (uniq) {
-			pscvector.push_back(query);
-			effvector.push_back(sc -> getSequenceCount(i));
-		}				
-	}
-	for ( unsigned int i = 0; i < effvector.size(); i++ ) {
-		H -= ( (double) effvector[i] / (double) nbSeq ) * ( (double) effvector[i] / (double) nbSeq );
-	}
-	H += 1.0;
-	delete sc;
-	if(gapflag)
-		delete psci;	
-	return H;
-}
-
 double SequenceStatistics::fuliD(const PolymorphismSequenceContainer & ingroup, const PolymorphismSequenceContainer & outgroup) {
 	unsigned int n = ingroup.getNumberOfSequences();
 	double nn = (double) n;
@@ -315,7 +601,7 @@ double SequenceStatistics::fuliDstar(const PolymorphismSequenceContainer & group
 	unsigned int n = group.getNumberOfSequences();
 	double nn = (double) n;
 	map<string, double> values = _getUsefullValues(n);
-	
+
 // Fu & Li 1993
 	double _n = nn / (nn - 1.);
 	double vDs = (
@@ -339,7 +625,7 @@ double SequenceStatistics::fuliDstar(const PolymorphismSequenceContainer & group
 */
 	double eta = (double) totNumberMutations(group);
 	double etas = (double) countSingleton(group);
-	
+
 // Fu & Li 1993
 	return ((_n * eta) - (values["a1"] * etas)) / sqrt(uDs * eta + vDs * eta * eta);
 
@@ -380,6 +666,14 @@ double SequenceStatistics::fuliFstar(const PolymorphismSequenceContainer & group
 	return (pi - ((nn - 1.) / nn * etas)) / sqrt(uFs * eta + vFs * eta * eta);
 }
 
+
+
+
+
+//******************************************************************************************************************
+//Private methods
+//******************************************************************************************************************
+
 unsigned int SequenceStatistics::_getMutationNumber(const Site & site) {
 	unsigned int tmp_count = 0;
 	map<int, unsigned int> states_count = SymbolListTools::getCounts(site);
@@ -399,6 +693,7 @@ unsigned int SequenceStatistics::_getSingletonNumber(const Site & site) {
 			nus++;
 	return nus;
 }
+
 
 map<string, double> SequenceStatistics::_getUsefullValues(unsigned int n) {
 	map<string, double> values;
