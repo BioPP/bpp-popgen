@@ -1,7 +1,7 @@
 /*
  * File Coord.h
  * Author : Sylvain Gaillard <yragael2001@yahoo.fr>
- * Last modification : Wednesday April 28 2004
+ * Last modification : Wednesday May 05 2004
  */
 
 // Secured inclusion of header's file
@@ -93,11 +93,6 @@ template <class T> class Coord : public Clonable {
 		bool hasSameCoordsAs(const Coord<T> & coord) const;
 
 		/**
-		 * @brief Give the distance between two Coord objects.
-		 */
-		double getDistanceTo(const Coord<T> & coord) const;
-
-		/**
 		 * @brief The == operator.
 		 *
 		 * Return true if the coordinates of the 2 Coords are equals.
@@ -184,15 +179,6 @@ template <class T> bool Coord<T>::hasSameCoordsAs(const Coord<T> & coord) const 
 		return true;
 	else
 		return false;
-}
-
-template <class T> double Coord<T>::getDistanceTo(const Coord<T> & coord) const {
-	T base, height;
-	base = _x - coord.getX();
-	height = _y - coord.getY();
-	base = base * base;
-	height = height * height;
-	return sqrt((double)base + (double)height);
 }
 
 #endif // _COORD_H_
