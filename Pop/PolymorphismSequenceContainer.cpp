@@ -317,3 +317,38 @@ unsigned int PolymorphismSequenceContainer::getSequenceCount(const string &name)
 		throw SequenceNotFoundException("PolymorphismSequenceContainer::getSequenceCount.", name);
 	}
 }
+
+unsigned int PolymorphismSequenceContainer::getPhase(const string &setName) const throw (Exception) {
+	try {
+		unsigned int phase;
+		unsigned int index;
+		Comments maseFileHeader = getGeneralComments();
+		for(unsigned int i = 0; i < maseFileHeader.size(); i++) {
+			string current = maseFileHeader[i];
+			
+			index = current.find("# of regions");
+			if(index < current.npos) {
+				StringTokenizer st(string(current.begin() + index + 12 , current.end()), " \t\n\f\r=;");
+				unsigned int numberOfSegments = TextTools::toInt(st.nextToken());
+				//cout << "Number of regions: " << st.nextToken() << endl;
+				string name;
+				while(st.hasMoreToken()) {
+					name = st.nextToken();
+					//cout << "Name of regions: " << name << endl;
+				}
+				if(name == setName) {
+					return phase;
+				}
+			}
+			
+			index = current.find("/codon_start");
+			if(index < current.npos) {
+				StringTokenizer st(string(current.begin() + index + 12, current.end()), " \t\n\f\r=;");
+				phase = TextTools::toInt(st.nextToken());
+			}
+		}
+		cout << "No phase for " << setName << endl;
+	}
+	catch (...) {
+	}
+}

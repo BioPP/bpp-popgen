@@ -31,6 +31,9 @@
 using namespace std;
 
 #include <Utils/Clonable.h>
+#include <Utils/StringTokenizer.h>
+#include <Utils/TextTools.h>
+
 #include <Seq/VectorSiteContainer.h>
 #include <Seq/SequenceContainerTools.h>
 
@@ -265,6 +268,13 @@ class PolymorphismSequenceContainer : public VectorSiteContainer
 		 * @throw SequenceNotFoundException if name is not found among the sequences' names.
 		 */
 		unsigned int getSequenceCount(const string &name) const throw (SequenceNotFoundException);
+
+		/**
+		 * @brief Get the phase of a given coding region from a polymorphix families
+		 *
+		 * @param setName a PolymorphismSequenceContainer
+		 */		
+		unsigned int getPhase(const string &setName) const throw (Exception);
 		
 	protected:
 		vector<bool> _ingroup;
