@@ -25,9 +25,6 @@
 
 #include "PolymorphismMultiGContainer.h"
 
-#include <iostream>
-using namespace std;
-
 //** Constructors : **********************************************************/
 PolymorphismMultiGContainer::PolymorphismMultiGContainer() {}
 
@@ -645,20 +642,5 @@ map<unsigned int, PolymorphismMultiGContainer::FstatBases> PolymorphismMultiGCon
 		it->second.b = (nbar / (nbar - 1.)) * ((pbar[it->first] * (1. - pbar[it->first])) - (s2[it->first] * ((double) r - 1.) / (double) r) - ((((2. * nbar) - 1.) / (4. * nbar)) * hbar[it->first]));
 		it->second.c = hbar[it->first] / 2.;
 	}
-
-	// *************** Debug ... ****************
-	for (unsigned int i = 0 ; i < ids.size() ; i++) {
-		cout << "***DEBUG*** id : " << ids[i];
-		cout << "\t A=" << values[ids[i]].a;
-		cout << "\t B=" << values[ids[i]].b;
-		cout << "\t C=" << values[ids[i]].c;
-		cout << "\t nbar=" << nbar;
-		cout << "\t nc=" << nc;
-		cout << "\t P=" << pbar[ids[i]];
-		cout << "\t s2=" << s2[ids[i]];
-		cout << "\t H=" << hbar[ids[i]];
-		cout << endl;
-	}
-	// *************** Debug ... ****************
 	return values;
 }
