@@ -77,3 +77,31 @@ PolymorphismSequenceContainer * PolymorphismSequenceContainerTools::getSitesWith
 	}
 	catch(...) {}
 }
+
+unsigned int PolymorphismSequenceContainerTools::getNumberOfNonGapSites(const PolymorphismSequenceContainer & psc, bool ingroup) throw (Exception) {
+	try {
+	unsigned int alphasize = (psc.getAlphabet())->getSize(); 
+	unsigned int nbOfSites = psc.getNumberOfSites();
+	unsigned int count = nbOfSites;
+	unsigned int nbOfSequences = psc.getNumberOfSequences();
+	for (unsigned int j=0; j < nbOfSites; j++) {
+		const Site *si = psc.getSite(j);
+		for (unsigned int i=0; i < nbOfSequences; i++) {
+			if (ingroup) {
+				if (! psc.isIngroupMember(i)) continue;
+				if (!(si->getValue(i) < alphasize && si->getValue(i) > -1)) {
+					count--;
+					break;
+				}
+			} else {
+				if (!(si->getValue(i) < alphasize && si->getValue(i) > -1)) {
+					count--;
+					break;
+				}
+			}
+		}
+	}
+	return count;	
+	}
+	catch(...) {}
+}
