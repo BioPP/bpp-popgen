@@ -53,11 +53,6 @@ using namespace std;
  */
 class PolymorphismMultiGContainer {
 	public: // Constructors and destructor
-		struct FstatBases {
-			double a;
-			double b;
-			double c;
-		};
 
 		/**
 		 * @brief Build a new PolymorphismMultilocusGenotypeContainer.
