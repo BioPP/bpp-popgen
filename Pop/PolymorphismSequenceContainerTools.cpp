@@ -34,16 +34,16 @@ alpha) throw (Exception) {
 			}			
 		}
 	}
+	delete seqc, sitec;
 	return(psc);
-	}
-	catch(...) {}
+	} catch(...) {}
 }
 	 
 PolymorphismSequenceContainer * PolymorphismSequenceContainerTools::extractIngroup (const PolymorphismSequenceContainer & psc ) throw (Exception) {
 	try {
 	SequenceSelection ss;	
 	PolymorphismSequenceContainer *psci = dynamic_cast<PolymorphismSequenceContainer *>(psc.clone());
-	for(unsigned int i = 0; i < psc.getNumberOfSequences(); i++){
+	for(unsigned int i = 0; i < psc.getNumberOfSequences(); i++) {
 		if ( psc.isIngroupMember(i) ) {
 			ss.push_back(i);
 		}

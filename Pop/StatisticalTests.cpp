@@ -148,7 +148,7 @@ double StatisticalTests::tajima83( const PolymorphismSequenceContainer & psc, bo
 			}
 			for ( int j = 0; j < samplesize; j++ ) {
 				if (site -> getValue( j ) < alphasize)
-					etha[ site -> getValue( j ) ]++;
+					etha[ site -> getValue( j ) ]+= psci -> getSequenceStrength( j );
 			}			
 			for ( int i = 0; i < alphasize; i++ ) {
 				somme += (etha[i] * (etha[i] - 1)) / denom;
