@@ -399,7 +399,7 @@ void PoplibIO::write(ostream & os, const DataSet & data_set) const throw (Except
 			if (i>0 || j>0) os << endl;
 			const Individual * tmp_ind = data_set.getIndividualAtPositionFromGroup(i,j);
 			os << ">" << tmp_ind->getId() << endl;
-			os << "Group = " << TextTools::toString(i) << endl;
+			os << "Group = " << TextTools::toString((data_set.getGroupAtPosition(i))->getGroupId()) << endl;
 			if (tmp_ind->hasLocality()) os << "Locality = " << tmp_ind->getLocality()->getName() << endl;
 			if (tmp_ind->hasCoord()) os << "Coord = " << tmp_ind->getX() << " " << tmp_ind->getY() << endl;
 			if (tmp_ind->hasDate()) os << "Date = " << tmp_ind->getDate()->getDateStr() << endl;
