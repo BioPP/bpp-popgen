@@ -1,7 +1,7 @@
 /*
  * File PolymorphismMultiGContainerTools.cpp
  * Author : Sylvain Gailard <yragael2001@yahoo.fr>
- * Last modification : Friday September 24 2004
+ * Last modification : Tuesday September 28 2004
  *
  * Copyright (C) 2004 Sylvain Gaillard and the
  *                    PopGenLib Development Core Team
@@ -35,5 +35,38 @@ PolymorphismMultiGContainer PolymorphismMultiGContainerTools::permutMultiG(const
 	groups = RandomTools::getSample(groups, groups.size());
 	for (unsigned int i = 0 ; i < permuted_pmgc.size() ; i++)
 		permuted_pmgc.setGroupId(i, groups[i]);
+	return permuted_pmgc;
+}
+
+PolymorphismMultiGContainer PolymorphismMultiGContainerTools::permutMonoG(const PolymorphismMultiGContainer & pmgc, const set<unsigned int> & groups) {
+	PolymorphismMultiGContainer permuted_pmgc;
+	unsigned int loc_num = pmgc.getNumberOfLoci();
+	vector<vector<const MonolocusGenotype *> > mono_gens;
+	mono_gens.resize(loc_num);
+	// Get all the MonolocusGenotypes to permut
+	for (unsigned int i = 0 ; i < pmgc.size() ; i++) {
+		if (groups.find(pmgc.getGroupId(i)) != groups.end()) {
+			for (unsigned int j = 0 ; j < loc_num ; j++)
+				mono_gens[j].push_back(pmgc.getMultilocusGenotype(i)->getMonolocusGenotype(j));
+		}
+	}
+	// Permut the MonolocusGenotypes
+	for (unsigned int i = 0 ; i < loc_num ; i++)
+		mono_gens[i] = RandomTools::getSample(mono_gens[i], mono_gens[i].size());
+	// Build the new PolymorphismMultiGContainer
+	unsigned int k = 0;
+	for (unsigned int i = 0 ; i < pmgc.size() ; i++) {
+		if (groups.find(pmgc.getGroupId(i)) != groups.end()) {
+			MultilocusGenotype tmp_mg(loc_num);
+			for (unsigned int j = 0 ; j < loc_num ; j++) {
+				if (mono_gens[j][k] != NULL)
+					tmp_mg.setMonolocusGenotype(j, * (mono_gens[j][k]));
+			}
+			permuted_pmgc.addMultilocusGenotype(tmp_mg, pmgc.getGroupId(i));
+		}
+		else {
+			permuted_pmgc.addMultilocusGenotype(* (pmgc.getMultilocusGenotype(i)), pmgc.getGroupId(i));
+		}
+	}
 	return permuted_pmgc;
 }

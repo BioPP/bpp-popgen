@@ -1,7 +1,7 @@
 /*
  * File PolymorphismMultiGContainerTools.h
  * Author : Sylvain Gailard <yragael2001@yahoo.fr>
- * Last modification : Friday September 24 2004
+ * Last modification : Tuesday September 28 2004
  *
  * Copyright (C) 2004 Sylvain Gaillard and the
  *                    PopGenLib Development Core Team
@@ -29,6 +29,7 @@
 
 // From the STL
 #include <vector>
+#include <set>
 using namespace std;
 
 //From the PolyLib library
@@ -37,13 +38,35 @@ using namespace std;
 //From the NumCalc library
 #include <NumCalc/RandomTools.h>
 
+/**
+ * @brief Tools for PolymorphismMultiGContainer.
+ *
+ * Provides static methods for permutations.
+ */
 class PolymorphismMultiGContainerTools {
 	public:
 		virtual ~PolymorphismMultiGContainerTools();
 		
 	public:
+		/**
+		 * @brief Permut the MultilocusGenotype in the whole PolymorphismMultiGContainer.
+		 *
+		 * @param pmgc The PolymorphismMultiGContainer to permut.
+		 * @return A permuted PolymorphismMultiGContainer.
+		 */
 		static PolymorphismMultiGContainer permutMultiG(const PolymorphismMultiGContainer & pmgc);
 
+		/**
+		 * @brief Permut the MonolocusGenotype.
+		 *
+		 * Permut the MonolocusGenotypes in on or several groups breaking
+		 * the links between them.
+		 *
+		 * @param pmgc The PolymorphismMultiGContainer to permut.
+		 * @param groups The groups ids between which the MonolocusGenotypes will be permuted.
+		 * @return A permuted PolymorphismMultiGContainer.
+		 */
+		static PolymorphismMultiGContainer permutMonoG(const PolymorphismMultiGContainer & pmgc, const set<unsigned int> & groups);
 };
 
 #endif // _POLYMORPHISMMULTIGCONTAINERTOOLS_H_
