@@ -97,12 +97,16 @@ double StatisticalTests::tajima83( const SiteContainer & v ) {
 // Method to compute diversity estimator Theta of Watterson (1975)
 // Arguments: a PolymorphismSequenceContainer
 // Return: theta of Watterson (1975)
-double StatisticalTests::watterson75( const PolymorphismSequenceContainer & psc ) {
+double StatisticalTests::watterson75( const PolymorphismSequenceContainer & psc, bool gapflag ) {
 	PolymorphismSequenceContainer *psci = PolymorphismSequenceContainerTools::extractIngroup(psc);
 	double ThetaW;
 	int n = psc.getNumberOfSequences();
 	double an = 0.0;
-	SiteIterator *si = new NoGapSiteIterator( *psci );
+	SiteIterator *si;
+	if (gapflag) 
+		si = new NoGapSiteIterator( *psci );
+	else
+		si = new CompleteSiteIterator( *psci );
 	int S = StatisticalTests::polymorphicSiteNumber( *si );
 	for ( int i = 1; i < n; i++ ) {
 			an += (double) 1/i;
@@ -116,27 +120,38 @@ double StatisticalTests::watterson75( const PolymorphismSequenceContainer & psc 
 // Method to compute diversity estimator Theta of Tajima (1983)
 // Arguments: a PolymorphismSequenceContainer
 // Return: theta of Tajima (1983)
-double StatisticalTests::tajima83( const PolymorphismSequenceContainer & psc ) {
+double StatisticalTests::tajima83( const PolymorphismSequenceContainer & psc, bool gapflag ) {
 	PolymorphismSequenceContainer *psci = PolymorphismSequenceContainerTools::extractIngroup(psc);
 	double ThetaPi;
 	int S = 0;
 	const Site *site;
-	int n = psci -> getNumberOfSequences();
-	double etha[20];
+	vector<double> etha;
+	unsigned int alphasize; 
 	double somme = 0.0;
-	SiteIterator *si = new NoGapSiteIterator( *psci );
+	unsigned int samplesize = psci -> getNumberOfSequences();
+	double denom = (double(samplesize)* (double(samplesize) - 1.0));
+	SiteIterator *si;
+	if (gapflag) {
+		si = new NoGapSiteIterator( *psci );
+		alphasize = (psc.getAlphabet())->getSize();
+	} else {
+		si = new CompleteSiteIterator( *psci );
+		alphasize = (psc.getAlphabet())->getSize() + 1;
+	}
+	etha.resize(alphasize);
 	while ( si -> hasMoreSites() ) {
 		site = si->nextSite();
-	if ( !SiteTools::isConstant(*site) ) {
+		if ( !SiteTools::isConstant(*site) ) {
 			S++;
-			for ( int i = 0; i < 4; i++ ) {
+			for ( int i = 0; i < alphasize; i++ ) {
 				etha[i] = 0;
 			}
-			for ( int j = 0; j < n; j++ ) {
-				etha[site->getValue( j )]++;
+			for ( int j = 0; j < samplesize; j++ ) {
+				if (site -> getValue( j ) < alphasize)
+					etha[ site -> getValue( j ) ]++;
 			}			
-			for ( int i = 0; i < 4; i++ ) {
-				somme += (etha[i] * (etha[i] - 1)) / (n * (n  - 1));
+			for ( int i = 0; i < alphasize; i++ ) {
+				somme += (etha[i] * (etha[i] - 1)) / denom;
 			}
 		}
 	}

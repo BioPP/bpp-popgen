@@ -63,15 +63,19 @@ class StatisticalTests
          * @brief Compute diversity estimator Theta of Watterson (1975)
          *
          * @param a PolymorphismSequenceContainer
+	 * @param gapflag: flag set by default to true if you don't want to
+	 * take gap into account
          */	    
-	 static double watterson75( const PolymorphismSequenceContainer & v );
+	 static double watterson75( const PolymorphismSequenceContainer & v, bool gapflag = true );
 
         /**
          * @brief Compute diversity estimator Theta of Tajima (1983)
          *
          * @param a PolymorphismSequenceContainer
+	 * @param gapflag: flag set by default to true if you don't want to
+	 * take gap into account
          */ 
-	 static double tajima83( const PolymorphismSequenceContainer & v );	
+	 static double tajima83( const PolymorphismSequenceContainer & v, bool gapflag = true );	
 	        
         /*******************************************************************************/
 };
