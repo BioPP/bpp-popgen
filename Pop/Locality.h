@@ -1,7 +1,7 @@
 /*
  * File Locality.h
  * Author : Sylvain Gaillard <yragael2001@yahoo.fr>
- * Last modification : Monday April 05 2004
+ * Last modification : Thursday April 22 2004
  */
 
 // Secured inclusion of header's file
@@ -17,7 +17,7 @@ using namespace std;
  * This is a class derivated from the Coord class.
  * It's a Coord with a name.
  */
-template <class T> class Locality : public Coord <T> {
+template <class T> class Locality : public Coord<T> {
 	public: // Constructors and destructor
 		/**
 		 * @brief Build a new locality with name and coordinates.
@@ -37,9 +37,27 @@ template <class T> class Locality : public Coord <T> {
 		Locality(const string name, const Coord<T> coord);
 		
 		/**
+		 * @brief The Locality copy constructor.
+		 */
+		Locality(const Locality<T> & locality);
+		
+		/**
 		 * @brief Destroy a locality.
 		 */
 		~Locality();
+
+	public: // Methodes
+		/**
+		 * @brief Implements the Clonable interface.
+		 */
+		Clonable * clone() const;
+		
+		/**
+		 * @brief The Locality copy operator.
+		 *
+		 * @return A ref toward the assigned Locality.
+		 */
+		Locality & operator= (const Locality & locality);
 
 		/**
 		 * @brief Set the name of the locality.
@@ -49,7 +67,7 @@ template <class T> class Locality : public Coord <T> {
 		/**
 		 * @brief Get the name of the locality.
 		 */
-		const string getName();
+		string getName() const;
 
 	protected:
 		string _name;
@@ -68,8 +86,27 @@ template <class T> Locality<T>::Locality(const string name, const Coord<T> coord
 	_y = coord.getY();
 }
 
+template <class T> Locality<T>::Locality(const Locality<T> & locality) {
+	this->_x = locality.getX();
+	this->_y = locality.getY();
+	this->_name = locality.getName();
+}
+
 //** Class destructor: *******************************************************/
 template <class T> Locality<T>::~Locality() {}
+
+//** Clonable interface: *****************************************************/
+template <class T> Clonable * Locality<T>::clone() const {
+	return new Locality<T>(* this);
+}
+
+//** Copy operator: **********************************************************/
+template <class T> Locality<T> & Locality<T>::operator= (const Locality<T> & locality) {
+	this->_x = locality.getX();
+	this->_y = locality.getY();
+	this->_name = locality.getName();
+	return * this;
+}
 
 //** Assignation opperators: *************************************************/
 template <class T> void Locality<T>::setName(string name) {
@@ -77,7 +114,7 @@ template <class T> void Locality<T>::setName(string name) {
 }
 
 //** Consultation opperators: ************************************************/
-template <class T> const string Locality<T>::getName() {
+template <class T> string Locality<T>::getName() const {
 	return _name;
 }
 #endif // _LOCALITY_H_
