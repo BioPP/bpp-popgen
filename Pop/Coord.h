@@ -83,12 +83,12 @@ template <class T> class Coord : public Clonable {
 		 *
 		 * Return true if the coordinates of the 2 Coords are equals.
 		 */
-		bool asSameCoords(const Coord<T> & co1, const Coord<T> & co2) const;
+		bool hasSameCoordsAs(const Coord<T> & coord) const;
 
 		/**
 		 * @brief Give the distance between two Coord objects.
 		 */
-		double getDistance(const Coord<T> & co1, const Coord<T> & co2) const;
+		double getDistanceTo(const Coord<T> & coord) const;
 
 		/**
 		 * @brief The == operator.
@@ -168,17 +168,17 @@ template <class T> bool Coord<T>::operator!= (const Coord<T> & coord) const {
 	return !(coord == *this);
 }
 
-template <class T> bool Coord<T>::asSameCoords(const Coord<T> & co1, const Coord<T> & co2) const {
-	if (co1.getX() == co2.getX() && co1.getY() == co2.getY())
+template <class T> bool Coord<T>::hasSameCoordsAs(const Coord<T> & coord) const {
+	if (_x == coord.getX() && _y == coord.getY())
 		return true;
 	else
 		return false;
 }
 
-template <class T> double Coord<T>::getDistance(const Coord<T> & co1, const Coord<T> & co2) const {
+template <class T> double Coord<T>::getDistanceTo(const Coord<T> & coord) const {
 	T base, height;
-	base = co2.getX() - co1.getX();
-	height = co2.getY() - co1.getY();
+	base = _x - coord.getX();
+	height = _y - coord.getY();
 	base = base * base;
 	height = height * height;
 	return sqrt((double)base + (double)height);
