@@ -86,7 +86,17 @@ class StatisticalTests
 	 * take gap into account
          */ 
 	 static unsigned int DVK ( const PolymorphismSequenceContainer & v, bool gapflag = true );
-	        
+
+        /**
+         * @brief Return the haplotype diversity of a sample. 
+	 * Depaulis and Veuille (1998)
+         *
+         * @param v a PolymorphismSequenceContainer
+	 * @param gapflag flag set by default to true if you don't want to
+	 * take gap into account
+         */ 
+	 static double DVH ( const PolymorphismSequenceContainer & v, bool gapflag = true );
+              
         /*******************************************************************************/
 };
 #endif // _STATISTICALTESTS_H_

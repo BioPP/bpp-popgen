@@ -194,3 +194,46 @@ unsigned int StatisticalTests::DVK( const PolymorphismSequenceContainer & psc, b
 		delete psci;	
 	return K;
 }
+
+// Return the haplotype diversity of a sample. Depaulis and Veuille (1998)
+// Arguments: a PolymorphismSequenceContainer
+// Return: H (Depaulis and Veuille 1998)
+double StatisticalTests::DVH( const PolymorphismSequenceContainer & psc, bool gapflag ) {
+	PolymorphismSequenceContainer *psci = PolymorphismSequenceContainerTools::extractIngroup(psc);
+	PolymorphismSequenceContainer *sc;
+	if (gapflag)
+		sc = PolymorphismSequenceContainerTools::getSitesWithoutGaps ( *psci );
+	else
+		sc = psci;
+	double H = 0.0;
+	unsigned int nbSeq;
+	vector<string> pscvector;
+	vector<int> effvector;
+	pscvector.push_back(sc -> toString(0));
+	effvector.push_back(sc -> getSequenceStrength(0));
+	nbSeq = sc -> getSequenceStrength(0);
+	for ( unsigned int i = 1; i < sc->getNumberOfSequences(); i++ ) {
+		nbSeq += sc -> getSequenceStrength(i);
+		bool uniq = true;	
+		string query = sc -> toString(i);
+		for ( vector<string>::iterator it = pscvector.begin(); it != pscvector.end(); it++ ) {
+			if ( query.compare(*it) == 0 ) {
+				effvector[effvector.size() - 1] += sc -> getSequenceStrength(i);
+				uniq = false;
+				break;
+			}	
+		}
+		if (uniq) {
+			pscvector.push_back(query);
+			effvector.push_back(sc -> getSequenceStrength(i));
+		}				
+	}
+	for ( unsigned int i = 0; i < effvector.size(); i++ ) {
+		H -= ( (double) effvector[i] / (double) nbSeq ) * ( (double) effvector[i] / (double) nbSeq );
+	}
+	H += 1.0;
+	delete sc;
+	if(gapflag)
+		delete psci;	
+	return H;
+}
