@@ -159,11 +159,13 @@ double SequenceStatistics::tajima83( const SiteContainer & v ) {
 // Arguments: a PolymorphismSequenceContainer
 // Return: theta of Watterson (1975)
 double SequenceStatistics::watterson75(const PolymorphismSequenceContainer & psc, bool gapflag) {
+	PolymorphismSequenceContainer *psci = PolymorphismSequenceContainerTools::extractIngroup(psc);
 	double ThetaW;
-	unsigned int n = psc.getNumberOfSequences();
-	unsigned int S = polymorphicSiteNumber(psc, gapflag);
+	unsigned int n = psci->getNumberOfSequences();
+	unsigned int S = polymorphicSiteNumber(*psci, gapflag);
 	map<string, double> values = _getUsefullValues(n);
-	ThetaW = (double) S / values["a1"];	
+	ThetaW = (double) S / values["a1"];
+	delete psci;	
 	return ThetaW;
 }
 
