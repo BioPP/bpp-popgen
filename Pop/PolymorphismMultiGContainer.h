@@ -10,6 +10,7 @@
 
 // From STL
 #include <vector>
+#include <map>
 using namespace std;
 
 // From Utils
@@ -18,6 +19,7 @@ using namespace std;
 
 // From poplib
 #include "MultilocusGenotype.h"
+#include "GeneralExceptions.h"
 
 /**
  * @brief The PolymorphismMultiGContainer class
@@ -86,6 +88,11 @@ class PolymorphismMultiGContainer : public Clonable {
 		 * @throw IndexOutOfBoundsException if position excedes the size of the container.
 		 */
 		unsigned int getGroup(unsigned int position) const throw (IndexOutOfBoundsException);
+
+		/**
+		 * @brief Tell if a group exists.
+		 */
+		bool groupExists(unsigned int group) const;
 		
 		/**
 		 * @brief Get the number of MultilocusGenotype.
@@ -96,6 +103,66 @@ class PolymorphismMultiGContainer : public Clonable {
 		 * @brief Clear the container.
 		 */
 		void clear();
+
+		/**
+		 * @brief Count the different alleles at one locus.
+		 *
+		 * @throw IndexOutOfBoundsException if locus_position excedes the number of loci of one MultilocusGenotype.
+		 */
+		map<unsigned int, unsigned int> countAlleles(unsigned int locus_position) const throw (IndexOutOfBoundsException);
+
+		/**
+		 * @brief Count the different alleles at one locus for one group.
+		 *
+		 * @throw IndexOutOfBoundsException if locus_position excedes the number of loci of one MultilocusGenotype.
+		 * @throw GroupNotFoundException if group is not found in the container.
+		 */
+		map<unsigned int, unsigned int> countAlleles(unsigned int locus_position, unsigned int group) const throw (Exception);
+
+		/**
+		 * @brief Count the number of non-missing data at a given locus.
+		 *
+		 * @throw IndexOutOfBoundsException if locus_position excedes the number of loci of one MultilocusGenotype.
+		 */
+		unsigned int countNonMissing(unsigned int locus_position) const throw (IndexOutOfBoundsException);
+
+		/**
+		 * @brief Count the number of non-missing data at a given locus for one group.
+		 *
+		 * @throw IndexOutOfBoundsException if locus_position excedes the number of loci of one MultilocusGenotype.
+		 * @throw GroupNotFoundException if group is not found in the container.
+		 */
+		unsigned int countNonMissing(unsigned int locus_position, unsigned int group) const throw (Exception);
+
+		/**
+		 * @brief Count the number of bi-allelic MonolocusGenotype at a given locus.
+		 *
+		 * @throw IndexOutOfBoundsException if locus_position excedes the number of loci of one MultilocusGenotype.
+		 */
+		unsigned int countBiAllelic(unsigned int locus_position) const throw (IndexOutOfBoundsException);
+
+		/**
+		 * @brief Count the number of bi-allelic MonolocusGenotype at a given locus for one group.
+		 *
+		 * @throw IndexOutOfBoundsException if locus_position excedes the number of loci of one MultilocusGenotype.
+		 * @throw GroupNotFoundException if group is not found in the container.
+		 */
+		unsigned int countBiAllelic(unsigned int locus_position, unsigned int group) const throw (Exception);
+		
+		/**
+		 * @brief Count how many times each allele is found in an heterozygous MonolocusGenotype.
+		 *
+		 * @throw IndexOutOfBoundsException if locus_position excedes the number of loci of one MultilocusGenotype.
+		 */
+		map<unsigned int, unsigned int> countHeterozygous(unsigned int locus_position) const throw (IndexOutOfBoundsException);
+
+		/**
+		 * @brief Count how many times each allele is found in an heterozygous MonolocusGenotype in one group.
+		 *
+		 * @throw IndexOutOfBoundsException if locus_position excedes the number of loci of one MultilocusGenotype.
+		 * @throw GroupNotFoundException if group is not found in the container.
+		 */
+		map<unsigned int, unsigned int> countHeterozygous(unsigned int locus_position, unsigned int group) const throw (Exception);
 
 	protected:
 		vector<MultilocusGenotype *> _multilocusGenotypes;

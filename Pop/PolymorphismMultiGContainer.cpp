@@ -68,6 +68,13 @@ unsigned int PolymorphismMultiGContainer::getGroup(unsigned int position) const 
 	return _groups[position];
 }
 
+bool PolymorphismMultiGContainer::groupExists(unsigned int group) const {
+	for (unsigned int i = 0 ; i < size() ; i++)
+		if (_groups[i] == group)
+			return true;
+	return false;
+}
+
 unsigned int PolymorphismMultiGContainer::size() const {
 	return _multilocusGenotypes.size();
 }
@@ -77,4 +84,144 @@ void PolymorphismMultiGContainer::clear() {
 		delete _multilocusGenotypes[i];
 	_multilocusGenotypes.clear();
 	_groups.clear();
+}
+
+map<unsigned int, unsigned int> PolymorphismMultiGContainer::countAlleles(unsigned int locus_position) const throw (IndexOutOfBoundsException) {
+	map<unsigned int, unsigned int> counter;
+	for (unsigned int i = 0 ; i < size() ; i++) {
+		try {
+			if (! _multilocusGenotypes[i]->isMonolocusGenotypeMissing(locus_position)) {
+				vector<unsigned int> tmp_alleles = _multilocusGenotypes[i]->getMonolocusGenotype(locus_position)->getAlleleIndex();
+				for (unsigned int j = 0 ; j < tmp_alleles.size() ; j++) counter[tmp_alleles[j]]++;
+			}
+		}
+		catch (IndexOutOfBoundsException & ioobe) {
+			throw IndexOutOfBoundsException("PolymorphismMultiGContainer::countAlleles: locus_position out of bounds.", ioobe.getBadInteger(), ioobe.getBounds()[0], ioobe.getBounds()[1]);
+		}
+	}
+	return counter;
+}
+
+map<unsigned int, unsigned int> PolymorphismMultiGContainer::countAlleles(unsigned int locus_position, unsigned int group) const throw (Exception) {
+	if (! groupExists(group))
+		throw GroupNotFoundException("PolymorphismMultiGContainer::countAlleles: group not found.", group);
+	map<unsigned int, unsigned int> counter;
+	for (unsigned int i = 0 ; i < size() ; i++) {
+		try {
+			if (! _multilocusGenotypes[i]->isMonolocusGenotypeMissing(locus_position) && _groups[i] == group) {
+				vector<unsigned int> tmp_alleles = _multilocusGenotypes[i]->getMonolocusGenotype(locus_position)->getAlleleIndex();
+				for (unsigned int j = 0 ; j < tmp_alleles.size() ; j++) counter[tmp_alleles[j]]++;
+			}
+		}
+		catch (IndexOutOfBoundsException & ioobe) {
+			throw IndexOutOfBoundsException("PolymorphismMultiGContainer::countAlleles: locus_position out of bounds.", ioobe.getBadInteger(), ioobe.getBounds()[0], ioobe.getBounds()[1]);
+		}
+	}
+	return counter;
+}
+
+unsigned int PolymorphismMultiGContainer::countNonMissing(unsigned int locus_position) const throw (IndexOutOfBoundsException) {
+	unsigned int counter = 0;
+	for (unsigned int i = 0 ; i < size() ; i++) {
+		try {
+			if (! _multilocusGenotypes[i]->isMonolocusGenotypeMissing(locus_position))
+				counter++;
+		}
+		catch (IndexOutOfBoundsException & ioobe) {
+			throw IndexOutOfBoundsException("PolymorphismMultiGContainer::countNonMissing: locus_position out of bounds.", ioobe.getBadInteger(), ioobe.getBounds()[0], ioobe.getBounds()[1]);
+		}
+	}
+	return counter;
+}
+
+unsigned int PolymorphismMultiGContainer::countNonMissing(unsigned int locus_position, unsigned int group) const throw (Exception) {
+	if (! groupExists(group))
+		throw GroupNotFoundException("PolymorphismMultiGContainer::countNonMissing: group not found.", group);
+	unsigned int counter = 0;
+	for (unsigned int i = 0 ; i < size() ; i++) {
+		try {
+			if (! _multilocusGenotypes[i]->isMonolocusGenotypeMissing(locus_position) && _groups[i] == group)
+				counter++;
+		}
+		catch (IndexOutOfBoundsException & ioobe) {
+			throw IndexOutOfBoundsException("PolymorphismMultiGContainer::countNonMissing: locus_position out of bounds.", ioobe.getBadInteger(), ioobe.getBounds()[0], ioobe.getBounds()[1]);
+		}
+	}
+	return counter;
+}
+
+unsigned int PolymorphismMultiGContainer::countBiAllelic(unsigned int locus_position) const throw (IndexOutOfBoundsException) {
+	unsigned int counter = 0;
+	for (unsigned int i = 0 ; i < size() ; i++) {
+		try {
+			if (! _multilocusGenotypes[i]->isMonolocusGenotypeMissing(locus_position))
+				if ((_multilocusGenotypes[i]->getMonolocusGenotype(locus_position)->getAlleleIndex()).size() == 2)
+					counter++;
+		}
+		catch (IndexOutOfBoundsException & ioobe) {
+			throw IndexOutOfBoundsException("PolymorphismMultiGContainer::countBiAllelic: locus_position out of bounds.", ioobe.getBadInteger(), ioobe.getBounds()[0], ioobe.getBounds()[1]);
+		}
+	}
+	return counter;
+}
+
+unsigned int PolymorphismMultiGContainer::countBiAllelic(unsigned int locus_position, unsigned int group) const throw (Exception) {
+	if (! groupExists(group))
+		throw GroupNotFoundException("PolymorphismMultiGContainer::countBiAllelic: group not found.", group);
+	unsigned int counter = 0;
+	for (unsigned int i = 0 ; i < size() ; i++) {
+		try {
+			if (! _multilocusGenotypes[i]->isMonolocusGenotypeMissing(locus_position) && _groups[i] == group)
+				if ((_multilocusGenotypes[i]->getMonolocusGenotype(locus_position)->getAlleleIndex()).size() == 2)
+					counter++;
+		}
+		catch (IndexOutOfBoundsException & ioobe) {
+			throw IndexOutOfBoundsException("PolymorphismMultiGContainer::countBiAllelic: locus_position out of bounds.", ioobe.getBadInteger(), ioobe.getBounds()[0], ioobe.getBounds()[1]);
+		}
+	}
+	return counter;
+}
+
+map<unsigned int, unsigned int> PolymorphismMultiGContainer::countHeterozygous(unsigned int locus_position) const throw (IndexOutOfBoundsException) {
+	map<unsigned int, unsigned int> counter;
+	for (unsigned int i = 0 ; i < size() ; i++) {
+		try {
+			if (! _multilocusGenotypes[i]->isMonolocusGenotypeMissing(locus_position)) {
+				const MonolocusGenotype * tmp_mg = _multilocusGenotypes[i]->getMonolocusGenotype(locus_position);
+				if ((tmp_mg->getAlleleIndex()).size() == 2) {
+					if (! dynamic_cast<const BiAlleleMonolocusGenotype *>(tmp_mg)->isHomozygous()) {
+						vector<unsigned int> tmp_alleles = tmp_mg->getAlleleIndex();
+						for (unsigned int j = 0 ; j < tmp_alleles.size() ; j++) counter[tmp_alleles[j]]++;
+					}
+				}
+			}
+		}
+		catch (IndexOutOfBoundsException & ioobe) {
+			throw IndexOutOfBoundsException("PolymorphismMultiGContainer::countHeterozygous: locus_position out of bounds.", ioobe.getBadInteger(), ioobe.getBounds()[0], ioobe.getBounds()[1]);
+		}
+	}
+	return counter;
+}
+
+map<unsigned int, unsigned int> PolymorphismMultiGContainer::countHeterozygous(unsigned int locus_position, unsigned int group) const throw (Exception) {
+	if (! groupExists(group))
+		throw GroupNotFoundException("PolymorphismMultiGContainer::countHeterozygous: group not found.", group);
+	map<unsigned int, unsigned int> counter;
+	for (unsigned int i = 0 ; i < size() ; i++) {
+		try {
+			if (! _multilocusGenotypes[i]->isMonolocusGenotypeMissing(locus_position) && _groups[i] == group) {
+				const MonolocusGenotype * tmp_mg = _multilocusGenotypes[i]->getMonolocusGenotype(locus_position);
+				if ((tmp_mg->getAlleleIndex()).size() == 2) {
+					if (! dynamic_cast<const BiAlleleMonolocusGenotype *>(tmp_mg)->isHomozygous()) {
+						vector<unsigned int> tmp_alleles = tmp_mg->getAlleleIndex();
+						for (unsigned int j = 0 ; j < tmp_alleles.size() ; j++) counter[tmp_alleles[j]]++;
+					}
+				}
+			}
+		}
+		catch (IndexOutOfBoundsException & ioobe) {
+			throw IndexOutOfBoundsException("PolymorphismMultiGContainer::countHeterozygous: locus_position out of bounds.", ioobe.getBadInteger(), ioobe.getBounds()[0], ioobe.getBounds()[1]);
+		}
+	}
+	return counter;
 }
