@@ -31,11 +31,11 @@ throw (IndexOutOfBoundsException) {
 }
 
 const LocusInfo * AnalyzedLoci::getLocusInfoByName(const string & locus_name) const
-throw (LocusInfoNotFoundException) {
+throw (BadIdentifierException) {
 	for (unsigned int i = 0 ; i < _loci.size() ; i++)
 		if (_loci[i] != NULL && _loci[i]->getName() == locus_name)
 			return _loci[i];
-	throw LocusInfoNotFoundException("AnalyzedLoci::getLocusInfo: locus not found.",
+	throw BadIdentifierException("AnalyzedLoci::getLocusInfo: locus not found.",
 			locus_name);
 }
 
@@ -67,7 +67,7 @@ throw (Exception) {
 		}
 	}
 	if (!locus_found)
-		throw LocusInfoNotFoundException("AnalyzedLoci::addAlleleInfo: locus not found.",
+		throw BadIdentifierException("AnalyzedLoci::addAlleleInfo: locus not found.",
 				locus_name);
 }
 
@@ -100,11 +100,11 @@ vector<unsigned int> AnalyzedLoci::getNumberOfAlleles() const {
 }
 
 unsigned int AnalyzedLoci::getPloidyByLocusName(const string & locus_name) const
-throw (LocusInfoNotFoundException) {
+throw (BadIdentifierException) {
 	for (unsigned int i = 0 ; i < _loci.size() ; i++)
 		if (_loci[i] != NULL && _loci[i]->getName() == locus_name)
 			return _loci[i]->getPloidy();
-	throw LocusInfoNotFoundException("AnalyzedLoci::getLocusInfo: locus not found.",
+	throw BadIdentifierException("AnalyzedLoci::getLocusInfo: locus not found.",
 			locus_name);
 }
 

@@ -17,7 +17,7 @@ using namespace std;
 
 // From local
 #include "LocusInfo.h"
-#include "LocusInfoContainerExceptions.h"
+#include "GeneralExceptions.h"
 
 /**
  * @brief The AnalyzedLoci class.
@@ -49,7 +49,7 @@ class AnalyzedLoci {
 		 * @brief Get a LocusInfo by name.
 		 */
 		const LocusInfo * getLocusInfoByName(const string & locus_name) const
-			throw (LocusInfoNotFoundException);
+			throw (BadIdentifierException);
 
 		/**
 		 * @brief Get a LocusInfo by index.
@@ -85,7 +85,7 @@ class AnalyzedLoci {
 		 * @brief Get the ploidy of a locus by name.
 		 */
 		unsigned int getPloidyByLocusName(const string & locus_name) const
-			throw (LocusInfoNotFoundException);
+			throw (BadIdentifierException);
 
 		/**
 		 * @brief Get the ploidy of a locus by index.

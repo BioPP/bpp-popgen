@@ -15,7 +15,7 @@ using namespace std;
 
 // From local Poplib
 #include "AlleleInfo.h"
-#include "AlleleInfoContainerExceptions.h"
+#include "GeneralExceptions.h"
 
 // From Utils
 #include <Utils/Exceptions.h>
@@ -67,7 +67,7 @@ class LocusInfo {
 		/**
 		 * @brief Retrieve an AlleleInfo object of the LocusInfo.
 		 */
-		AlleleInfo * getAlleleInfoById(unsigned int id) const throw (AlleleInfoNotFoundException);
+		AlleleInfo * getAlleleInfoById(unsigned int id) const throw (BadIdentifierException);
 
 		/**
 		 * @brief Retrieve an AlleleInfo object of the LocusInfo.
@@ -78,7 +78,7 @@ class LocusInfo {
 		 * @brief Get the position of an AlleleInfo.
 		 */
 		unsigned int getAlleleInfoKey(unsigned int id) const
-			throw (AlleleInfoNotFoundException);
+			throw (BadIdentifierException);
 		
 		/**
 		 * @brief Get the number of alleles at this locus.

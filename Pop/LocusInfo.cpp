@@ -8,7 +8,7 @@
 #include <Utils/TextTools.h>
 
 #include "LocusInfo.h"
-#include "LocusInfoContainerExceptions.h"
+#include "GeneralExceptions.h"
 
 unsigned int LocusInfo::HAPLODIPLOID = 0;
 unsigned int LocusInfo::HAPLOID = 1;
@@ -57,13 +57,13 @@ void LocusInfo::addAlleleInfo(const AlleleInfo &allele) throw (Exception) {
 }
 
 AlleleInfo * LocusInfo::getAlleleInfoById(unsigned int id) const
-throw (AlleleInfoNotFoundException) {
+throw (BadIdentifierException) {
 	for (map<unsigned int, AlleleInfo *>::const_iterator it = _alleles.begin() ;
 			it != _alleles.end() ; it++) {
 		if (it->second->getId() == id)
 			return it->second;
 	}
-	throw AlleleInfoNotFoundException("LocusInfo::getAlleleInfoById: AlleleInfo id unknown.", id);
+	throw BadIdentifierException("LocusInfo::getAlleleInfoById: AlleleInfo id unknown.", id);
 }
 
 AlleleInfo * LocusInfo::getAlleleInfoByKey(unsigned int key) const throw (BadIntegerException) {
@@ -74,13 +74,13 @@ AlleleInfo * LocusInfo::getAlleleInfoByKey(unsigned int key) const throw (BadInt
 }
 
 unsigned int LocusInfo::getAlleleInfoKey(unsigned int id) const
-throw (AlleleInfoNotFoundException) {
+throw (BadIdentifierException) {
 	for (map<unsigned int, AlleleInfo *>::const_iterator it = _alleles.begin() ;
 			it != _alleles.end() ; it++) {
 		if (it->second->getId() == id)
 			return it->first;
 	}
-	throw AlleleInfoNotFoundException("LocusInfo::getAlleleInfoPosition: AlleleInfo id unknown.",
+	throw BadIdentifierException("LocusInfo::getAlleleInfoPosition: AlleleInfo id unknown.",
 			id);
 }
 
