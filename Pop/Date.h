@@ -1,7 +1,7 @@
 /*
  * File Date.h
  * Author : Sylvain Gaillard <yragael2001@yahoo.fr>
- * Last modification : Wednesday April 28 2004
+ * Last modification : Thursday April 29 2004
  */
 
 // Secured inclusion of header's file
@@ -14,7 +14,7 @@
 /**
  * @brief The Date class
  *
- * This is a littleclass to deal with the dates.
+ * This is a little class to deal with dates.
  */
 class Date : public Clonable {
 	public: // Constructors and destructor
@@ -56,21 +56,31 @@ class Date : public Clonable {
 
 		/**
 		 * @brief Set the Date.
+		 *
+		 * @param day The day as an integer between 1 and 31.
+		 * @param month The month as an integer between 1 and 12.
+		 * @param year The year as an integer.
 		 */
 		void setDate(const int day, const int month, const int year);
 
 		/**
 		 * @brief Set the year.
+		 *
+		 * @param year The year as an integer.
 		 */
 		void setYear(const int year);
 
 		/**
 		 * @brief Set the month.
+		 *
+		 * @param month The month as an integer between 1 and 12.
 		 */
 		void setMonth(const int month);
 
 		/**
 		 * @brief Set the day.
+		 *
+		 * @param day The day as an integer between 1 and 31.
 		 */
 		void setDay(const int day);
 
@@ -83,6 +93,8 @@ class Date : public Clonable {
 
 		/**
 		 * @brief Get the Date as a string.
+		 *
+		 * @return The date as a string DDMMYYYY (i.e. January 1 2000 : 01012000).
 		 */
 		string getDateStr() const;
 
