@@ -44,13 +44,16 @@ PolymorphismSequenceContainer * PolymorphismSequenceContainerTools::extractIngro
 	SequenceSelection ss;	
 	PolymorphismSequenceContainer *psci = dynamic_cast<PolymorphismSequenceContainer *>(psc.clone());
 	for(unsigned int i = 0; i < psc.getNumberOfSequences(); i++) {
-		if ( psc.isIngroupMember(i) ) {
+		if (! psc.isIngroupMember(i) ) {
 			ss.push_back(i);
 		}
 	}
+	/*
 	SequenceContainerTools::keepOnlySelectedSequences(
 		* dynamic_cast<const OrderedSequenceContainer *>(
 			dynamic_cast<const SiteContainer *>(psci)), ss );
+	*/
+	for(unsigned int i = ss.size() - 1; i <= 0; i--) {psci->deleteSequence(ss[i]);}
 	return( psci );
 	} catch(...) {}
 }
