@@ -32,6 +32,7 @@
 #include <ctype.h>
 #include <cmath>
 #include <iostream>
+#include <math>
 
 
 using namespace std;
@@ -44,6 +45,13 @@ using namespace std;
 #include <Seq/DNA.h>
 #include <Seq/StandardCodonAlphabet.h>
 #include <Seq/StandardGeneticCode.h>
+
+// from NumCalc
+#include <NumCalc/VectorTools.h>
+using namespace VectorOperators;
+using namespace VectorFunctions;
+using namespace VectorStatTools;
+
 
 SequenceStatistics::~SequenceStatistics() {}
 
@@ -169,6 +177,9 @@ unsigned int SequenceStatistics::totNumberMutations(const PolymorphismSequenceCo
 	return tnm;
 }
 
+//******************************************************************************************************************
+//GC statistics
+//******************************************************************************************************************
 
 // Method to compute mean GC content in an alignement
 // Return: mean GC content
@@ -180,6 +191,35 @@ double SequenceStatistics::GCcontent(const PolymorphismSequenceContainer & psc) 
 }
 
 
+
+//Method that gives the number of GC alleles and the total number of allele at polymorphic sites
+//G vs C and A vs T polymorphism are not taken into account
+//Return: a vector with the total number of alleles and the number of GC alleles
+vector<unsigned int> SequenceStatistics::GCpolymorphism(const PolymorphismSequenceContainer & psc, bool stopflag) {
+	unsigned int nbMut = 0;
+	unsigned int nbGC = 0;
+	const unsigned int nbSeq = psc.getNumberOfSequences();
+	vector<unsigned int> vect(2);
+	const Site * site;
+	SiteIterator * si = NULL;
+    if(stopflag) si = new CompleteSiteIterator(psc);
+    else si = new NoGapSiteIterator(psc);
+	while (si->hasMoreSites()) {
+		site = si->nextSite();
+		if(!SiteTools::isConstant(*site)) {
+        	double freqGC = StringSequenceTools::getGCcontent(site->toString(),0, nbSeq);
+			if(freqGC > 0 && freqGC < 1) {
+                                nbMut += (unsigned int) nbSeq;
+                                double adGC = freqGC*nbSeq;
+				nbGC += (unsigned int)adGC;
+			}
+		}
+	}
+	vect[0]=nbMut;
+	vect[1]=nbGC;
+    delete si;
+    return vect;
+}
 
 
 
@@ -555,8 +595,6 @@ double SequenceStatistics::meanSynonymousSitesNumber(const SiteContainer & v, do
 }
 
 
-
-
 //******************************************************************************************************************
 //Statistical tests
 //******************************************************************************************************************
@@ -667,7 +705,394 @@ double SequenceStatistics::fuliFstar(const PolymorphismSequenceContainer & group
 }
 
 
+//******************************************************************************************************************
+//Linkage disequilibrium statistics
+//******************************************************************************************************************
 
+
+
+	/**********************/
+	/* Preliminary method */
+	/**********************/
+
+// Create a PolymorphismSequenceContainer with only polymorphic site and 0 (less frequent) and 1 (more frequent) alleles
+// This psc is needed to compute Linkage Disequilibrium Statistics in the class SequenceStatistics
+// Should be used before excluding gaps, but sites with gaps are not counted as polymorphic sites
+// Singleton can be excluded
+// Polymorphix site with the lowest frequency < threshold can be excluded
+PolymorphismSequenceContainer * SequenceStatistics::GenerateLDContainer(const PolymorphismSequenceContainer & psc, bool keepsingleton, double freqmin) throw (Exception) {
+	try {
+                SiteSelection ss;
+		// Extract polymorphic site with only two alleles
+		for(unsigned int i=0; i<psc.getNumberOfSites(); i++){
+			if(keepsingleton) {
+				if(SiteTools::isComplete(*psc.getSite(i)) && !SiteTools::isConstant(*psc.getSite(i)) && !SiteTools::isTriplet(*psc.getSite(i))){
+					ss.push_back(i);
+				}
+			}
+			else{
+				if(SiteTools::isComplete(*psc.getSite(i)) && !SiteTools::isConstant(*psc.getSite(i)) && !SiteTools::isTriplet(*psc.getSite(i)) && !SiteTools::hasSingleton(*psc.getSite(i))){
+					ss.push_back(i);
+				}
+                        }
+		}
+
+		const SiteContainer* sc = SiteContainerTools::getSelectedSites(psc,ss);
+                Alphabet* alpha = new DNA();
+		PolymorphismSequenceContainer *ldpsc = new PolymorphismSequenceContainer(sc->getNumberOfSequences(),alpha);
+		// Assign 1 to the more frequent and 0 to the less frequent alleles
+		for(unsigned int i=0; i<sc->getNumberOfSites(); i++){
+			const Site* site = sc->getSite(i);
+			bool deletesite = false;
+			map<int, double> freqs = SymbolListTools::getFrequencies(*site);
+			for(unsigned int j=0; j<sc->getNumberOfSequences(); j++){
+				if(freqs[site->getValue(j)]>=0.5){
+					if(freqs[site->getValue(j)]<1-freqmin) site->setElement(j,1);
+					else deletesite = true;
+				}
+				else site->setElement(j,0);
+			}
+                        if(!deletesite)	ldpsc->addSite(*site);
+		}
+                delete alpha;
+		return ldpsc;
+		}
+	catch(...) {}
+
+}
+
+
+	/*************************************/
+	/* Pairwise LD and distance measures */
+	/*************************************/
+
+// Return a vector with the pairwise distances between site positions corresponding to a LD PolymorphismSequenceContainer
+// All sequences are supposed to have the same length
+Vdouble SequenceStatistics::PairwiseDistances1(const PolymorphismSequenceContainer & psc,bool keepsingleton, double freqmin){
+	//get Positions with sites of interest
+	SiteSelection ss;
+	for(unsigned int i=0; i<psc.getNumberOfSites(); i++){
+		if(keepsingleton) {
+			if(SiteTools::isComplete(*psc.getSite(i)) && !SiteTools::isConstant(*psc.getSite(i)) && !SiteTools::isTriplet(*psc.getSite(i))){
+				const Site* site = psc.getSite(i);
+				bool deletesite = false;
+				map<int, double> freqs = SymbolListTools::getFrequencies(*site);
+				for(unsigned int j=0; j<site->getAlphabet()->getSize(); j++){
+					if(freqs[j]>=1-freqmin) deletesite = true;
+				}
+				if(!deletesite) ss.push_back(i);
+			}
+		}
+		else{
+			if(SiteTools::isComplete(*psc.getSite(i)) && !SiteTools::isConstant(*psc.getSite(i)) && !SiteTools::isTriplet(*psc.getSite(i)) && !SiteTools::hasSingleton(*psc.getSite(i))){
+				ss.push_back(i);
+				const Site* site = psc.getSite(i);
+				bool deletesite = false;
+				map<int, double> freqs = SymbolListTools::getFrequencies(*site);
+				for(unsigned int j=0; j<site->getAlphabet()->getSize(); j++){
+					if(freqs[j]>=1-freqmin) deletesite = true;
+				}
+				if(!deletesite) ss.push_back(i);
+			}
+                }
+	}
+	//compute pairwise distances
+	Vdouble dist;
+        if(ss.size()==0) return dist;
+	for(unsigned int i=0; i<ss.size()-1; i++){
+		for(unsigned int j=i+1; j<ss.size(); j++){
+			dist.push_back(ss[j]-ss[i]);
+		}
+	}
+	return dist;
+}
+
+
+
+// Return a vector with all the pairwise distances between two sites corresponding to a LD PolymorphismSequenceContainer
+// This method take into account the fact that sequences may differ by their number of gaps
+// Pairwise distance are computed for each sequence. The mean pairwise distance is then computed.
+Vdouble SequenceStatistics::PairwiseDistances2(const PolymorphismSequenceContainer & psc, bool keepsingleton, double freqmin){
+	SiteSelection ss;
+	for(unsigned int i=0; i<psc.getNumberOfSites(); i++){
+		if(keepsingleton) {
+			if(SiteTools::isComplete(*psc.getSite(i)) && !SiteTools::isConstant(*psc.getSite(i)) && !SiteTools::isTriplet(*psc.getSite(i))){
+				const Site* site = psc.getSite(i);
+				bool deletesite = false;
+				map<int, double> freqs = SymbolListTools::getFrequencies(*site);
+				for(unsigned int j=0; j<site->getAlphabet()->getSize(); j++){
+					if(freqs[j]>=1-freqmin) deletesite = true;
+				}
+				if(!deletesite) ss.push_back(i);
+			}
+		}
+		else{
+			if(SiteTools::isComplete(*psc.getSite(i)) && !SiteTools::isConstant(*psc.getSite(i)) && !SiteTools::isTriplet(*psc.getSite(i)) && !SiteTools::hasSingleton(*psc.getSite(i))){
+				ss.push_back(i);
+				const Site* site = psc.getSite(i);
+				bool deletesite = false;
+				map<int, double> freqs = SymbolListTools::getFrequencies(*site);
+				for(unsigned int j=0; j<site->getAlphabet()->getSize(); j++){
+					if(freqs[j]>=1-freqmin) deletesite = true;
+				}
+				if(!deletesite) ss.push_back(i);
+			}
+                }
+	}
+	unsigned int n = ss.size();
+	Vdouble distance(n*(n-1)/2,0);
+        if(n==0) return distance;
+	unsigned int nbsite = psc.getNumberOfSites();
+	for(unsigned int k=0; k<psc.getNumberOfSequences(); k++){
+		const Sequence* seq = psc.getSequence(k);
+		SiteSelection gap, newss = ss;
+                Vdouble dist;
+		for(unsigned int i=0; i<nbsite; i++){
+			if(seq->getValue(i)==-1) gap.push_back(i);
+		}
+		//Site positions are re-numbered to take gaps into account
+		for(unsigned int i=0; i<gap.size(); i++){
+			for(unsigned int j=0; j<ss.size(); j++){
+				if(ss[j]>gap[i]) newss[j]--;
+			}
+		}
+		for(unsigned int i=0; i<n-1; i++){
+			for(unsigned int j=i+1; j<n; j++){
+				dist.push_back(newss[j]-newss[i]);
+			}
+		}
+		distance += dist;
+	}
+	distance = distance/psc.getNumberOfSequences();
+	return distance;
+}
+
+// Return a vector with all pairwise |D| measures between 2 sites (Lewontin & Kojima 1964)
+Vdouble SequenceStatistics::PairwiseD(const PolymorphismSequenceContainer & psc, bool keepsingleton, double freqmin) {
+	PolymorphismSequenceContainer* newpsc = SequenceStatistics::GenerateLDContainer(psc, keepsingleton,  freqmin);
+	Vdouble D;
+	unsigned int nbsite = newpsc->getNumberOfSites();
+	unsigned int nbseq = newpsc->getNumberOfSequences();
+        if(nbsite==0) return D;
+	for(unsigned int i=0; i<nbsite-1; i++){
+		for(unsigned int j=i+1; j<nbsite; j++){
+			double haplo=0;
+			const Site* site1 = newpsc->getSite(i);
+			const Site* site2 = newpsc->getSite(j);
+			map<int,double> freq1 = SymbolListTools::getFrequencies(*site1);
+			map<int,double> freq2 = SymbolListTools::getFrequencies(*site2);
+			for(unsigned int k=0; k<nbseq; k++){
+				if(site1->getValue(k) + site2->getValue(k)==2) haplo++;
+			}
+			haplo = haplo/nbseq;
+			D.push_back(std::abs(haplo-freq1[1]*freq2[1]));
+		}
+	}
+	return D;
+}
+
+
+
+// Return a vector with all pairwise |D'| measures between 2 sites (Lewontin 1964)
+Vdouble SequenceStatistics::PairwiseDprime(const PolymorphismSequenceContainer & psc, bool keepsingleton, double freqmin) {
+	PolymorphismSequenceContainer* newpsc = SequenceStatistics::GenerateLDContainer(psc, keepsingleton, freqmin);
+	Vdouble Dprime;
+	unsigned int nbsite = newpsc->getNumberOfSites();
+	unsigned int nbseq = newpsc->getNumberOfSequences();
+        if(nbsite==0) return Dprime;
+	for(unsigned int i=0; i<nbsite-1; i++){
+		for(unsigned int j=i+1; j<nbsite; j++){
+			double haplo=0;
+			const Site* site1 = newpsc->getSite(i);
+			const Site* site2 = newpsc->getSite(j);
+			map<int,double> freq1 = SymbolListTools::getFrequencies(*site1);
+			map<int,double> freq2 = SymbolListTools::getFrequencies(*site2);
+			for(unsigned int k=0; k<nbseq; k++){
+				if(site1->getValue(k) + site2->getValue(k)==2) haplo++;
+			}
+			haplo = haplo/nbseq;
+			double d, D = (haplo-freq1[1]*freq2[1]);
+			if(D>0){
+				if(freq1[1]*freq2[0]<=freq1[0]*freq2[1]){
+					d=std::abs(D)/(freq1[1]*freq2[0]);
+				}
+				else{
+					d=std::abs(D)/(freq1[0]*freq2[1]);
+				}
+			}
+			else{
+				if(freq1[1]*freq2[1]<=freq1[0]*freq2[0]){
+					d=std::abs(D)/(freq1[1]*freq2[1]);
+				}
+				else{
+					d=std::abs(D)/(freq1[0]*freq2[0]);
+				}
+			}
+			Dprime.push_back(d);
+		}
+	}
+	return Dprime;
+}
+
+
+// Return a vector with all pairwise R� measures between 2 sites (Hill & Robertson 1968)
+Vdouble SequenceStatistics::PairwiseR2(const PolymorphismSequenceContainer & psc, bool keepsingleton, double freqmin) {
+	PolymorphismSequenceContainer* newpsc = SequenceStatistics::GenerateLDContainer(psc, keepsingleton, freqmin);
+	Vdouble R2;
+	unsigned int nbsite = newpsc->getNumberOfSites();
+        if(nbsite==0) return R2;
+	unsigned int nbseq = newpsc->getNumberOfSequences();
+	for(unsigned int i=0; i<nbsite-1; i++){
+		for(unsigned int j=i+1; j<nbsite; j++){
+			double haplo=0;
+			const Site* site1 = newpsc->getSite(i);
+			const Site* site2 = newpsc->getSite(j);
+			map<int,double> freq1 = SymbolListTools::getFrequencies(*site1);
+			map<int,double> freq2 = SymbolListTools::getFrequencies(*site2);
+			for(unsigned int k=0; k<nbseq; k++){
+				if(site1->getValue(k) + site2->getValue(k)==2) haplo++;
+			}
+			haplo = haplo/nbseq;
+			double r = ((haplo-freq1[1]*freq2[1])*(haplo-freq1[1]*freq2[1]))/(freq1[0]*freq1[1]*freq2[0]*freq2[1]);
+			R2.push_back(r);
+		}
+	}
+	return R2;
+}
+
+
+
+
+	/***********************************/
+	/* Global LD and distance measures */
+	/***********************************/
+
+
+//Return the mean D over all pairwise comparisons
+double SequenceStatistics::MeanD(const PolymorphismSequenceContainer & psc, bool keepsingleton, double freqmin){
+	Vdouble D = SequenceStatistics::PairwiseD(psc,keepsingleton,freqmin);
+	return mean(D);
+}
+
+//Return the mean D' over all pairwise comparisons
+double SequenceStatistics::MeanDprime(const PolymorphismSequenceContainer & psc, bool keepsingleton, double freqmin){
+	Vdouble Dprime = SequenceStatistics::PairwiseDprime(psc,keepsingleton,freqmin);
+	return mean(Dprime);
+}
+
+//Return the mean R� over all pairwise comparisons
+double SequenceStatistics::MeanR2(const PolymorphismSequenceContainer & psc, bool keepsingleton, double freqmin){
+	Vdouble R2 = SequenceStatistics::PairwiseR2(psc,keepsingleton,freqmin);
+	return mean(R2);
+}
+
+//Return the mean pairwise distances between sites / method 1: differences between sequences are not taken into account
+double SequenceStatistics::MeanDistance1(const PolymorphismSequenceContainer & psc, bool keepsingleton, double freqmin){
+	Vdouble dist = PairwiseDistances1(psc,keepsingleton,freqmin);
+	return mean(dist);
+}
+
+//Return the mean pairwise distances between sites / method 2: differences between sequences are taken into account
+double SequenceStatistics::MeanDistance2(const PolymorphismSequenceContainer & psc, bool keepsingleton, double freqmin){
+	Vdouble dist = SequenceStatistics::PairwiseDistances2(psc,keepsingleton,freqmin);
+	return mean(dist);
+}
+
+	/**********************/
+	/* Regression methods */
+	/**********************/
+
+
+// Return the slope,a, of the regression |D| = 1+a*distance
+// The slope is given in |D'| per kb
+// Distance1 or distance2 are chose through the boolean distance1 (false by default)
+double SequenceStatistics::OriginRegressionD(const PolymorphismSequenceContainer & psc, bool distance1, bool keepsingleton, double freqmin){
+        Vdouble D = SequenceStatistics::PairwiseD(psc,keepsingleton,freqmin)-1;
+        Vdouble dist;
+        if(distance1) dist = PairwiseDistances1(psc,keepsingleton,freqmin)/1000;
+        else  dist = PairwiseDistances2(psc,keepsingleton,freqmin)/1000;
+        return sum(D*dist)/sum(dist*dist);
+}
+
+
+// Return the slope of the regression |D'| = 1+a*distance
+// The slope is given in |D'| per kb
+// Distance1 or distance2 are chose through the boolean distance1 (false by default)
+double SequenceStatistics::OriginRegressionDprime(const PolymorphismSequenceContainer & psc, bool distance1, bool keepsingleton, double freqmin){
+        Vdouble Dprime = SequenceStatistics::PairwiseDprime(psc,keepsingleton,freqmin)-1;
+        Vdouble dist;
+        if(distance1) dist = PairwiseDistances1(psc,keepsingleton,freqmin)/1000;
+        else  dist = PairwiseDistances2(psc,keepsingleton,freqmin)/1000;
+        return sum(Dprime*dist)/sum(dist*dist);
+}
+
+// Return the slope of the regression R� = 1+a*distance
+// The slope is given in R� per kb
+// Distance1 or distance2 are chose through the boolean distance1 (false by default)
+double SequenceStatistics::OriginRegressionR2(const PolymorphismSequenceContainer & psc, bool distance1, bool keepsingleton, double freqmin){
+        Vdouble R2 = SequenceStatistics::PairwiseR2(psc,keepsingleton,freqmin)-1;
+        Vdouble dist;
+        if(distance1) dist = PairwiseDistances1(psc,keepsingleton,freqmin)/1000;
+        else  dist = PairwiseDistances2(psc,keepsingleton,freqmin)/1000;
+        return sum(R2*dist)/sum(dist*dist);
+}
+
+// Return the slope and the origin of the regression |D| = a*distance + b
+// The slope is given in |D| per kb
+// Distance1 or distance2 are chose through the boolean distance1 (false by default)
+Vdouble SequenceStatistics::LinearRegressionD(const PolymorphismSequenceContainer & psc, bool distance1, bool keepsingleton, double freqmin){
+        Vdouble D = SequenceStatistics::PairwiseD(psc,keepsingleton,freqmin);
+        Vdouble dist;
+        Vdouble reg(2);
+        if(distance1) dist = PairwiseDistances1(psc,keepsingleton,freqmin)/1000;
+        else  dist = PairwiseDistances2(psc,keepsingleton,freqmin)/1000;
+        reg[0]=cov(dist,D)/var(dist);
+        reg[1]=mean(D)-reg[0]*mean(dist);
+        return reg;
+}
+
+// Return the slope and the origin of the regression |D'| = a*distance + b
+// The slope is given in |D'| per kb
+// Distance1 or distance2 are chose through the boolean distance1 (false by default)
+Vdouble SequenceStatistics::LinearRegressionDprime(const PolymorphismSequenceContainer & psc, bool distance1, bool keepsingleton, double freqmin){
+        Vdouble Dprime = SequenceStatistics::PairwiseDprime(psc,keepsingleton,freqmin);
+        Vdouble dist;
+        Vdouble reg(2);
+        if(distance1) dist = PairwiseDistances1(psc,keepsingleton,freqmin)/1000;
+        else  dist = PairwiseDistances2(psc,keepsingleton,freqmin)/1000;
+        reg[0]=cov(dist,Dprime)/var(dist);
+        reg[1]=mean(Dprime)-reg[0]*mean(dist);
+        return reg;
+}
+
+// Return the slope and the origin of the regression R� = a*distance + b
+// The slope is given in R� per kb
+// Distance1 or distance2 are chose through the boolean distance1 (false by default)
+Vdouble SequenceStatistics::LinearRegressionR2(const PolymorphismSequenceContainer & psc, bool distance1, bool keepsingleton, double freqmin){
+        Vdouble R2 = SequenceStatistics::PairwiseR2(psc,keepsingleton,freqmin);
+        Vdouble dist;
+        Vdouble reg(2);
+        if(distance1) dist = PairwiseDistances1(psc,keepsingleton,freqmin)/1000;
+        else  dist = PairwiseDistances2(psc,keepsingleton,freqmin)/1000;
+        reg[0]=cov(dist,R2)/var(dist);
+        reg[1]=mean(R2)-reg[0]*mean(dist);
+        return reg;
+}
+
+
+// Return the slope the regression R� = 1/(1+a*distance)
+// To fit the theoretical expectation R�=1/(1+4Nr)
+// The slope is given in R� per kb
+// Distance1 or distance2 are chose through the boolean distance1 (false by default)
+double SequenceStatistics::InverseRegressionR2(const PolymorphismSequenceContainer & psc, bool distance1, bool keepsingleton, double freqmin){
+        Vdouble R2 = SequenceStatistics::PairwiseR2(psc,keepsingleton,freqmin);
+        Vdouble unit(R2.size(),1);
+        Vdouble R2transformed = unit/R2 -1;
+        Vdouble dist;
+        if(distance1) dist = PairwiseDistances1(psc,keepsingleton,freqmin)/1000;
+        else  dist = PairwiseDistances2(psc,keepsingleton,freqmin)/1000;
+        return sum(R2transformed*dist)/sum(dist*dist);
+}
 
 
 //******************************************************************************************************************
