@@ -1,12 +1,12 @@
 /*
- * File Poplib.h
+ * File PoplibIO.h
  * Author : Sylvain Gaillard <yragael2001@yahoo.fr>
- * Last modification : Tuesday June 24 2004
+ * Last modification : Wednesday July 07 2004
  */
 
 // Secured inclusion of header's file
-#ifndef _POPLIB_H_
-#define _POPLIB_H_
+#ifndef _POPLIBIO_H_
+#define _POPLIBIO_H_
 
 // From Utils
 #include <Utils/TextTools.h>
@@ -22,21 +22,23 @@
 /**
  * @brief The natif I/O format for poplib.
  */
-class Poplib : public AbstractIDataSet, public AbstractODataSet {
-	public: // Constructor and destructor
-		Poplib();
-		Poplib(const string & missing_data, const string & data_separator) throw (Exception);
-		~Poplib();
-
+class PoplibIO : public AbstractIDataSet, public AbstractODataSet {
 	public: // Constantes
 		static const string WHITESPACE;
 		static const string TAB;
+		static const string COMA;
+		static const string SEMICOLON;
+
+	public: // Constructor and destructor
+		PoplibIO();
+		PoplibIO(const string & missing_data_symbol, const string & data_separator) throw (Exception);
+		~PoplibIO();
 
 	public:
 		/**
 		 * @brief Get the code for missing data.
 		 */
-		string getMissingData() const;
+		string getMissingDataSymbol() const;
 
 		/**
 		 * @brief Get the code for data separator.
@@ -61,10 +63,10 @@ class Poplib : public AbstractIDataSet, public AbstractODataSet {
 		 * or a tabulation.
 		 * The default value is '$'.
 		 *
-		 * @throw Excpetion if missing_data is a not allowed character.
-		 * @throw Exception if missing_data contains more than one character.
+		 * @throw Excpetion if missing_data_symbol is a not allowed character.
+		 * @throw Exception if missing_data_symbol contains more than one character.
 		 */
-		void setMissingData(const string & missing_data = "$")
+		void setMissingDataSymbol(const string & missing_data_symbol)
 			throw (Exception);
 
 		/**
@@ -74,13 +76,15 @@ class Poplib : public AbstractIDataSet, public AbstractODataSet {
 		 * character and can't be the same used for coding missing data.
 		 * Most common characters used are:
 		 * <ul><li>the white space: "WHITESPACE"</li>
-		 * <li>the tabulation: "TAB"</li></ul>
+		 * <li>the tabulation: "TAB"</li>
+		 * <li>the coma: "COMA"</li>
+		 * <li>the semicolon: "SEMICOLON"</li></ul>
 		 * The default value is "WHITESPACE".
 		 *
 		 * @throw Exception if data_separator is a not allowed character.
 		 * @throw Exception if data_separator containes more than one character other than the two codes defined upper.
 		 */
-		void setDataSeparator(const string & data_separator = WHITESPACE)
+		void setDataSeparator(const string & data_separator)
 			throw (Exception);
 		
 		/**
@@ -117,8 +121,10 @@ class Poplib : public AbstractIDataSet, public AbstractODataSet {
 		 */
 
 	protected:
-		char _missing_data;
+		char _missing_data_symbol;
 		char _data_separator;
+
+		vector<string> _getValues(string & param_line, const string & delim);
 };
 
-#endif // _POPLIB_H_
+#endif // _POPLIBIO_H_
