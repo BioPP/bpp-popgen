@@ -45,11 +45,13 @@ PolymorphismSequenceContainer::PolymorphismSequenceContainer(const OrderedSequen
 }
 
 PolymorphismSequenceContainer::PolymorphismSequenceContainer(const SiteContainer & sc) : VectorSiteContainer(sc) {
+	Comments comments(1,"");
 	for (unsigned int i = 0 ; i < sc.getNumberOfSequences() ; i++) {
 		_ingroup.push_back(true);
 		_count.push_back(1);
 		_group.push_back(1);
 	}
+        setGeneralComments(comments);
 }
 
 PolymorphismSequenceContainer::PolymorphismSequenceContainer(const PolymorphismSequenceContainer & psc) : VectorSiteContainer(psc) {
@@ -62,6 +64,7 @@ PolymorphismSequenceContainer::PolymorphismSequenceContainer(const PolymorphismS
 		_ingroup[i] = psc.isIngroupMember(i);
 		_group[i] = psc.getGroupId(i);
 	}
+        setGeneralComments(psc.getGeneralComments());	
 }
 
 PolymorphismSequenceContainer & PolymorphismSequenceContainer::operator= (const PolymorphismSequenceContainer & psc) {

@@ -35,6 +35,9 @@
 #include <Seq/SiteIterator.h>
 #include <Seq/SiteTools.h>
 
+// from Utils
+#include <Utils/StringTokenizer.h>
+
 // from STL
 #include <map>
 
@@ -186,6 +189,12 @@ class PolymorphismSequenceContainerTools
    	 */
 	static PolymorphismSequenceContainer * getSelectedSites(const PolymorphismSequenceContainer & psc, const string &setName, bool phase) throw (Exception);
 
+	/**
+	 * @brief Get the species name of the ingroup
+         * 
+	 * @param psc a PolymorphismSequenceContainer.
+   	 */
+	static string getIngroupSpeciesName(const PolymorphismSequenceContainer & psc) throw (Exception);
 
 		/*******************************************************************************/
 };

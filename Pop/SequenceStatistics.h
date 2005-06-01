@@ -242,12 +242,29 @@ class SequenceStatistics
 
 		/**
 		 * @brief Compute the number of synonymous polymorphic codon sites
+		 * @param si a SiteIterator
+		 * @param gc a GeneticCode
+		 */
+		static unsigned int synonymousPolymorphicCodonNumber(SiteIterator & si, const GeneticCode & gc);
+
+		/**
+		 * @brief Compute the number of synonymous polymorphic codon sites
 		 *
 		 * Gaps are automatically excluded
 		 * @param v a SiteContainer
 		 * @param stopflag a boolean set by default to true if you don't want to take stop codons into account
 		 */
 		static unsigned int synonymousPolymorphicCodonNumber(const SiteContainer & v, bool stopflag = true);
+
+		/**
+		 * @brief Compute the number of synonymous polymorphic codon sites
+		 *
+		 * Gaps are automatically excluded
+		 * @param v a SiteContainer
+		 * @param v a GeneticCode
+		 * @param stopflag a boolean set by default to true if you don't want to take stop codons into account
+		 */
+		static unsigned int synonymousPolymorphicCodonNumber(const SiteContainer & v, const GeneticCode & gc,  bool stopflag = true);
 
 		/**
 		 * @brief Compute the synonymous nucleotide diversity, pi
@@ -259,6 +276,14 @@ class SequenceStatistics
 		static double piSynonymous(SiteIterator & si, const CodonAlphabet & ca, const GeneticCode & gc, bool minchange=false);
 
 		/**
+		 * @brief Compute the synonymous nucleotide diversity, pi
+		 * @param si a SiteIterator
+		 * @param gc a GeneticCode
+		 * @param minchange a boolean set to false (see CodonSiteTools)
+		 */
+		static double piSynonymous(SiteIterator & si, const GeneticCode & gc, bool minchange=false);
+
+		/**
 		  * @brief Compute the synonymous nucleotide diversity, pi
 		  *
 		  * Gaps are automatically excluded
@@ -268,6 +293,18 @@ class SequenceStatistics
 		  * @param minchange a boolean set to false (see CodonSiteTools)
 		  */
 		static double piSynonymous(const SiteContainer & v, bool stopflag = true, bool minchange=false);
+
+		/**
+		  * @brief Compute the synonymous nucleotide diversity, pi
+		  *
+		  * Gaps are automatically excluded
+		  * @param v a SiteContainer
+		  * @param gc a GeneticCode
+		  * @param stopfalg a boolean set by default to true if you don't want
+		  * to take gaps into account
+		  * @param minchange a boolean set to false (see CodonSiteTools)
+		  */
+                static double piSynonymous(const SiteContainer & v, const GeneticCode & gc, bool stopflag = true, bool minchange=false);
 
 
 		/**
@@ -281,6 +318,14 @@ class SequenceStatistics
 		static double piNonSynonymous(SiteIterator & si, const NucleicAlphabet & na, const CodonAlphabet & ca, const GeneticCode & gc, bool minchange=false );
 
 		/**
+		 * @brief Compute the non-synonymous nucleotide diversity, pi
+		 * @param si a SiteIterator
+		 * @param gc a GeneticCode
+		 * @param minchange a boolean set to false (see CodonSiteTools)
+		 */
+		static double piNonSynonymous(SiteIterator & si, const GeneticCode & gc, bool minchange=false );
+
+		/**
 		  * @breif Compute the non-synonymous nucleotide diversity, pi
 		  *
 		  * Gaps are automatically excluded
@@ -290,6 +335,17 @@ class SequenceStatistics
 		  */
 		static double piNonSynonymous(const SiteContainer & v, bool stopflag = true, bool minchange=false);
 
+		/**
+		  * @brief Compute the non-synonymous nucleotide diversity, pi
+		  *
+		  * Gaps are automatically excluded
+		  * @param v a SiteContainer
+		  * @param gc a GeneticCode
+		  * @param stopfalg a boolean set by default to true if you don't want
+		  * to take gaps into account
+		  * @param minchange a boolean set to false (see CodonSiteTools)
+		  */
+                static double piNonSynonymous(const SiteContainer & v, const GeneticCode & gc, bool stopflag = true, bool minchange=false);
 
 		/**
 		  * @brief Compute the mean number of synonymous site in an alignment
@@ -306,6 +362,19 @@ class SequenceStatistics
 		static double meanSynonymousSitesNumber(SiteIterator & si, const CodonAlphabet & ca, const GeneticCode & gc, double ratio=1);
 
 		/**
+		  * @brief Compute the mean number of synonymous site in an alignment
+		  *
+		  * A site is x% synonymous if x% of possible mutations are synonymous
+		  * The transition/transversion can be taken into account (use the variable ratio)
+		  * @param si a SiteIterator
+		  * @param gc a GeneticCode
+		  * @param ratio a double set by default to 1 if you assume that
+		  * transition equal transversion
+		  * Return: pi non-synonymous
+		  */
+		static double meanSynonymousSitesNumber(SiteIterator & si, const GeneticCode & gc, double ratio=1) throw(Exception);
+
+		/**
 		  * @brief compute the mean number of synonymous site in an alignment
 		  *
 		  * A site is x% synonymous if x% of possible mutations are synonymous
@@ -317,6 +386,20 @@ class SequenceStatistics
 		  * to take stop codons into account
 		  */
 		static double meanSynonymousSitesNumber(const SiteContainer & v, double ratio=1, bool stopfalg = true);
+
+		/**
+		  * @brief compute the mean number of synonymous site in an alignment
+		  *
+		  * A site is x% synonymous if x% of possible mutations are synonymous
+		  * The transition/transversion can be taken into account (use the variable ratio)
+		  * Gaps are automatically excluded
+		  * @param v a SiteContainer
+		  * @param gc a GeneticCode
+		  * @param ratio a double
+		  * @param stopfalg a boolean set by dfault to true if you don't want
+		  * to take stop codons into account
+		  */
+		static double meanSynonymousSitesNumber(const SiteContainer & v, const GeneticCode & gc, double ratio=1.0, bool stopflag=true) throw (Exception);
 
 
 		/**

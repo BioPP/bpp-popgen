@@ -86,10 +86,9 @@ PolymorphismSequenceContainer * PolymorphismSequenceContainerTools::extractIngro
 		delete psci;
 		throw Exception("PolymorphismSequenceContainerTools::extractIngroup: no Ingroup sequences found.");
 	}
-	for(int i = ss.size() - 1; i >= 0 ; i--)
-		{
+	for(int i = ss.size() - 1; i >= 0 ; i--) {
 		psci->deleteSequence(ss[i]);
-		}
+	}
 	return psci;
 }
 
@@ -380,7 +379,7 @@ PolymorphismSequenceContainer * PolymorphismSequenceContainerTools::getSelectedS
         SiteContainer *pscc = MaseTools::getSelectedSites(psc, setName);
 	if (phase) {
 		for (unsigned int i=1; i < psc.getPhase(setName); i++) {
-			pscc -> deleteSite(i - 1);
+			pscc -> deleteSite(0);
 		}		
 	}		
         PolymorphismSequenceContainer *psci = new PolymorphismSequenceContainer(*pscc);
@@ -396,8 +395,24 @@ PolymorphismSequenceContainer * PolymorphismSequenceContainerTools::getSelectedS
 }
 
 
-
-
-
-
-
+// Be carefull: To use before excluding gap
+string PolymorphismSequenceContainerTools::getIngroupSpeciesName(const PolymorphismSequenceContainer & psc) throw (Exception) {
+	try {	
+	string key;
+	unsigned int n;
+	string speciesName;
+	Comments maseFileHeader = psc.getGeneralComments();
+	if(!maseFileHeader.size()) return speciesName;
+	map<string, unsigned int> groupMap = MaseTools::getAvailableSequenceSelections(maseFileHeader);
+	for(map<string, unsigned int>::iterator mi = groupMap.begin() ; mi != groupMap.end() ; mi++) {
+		key = mi->first;
+		n = mi->second;
+		if (key.compare(0, 7, "INGROUP") == 0 ) {
+			StringTokenizer * sptk = new StringTokenizer(key, "_");
+			speciesName = sptk->atToken(1) + " " + sptk->atToken(2);
+		}
+	}
+	return speciesName;
+        }
+	catch(...) {}
+}

@@ -418,14 +418,11 @@ unsigned int SequenceStatistics::stopCodonSiteNumber(SiteIterator & si, const Co
 // Return: Number of codon sites with stop codon
 unsigned int SequenceStatistics::stopCodonSiteNumber(const SiteContainer & v, bool gapflag) {
     SiteIterator *si = NULL;
-    const NucleicAlphabet* na = new DNA();
-    const CodonAlphabet* ca = new StandardCodonAlphabet(na);
+    const CodonAlphabet * ca = dynamic_cast<const CodonAlphabet*>(v.getAlphabet());
     if(gapflag) si = new NoGapSiteIterator(v);
     else si = new SimpleSiteIterator(v);
     unsigned int S = SequenceStatistics::stopCodonSiteNumber(*si,*ca);
     delete si;
-    delete na;
-    delete ca;
     return S;
 }
 
@@ -481,6 +478,21 @@ unsigned int SequenceStatistics::synonymousPolymorphicCodonNumber(SiteIterator &
 }
 
 // Method to compute the number of synonymous polymorphic codon sites
+// Arguments: a SiteIterator, a NucleicAlphabet, a CodonAlphabet (Alphabets are given by the following method)
+// Return: Number of synonymous codon sites
+unsigned int SequenceStatistics::synonymousPolymorphicCodonNumber(SiteIterator & si, const GeneticCode & gc) {
+	unsigned int S=0;
+	const Site *site;
+	while ( si.hasMoreSites() ) {
+		site=si.nextSite();
+		if (CodonSiteTools::isSynonymousPolymorphic(*site,gc)) {
+			S++;
+		}
+	}
+	return S;
+}
+
+// Method to compute the number of synonymous polymorphic codon sites
 // Arguments: a SiteContainer, a boolean
 // Return: Number of synonymous codon sites
 unsigned int SequenceStatistics::synonymousPolymorphicCodonNumber(const SiteContainer & v, bool stopflag) {
@@ -496,20 +508,44 @@ unsigned int SequenceStatistics::synonymousPolymorphicCodonNumber(const SiteCont
     return S;
 }
 
+// Method to compute the number of synonymous polymorphic codon sites
+// Arguments: a SiteContainer, a boolean
+// Return: Number of synonymous codon sites
+unsigned int SequenceStatistics::synonymousPolymorphicCodonNumber(const SiteContainer & v, const GeneticCode & gc,  bool stopflag) {
+    SiteIterator* si = NULL;
+    if(stopflag) si = new CompleteSiteIterator(v);
+    else new NoGapSiteIterator(v);
+    unsigned int S = SequenceStatistics::synonymousPolymorphicCodonNumber(*si,gc);
+    delete si;
+    return S;
+}
+
 
 // Method to compute the synonymous nucleotide diversity pi
 // Arguments: a SiteIterator, a CodonAlphabet, a GeneticCode (given by the following method)
 // Return: pi synonymous
 double SequenceStatistics::piSynonymous(SiteIterator & si, const CodonAlphabet & ca, const GeneticCode & gc, bool minchange) {
-	double S=0;
+	double S=0.0;
 	const Site *site;
 	while(si.hasMoreSites()) {
-		site=si.nextSite();
+		site=si.nextSite();		
                 S += CodonSiteTools::piSynonymous(*site,ca,gc,minchange);
 	}
 	return S;
 }
 
+// Method to compute the synonymous nucleotide diversity pi
+// Arguments: a SiteIterator, a GeneticCode (given by the following method)
+// Return: pi synonymous
+double SequenceStatistics::piSynonymous(SiteIterator & si, const GeneticCode & gc, bool minchange) {
+	double S=0.0;
+	const Site *site;
+	while(si.hasMoreSites()) {
+		site=si.nextSite();		
+                S += CodonSiteTools::piSynonymous(*site,gc,minchange);
+	}
+	return S;
+}
 
 // Method to compute the synonymous nucleotide diversity pi
 // Arguments: a SiteContainer, a boolean
@@ -529,6 +565,18 @@ double SequenceStatistics::piSynonymous(const SiteContainer & v, bool stopflag, 
     return S;
 }
 
+// Method to compute the synonymous nucleotide diversity pi
+// Arguments: a SiteContainer, a boolean
+// Return: pi synonymous
+double SequenceStatistics::piSynonymous(const SiteContainer & v, const GeneticCode & gc, bool stopflag, bool minchange) {
+    SiteIterator *si = NULL;
+    const CodonAlphabet * ca = dynamic_cast<const CodonAlphabet*>(v.getAlphabet());
+    if(stopflag) si = new CompleteSiteIterator(v);
+    else si = new NoGapSiteIterator(v);
+    double S = SequenceStatistics::piSynonymous(*si,gc,minchange);
+    delete si;
+    return S;
+}
 
 // Method to compute the non-synonymous nucleotide diversity pi
 // Arguments: a SiteIterator
@@ -538,7 +586,20 @@ double SequenceStatistics::piNonSynonymous(SiteIterator & si, const NucleicAlpha
 	const Site *site;
 	while(si.hasMoreSites()) {
 		site=si.nextSite();
-                S += CodonSiteTools::piNonSynonymous(*site,na,ca,gc,minchange);
+                S += CodonSiteTools::piNonSynonymous(*site,gc,minchange);
+	}
+	return S;
+}
+
+// Method to compute the non-synonymous nucleotide diversity pi
+// Arguments: a SiteIterator
+// Return: pi synonymous
+double SequenceStatistics::piNonSynonymous(SiteIterator & si, const GeneticCode & gc, bool minchange) {
+	double S=0;
+	const Site *site;
+	while(si.hasMoreSites()) {
+		site=si.nextSite();
+                S += CodonSiteTools::piNonSynonymous(*site,gc,minchange);
 	}
 	return S;
 }
@@ -562,6 +623,18 @@ double SequenceStatistics::piNonSynonymous(const SiteContainer & v, bool stopfla
     return S;
 }
 
+// Method to compute the non-synonymous nucleotide diversity pi
+// Arguments: a SiteContainer, a boolean
+// Return: pi synonymous
+double SequenceStatistics::piNonSynonymous(const SiteContainer & v, const GeneticCode & gc, bool stopflag, bool minchange) {
+    SiteIterator *si = NULL;   
+    if(stopflag) si = new CompleteSiteIterator(v);
+    else si = new NoGapSiteIterator(v);
+    double S = SequenceStatistics::piNonSynonymous(*si,gc,minchange);
+    delete si;
+    return S;
+}
+
 // Method to compute the mean number of synonymous site in an alignment
 // Arguments: a SiteIterator
 // Return: mean number of synonymous site
@@ -575,6 +648,18 @@ double SequenceStatistics::meanSynonymousSitesNumber(SiteIterator & si, const Co
 	return S;
 }
 
+// Method to compute the mean number of synonymous site in an alignment
+// Arguments: a SiteIterator
+// Return: mean number of synonymous site
+double SequenceStatistics::meanSynonymousSitesNumber(SiteIterator & si, const GeneticCode &gc, double ratio) throw(Exception) {
+	double S=0;
+	const Site *site;
+	while(si.hasMoreSites()) {
+		site=si.nextSite();
+                S += CodonSiteTools::MeanNumberOfSynonymousPositions(*site,gc,ratio);
+	}
+	return S;
+}
 
 // Method to compute the mean number of synonymous site in an alignment
 // Arguments: a SiteIterator, a boolean
@@ -594,6 +679,17 @@ double SequenceStatistics::meanSynonymousSitesNumber(const SiteContainer & v, do
     return S;
 }
 
+// Method to compute the mean number of synonymous site in an alignment
+// Arguments: a SiteIterator, a boolean
+// Return: mean number of synonymous site
+double SequenceStatistics::meanSynonymousSitesNumber(const SiteContainer & v, const GeneticCode & gc, double ratio, bool stopflag) throw(Exception) {
+    SiteIterator *si = NULL;
+    if(stopflag) si = new CompleteSiteIterator(v);
+    else si = new NoGapSiteIterator(v);
+    double S = SequenceStatistics::meanSynonymousSitesNumber(*si,gc,ratio);
+    delete si;
+    return S;
+}
 
 //******************************************************************************************************************
 //Statistical tests
