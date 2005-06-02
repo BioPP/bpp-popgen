@@ -661,8 +661,22 @@ double SequenceStatistics::meanSynonymousSitesNumber(SiteIterator & si, const Ge
 	return S;
 }
 
+// Method to compute the mean number of non-synonymous site in an alignment
+// Arguments: a SiteIterator
+// Return: mean number of synonymous site
+double SequenceStatistics::meanNonSynonymousSitesNumber(SiteIterator & si, const GeneticCode &gc, double ratio) throw(Exception) {
+	double S=0;
+	int n=0;
+	const Site *site;
+	while(si.hasMoreSites()) {
+		site=si.nextSite();
+		n = n + 3;
+                S += CodonSiteTools::MeanNumberOfSynonymousPositions(*site,gc,ratio);
+	}
+	return ((double) n - S);
+}
+
 // Method to compute the mean number of synonymous site in an alignment
-// Arguments: a SiteIterator, a boolean
 // Return: mean number of synonymous site
 double SequenceStatistics::meanSynonymousSitesNumber(const SiteContainer & v, double ratio, bool stopflag) {
     SiteIterator *si = NULL;
@@ -680,7 +694,10 @@ double SequenceStatistics::meanSynonymousSitesNumber(const SiteContainer & v, do
 }
 
 // Method to compute the mean number of synonymous site in an alignment
-// Arguments: a SiteIterator, a boolean
+// Arguments: a SiteContainer
+//            a GeneticCode
+//            a double 1.0 by default Transition/Tarnsversion rate
+//            a boolean true by default if you don't want to take gap in account
 // Return: mean number of synonymous site
 double SequenceStatistics::meanSynonymousSitesNumber(const SiteContainer & v, const GeneticCode & gc, double ratio, bool stopflag) throw(Exception) {
     SiteIterator *si = NULL;
@@ -690,6 +707,22 @@ double SequenceStatistics::meanSynonymousSitesNumber(const SiteContainer & v, co
     delete si;
     return S;
 }
+
+// Method to compute the mean number of non-synonymous site in an alignment
+// Arguments: a SiteContainer
+//            a GeneticCode
+//            a double 1.0 by default Transition/Tarnsversion rate
+//            a boolean true by default if you don't want to take gap in account
+// Return: mean number of synonymous site
+double SequenceStatistics::meanNonSynonymousSitesNumber(const SiteContainer & v, const GeneticCode & gc, double ratio, bool stopflag) throw(Exception) {
+    SiteIterator *si = NULL;
+    if(stopflag) si = new CompleteSiteIterator(v);
+    else si = new NoGapSiteIterator(v);
+    double NS = SequenceStatistics::meanNonSynonymousSitesNumber(*si,gc,ratio);
+    delete si;
+    return NS;
+}
+
 
 //******************************************************************************************************************
 //Statistical tests

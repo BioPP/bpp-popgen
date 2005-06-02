@@ -375,6 +375,19 @@ class SequenceStatistics
 		static double meanSynonymousSitesNumber(SiteIterator & si, const GeneticCode & gc, double ratio=1) throw(Exception);
 
 		/**
+		  * @brief Compute the mean number of non-synonymous site in an alignment
+		  *
+		  * A site is x% synonymous if x% of possible mutations are synonymous
+		  * The transition/transversion can be taken into account (use the variable ratio)
+		  * @param si a SiteIterator
+		  * @param gc a GeneticCode
+		  * @param ratio a double set by default to 1 if you assume that
+		  * transition equal transversion
+		  * Return: pi non-synonymous
+		  */
+		static double meanNonSynonymousSitesNumber(SiteIterator & si, const GeneticCode & gc, double ratio=1) throw(Exception);
+
+		/**
 		  * @brief compute the mean number of synonymous site in an alignment
 		  *
 		  * A site is x% synonymous if x% of possible mutations are synonymous
@@ -396,11 +409,24 @@ class SequenceStatistics
 		  * @param v a SiteContainer
 		  * @param gc a GeneticCode
 		  * @param ratio a double
-		  * @param stopfalg a boolean set by dfault to true if you don't want
+		  * @param stopfalg a boolean set by default to true if you don't want
 		  * to take stop codons into account
 		  */
 		static double meanSynonymousSitesNumber(const SiteContainer & v, const GeneticCode & gc, double ratio=1.0, bool stopflag=true) throw (Exception);
 
+		/**
+		  * @brief compute the mean number of non-synonymous site in an alignment
+		  *
+		  * A site is x% synonymous if x% of possible mutations are synonymous
+		  * The transition/transversion can be taken into account (use the variable ratio)
+		  * Gaps are automatically excluded
+		  * @param v a SiteContainer
+		  * @param gc a GeneticCode
+		  * @param ratio a double
+		  * @param stopfalg a boolean set by default to true if you don't want
+		  * to take stop codons into account
+		  */
+		static double meanNonSynonymousSitesNumber(const SiteContainer & v, const GeneticCode & gc, double ratio=1.0, bool stopflag=true) throw (Exception);
 
 		/**
 		 * @brief Return the Tajima's D test (Tajima 1989).
