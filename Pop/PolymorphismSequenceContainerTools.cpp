@@ -1,28 +1,9 @@
-/*
- * File: PolymorphismSequenceContainerTools.cpp
- * Authors: Eric Bazin <bazin@univ-montp2.fr>
- *          Sylvain Gaillard <yragael2001@yahoo.fr>
- * Last modification : Thursday July 29 2004
- *
- * Copyright (C) 2004 Eric Bazin, Sylvain Gaillard and the
- *                    PopGenLib Development Core Team
- *
- * This file is part of PopGenLib.
- *
- * PopGenLib is free software; you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation; either version 2 of the License, or
- * (at your option) any later version.
- *
- * PopGenLib is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with PopGenLib; if not, write to the Free Software
- * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
- */
+//
+// File: PolymorphismSequenceContainerTools.h
+// Created by: Eric Bazin
+// 						 Sylvain Gaillard
+// Created on: Thursday July 29 2004
+//
 
 // from PolyLib
 #include "PolymorphismSequenceContainerTools.h"
@@ -37,9 +18,9 @@ PolymorphismSequenceContainer * PolymorphismSequenceContainerTools::read(const s
 	Mase ms;
 	string key;
 	unsigned int n;
-	const VectorSequenceContainer *seqc = NULL;
+	const OrderedSequenceContainer *seqc = NULL;
 	try {
-		seqc = ms.read( path, alpha );
+		seqc = dynamic_cast<OrderedSequenceContainer *>(ms.read( path, alpha ));
 	}
 	catch (Exception & e) {
 		if (seqc != NULL)
@@ -394,10 +375,8 @@ PolymorphismSequenceContainer * PolymorphismSequenceContainerTools::getSelectedS
 	catch(...) {}
 }
 
-
 // Be carefull: To use before excluding gap
 string PolymorphismSequenceContainerTools::getIngroupSpeciesName(const PolymorphismSequenceContainer & psc) throw (Exception) {
-	try {	
 	string key;
 	unsigned int n;
 	string speciesName;
@@ -409,10 +388,9 @@ string PolymorphismSequenceContainerTools::getIngroupSpeciesName(const Polymorph
 		n = mi->second;
 		if (key.compare(0, 7, "INGROUP") == 0 ) {
 			StringTokenizer * sptk = new StringTokenizer(key, "_");
-			speciesName = sptk->atToken(1) + " " + sptk->atToken(2);
+			speciesName = sptk -> getToken(1) + " " + sptk -> getToken(2);
 		}
 	}
 	return speciesName;
-        }
-	catch(...) {}
 }
+

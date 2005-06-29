@@ -1,42 +1,29 @@
-/*
- * File: PolymorphismSequenceContainer.h
- * Authors: Eric Bazin <bazin@univ-montp2.fr>
- *          Sylvain Gaillard <yragael2001@yahoo.fr>
- * Last modification : Wednesday August 04 2004
- *
- * Copyright (C) 2004 Eric Bazin, Sylvain Gaillard and the
- *                    PopGenLib Development Core Team
- *
- * This file is part of PopGenLib.
- *
- * PopGenLib is free software; you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation; either version 2 of the License, or
- * (at your option) any later version.
- *
- * PopGenLib is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with PopGenLib; if not, write to the Free Software
- * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
- */
+//
+// File: PolymorphismSequenceContainer.h
+// Created by: Eric Bazin
+// 						 Sylvain Gaillard
+// Created on: Wednesday August 04 2004
+//
 
-// from PolyLib
 #include "PolymorphismSequenceContainer.h"
 
-//** Class constructor: *******************************************************/
-PolymorphismSequenceContainer::PolymorphismSequenceContainer(const Alphabet *alpha) : VectorSiteContainer(alpha) {}
+PolymorphismSequenceContainer::PolymorphismSequenceContainer(const Alphabet *alpha) :
+	VectorSiteContainer(alpha),
+	AbstractSequenceContainer(alpha) {}
 
-PolymorphismSequenceContainer::PolymorphismSequenceContainer(unsigned int size, const Alphabet *alpha) : VectorSiteContainer(size, alpha) {
+PolymorphismSequenceContainer::PolymorphismSequenceContainer(unsigned int size, const Alphabet *alpha) :
+	VectorSiteContainer(size, alpha),
+	AbstractSequenceContainer(alpha)
+{
 	_count.resize(size);
 	_ingroup.resize(size);
 	_group.resize(size);
 }
 
-PolymorphismSequenceContainer::PolymorphismSequenceContainer(const OrderedSequenceContainer & sc) : VectorSiteContainer(sc) {
+PolymorphismSequenceContainer::PolymorphismSequenceContainer(const OrderedSequenceContainer & sc) :
+	VectorSiteContainer(sc),
+	AbstractSequenceContainer(sc.getAlphabet())
+{
 	for (unsigned int i = 0 ; i < sc.getNumberOfSequences() ; i++) {
 		_ingroup.push_back(true);
 		_count.push_back(1);
@@ -44,7 +31,10 @@ PolymorphismSequenceContainer::PolymorphismSequenceContainer(const OrderedSequen
 	}
 }
 
-PolymorphismSequenceContainer::PolymorphismSequenceContainer(const SiteContainer & sc) : VectorSiteContainer(sc) {
+PolymorphismSequenceContainer::PolymorphismSequenceContainer(const SiteContainer & sc) :
+	VectorSiteContainer(sc),
+	AbstractSequenceContainer(sc.getAlphabet())
+{
 	Comments comments(1,"");
 	for (unsigned int i = 0 ; i < sc.getNumberOfSequences() ; i++) {
 		_ingroup.push_back(true);
@@ -54,7 +44,10 @@ PolymorphismSequenceContainer::PolymorphismSequenceContainer(const SiteContainer
         setGeneralComments(comments);
 }
 
-PolymorphismSequenceContainer::PolymorphismSequenceContainer(const PolymorphismSequenceContainer & psc) : VectorSiteContainer(psc) {
+PolymorphismSequenceContainer::PolymorphismSequenceContainer(const PolymorphismSequenceContainer & psc) :
+	VectorSiteContainer(psc),
+	AbstractSequenceContainer(psc.getAlphabet())
+{
 	unsigned int nbSeq = psc.getNumberOfSequences();
 	_count.resize(nbSeq);
 	_ingroup.resize(nbSeq);
@@ -355,3 +348,4 @@ unsigned int PolymorphismSequenceContainer::getPhase(const string &setName) cons
 	catch (...) {
 	}
 }
+
