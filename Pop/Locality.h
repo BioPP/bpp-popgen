@@ -46,7 +46,7 @@ template <class T> class Locality : public Coord<T> {
 		 * @param y The latitude.
 		 */
 		Locality(const string name, const T x=0, const T y=0);
-		
+
 		/**
 		 * @brief Build a new locality with name and coordinates.
 		 *
@@ -54,12 +54,12 @@ template <class T> class Locality : public Coord<T> {
 		 * @param coord The coordinates of the locality.
 		 */
 		Locality(const string name, const Coord<T> coord);
-		
+
 		/**
 		 * @brief The Locality copy constructor.
 		 */
 		Locality(const Locality<T> & locality);
-		
+
 		/**
 		 * @brief Destroy a locality.
 		 */
@@ -70,7 +70,7 @@ template <class T> class Locality : public Coord<T> {
 		 * @brief Implements the Clonable interface.
 		 */
 		Clonable * clone() const;
-		
+
 		/**
 		 * @brief The Locality copy operator.
 		 *
@@ -107,14 +107,14 @@ template <class T> class Locality : public Coord<T> {
 //** Class constructor: *******************************************************/
 template <class T> Locality<T>::Locality(const string name, const T x, const T y) {
 	_name = name;
-	_x = x;
-	_y = y;
+	Coord<T>::_x = x;
+	Coord<T>::_y = y;
 }
 
 template <class T> Locality<T>::Locality(const string name, const Coord<T> coord) {
 	_name = name;
-	_x = coord.getX();
-	_y = coord.getY();
+	Coord<T>::_x = coord.getX();
+	Coord<T>::_y = coord.getY();
 }
 
 template <class T> Locality<T>::Locality(const Locality<T> & locality) {
@@ -141,7 +141,7 @@ template <class T> Locality<T> & Locality<T>::operator= (const Locality<T> & loc
 
 //** Comparison operators: ***************************************************/
 template <class T> bool Locality<T>::operator== (const Locality<T> & locality) const {
-	return (_x == locality.getX() && _y == locality.getY() && _name == locality.getName());
+	return (Coord<T>::_x == locality.getX() && Coord<T>::_y == locality.getY() && _name == locality.getName());
 }
 
 template <class T> bool Locality<T>::operator!= (const Locality<T> & locality) const {
