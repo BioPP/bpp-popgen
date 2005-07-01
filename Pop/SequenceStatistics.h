@@ -194,6 +194,26 @@ class SequenceStatistics
 		 */
 		static double DVH ( const PolymorphismSequenceContainer & psc, bool gapflag = true );
 
+		/**
+		 * @brief Return the number of transitions.
+		 *
+		 * @param psc a PolymorphismSequenceContainer
+		 */
+		static unsigned int getNumberOfTransitions( const PolymorphismSequenceContainer & psc ); 
+		
+		/**
+		 * @brief Return the number of transversions.
+		 *
+		 * @param psc a PolymorphismSequenceContainer
+		 */
+		static unsigned int getNumberOfTransversions( const PolymorphismSequenceContainer & psc );
+		
+		/**
+		 * @brief Return the ratio of transitions/transversions.
+		 *
+		 * @param psc a PolymorphismSequenceContainer
+		 */		
+		 static double getTransitionsTransversionsRatio( const PolymorphismSequenceContainer & psc );
 
 		/**
 		 * @brief Compute the number of codon sites with stop codon
@@ -201,7 +221,6 @@ class SequenceStatistics
 		 * @param alpha a CodonAlphabet
 		 */
 		static unsigned int stopCodonSiteNumber( SiteIterator & si, const CodonAlphabet & alpha );
-
 
 		/**
 		 * @brief Compute the number of codon sites with stop codon

@@ -392,6 +392,67 @@ double SequenceStatistics::DVH( const PolymorphismSequenceContainer & psc, bool 
 	return H;
 }
 
+// Method to compute the number of transition
+// Arguments: a PolymorphismSequenceContainer
+// Return: Number of transition
+unsigned int SequenceStatistics::getNumberOfTransitions( const PolymorphismSequenceContainer & psc ) {
+	const Site *site;
+	SiteIterator *si;
+	unsigned int nbT = 0;
+	si = new SimpleSiteIterator(psc);
+	while (si->hasMoreSites()) {
+		site = si->nextSite();
+		if(SiteTools::isConstant(*site) || SiteTools::isTriplet(*site)) continue;
+		vector<int> seq = site->getContent();
+		int state1 = seq[0];
+		int state2;
+		for(unsigned int i = 1; i < seq.size(); i++) {
+			if(state1 != seq[i]) {
+				state2 = seq[i];
+				break;
+			}
+		}
+		if(((state1==0 || state2==2) && (state1==2 || state2==0)) ||
+		   ((state1==1 || state2==3) && (state1==3 || state2==1))) {
+			nbT++;
+		}	
+	}
+	return nbT;
+}
+
+// Method to compute the number of transversion
+// Arguments: a PolymorphismSequenceContainer
+// Return: Number of transversion
+unsigned int SequenceStatistics::getNumberOfTransversions( const PolymorphismSequenceContainer & psc ) {
+	const Site *site;
+	SiteIterator *si;
+	unsigned int nbT = 0;
+	si = new SimpleSiteIterator(psc);
+	while (si->hasMoreSites()) {
+		site = si->nextSite();
+		if(SiteTools::isConstant(*site) || SiteTools::isTriplet(*site)) continue;
+		vector<int> seq = site->getContent();
+		int state1 = seq[0];
+		int state2;
+		for(unsigned int i = 1; i < seq.size(); i++) {
+			if(state1 != seq[i]) {
+				state2 = seq[i];
+				break;
+			}
+		}
+		if(!(((state1==0 || state2==2) && (state1==2 || state2==0)) ||
+		    ((state1==1 || state2==3) && (state1==3 || state2==1)))) {
+			nbT++;
+		}	
+	}
+	return nbT;
+
+}
+
+double SequenceStatistics::getTransitionsTransversionsRatio( const PolymorphismSequenceContainer & psc ) {
+	return (double) getNumberOfTransitions(psc)/getNumberOfTransversions(psc);
+}
+
 
 //******************************************************************************************************************
 //Synonymous and non-synonymous polymorphism
