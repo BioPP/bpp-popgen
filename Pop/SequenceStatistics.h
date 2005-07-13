@@ -94,6 +94,17 @@ class SequenceStatistics
 		 * take gap into account
 		 */
 		static unsigned int totNumberMutations(const PolymorphismSequenceContainer & psc, bool gapflag = true);
+                /**
+		 * @brief Count the total number of mutations in external branchs.
+                 * This is counted as the number of distinct singleton nucleotide  in the ingroup
+                 * that are not shared with the outgroup
+		 * @param  requires an ingroup and an outgroup
+                 * @param gapflag flag set by default to true if you don't want to
+		 * take gap into account
+
+                 */
+                 static unsigned int totMutationsExternalBranchs(const PolymorphismSequenceContainer & ing,
+                                                                 const PolymorphismSequenceContainer outg);
 
                 /**
 		 * @brief Compute the number of triplet in an alignment
@@ -479,6 +490,9 @@ class SequenceStatistics
 		 *
 		 * @param ingroup a PolymorphismSequenceContainer
 		 * @param outgroup a PolymorphismSequenceContainer
+                 * This version uses the number of mutations
+                 * If the outgroup contains more than one sequence the sites with more than one
+                 * variant will not be considered for external branch mutations !
 		 */
 		static double fuliD(const PolymorphismSequenceContainer & ingroup, const PolymorphismSequenceContainer & outgroup);
 
@@ -494,7 +508,11 @@ class SequenceStatistics
 		 *
 		 * @param ingroup a PolymorphismSequenceContainer
 		 * @param outgroup a PolymorphismSequenceContainer
-		 */
+                 * This version uses the number of mutations
+		 * This version uses the number of mutations
+                 * If the outgroup contains more than one sequence the sites with more than one
+                 * variant will not be considered for externalbranch mutations !
+                 */
 		static double fuliF(const PolymorphismSequenceContainer & ingroup, const PolymorphismSequenceContainer & outgroup);
 
 		/**
@@ -707,6 +725,13 @@ class SequenceStatistics
 		 * @brief Count the number of singleton for a site.
 		 */
 		static unsigned int _getSingletonNumber(const Site & site);
+                /**
+		 * @brief Count the number of singleton for a site.
+                //khalid
+                //will count singletons that are not in site_out (a site in outgroup)
+                //site_in is a site from an ingroup
+                */
+                static unsigned int _getDerivedSingletonNumber(const Site & site_in,const Site & site_out );
 
 		/**
 		 * @brief Get usefull values for theta estimators.

@@ -126,7 +126,6 @@ unsigned int SequenceStatistics::countSingleton(const PolymorphismSequenceContai
 	return nus;
 }
 
-
 // Method to compute number of triplet sites in an alignment
 // Arguments: a SiteIterator
 // Return: Number of triplet sites
@@ -174,6 +173,36 @@ unsigned int SequenceStatistics::totNumberMutations(const PolymorphismSequenceCo
 	}
         delete si;
 	return tnm;
+}
+
+//khalid : Method to compute number of mutations in external branchs
+//This requires an ingroup and an outgroup
+//This is counted as the number of distinct singleton nucleotide  in the ingroup
+// that are not shared with the outgroup
+//A site is ignored if there it contains more than one variant in the outgroup
+//A site must have fully resolved variants and without gaps
+unsigned int SequenceStatistics::totMutationsExternalBranchs(const PolymorphismSequenceContainer & ing,
+                                                                const PolymorphismSequenceContainer outg)
+{
+        unsigned int nmuts = 0;
+	const Site * site_in;
+	const Site * site_out;
+
+	SiteIterator * si = NULL;
+        SiteIterator * so = NULL;
+        //use fully resolved sites
+	si = new CompleteSiteIterator(ing);
+        so = new CompleteSiteIterator(outg);
+
+        while (si->hasMoreSites()) {
+	        site_in= si->nextSite();
+                site_out= so->nextSite();
+
+	        nmuts += _getDerivedSingletonNumber(* site_in, *site_out);//singletons that are not in outgroup
+	}
+        delete si;
+        delete so;
+	return nmuts;
 }
 
 //******************************************************************************************************************
@@ -820,8 +849,9 @@ double SequenceStatistics::fuliD(const PolymorphismSequenceContainer & ingroup, 
 	map<string, double> values = _getUsefullValues(n);
 	double vD = 1. + (pow(values["a1"], 2) / (values["a2"] + pow(values["a1"], 2))) * (values["cn"] - ((nn + 1.) / (nn - 1.)));
 	double uD = values["a1"] - 1. - vD;
-	double eta = (double) totNumberMutations(ingroup);
-	double etae = (double) countSingleton(outgroup);
+	double eta = (double) totNumberMutations(ingroup);//using the number of mutations
+        //double eta = (double)polymorphicSiteNumber(ingroup);
+	double etae = (double) totMutationsExternalBranchs(ingroup,outgroup);
 	return (eta - values["a1"] * etae) / sqrt((uD * eta) + (vD * eta * eta));
 }
 
@@ -869,7 +899,7 @@ double SequenceStatistics::fuliF(const PolymorphismSequenceContainer & ingroup, 
 	double vF = (values["cn"] + values["b2"] - 2. / (nn - 1.)) / (pow(values["a1"], 2) + values["a2"]);
 	double uF = ((1. + values["b1"] - (4. * ((nn + 1.) / ((nn - 1.) * (nn - 1.)))) * (values["a1n"] - (2. * nn) / (nn + 1.))) / values["a1"]) - vF;
 	double eta = (double) totNumberMutations(ingroup);
-	double etae = (double) countSingleton(outgroup);
+	double etae = (double) totMutationsExternalBranchs(ingroup,outgroup);
 	return (pi - etae) / sqrt(uF * eta + vF * eta * eta);
 }
 
@@ -1308,6 +1338,24 @@ unsigned int SequenceStatistics::_getSingletonNumber(const Site & site) {
 	for (map<int, unsigned int>::iterator it = states_count.begin() ; it != states_count.end() ; it++)
 		if (it->second == 1)
 			nus++;
+	return nus;
+}
+//khalid
+//will count singletons that are not in site_out (a site from outgroup)
+//site_in is a site from an ingroup
+unsigned int SequenceStatistics::_getDerivedSingletonNumber(const Site & site_in,const Site & site_out ) {
+	unsigned int nus = 0;
+	map<int, unsigned int> states_count = SymbolListTools::getCounts(site_in);
+        map<int, unsigned int> outgroup_states_count = SymbolListTools::getCounts(site_out);
+        //if there is more than one variant in the outgroup we will not be able to recover the ancestral state
+        if (outgroup_states_count.size() == 1 )
+        {
+	 for (map<int, unsigned int>::iterator it = states_count.begin() ; it != states_count.end() ; it++)
+		if (it->second == 1)
+                {       if ( outgroup_states_count.find(it->first) == outgroup_states_count.end() )
+			nus++;
+                }
+        }
 	return nus;
 }
 
