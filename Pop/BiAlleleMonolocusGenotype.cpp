@@ -9,7 +9,7 @@ Copyright or © or Copr. CNRS, (November 17, 2004)
 
 
 This software is a computer program whose purpose is to provide classes
-for sequences analysis.
+for population genetics analysis.
 
 This software is governed by the CeCILL  license under French law and
 abiding by the rules of distribution of free software.  You can  use, 

@@ -3,25 +3,25 @@
 // Created by: Eric Bazin
 // 						 Sylvain Gaillard
 // Created on: Thursday July 29 2004
-*/
+//
 /*
 Copyright or © or Copr. CNRS, (November 17, 2004)
 
 
 This software is a computer program whose purpose is to provide classes
-for sequences analysis.
+for population genetics analysis.
 
 This software is governed by the CeCILL  license under French law and
-abiding by the rules of distribution of free software.  You can  use, 
+abiding by the rules of distribution of free software.  You can  use,
 modify and/ or redistribute the software under the terms of the CeCILL
 license as circulated by CEA, CNRS and INRIA at the following URL
-"http://www.cecill.info". 
+"http://www.cecill.info".
 
 As a counterpart to the access to the source code and  rights to copy,
 modify and redistribute granted by the license, users are provided only
 with a limited warranty  and the software's author,  the holder of the
 economic rights,  and the successive licensors  have only  limited
-liability. 
+liability.
 
 In this respect, the user's attention is drawn to the risks associated
 with loading,  using,  modifying and/or developing or reproducing the
@@ -30,13 +30,32 @@ that may mean  that it is complicated to manipulate,  and  that  also
 therefore means  that it is reserved for developers  and  experienced
 professionals having in-depth computer knowledge. Users are therefore
 encouraged to load and test the software's suitability as regards their
-requirements in conditions enabling the security of their systems and/or 
-data to be ensured and,  more generally, to use and operate it in the 
-same conditions as regards security. 
+requirements in conditions enabling the security of their systems and/or
+data to be ensured and,  more generally, to use and operate it in the
+same conditions as regards security.
 
 The fact that you are presently reading this means that you have had
 knowledge of the CeCILL license and that you accept its terms.
-*/	catch (Exception & e) {
+*/
+
+// from PolyLib
+#include "PolymorphismSequenceContainerTools.h"
+
+
+using namespace std;
+
+PolymorphismSequenceContainerTools::~PolymorphismSequenceContainerTools() {}
+
+// Read a mase+ format
+PolymorphismSequenceContainer * PolymorphismSequenceContainerTools::read(const string & path, const Alphabet * alpha) throw (Exception) {
+	Mase ms;
+	string key;
+	unsigned int n;
+	const OrderedSequenceContainer *seqc = NULL;
+	try {
+		seqc = dynamic_cast<OrderedSequenceContainer *>(ms.read( path, alpha ));
+	}
+	catch (Exception & e) {
 		if (seqc != NULL)
 			delete seqc;
 		throw e;
@@ -375,8 +394,8 @@ PolymorphismSequenceContainer * PolymorphismSequenceContainerTools::getSelectedS
 	if (phase) {
 		for (unsigned int i=1; i < psc.getPhase(setName); i++) {
 			pscc -> deleteSite(0);
-		}		
-	}		
+		}
+	}
         PolymorphismSequenceContainer *psci = new PolymorphismSequenceContainer(*pscc);
 	for(unsigned int i = 0; i < psc.getNumberOfSequences(); i++) {
 		if (! psc.isIngroupMember(i))

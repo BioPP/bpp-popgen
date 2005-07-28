@@ -3,25 +3,25 @@
 // Created by: Eric Bazin
 // 						 Sylvain Gaillard
 // Created on: Wednesday August 04 2004
-*/
+//
 /*
 Copyright or © or Copr. CNRS, (November 17, 2004)
 
 
 This software is a computer program whose purpose is to provide classes
-for sequences analysis.
+for population genetics analysis.
 
 This software is governed by the CeCILL  license under French law and
-abiding by the rules of distribution of free software.  You can  use, 
+abiding by the rules of distribution of free software.  You can  use,
 modify and/ or redistribute the software under the terms of the CeCILL
 license as circulated by CEA, CNRS and INRIA at the following URL
-"http://www.cecill.info". 
+"http://www.cecill.info".
 
 As a counterpart to the access to the source code and  rights to copy,
 modify and redistribute granted by the license, users are provided only
 with a limited warranty  and the software's author,  the holder of the
 economic rights,  and the successive licensors  have only  limited
-liability. 
+liability.
 
 In this respect, the user's attention is drawn to the risks associated
 with loading,  using,  modifying and/or developing or reproducing the
@@ -30,13 +30,31 @@ that may mean  that it is complicated to manipulate,  and  that  also
 therefore means  that it is reserved for developers  and  experienced
 professionals having in-depth computer knowledge. Users are therefore
 encouraged to load and test the software's suitability as regards their
-requirements in conditions enabling the security of their systems and/or 
-data to be ensured and,  more generally, to use and operate it in the 
-same conditions as regards security. 
+requirements in conditions enabling the security of their systems and/or
+data to be ensured and,  more generally, to use and operate it in the
+same conditions as regards security.
 
 The fact that you are presently reading this means that you have had
 knowledge of the CeCILL license and that you accept its terms.
-*/	AbstractSequenceContainer(sc.getAlphabet())
+*/
+#include "PolymorphismSequenceContainer.h"
+
+PolymorphismSequenceContainer::PolymorphismSequenceContainer(const Alphabet *alpha) :
+	VectorSiteContainer(alpha),
+	AbstractSequenceContainer(alpha) {}
+
+PolymorphismSequenceContainer::PolymorphismSequenceContainer(unsigned int size, const Alphabet *alpha) :
+	VectorSiteContainer(size, alpha),
+	AbstractSequenceContainer(alpha)
+{
+	_count.resize(size);
+	_ingroup.resize(size);
+	_group.resize(size);
+}
+
+PolymorphismSequenceContainer::PolymorphismSequenceContainer(const OrderedSequenceContainer & sc) :
+	VectorSiteContainer(sc),
+	AbstractSequenceContainer(sc.getAlphabet())
 {
 	for (unsigned int i = 0 ; i < sc.getNumberOfSequences() ; i++) {
 		_ingroup.push_back(true);
@@ -71,7 +89,7 @@ PolymorphismSequenceContainer::PolymorphismSequenceContainer(const PolymorphismS
 		_ingroup[i] = psc.isIngroupMember(i);
 		_group[i] = psc.getGroupId(i);
 	}
-        setGeneralComments(psc.getGeneralComments());	
+        setGeneralComments(psc.getGeneralComments());
 }
 
 PolymorphismSequenceContainer & PolymorphismSequenceContainer::operator= (const PolymorphismSequenceContainer & psc) {
@@ -335,7 +353,7 @@ unsigned int PolymorphismSequenceContainer::getPhase(const string &setName) cons
 		Comments maseFileHeader = getGeneralComments();
 		for(unsigned int i = 0; i < maseFileHeader.size(); i++) {
 			string current = maseFileHeader[i];
-			
+
 			index = current.find("# of regions");
 			if(index < current.npos) {
 				StringTokenizer st(string(current.begin() + index + 12 , current.end()), " \t\n\f\r=;");
@@ -350,7 +368,7 @@ unsigned int PolymorphismSequenceContainer::getPhase(const string &setName) cons
 					return phase;
 				}
 			}
-			
+
 			index = current.find("/codon_start");
 			if(index < current.npos) {
 				StringTokenizer st(string(current.begin() + index + 12, current.end()), " \t\n\f\r=;");

@@ -9,19 +9,19 @@ Copyright or © or Copr. CNRS, (November 17, 2004)
 
 
 This software is a computer program whose purpose is to provide classes
-for sequences analysis.
+for population genetics analysis.
 
 This software is governed by the CeCILL  license under French law and
-abiding by the rules of distribution of free software.  You can  use, 
+abiding by the rules of distribution of free software.  You can  use,
 modify and/ or redistribute the software under the terms of the CeCILL
 license as circulated by CEA, CNRS and INRIA at the following URL
-"http://www.cecill.info". 
+"http://www.cecill.info".
 
 As a counterpart to the access to the source code and  rights to copy,
 modify and redistribute granted by the license, users are provided only
 with a limited warranty  and the software's author,  the holder of the
 economic rights,  and the successive licensors  have only  limited
-liability. 
+liability.
 
 In this respect, the user's attention is drawn to the risks associated
 with loading,  using,  modifying and/or developing or reproducing the
@@ -30,13 +30,13 @@ that may mean  that it is complicated to manipulate,  and  that  also
 therefore means  that it is reserved for developers  and  experienced
 professionals having in-depth computer knowledge. Users are therefore
 encouraged to load and test the software's suitability as regards their
-requirements in conditions enabling the security of their systems and/or 
-data to be ensured and,  more generally, to use and operate it in the 
-same conditions as regards security. 
+requirements in conditions enabling the security of their systems and/or
+data to be ensured and,  more generally, to use and operate it in the
+same conditions as regards security.
 
 The fact that you are presently reading this means that you have had
 knowledge of the CeCILL license and that you accept its terms.
-*/ */
+*/
 
 #include "SequenceStatistics.h" // class's header file
 #include "PolymorphismSequenceContainerTools.h"
@@ -458,7 +458,7 @@ unsigned int SequenceStatistics::getNumberOfTransitions( const PolymorphismSeque
 		if(((state1==0 || state2==2) && (state1==2 || state2==0)) ||
 		   ((state1==1 || state2==3) && (state1==3 || state2==1))) {
 			nbT++;
-		}	
+		}
 	}
 	return nbT;
 }
@@ -486,7 +486,7 @@ unsigned int SequenceStatistics::getNumberOfTransversions( const PolymorphismSeq
 		if(!(((state1==0 || state2==2) && (state1==2 || state2==0)) ||
 		    ((state1==1 || state2==3) && (state1==3 || state2==1)))) {
 			nbT++;
-		}	
+		}
 	}
 	return nbT;
 
@@ -632,7 +632,7 @@ double SequenceStatistics::piSynonymous(SiteIterator & si, const CodonAlphabet &
 	double S=0.0;
 	const Site *site;
 	while(si.hasMoreSites()) {
-		site=si.nextSite();		
+		site=si.nextSite();
                 S += CodonSiteTools::piSynonymous(*site,ca,gc,minchange);
 	}
 	return S;
@@ -645,7 +645,7 @@ double SequenceStatistics::piSynonymous(SiteIterator & si, const GeneticCode & g
 	double S=0.0;
 	const Site *site;
 	while(si.hasMoreSites()) {
-		site=si.nextSite();		
+		site=si.nextSite();
                 S += CodonSiteTools::piSynonymous(*site,gc,minchange);
 	}
 	return S;
@@ -731,7 +731,7 @@ double SequenceStatistics::piNonSynonymous(const SiteContainer & v, bool stopfla
 // Arguments: a SiteContainer, a boolean
 // Return: pi synonymous
 double SequenceStatistics::piNonSynonymous(const SiteContainer & v, const GeneticCode & gc, bool stopflag, bool minchange) {
-    SiteIterator *si = NULL;   
+    SiteIterator *si = NULL;
     if(stopflag) si = new CompleteSiteIterator(v);
     else si = new NoGapSiteIterator(v);
     double S = SequenceStatistics::piNonSynonymous(*si,gc,minchange);
