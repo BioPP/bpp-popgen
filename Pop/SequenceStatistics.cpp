@@ -442,7 +442,7 @@ unsigned int SequenceStatistics::getNumberOfTransitions( const PolymorphismSeque
 	const Site *site;
 	SiteIterator *si;
 	unsigned int nbT = 0;
-	si = new SimpleSiteIterator(psc);
+	si = new CompleteSiteIterator(psc);
 	while (si->hasMoreSites()) {
 		site = si->nextSite();
 		if(SiteTools::isConstant(*site) || SiteTools::isTriplet(*site)) continue;
@@ -455,8 +455,8 @@ unsigned int SequenceStatistics::getNumberOfTransitions( const PolymorphismSeque
 				break;
 			}
 		}
-		if(((state1==0 || state2==2) && (state1==2 || state2==0)) ||
-		   ((state1==1 || state2==3) && (state1==3 || state2==1))) {
+		if(((state1==0 && state2==2) || (state1==2 && state2==0)) ||
+		   ((state1==1 && state2==3) || (state1==3 && state2==1))) {
 			nbT++;
 		}
 	}
@@ -470,7 +470,7 @@ unsigned int SequenceStatistics::getNumberOfTransversions( const PolymorphismSeq
 	const Site *site;
 	SiteIterator *si;
 	unsigned int nbT = 0;
-	si = new SimpleSiteIterator(psc);
+	si = new CompleteSiteIterator(psc);
 	while (si->hasMoreSites()) {
 		site = si->nextSite();
 		if(SiteTools::isConstant(*site) || SiteTools::isTriplet(*site)) continue;
@@ -483,8 +483,8 @@ unsigned int SequenceStatistics::getNumberOfTransversions( const PolymorphismSeq
 				break;
 			}
 		}
-		if(!(((state1==0 || state2==2) && (state1==2 || state2==0)) ||
-		    ((state1==1 || state2==3) && (state1==3 || state2==1)))) {
+		if(!(((state1==0 && state2==2) || (state1==2 && state2==0)) ||
+		   ((state1==1 && state2==3) || (state1==3 && state2==1)))) {
 			nbT++;
 		}
 	}
