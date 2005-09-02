@@ -38,484 +38,123 @@ The fact that you are presently reading this means that you have had
 knowledge of the CeCILL license and that you accept its terms.
 */
 
-//Secured inclusion of header's file
-#ifndef _SEQUENCESTATISTICS_H_
-#define _SEQUENCESTATISTICS_H_
+//Secured inclusion of header's file#ifndef _SEQUENCESTATISTICS_H_#define _SEQUENCESTATISTICS_H_//From the SeqLib library#include <Seq/SiteIterator.h>#include <Seq/SiteContainer.h>#include <Seq/SymbolListTools.h>#include <Seq/CodonAlphabet.h>#include <Seq/GeneticCode.h>#include <Seq/SiteContainerTools.h>//From the PolyLib library#include "PolymorphismSequenceContainer.h"using namespace std;class SequenceStatistics{	public:		// Class destructor:		~SequenceStatistics();		/*******************************************************************************/	public:		/**		 * @brief Compute the number of polymorphic site in an alignment		 *		 * Gaps are consider as mutations so if you want number of		 * polymorphic site, you have to give a NonGapSiteIterator		 *		 * @param psc a PolymorphismSequenceContainer		 * @param gapflag flag set by default to true if you don't want to		 * take gap into account		 */		static unsigned int polymorphicSiteNumber(const PolymorphismSequenceContainer & psc, bool gapflag = true);        /**         *@brief Compute the number of parsimony informative sites in an alignment         *@param a SiteIterator         */        static unsigned int parsimonyInformativeSiteNumber(SiteIterator & si);        /**         *@brief Compute the number of parsimony informative sites in an alignment         *@param a SiteContainer, a boolean         */        static unsigned int parsimonyInformativeSiteNumber(const SiteContainer & v, bool gapflag =true);		/**		 * @brief Count the number of singleton nucleotides in an alignment.		 *		 * @param psc a PolymorphismSequenceContainer		 * @param gapflag flag set by default to true if you don't want to		 * take gap into account		 */		static unsigned int countSingleton(const PolymorphismSequenceContainer & psc, bool gapflag = true);		/**		 * @brief Count the total number of mutations in an alignment.		 *		 * This count is assumed to be under an infinite site model.		 * @param psc a PolymorphismSequenceContainer		 * @param gapflag flag set by default to true if you don't want to		 * take gap into account		 */		static unsigned int totNumberMutations(const PolymorphismSequenceContainer & psc, bool gapflag = true);
+        /**		 * @brief Count the total number of mutations in external branchs.                 * This is counted as the number of distinct singleton nucleotide  in the ingroup                 * that are not shared with the outgroup		 * @param  requires an ingroup and an outgroup                 * @param gapflag flag set by default to true if you don't want to		 * take gap into account                 */        static unsigned int totMutationsExternalBranchs(const PolymorphismSequenceContainer & ing,                                                                 const PolymorphismSequenceContainer outg);
+        /**		 * @brief Compute the number of triplet in an alignment		 *		 * Gaps are consider as mutation variant		 *		 * @param v a SiteIterator		 */        static unsigned int tripletNumber(SiteIterator & si);         /**		 * @brief Compute the number of triplet in an alignment		 *		 * @param v a SiteContainer		 * @param gapflag set by default to true if you don't want to take gap into account		 */        static unsigned int tripletNumber(const SiteContainer & v, bool gapflag = true);
 
-//From the SeqLib library
-#include <Seq/SiteIterator.h>
-#include <Seq/SiteContainer.h>
-#include <Seq/SymbolListTools.h>
-#include <Seq/CodonAlphabet.h>
-#include <Seq/GeneticCode.h>
-#include <Seq/SiteContainerTools.h>
-
-//From the PolyLib library
-#include "PolymorphismSequenceContainer.h"
-
-using namespace std;
-
-class SequenceStatistics
-{
-	public:
-		// Class destructor:
-		~SequenceStatistics();
-
-		/*******************************************************************************/
-	public:
-
-		/**
-		 * @brief Compute the number of polymorphic site in an alignment
-		 *
-		 * Gaps are consider as mutations so if you want number of
-		 * polymorphic site, you have to give a NonGapSiteIterator
-		 *
-		 * @param psc a PolymorphismSequenceContainer
-		 * @param gapflag flag set by default to true if you don't want to
-		 * take gap into account
-		 */
-		static unsigned int polymorphicSiteNumber(const PolymorphismSequenceContainer & psc, bool gapflag = true);
 
 
         /**
-         *@brief Compute the number of parsimony informative sites in an alignment
-         *@param a SiteIterator
-         */
-        static unsigned int parsimonyInformativeSiteNumber(SiteIterator & si);
-
-        /**
-         *@brief Compute the number of parsimony informative sites in an alignment
+         *@brief Compute the sum of per site heterozygosity in an alignment
          *@param a SiteContainer, a boolean
          */
-        static unsigned int parsimonyInformativeSiteNumber(const SiteContainer & v, bool gapflag =true);
+        static unsigned int heterozygosity(const PolymorphismSequenceContainer & psc, bool gapflag=true);
 
 
-		/**
-		 * @brief Count the number of singleton nucleotides in an alignment.
-		 *
-		 * @param psc a PolymorphismSequenceContainer
-		 * @param gapflag flag set by default to true if you don't want to
-		 * take gap into account
-		 */
-		static unsigned int countSingleton(const PolymorphismSequenceContainer & psc, bool gapflag = true);
+        /**
+         *@brief Compute the sum of per site squared heterozygosity in an alignment
+         *@param a SiteContainer, a boolean
+         */
+        static unsigned int squaredHeterozygosity(const PolymorphismSequenceContainer & psc, bool gapflag=true);
 
-		/**
-		 * @brief Count the total number of mutations in an alignment.
-		 *
-		 * This count is assumed to be under an infinite site model.
-		 * @param psc a PolymorphismSequenceContainer
-		 * @param gapflag flag set by default to true if you don't want to
-		 * take gap into account
-		 */
-		static unsigned int totNumberMutations(const PolymorphismSequenceContainer & psc, bool gapflag = true);
-                /**
-		 * @brief Count the total number of mutations in external branchs.
-                 * This is counted as the number of distinct singleton nucleotide  in the ingroup
-                 * that are not shared with the outgroup
-		 * @param  requires an ingroup and an outgroup
-                 * @param gapflag flag set by default to true if you don't want to
-		 * take gap into account
+        /**		 * @brief Compute the mean GC content in an alignment		 *		 * @param v a PolymorphismSequenceContainer		 */		static double gcContent(const PolymorphismSequenceContainer & psc);
 
-                 */
-                 static unsigned int totMutationsExternalBranchs(const PolymorphismSequenceContainer & ing,
-                                                                 const PolymorphismSequenceContainer outg);
+		/*		 * @brief Return the number of GC alleles and the total number of alleles at polymorphic sites only		 *		 * G vs C and A vs T polymorphism are not taken into account		 * @param psc a PolymorphismSequenceContainer		 * @param stopflag a boolean set by default to true if you don't want		 * to take stop codons into account		 */		static vector<unsigned int> gcPolymorphism(const PolymorphismSequenceContainer & psc, bool stopflag = true);		/**		 * @brief Compute diversity estimator Theta of Watterson (1975)		 *		 * @param v a SiteContainer		 */		static double watterson75( const SiteContainer & v );
+		/**		 * @brief Compute diversity estimator Theta of Tajima (1983)		 *		 * @param v a SiteContainer		 */		static double tajima83( const SiteContainer & v );
+		/**		 * @brief Compute diversity estimator Theta of Watterson (1975)		 *		 * @f[		 * \hat{\theta}_S=\frac{S}{a_1}		 * @f]		 * where @f$S@f$ is the number of polymorphic sites and @f$a_1@f$ is describe in SequenceStatistics::_getUsefullValues().		 * @param psc a PolymorphismSequenceContainer		 * @param gapflag flag set by default to true if you don't want to		 * take gap into account		 */		static double watterson75( const PolymorphismSequenceContainer & psc, bool gapflag = true );
 
-                /**
-		 * @brief Compute the number of triplet in an alignment
-		 *
-		 * Gaps are consider as mutation variant
-		 *
-		 * @param v a SiteIterator
-		 */
-                static unsigned int tripletNumber(SiteIterator & si);
+		/**		 * @brief Compute diversity estimator Theta of Tajima (1983)		 *		 * @f[		 * \hat{\theta}_\pi=1-\sum_{i=1}^{S}\sum_{j=1}^{4}\frac{k_{j,i}\times\left(k_{j,i}-1\right)}		 * {n_i\times\left(n_i-1\right)} \qquad \textrm{with }k_{j,i}>0		 * @f]		 * where @f$k_{j,i}@f$ is the count of the j<sup>th</sup> state at the i<sup>th</sup> site,		 * @f$n_i@f$ the number of nucleotides and @f$S@f$ the number of polymorphic sites.		 * @param psc a PolymorphismSequenceContainer		 * @param gapflag flag set by default to true if you don't want to		 * take gap into account		 */		static double tajima83( const PolymorphismSequenceContainer & psc, bool gapflag = true );
 
-                /**
-		 * @brief Compute the number of triplet in an alignment
-		 *
-		 * @param v a SiteContainer
-		 * @param gapflag set by default to true if you don't want to take gap into account
-		 */
-                static unsigned int tripletNumber(const SiteContainer & v, bool gapflag = true);
+		/**		 * @brief Return the number of haplotype in the sample.		 * Depaulis and Veuille (1998)		 *		 * @param psc a PolymorphismSequenceContainer		 * @param gapflag flag set by default to true if you don't want to		 * take gap into account		 */		static unsigned int DVK ( const PolymorphismSequenceContainer & psc, bool gapflag = true );
+
+		/**		 * @brief Return the haplotype diversity of a sample.		 * Depaulis and Veuille (1998)		 *		 * @param psc a PolymorphismSequenceContainer		 * @param gapflag flag set by default to true if you don't want to		 * take gaps into account		 */		static double DVH ( const PolymorphismSequenceContainer & psc, bool gapflag = true );
+
+		/**		 * @brief Return the number of transitions.		 *		 * @param psc a PolymorphismSequenceContainer		 */		static unsigned int getNumberOfTransitions( const PolymorphismSequenceContainer & psc );
+
+		/**		 * @brief Return the number of transversions.		 *		 * @param psc a PolymorphismSequenceContainer		 */		static unsigned int getNumberOfTransversions( const PolymorphismSequenceContainer & psc );
+
+		/**		 * @brief Return the ratio of transitions/transversions.		 *		 * @param psc a PolymorphismSequenceContainer		 */		 static double getTransitionsTransversionsRatio( const PolymorphismSequenceContainer & psc );
+
+		/**		 * @brief Compute the number of codon sites with stop codon		 * @param si a SiteIterator		 * @param alpha a CodonAlphabet		 */		static unsigned int stopCodonSiteNumber( SiteIterator & si, const CodonAlphabet & alpha );
+
+		/**		 * @brief Compute the number of codon sites with stop codon		 * @param v a SiteContainer		 * @param gapfalg a boolean set by default to true if you don't want to take gaps into account		 */		static unsigned int stopCodonSiteNumber(const SiteContainer & v, bool gapflag = true);		/**		 * @brief Compute the number of polymorphic codon with only one mutated site		 * @param si a SiteIterator		 * @param na a NucleicAlphabhet		 * @param ca a CodonAlphabet		 */		static unsigned int monoSitePolymorphicCodonNumber( SiteIterator & si, const NucleicAlphabet & na, const CodonAlphabet & ca);
 
 
-                /**
-		 * @brief Compute the mean GC content in an alignment
-		 *
-		 * @param v a PolymorphismSequenceContainer
-		 */
-		static double gcContent(const PolymorphismSequenceContainer & psc);
+		/**		 * @brief Compute the number of polymorphic codon with only one mutated site		 * @param v a SiteContainer		 * @param stopflag a boolean set by default to true if you don't want		 * to take stop codon into account		 * @param gapflag a boolean set by default to true if you don't want		 * to take gaps into account		 */		static unsigned int monoSitePolymorphicCodonNumber(const SiteContainer & v, bool stopflag = true, bool gapflag = true);
 
 
-		/*
-		 * @brief Return the number of GC alleles and the total number of alleles at polymorphic sites only
-		 *
-		 * G vs C and A vs T polymorphism are not taken into account
-		 * @param psc a PolymorphismSequenceContainer
-		 * @param stopflag a boolean set by default to true if you don't want
-		 * to take stop codons into account
-		 */
-		static vector<unsigned int> gcPolymorphism(const PolymorphismSequenceContainer & psc, bool stopflag = true);
+		/**		 * @brief Compute the number of synonymous polymorphic codon sites		 * @param si a SiteIterator		 * @param na a NucleicAlphabet		 * @param ca a CodonAlphabet		 */		static unsigned int synonymousPolymorphicCodonNumber(SiteIterator & si, const NucleicAlphabet & na, const CodonAlphabet & ca);
 
+		/**		 * @brief Compute the number of synonymous polymorphic codon sites		 * @param si a SiteIterator		 * @param gc a GeneticCode		 */		static unsigned int synonymousPolymorphicCodonNumber(SiteIterator & si, const GeneticCode & gc);
+
+		/**		 * @brief Compute the number of synonymous polymorphic codon sites		 *		 * Gaps are automatically excluded		 * @param v a SiteContainer		 * @param stopflag a boolean set by default to true if you don't want to take stop codons into account		 */		static unsigned int synonymousPolymorphicCodonNumber(const SiteContainer & v, bool stopflag = true);
+
+		/**		 * @brief Compute the number of synonymous polymorphic codon sites		 *		 * Gaps are automatically excluded		 * @param v a SiteContainer		 * @param v a GeneticCode		 * @param stopflag a boolean set by default to true if you don't want to take stop codons into account		 */		static unsigned int synonymousPolymorphicCodonNumber(const SiteContainer & v, const GeneticCode & gc,  bool stopflag = true);
+		/**		 * @brief Compute the synonymous nucleotide diversity, pi		 * @param si a SiteIterator		 * @param ca a CodonAlphabet		 * @param gc a GeneticCode		 * @param minchange a boolean set to false (see CodonSiteTools)		 */		static double piSynonymous(SiteIterator & si, const CodonAlphabet & ca, const GeneticCode & gc, bool minchange=false);
+
+		/**		 * @brief Compute the synonymous nucleotide diversity, pi		 * @param si a SiteIterator		 * @param gc a GeneticCode		 * @param minchange a boolean set to false (see CodonSiteTools)		 */		static double piSynonymous(SiteIterator & si, const GeneticCode & gc, bool minchange=false);
+
+		/**		  * @brief Compute the synonymous nucleotide diversity, pi		  *		  * Gaps are automatically excluded		  * @param v a SiteContainer		  * @param stopfalg a boolean set by default to true if you don't want		  * to take gaps into account		  * @param minchange a boolean set to false (see CodonSiteTools)		  */		static double piSynonymous(const SiteContainer & v, bool stopflag = true, bool minchange=false);
+		/**		  * @brief Compute the synonymous nucleotide diversity, pi		  *		  * Gaps are automatically excluded		  * @param v a SiteContainer		  * @param gc a GeneticCode		  * @param stopfalg a boolean set by default to true if you don't want		  * to take gaps into account		  * @param minchange a boolean set to false (see CodonSiteTools)		  */         static double piSynonymous(const SiteContainer & v, const GeneticCode & gc, bool stopflag = true, bool minchange=false);		/**		 * @brief Compute the non-synonymous nucleotide diversity, pi		 * @param si a SiteIterator		 * @param na a NucleicAlphabet		 * @param ca a CodonAlphabet		 * @param gc a GeneticCode		 * @param minchange a boolean set to false (see CodonSiteTools)		 */		static double piNonSynonymous(SiteIterator & si, const NucleicAlphabet & na, const CodonAlphabet & ca, const GeneticCode & gc, bool minchange=false );
+		/**		 * @brief Compute the non-synonymous nucleotide diversity, pi		 * @param si a SiteIterator		 * @param gc a GeneticCode		 * @param minchange a boolean set to false (see CodonSiteTools)		 */		static double piNonSynonymous(SiteIterator & si, const GeneticCode & gc, bool minchange=false );
+		/**		  * @breif Compute the non-synonymous nucleotide diversity, pi		  *		  * Gaps are automatically excluded		  * @param v a SiteContainer		  * @param stopfalg a boolean set by default to true if you don't want to take gaps into account		  * @param minchange a boolean set to false (see CodonSiteTools)		  */		static double piNonSynonymous(const SiteContainer & v, bool stopflag = true, bool minchange=false);
+		/**		  * @brief Compute the non-synonymous nucleotide diversity, pi		  *		  * Gaps are automatically excluded		  * @param v a SiteContainer		  * @param gc a GeneticCode		  * @param stopfalg a boolean set by default to true if you don't want		  * to take gaps into account		  * @param minchange a boolean set to false (see CodonSiteTools)		  */         static double piNonSynonymous(const SiteContainer & v, const GeneticCode & gc, bool stopflag = true, bool minchange=false);
+		/**		  * @brief Compute the mean number of synonymous site in an alignment		  *		  * A site is x% synonymous if x% of possible mutations are synonymous		  * The transition/transversion can be taken into account (use the variable ratio)		  * @param si a SiteIterator		  * @param ca a CodonAlphabet		  * @param gc a GeneticCode		  * @param ratio a double set by default to 1 if you assume that		  * transition equal transversion		  * Return: pi non-synonymous		  */		static double meanSynonymousSitesNumber(SiteIterator & si, const CodonAlphabet & ca, const GeneticCode & gc, double ratio=1);
+		/**		  * @brief Compute the mean number of synonymous site in an alignment		  *		  * A site is x% synonymous if x% of possible mutations are synonymous		  * The transition/transversion can be taken into account (use the variable ratio)		  * @param si a SiteIterator		  * @param gc a GeneticCode		  * @param ratio a double set by default to 1 if you assume that		  * transition equal transversion		  * Return: pi non-synonymous		  */		static double meanSynonymousSitesNumber(SiteIterator & si, const GeneticCode & gc, double ratio=1) throw(Exception);
+
+		/**		  * @brief Compute the mean number of non-synonymous site in an alignment		  *		  * A site is x% synonymous if x% of possible mutations are synonymous		  * The transition/transversion can be taken into account (use the variable ratio)		  * @param si a SiteIterator		  * @param gc a GeneticCode		  * @param ratio a double set by default to 1 if you assume that		  * transition equal transversion		  * Return: pi non-synonymous		  */		static double meanNonSynonymousSitesNumber(SiteIterator & si, const GeneticCode & gc, double ratio=1) throw(Exception);
+		/**		  * @brief compute the mean number of synonymous site in an alignment		  *		  * A site is x% synonymous if x% of possible mutations are synonymous		  * The transition/transversion can be taken into account (use the variable ratio)		  * Gaps are automatically excluded		  * @param v a SiteContainer		  * @param ratio a double		  * @param stopfalg a boolean set by dfault to true if you don't want		  * to take stop codons into account		  */		static double meanSynonymousSitesNumber(const SiteContainer & v, double ratio=1, bool stopfalg = true);
+		/**		  * @brief compute the mean number of synonymous site in an alignment		  *		  * A site is x% synonymous if x% of possible mutations are synonymous		  * The transition/transversion can be taken into account (use the variable ratio)		  * Gaps are automatically excluded		  * @param v a SiteContainer		  * @param gc a GeneticCode		  * @param ratio a double		  * @param stopfalg a boolean set by default to true if you don't want		  * to take stop codons into account		  */		static double meanSynonymousSitesNumber(const SiteContainer & v, const GeneticCode & gc, double ratio=1.0, bool stopflag=true) throw (Exception);
+
+		/**		  * @brief compute the mean number of non-synonymous site in an alignment		  *		  * A site is x% synonymous if x% of possible mutations are synonymous		  * The transition/transversion can be taken into account (use the variable ratio)		  * Gaps are automatically excluded		  * @param v a SiteContainer		  * @param gc a GeneticCode		  * @param ratio a double		  * @param stopfalg a boolean set by default to true if you don't want		  * to take stop codons into account		  */		static double meanNonSynonymousSitesNumber(const SiteContainer & v, const GeneticCode & gc, double ratio=1.0, bool stopflag=true) throw (Exception);
 
 		/**
-		 * @brief Compute diversity estimator Theta of Watterson (1975)
-		 *
-		 * @param v a SiteContainer
-		 */
-		static double watterson75( const SiteContainer & v );
-
-		/**
-		 * @brief Compute diversity estimator Theta of Tajima (1983)
-		 *
-		 * @param v a SiteContainer
-		 */
-		static double tajima83( const SiteContainer & v );
-
-		/**
-		 * @brief Compute diversity estimator Theta of Watterson (1975)
-		 *
-		 * @f[
-		 * \hat{\theta}_S=\frac{S}{a_1}
-		 * @f]
-		 * where @f$S@f$ is the number of polymorphic sites and @f$a_1@f$ is describe in SequenceStatistics::_getUsefullValues().
-		 * @param psc a PolymorphismSequenceContainer
-		 * @param gapflag flag set by default to true if you don't want to
-		 * take gap into account
-		 */
-		static double watterson75( const PolymorphismSequenceContainer & psc, bool gapflag = true );
-
-		/**
-		 * @brief Compute diversity estimator Theta of Tajima (1983)
-		 *
-		 * @f[
-		 * \hat{\theta}_\pi=1-\sum_{i=1}^{S}\sum_{j=1}^{4}\frac{k_{j,i}\times\left(k_{j,i}-1\right)}
-		 * {n_i\times\left(n_i-1\right)} \qquad \textrm{with }k_{j,i}>0
-		 * @f]
-		 * where @f$k_{j,i}@f$ is the count of the j<sup>th</sup> state at the i<sup>th</sup> site,
-		 * @f$n_i@f$ the number of nucleotides and @f$S@f$ the number of polymorphic sites.
-		 * @param psc a PolymorphismSequenceContainer
-		 * @param gapflag flag set by default to true if you don't want to
-		 * take gap into account
-		 */
-		static double tajima83( const PolymorphismSequenceContainer & psc, bool gapflag = true );
-
-		/**
-		 * @brief Return the number of haplotype in the sample.
-		 * Depaulis and Veuille (1998)
-		 *
-		 * @param psc a PolymorphismSequenceContainer
-		 * @param gapflag flag set by default to true if you don't want to
-		 * take gap into account
-		 */
-		static unsigned int DVK ( const PolymorphismSequenceContainer & psc, bool gapflag = true );
-
-		/**
-		 * @brief Return the haplotype diversity of a sample.
-		 * Depaulis and Veuille (1998)
-		 *
-		 * @param psc a PolymorphismSequenceContainer
-		 * @param gapflag flag set by default to true if you don't want to
-		 * take gaps into account
-		 */
-		static double DVH ( const PolymorphismSequenceContainer & psc, bool gapflag = true );
-
-		/**
-		 * @brief Return the number of transitions.
-		 *
-		 * @param psc a PolymorphismSequenceContainer
-		 */
-		static unsigned int getNumberOfTransitions( const PolymorphismSequenceContainer & psc );
-
-		/**
-		 * @brief Return the number of transversions.
-		 *
-		 * @param psc a PolymorphismSequenceContainer
-		 */
-		static unsigned int getNumberOfTransversions( const PolymorphismSequenceContainer & psc );
-
-		/**
-		 * @brief Return the ratio of transitions/transversions.
-		 *
-		 * @param psc a PolymorphismSequenceContainer
-		 */
-		 static double getTransitionsTransversionsRatio( const PolymorphismSequenceContainer & psc );
-
-		/**
-		 * @brief Compute the number of codon sites with stop codon
-		 * @param si a SiteIterator
-		 * @param alpha a CodonAlphabet
-		 */
-		static unsigned int stopCodonSiteNumber( SiteIterator & si, const CodonAlphabet & alpha );
-
-		/**
-		 * @brief Compute the number of codon sites with stop codon
-		 * @param v a SiteContainer
-		 * @param gapfalg a boolean set by default to true if you don't want to take gaps into account
-		 */
-		static unsigned int stopCodonSiteNumber(const SiteContainer & v, bool gapflag = true);
-
-
-
-		/**
-		 * @brief Compute the number of polymorphic codon with only one mutated site
-		 * @param si a SiteIterator
-		 * @param na a NucleicAlphabhet
-		 * @param ca a CodonAlphabet
-		 */
-		static unsigned int monoSitePolymorphicCodonNumber( SiteIterator & si, const NucleicAlphabet & na, const CodonAlphabet & ca);
-
-
-		/**
-		 * @brief Compute the number of polymorphic codon with only one mutated site
-		 * @param v a SiteContainer
-		 * @param stopflag a boolean set by default to true if you don't want
-		 * to take stop codon into account
-		 * @param gapflag a boolean set by default to true if you don't want
-		 * to take gaps into account
-		 */
-		static unsigned int monoSitePolymorphicCodonNumber(const SiteContainer & v, bool stopflag = true, bool gapflag = true);
-
-
-		/**
-		 * @brief Compute the number of synonymous polymorphic codon sites
-		 * @param si a SiteIterator
-		 * @param na a NucleicAlphabet
-		 * @param ca a CodonAlphabet
-		 */
-		static unsigned int synonymousPolymorphicCodonNumber(SiteIterator & si, const NucleicAlphabet & na, const CodonAlphabet & ca);
-
-		/**
-		 * @brief Compute the number of synonymous polymorphic codon sites
-		 * @param si a SiteIterator
-		 * @param gc a GeneticCode
-		 */
-		static unsigned int synonymousPolymorphicCodonNumber(SiteIterator & si, const GeneticCode & gc);
-
-		/**
-		 * @brief Compute the number of synonymous polymorphic codon sites
-		 *
-		 * Gaps are automatically excluded
-		 * @param v a SiteContainer
-		 * @param stopflag a boolean set by default to true if you don't want to take stop codons into account
-		 */
-		static unsigned int synonymousPolymorphicCodonNumber(const SiteContainer & v, bool stopflag = true);
-
-		/**
-		 * @brief Compute the number of synonymous polymorphic codon sites
-		 *
-		 * Gaps are automatically excluded
-		 * @param v a SiteContainer
-		 * @param v a GeneticCode
-		 * @param stopflag a boolean set by default to true if you don't want to take stop codons into account
-		 */
-		static unsigned int synonymousPolymorphicCodonNumber(const SiteContainer & v, const GeneticCode & gc,  bool stopflag = true);
-
-		/**
-		 * @brief Compute the synonymous nucleotide diversity, pi
-		 * @param si a SiteIterator
-		 * @param ca a CodonAlphabet
-		 * @param gc a GeneticCode
-		 * @param minchange a boolean set to false (see CodonSiteTools)
-		 */
-		static double piSynonymous(SiteIterator & si, const CodonAlphabet & ca, const GeneticCode & gc, bool minchange=false);
-
-		/**
-		 * @brief Compute the synonymous nucleotide diversity, pi
-		 * @param si a SiteIterator
-		 * @param gc a GeneticCode
-		 * @param minchange a boolean set to false (see CodonSiteTools)
-		 */
-		static double piSynonymous(SiteIterator & si, const GeneticCode & gc, bool minchange=false);
-
-		/**
-		  * @brief Compute the synonymous nucleotide diversity, pi
+		  * @brief compute the number of synonymous subsitutions in an alignment
 		  *
-		  * Gaps are automatically excluded
-		  * @param v a SiteContainer
-		  * @param stopfalg a boolean set by default to true if you don't want
-		  * to take gaps into account
-		  * @param minchange a boolean set to false (see CodonSiteTools)
-		  */
-		static double piSynonymous(const SiteContainer & v, bool stopflag = true, bool minchange=false);
-
-		/**
-		  * @brief Compute the synonymous nucleotide diversity, pi
-		  *
-		  * Gaps are automatically excluded
-		  * @param v a SiteContainer
+		  * Gaps and unresolved sites are automatically excluded
+		  * @param psc a PolymorphismSequenceContainer
 		  * @param gc a GeneticCode
-		  * @param stopfalg a boolean set by default to true if you don't want
-		  * to take gaps into account
-		  * @param minchange a boolean set to false (see CodonSiteTools)
 		  */
-                static double piSynonymous(const SiteContainer & v, const GeneticCode & gc, bool stopflag = true, bool minchange=false);
+		static unsigned int synonymousSubstitutionsNumber(const PolymorphismSequenceContainer & psc, const GeneticCode & gc) throw(Exception);
 
 
 		/**
-		 * @brief Compute the non-synonymous nucleotide diversity, pi
-		 * @param si a SiteIterator
-		 * @param na a NucleicAlphabet
-		 * @param ca a CodonAlphabet
-		 * @param gc a GeneticCode
-		 * @param minchange a boolean set to false (see CodonSiteTools)
-		 */
-		static double piNonSynonymous(SiteIterator & si, const NucleicAlphabet & na, const CodonAlphabet & ca, const GeneticCode & gc, bool minchange=false );
-
-		/**
-		 * @brief Compute the non-synonymous nucleotide diversity, pi
-		 * @param si a SiteIterator
-		 * @param gc a GeneticCode
-		 * @param minchange a boolean set to false (see CodonSiteTools)
-		 */
-		static double piNonSynonymous(SiteIterator & si, const GeneticCode & gc, bool minchange=false );
-
-		/**
-		  * @breif Compute the non-synonymous nucleotide diversity, pi
+		  * @brief compute the number of  non synonymous subsitutions in an alignment
 		  *
-		  * Gaps are automatically excluded
-		  * @param v a SiteContainer
-		  * @param stopfalg a boolean set by default to true if you don't want to take gaps into account
-		  * @param minchange a boolean set to false (see CodonSiteTools)
-		  */
-		static double piNonSynonymous(const SiteContainer & v, bool stopflag = true, bool minchange=false);
-
-		/**
-		  * @brief Compute the non-synonymous nucleotide diversity, pi
-		  *
-		  * Gaps are automatically excluded
-		  * @param v a SiteContainer
+		  * Gaps and unresolved sites are automatically excluded
+		  * @param sc a PolymorphismSequenceContainer
 		  * @param gc a GeneticCode
-		  * @param stopfalg a boolean set by default to true if you don't want
-		  * to take gaps into account
-		  * @param minchange a boolean set to false (see CodonSiteTools)
 		  */
-                static double piNonSynonymous(const SiteContainer & v, const GeneticCode & gc, bool stopflag = true, bool minchange=false);
+		static unsigned int nonSynonymousSubstitutionsNumber(const PolymorphismSequenceContainer & psc, const GeneticCode & gc) throw(Exception);
+
 
 		/**
-		  * @brief Compute the mean number of synonymous site in an alignment
+		  * @brief return a vector containing Pa, Ps, Da, Ds
 		  *
-		  * A site is x% synonymous if x% of possible mutations are synonymous
-		  * The transition/transversion can be taken into account (use the variable ratio)
-		  * @param si a SiteIterator
-		  * @param ca a CodonAlphabet
+		  * Gaps and unresolved sites are automatically excluded
+		  * @param ingroup a PolymorphismSequenceContainer
+		  * @param outgroup a PolymorphismSequenceContainer
 		  * @param gc a GeneticCode
-		  * @param ratio a double set by default to 1 if you assume that
-		  * transition equal transversion
-		  * Return: pi non-synonymous
 		  */
-		static double meanSynonymousSitesNumber(SiteIterator & si, const CodonAlphabet & ca, const GeneticCode & gc, double ratio=1);
+		static vector<unsigned int> MKtable(const PolymorphismSequenceContainer & ingroup, const PolymorphismSequenceContainer & outgroup , const GeneticCode & gc) throw(Exception);
+
 
 		/**
-		  * @brief Compute the mean number of synonymous site in an alignment
+		  * @brief return the neutrality index NI = (Pa/Ps)/(Da/Ds)
 		  *
-		  * A site is x% synonymous if x% of possible mutations are synonymous
-		  * The transition/transversion can be taken into account (use the variable ratio)
-		  * @param si a SiteIterator
+		  * Gaps and unresolved sites are automatically excluded
+		  * @param ingroup a PolymorphismSequenceContainer
+		  * @param outgroup a PolymorphismSequenceContainer
 		  * @param gc a GeneticCode
-		  * @param ratio a double set by default to 1 if you assume that
-		  * transition equal transversion
-		  * Return: pi non-synonymous
 		  */
-		static double meanSynonymousSitesNumber(SiteIterator & si, const GeneticCode & gc, double ratio=1) throw(Exception);
+		static double neutralityIndex(const PolymorphismSequenceContainer & ingroup, const PolymorphismSequenceContainer & outgroup , const GeneticCode & gc) throw(Exception);
 
-		/**
-		  * @brief Compute the mean number of non-synonymous site in an alignment
-		  *
-		  * A site is x% synonymous if x% of possible mutations are synonymous
-		  * The transition/transversion can be taken into account (use the variable ratio)
-		  * @param si a SiteIterator
-		  * @param gc a GeneticCode
-		  * @param ratio a double set by default to 1 if you assume that
-		  * transition equal transversion
-		  * Return: pi non-synonymous
-		  */
-		static double meanNonSynonymousSitesNumber(SiteIterator & si, const GeneticCode & gc, double ratio=1) throw(Exception);
 
-		/**
-		  * @brief compute the mean number of synonymous site in an alignment
-		  *
-		  * A site is x% synonymous if x% of possible mutations are synonymous
-		  * The transition/transversion can be taken into account (use the variable ratio)
-		  * Gaps are automatically excluded
-		  * @param v a SiteContainer
-		  * @param ratio a double
-		  * @param stopfalg a boolean set by dfault to true if you don't want
-		  * to take stop codons into account
-		  */
-		static double meanSynonymousSitesNumber(const SiteContainer & v, double ratio=1, bool stopfalg = true);
 
-		/**
-		  * @brief compute the mean number of synonymous site in an alignment
-		  *
-		  * A site is x% synonymous if x% of possible mutations are synonymous
-		  * The transition/transversion can be taken into account (use the variable ratio)
-		  * Gaps are automatically excluded
-		  * @param v a SiteContainer
-		  * @param gc a GeneticCode
-		  * @param ratio a double
-		  * @param stopfalg a boolean set by default to true if you don't want
-		  * to take stop codons into account
-		  */
-		static double meanSynonymousSitesNumber(const SiteContainer & v, const GeneticCode & gc, double ratio=1.0, bool stopflag=true) throw (Exception);
-
-		/**
-		  * @brief compute the mean number of non-synonymous site in an alignment
-		  *
-		  * A site is x% synonymous if x% of possible mutations are synonymous
-		  * The transition/transversion can be taken into account (use the variable ratio)
-		  * Gaps are automatically excluded
-		  * @param v a SiteContainer
-		  * @param gc a GeneticCode
-		  * @param ratio a double
-		  * @param stopfalg a boolean set by default to true if you don't want
-		  * to take stop codons into account
-		  */
-		static double meanNonSynonymousSitesNumber(const SiteContainer & v, const GeneticCode & gc, double ratio=1.0, bool stopflag=true) throw (Exception);
-
-		/**
-		 * @brief Return the Tajima's D test (Tajima 1989).
-		 *
-		 * Calculation using the number of polymorphic (segregating) sites.
-		 * @f[
-		 * D=\frac{\hat{\theta}_\pi-\hat{\theta}_S}{\sqrt{\textrm{V}\left(\hat{\theta}_\pi-\hat{\theta}_S\right)}}
-		 * =\frac{\hat{\theta}_\pi-\hat{\theta}_S}{\sqrt{e_1S+e_2S(S-1)}}
-		 * @f]
-		 * @param psc a PolymorphismSequenceContainer
-		 * @param gapflag flag set by default to true if you don't want to
-		 * take gap into account
-		 */
-		static double tajimaDSS(const PolymorphismSequenceContainer & psc, bool gapflag = true);
-
-		/**
-		 * @brief Return the Tajima's D test (Tajima 1989).
-		 *
-		 * Calculation using the total number of mutation.
-		 * @f[
-		 * D=\frac{\hat{\theta}_\pi-\frac{\eta}{a_1}}{\sqrt{e_1\eta+e_2\eta(\eta-1)}}
-		 * @f]
-		 * @param psc a PolymorphismSequenceContainer
-		 * @param gapflag flag set by default to true if you don't want to
-		 * take gap into account
-		 */
-		static double tajimaDTNM(const PolymorphismSequenceContainer & psc, bool gapflag = true);
-
-		/**
-		 * @brief Return the Fu and Li D test (1993).
-		 *
-		 * @param ingroup a PolymorphismSequenceContainer
-		 * @param outgroup a PolymorphismSequenceContainer
-                 * This version uses the number of mutations
-                 * If the outgroup contains more than one sequence the sites with more than one
-                 * variant will not be considered for external branch mutations !
-		 */
-		static double fuliD(const PolymorphismSequenceContainer & ingroup, const PolymorphismSequenceContainer & outgroup);
-
-		/**
-		 * @brief Return the Fu and Li D<sup>*</sup> test (1993).
-		 *
-		 * @param group a PolymorphismSequenceContainer
-		 */
-		static double fuliDstar(const PolymorphismSequenceContainer & group);
+		/**		 * @brief Return the Tajima's D test (Tajima 1989).		 *		 * Calculation using the number of polymorphic (segregating) sites.		 * @f[		 * D=\frac{\hat{\theta}_\pi-\hat{\theta}_S}{\sqrt{\textrm{V}\left(\hat{\theta}_\pi-\hat{\theta}_S\right)}}		 * =\frac{\hat{\theta}_\pi-\hat{\theta}_S}{\sqrt{e_1S+e_2S(S-1)}}		 * @f]		 * @param psc a PolymorphismSequenceContainer		 * @param gapflag flag set by default to true if you don't want to		 * take gap into account		 */		static double tajimaDSS(const PolymorphismSequenceContainer & psc, bool gapflag = true);
+		/**		 * @brief Return the Tajima's D test (Tajima 1989).		 *		 * Calculation using the total number of mutation.		 * @f[		 * D=\frac{\hat{\theta}_\pi-\frac{\eta}{a_1}}{\sqrt{e_1\eta+e_2\eta(\eta-1)}}		 * @f]		 * @param psc a PolymorphismSequenceContainer		 * @param gapflag flag set by default to true if you don't want to		 * take gap into account		 */		static double tajimaDTNM(const PolymorphismSequenceContainer & psc, bool gapflag = true);
+		/**		 * @brief Return the Fu and Li D test (1993).		 *		 * @param ingroup a PolymorphismSequenceContainer		 * @param outgroup a PolymorphismSequenceContainer                 * This version uses the number of mutations                 * If the outgroup contains more than one sequence the sites with more than one                 * variant will not be considered for external branch mutations !		 */		static double fuliD(const PolymorphismSequenceContainer & ingroup, const PolymorphismSequenceContainer & outgroup);
+		/**		 * @brief Return the Fu and Li D<sup>*</sup> test (1993).		 *		 * @param group a PolymorphismSequenceContainer		 */		static double fuliDstar(const PolymorphismSequenceContainer & group);
 
 		/**
 		 * @brief Return the Fu and Li F test (1993).
@@ -726,6 +365,17 @@ class SequenceStatistics
 	     * @param freqmin a float (to exlude site with the lowest allele frequency less than the threshold given by freqmin, 0 by default)
 	     */
         static double inverseRegressionR2(const PolymorphismSequenceContainer & psc, bool distance1=false, bool keepsingleton=true, double freqmin=0);
+
+	    /**
+
+	     * @brief give the lef hand term of equation (4) in Hudson (1987)
+
+         * This term is used in hudson87
+
+	     * @param psc a PolymorphismSequenceContainer
+
+	     */
+		static double leftHandHudson(const PolymorphismSequenceContainer & psc);
 
 
 
