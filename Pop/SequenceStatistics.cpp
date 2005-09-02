@@ -925,7 +925,7 @@ vector<unsigned int> SequenceStatistics::MKtable(const PolymorphismSequenceConta
         v[0] = SequenceStatistics::nonSynonymousSubstitutionsNumber(*pscin,gc);
 	v[1] = SequenceStatistics::synonymousSubstitutionsNumber(*pscin,gc);
 	v[2] = SequenceStatistics::nonSynonymousSubstitutionsNumber(*psctot,gc);
-	v[3] = SequenceStatistics::nonSynonymousSubstitutionsNumber(*psctot,gc);
+	v[3] = SequenceStatistics::synonymousSubstitutionsNumber(*psctot,gc);
         delete pscin;
         delete pscmerge;
         delete psctot;
