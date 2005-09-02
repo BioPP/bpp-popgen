@@ -104,6 +104,17 @@ class PolymorphismSequenceContainerTools
 		static PolymorphismSequenceContainer * extractGroup(const PolymorphismSequenceContainer & psc, unsigned int group_id) throw (Exception);
 
 		/**
+		 * @brief Extract selected sequences
+		 *
+		 * @param psc a PolymorphismSequenceContainer reference.
+		 * @param ss a sequence selection.
+		 *
+		 */
+		static PolymorphismSequenceContainer * getSelectedSequences(const PolymorphismSequenceContainer & psc, SequenceSelection & ss);
+
+
+
+		/**
 		 * @brief Retrieves sites without gaps from PolymorphismSequenceContainer.
 		 *
 		 * @param psc a PolymorphismSequenceContainer reference
@@ -175,7 +186,7 @@ class PolymorphismSequenceContainerTools
          * Assumed that the first coding site correspond to the first position
 	     * @param psc a PolymorphismSequenceContainer
 	     */
-        static PolymorphismSequenceContainer * getIntrons(const PolymorphismSequenceContainer & psc, unsigned int start) throw (Exception);
+        static PolymorphismSequenceContainer * getIntrons(const PolymorphismSequenceContainer & psc) throw (Exception);
 
 	    /**
 	     * @brief Retrieve 5' sites
@@ -191,7 +202,7 @@ class PolymorphismSequenceContainerTools
          * Assumed that the first coding site correspond to the first position
 	     * @param psc a PolymorphismSequenceContainer
 	     */
-        static PolymorphismSequenceContainer * get3Prime(const PolymorphismSequenceContainer & psc, unsigned int start) throw (Exception);
+        static PolymorphismSequenceContainer * get3Prime(const PolymorphismSequenceContainer & psc) throw (Exception);
 
 	/**
 	 * @brief Get a PolymorphismSequenceContainer corresponding to a site selection annotated in the mase comments
