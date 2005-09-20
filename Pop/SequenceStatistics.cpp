@@ -775,7 +775,7 @@ double SequenceStatistics::meanSynonymousSitesNumber(SiteIterator & si, const Co
 // Method to compute the mean number of synonymous site in an alignment
 // Arguments: a SiteIterator
 // Return: mean number of synonymous site
-double SequenceStatistics::meanSynonymousSitesNumber(SiteIterator & si, const GeneticCode &gc, double ratio) throw(Exception) {
+double SequenceStatistics::meanSynonymousSitesNumber(SiteIterator & si, const GeneticCode &gc, double ratio){
 	double S=0;
 	const Site *site;
 	while(si.hasMoreSites()) {
@@ -788,7 +788,7 @@ double SequenceStatistics::meanSynonymousSitesNumber(SiteIterator & si, const Ge
 // Method to compute the mean number of non-synonymous site in an alignment
 // Arguments: a SiteIterator
 // Return: mean number of synonymous site
-double SequenceStatistics::meanNonSynonymousSitesNumber(SiteIterator & si, const GeneticCode &gc, double ratio) throw(Exception) {
+double SequenceStatistics::meanNonSynonymousSitesNumber(SiteIterator & si, const GeneticCode &gc, double ratio){
 	double S=0;
 	int n=0;
 	const Site *site;
@@ -823,7 +823,7 @@ double SequenceStatistics::meanSynonymousSitesNumber(const SiteContainer & v, do
 //            a double 1.0 by default Transition/Tarnsversion rate
 //            a boolean true by default if you don't want to take gap in account
 // Return: mean number of synonymous site
-double SequenceStatistics::meanSynonymousSitesNumber(const SiteContainer & v, const GeneticCode & gc, double ratio, bool stopflag) throw(Exception) {
+double SequenceStatistics::meanSynonymousSitesNumber(const SiteContainer & v, const GeneticCode & gc, double ratio, bool stopflag){
     SiteIterator *si = NULL;
     if(stopflag) si = new CompleteSiteIterator(v);
     else si = new NoGapSiteIterator(v);
@@ -839,7 +839,7 @@ double SequenceStatistics::meanSynonymousSitesNumber(const SiteContainer & v, co
 //            a boolean true by default if you don't want to take gap in account
 // Return: mean number of synonymous site
 
-double SequenceStatistics::meanNonSynonymousSitesNumber(const SiteContainer & v, const GeneticCode & gc, double ratio, bool stopflag) throw(Exception) {    SiteIterator *si = NULL;
+double SequenceStatistics::meanNonSynonymousSitesNumber(const SiteContainer & v, const GeneticCode & gc, double ratio, bool stopflag){    SiteIterator *si = NULL;
     if(stopflag) si = new CompleteSiteIterator(v);
     else si = new NoGapSiteIterator(v);
     double NS = SequenceStatistics::meanNonSynonymousSitesNumber(*si,gc,ratio);
@@ -852,7 +852,7 @@ double SequenceStatistics::meanNonSynonymousSitesNumber(const SiteContainer & v,
 // Arguments: a SiteContainer, a GeneticCode
 // Return: number of synonymous substitutions
 
-unsigned int SequenceStatistics::synonymousSubstitutionsNumber(const PolymorphismSequenceContainer & psc, const GeneticCode & gc) throw(Exception){
+unsigned int SequenceStatistics::synonymousSubstitutionsNumber(const PolymorphismSequenceContainer & psc, const GeneticCode & gc){
     SiteIterator *si = new CompleteSiteIterator(psc);
     const Site * site;
     const NucleicAlphabet * na = new DNA();
@@ -874,7 +874,7 @@ unsigned int SequenceStatistics::synonymousSubstitutionsNumber(const Polymorphis
 // Arguments: a SiteContainer, a GeneticCode
 // Return: number of synonymous substitutions
 
-unsigned int SequenceStatistics::nonSynonymousSubstitutionsNumber(const PolymorphismSequenceContainer & psc, const GeneticCode & gc) throw(Exception){
+unsigned int SequenceStatistics::nonSynonymousSubstitutionsNumber(const PolymorphismSequenceContainer & psc, const GeneticCode & gc){
     SiteIterator *si = new CompleteSiteIterator(psc);
     const Site * site;
     const NucleicAlphabet * na = new DNA();
@@ -890,52 +890,65 @@ unsigned int SequenceStatistics::nonSynonymousSubstitutionsNumber(const Polymorp
 	return Sns;
 }
 
+vector<unsigned int> SequenceStatistics::fixedDifferences(const PolymorphismSequenceContainer & pscin, const PolymorphismSequenceContainer & pscout, PolymorphismSequenceContainer & psccons, const GeneticCode & gc){
+   SiteIterator *siIn = new CompleteSiteIterator(pscin);
+   SiteIterator *siOut = new CompleteSiteIterator(pscout);
+   SiteIterator *siCons = new CompleteSiteIterator(psccons);
+   const Site *siteIn, *siteOut, *siteCons;
+   const NucleicAlphabet * na = new DNA();
+   const CodonAlphabet * ca = new StandardCodonAlphabet(na);
+   unsigned int NfixS=0;
+   unsigned int NfixA=0;
+   while(siIn->hasMoreSites()){
+        siteIn = siIn->nextSite();
+        siteOut = siOut->nextSite();
+        siteCons = siCons->nextSite();
+        vector<unsigned int> v = CodonSiteTools::getFixedDifferences(*siteIn,*siteOut,siteCons->getValue(0),siteCons->getValue(1),*na,*ca,gc);
+        NfixS += v[0];
+        NfixA += v[1];
+   }
+   vector<unsigned int> v(2);
+   v[0]=NfixS;
+   v[1]=NfixA;
+   delete siIn;
+   delete siOut;
+   delete siCons;
+   delete na;
+   delete ca;
+   return v;
+}
 
 //Method to compute synonymous and nonsynonymous substitutions in polymorphism and divergence (MacDonald-Kreitman table)
 //Arguments: two PolymorphismSequenceContainer, a GeneticCode
 //Return: a vector: <Pa,Ps,Da,Ds>
-vector<unsigned int> SequenceStatistics::MKtable(const PolymorphismSequenceContainer & ingroup, const PolymorphismSequenceContainer & outgroup , const GeneticCode & gc) throw(Exception){
-        SiteSelection ss1, ss2;
-        for(unsigned int i=0; i<ingroup.getNumberOfSites();i++){
-                if(SiteTools::isConstant(*ingroup.getSite(i))) ss2.push_back(i);
-                else ss1.push_back(i);
+vector<unsigned int> SequenceStatistics::MKtable(const PolymorphismSequenceContainer & ingroup, const PolymorphismSequenceContainer & outgroup , const GeneticCode & gc){
+        PolymorphismSequenceContainer * psctot = new PolymorphismSequenceContainer(ingroup);
+        for(unsigned int i = 0; i<outgroup.getNumberOfSequences();i++){
+                psctot->addSequence(*outgroup.getSequence(i));
+                psctot->setAsOutgroupMember(i+ingroup.getNumberOfSequences());
         }
-        SiteContainer *  scin = SiteContainerTools::getSelectedSites(ingroup,ss1);
-        PolymorphismSequenceContainer * pscin = new PolymorphismSequenceContainer(*scin);
-        PolymorphismSequenceContainer * pscmerge = new PolymorphismSequenceContainer(ingroup);
-        pscmerge->addSequence(*outgroup.getSequence(0));
-        SiteContainer *  sctot = SiteContainerTools::getSelectedSites(*pscmerge,ss2);
-        PolymorphismSequenceContainer * psctot = new PolymorphismSequenceContainer(*sctot);
-
-//        PolymorphismSequenceContainer * psctot = new PolymorphismSequenceContainer(ingroup);
-//        for(unsigned int i = 1; i<outgroup.getNumberOfSequences();i++){
-//                psctot->addSequence(*outgroup.getSequence(i));
-//                psctot->setAsOutgroupMember(i+ingroup.getNumberOfSequences());
-//        }
-//        const PolymorphismSequenceContainer * pscin = PolymorphismSequenceContainerTools::extractIngroup(*psctot);
-//        const PolymorphismSequenceContainer * pscout = PolymorphismSequenceContainerTools::extractOutgroup(*psctot);
-//        const Sequence * consensusIn = SiteContainerTools::getConsensus(*pscin);
-//        const Sequence * consensusOut = SiteContainerTools::getConsensus(*pscout);
-//        PolymorphismSequenceContainer * consensus = new PolymorphismSequenceContainer(ingroup.getAlphabet());
-//        consensus->addSequence(*consensusIn);
- //       consensus->addSequence(*consensusOut);
-
-
+        const PolymorphismSequenceContainer * psccomplet = PolymorphismSequenceContainerTools::getCompleteSites(*psctot);
+        const PolymorphismSequenceContainer * pscin = PolymorphismSequenceContainerTools::extractIngroup(*psccomplet);
+        const PolymorphismSequenceContainer * pscout = PolymorphismSequenceContainerTools::extractOutgroup(*psccomplet);
+        const Sequence * consensusIn = SiteContainerTools::getConsensus(*pscin,"consensusIn");
+        const Sequence * consensusOut = SiteContainerTools::getConsensus(*pscout,"consensusOut");
+        PolymorphismSequenceContainer * consensus = new PolymorphismSequenceContainer(ingroup.getAlphabet());
+        consensus->addSequence(*consensusIn);
+        consensus->addSequence(*consensusOut);
+        vector<unsigned int> u = SequenceStatistics::fixedDifferences(*pscin,*pscout,*consensus,gc);
 	vector<unsigned int> v(4);
         v[0] = SequenceStatistics::nonSynonymousSubstitutionsNumber(*pscin,gc);
 	v[1] = SequenceStatistics::synonymousSubstitutionsNumber(*pscin,gc);
-	v[2] = SequenceStatistics::nonSynonymousSubstitutionsNumber(*psctot,gc);
-	v[3] = SequenceStatistics::synonymousSubstitutionsNumber(*psctot,gc);
-        delete pscin;
-        delete pscmerge;
-        delete psctot;
+	v[2] = u[1];
+	v[3] = u[0];
+        delete consensus;
 	return v;
 }
 
 //Method to compute the neutrality index : NI = (pa/ps)/(Da/Ds)
 //Arguments: two PolymorphismSequenceContainer, a GeneticCode
 //Return: neutrality index
-double SequenceStatistics::neutralityIndex(const PolymorphismSequenceContainer & ingroup, const PolymorphismSequenceContainer & outgroup , const GeneticCode & gc) throw(Exception){
+double SequenceStatistics::neutralityIndex(const PolymorphismSequenceContainer & ingroup, const PolymorphismSequenceContainer & outgroup , const GeneticCode & gc){
 	vector<unsigned int> v = SequenceStatistics::MKtable(ingroup,outgroup,gc);
         if(v[1]!=0 && v[2]!=0) return (double)(v[0]*v[3])/(v[1]*v[2]);
         else return -1;

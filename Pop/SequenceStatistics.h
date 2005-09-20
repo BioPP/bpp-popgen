@@ -100,13 +100,13 @@ knowledge of the CeCILL license and that you accept its terms.
 		/**		  * @breif Compute the non-synonymous nucleotide diversity, pi		  *		  * Gaps are automatically excluded		  * @param v a SiteContainer		  * @param stopfalg a boolean set by default to true if you don't want to take gaps into account		  * @param minchange a boolean set to false (see CodonSiteTools)		  */		static double piNonSynonymous(const SiteContainer & v, bool stopflag = true, bool minchange=false);
 		/**		  * @brief Compute the non-synonymous nucleotide diversity, pi		  *		  * Gaps are automatically excluded		  * @param v a SiteContainer		  * @param gc a GeneticCode		  * @param stopfalg a boolean set by default to true if you don't want		  * to take gaps into account		  * @param minchange a boolean set to false (see CodonSiteTools)		  */         static double piNonSynonymous(const SiteContainer & v, const GeneticCode & gc, bool stopflag = true, bool minchange=false);
 		/**		  * @brief Compute the mean number of synonymous site in an alignment		  *		  * A site is x% synonymous if x% of possible mutations are synonymous		  * The transition/transversion can be taken into account (use the variable ratio)		  * @param si a SiteIterator		  * @param ca a CodonAlphabet		  * @param gc a GeneticCode		  * @param ratio a double set by default to 1 if you assume that		  * transition equal transversion		  * Return: pi non-synonymous		  */		static double meanSynonymousSitesNumber(SiteIterator & si, const CodonAlphabet & ca, const GeneticCode & gc, double ratio=1);
-		/**		  * @brief Compute the mean number of synonymous site in an alignment		  *		  * A site is x% synonymous if x% of possible mutations are synonymous		  * The transition/transversion can be taken into account (use the variable ratio)		  * @param si a SiteIterator		  * @param gc a GeneticCode		  * @param ratio a double set by default to 1 if you assume that		  * transition equal transversion		  * Return: pi non-synonymous		  */		static double meanSynonymousSitesNumber(SiteIterator & si, const GeneticCode & gc, double ratio=1) throw(Exception);
+		/**		  * @brief Compute the mean number of synonymous site in an alignment		  *		  * A site is x% synonymous if x% of possible mutations are synonymous		  * The transition/transversion can be taken into account (use the variable ratio)		  * @param si a SiteIterator		  * @param gc a GeneticCode		  * @param ratio a double set by default to 1 if you assume that		  * transition equal transversion		  * Return: pi non-synonymous		  */		static double meanSynonymousSitesNumber(SiteIterator & si, const GeneticCode & gc, double ratio=1);
 
-		/**		  * @brief Compute the mean number of non-synonymous site in an alignment		  *		  * A site is x% synonymous if x% of possible mutations are synonymous		  * The transition/transversion can be taken into account (use the variable ratio)		  * @param si a SiteIterator		  * @param gc a GeneticCode		  * @param ratio a double set by default to 1 if you assume that		  * transition equal transversion		  * Return: pi non-synonymous		  */		static double meanNonSynonymousSitesNumber(SiteIterator & si, const GeneticCode & gc, double ratio=1) throw(Exception);
+		/**		  * @brief Compute the mean number of non-synonymous site in an alignment		  *		  * A site is x% synonymous if x% of possible mutations are synonymous		  * The transition/transversion can be taken into account (use the variable ratio)		  * @param si a SiteIterator		  * @param gc a GeneticCode		  * @param ratio a double set by default to 1 if you assume that		  * transition equal transversion		  * Return: pi non-synonymous		  */		static double meanNonSynonymousSitesNumber(SiteIterator & si, const GeneticCode & gc, double ratio=1);
 		/**		  * @brief compute the mean number of synonymous site in an alignment		  *		  * A site is x% synonymous if x% of possible mutations are synonymous		  * The transition/transversion can be taken into account (use the variable ratio)		  * Gaps are automatically excluded		  * @param v a SiteContainer		  * @param ratio a double		  * @param stopfalg a boolean set by dfault to true if you don't want		  * to take stop codons into account		  */		static double meanSynonymousSitesNumber(const SiteContainer & v, double ratio=1, bool stopfalg = true);
-		/**		  * @brief compute the mean number of synonymous site in an alignment		  *		  * A site is x% synonymous if x% of possible mutations are synonymous		  * The transition/transversion can be taken into account (use the variable ratio)		  * Gaps are automatically excluded		  * @param v a SiteContainer		  * @param gc a GeneticCode		  * @param ratio a double		  * @param stopfalg a boolean set by default to true if you don't want		  * to take stop codons into account		  */		static double meanSynonymousSitesNumber(const SiteContainer & v, const GeneticCode & gc, double ratio=1.0, bool stopflag=true) throw (Exception);
+		/**		  * @brief compute the mean number of synonymous site in an alignment		  *		  * A site is x% synonymous if x% of possible mutations are synonymous		  * The transition/transversion can be taken into account (use the variable ratio)		  * Gaps are automatically excluded		  * @param v a SiteContainer		  * @param gc a GeneticCode		  * @param ratio a double		  * @param stopfalg a boolean set by default to true if you don't want		  * to take stop codons into account		  */		static double meanSynonymousSitesNumber(const SiteContainer & v, const GeneticCode & gc, double ratio=1.0, bool stopflag=true);
 
-		/**		  * @brief compute the mean number of non-synonymous site in an alignment		  *		  * A site is x% synonymous if x% of possible mutations are synonymous		  * The transition/transversion can be taken into account (use the variable ratio)		  * Gaps are automatically excluded		  * @param v a SiteContainer		  * @param gc a GeneticCode		  * @param ratio a double		  * @param stopfalg a boolean set by default to true if you don't want		  * to take stop codons into account		  */		static double meanNonSynonymousSitesNumber(const SiteContainer & v, const GeneticCode & gc, double ratio=1.0, bool stopflag=true) throw (Exception);
+		/**		  * @brief compute the mean number of non-synonymous site in an alignment		  *		  * A site is x% synonymous if x% of possible mutations are synonymous		  * The transition/transversion can be taken into account (use the variable ratio)		  * Gaps are automatically excluded		  * @param v a SiteContainer		  * @param gc a GeneticCode		  * @param ratio a double		  * @param stopfalg a boolean set by default to true if you don't want		  * to take stop codons into account		  */		static double meanNonSynonymousSitesNumber(const SiteContainer & v, const GeneticCode & gc, double ratio=1.0, bool stopflag=true);
 
 		/**
 		  * @brief compute the number of synonymous subsitutions in an alignment
@@ -115,7 +115,7 @@ knowledge of the CeCILL license and that you accept its terms.
 		  * @param psc a PolymorphismSequenceContainer
 		  * @param gc a GeneticCode
 		  */
-		static unsigned int synonymousSubstitutionsNumber(const PolymorphismSequenceContainer & psc, const GeneticCode & gc) throw(Exception);
+		static unsigned int synonymousSubstitutionsNumber(const PolymorphismSequenceContainer & psc, const GeneticCode & gc);
 
 
 		/**
@@ -125,8 +125,18 @@ knowledge of the CeCILL license and that you accept its terms.
 		  * @param sc a PolymorphismSequenceContainer
 		  * @param gc a GeneticCode
 		  */
-		static unsigned int nonSynonymousSubstitutionsNumber(const PolymorphismSequenceContainer & psc, const GeneticCode & gc) throw(Exception);
+		static unsigned int nonSynonymousSubstitutionsNumber(const PolymorphismSequenceContainer & psc, const GeneticCode & gc);
 
+
+		/**
+		  * @brief compute the number of fixed differences between two alignements
+		  *
+		  * @param pscin a PolymorphismSequenceContainer
+		  * @param pscout a PolymorphismSequenceContainer
+		  * @param psccons a PolymorphismSequenceContainer
+		  * @param gc a GeneticCode
+		  */
+		static vector<unsigned int> fixedDifferences(const PolymorphismSequenceContainer & pscin, const PolymorphismSequenceContainer & pscout, PolymorphismSequenceContainer & psccons, const GeneticCode & gs);
 
 		/**
 		  * @brief return a vector containing Pa, Ps, Da, Ds
@@ -136,7 +146,7 @@ knowledge of the CeCILL license and that you accept its terms.
 		  * @param outgroup a PolymorphismSequenceContainer
 		  * @param gc a GeneticCode
 		  */
-		static vector<unsigned int> MKtable(const PolymorphismSequenceContainer & ingroup, const PolymorphismSequenceContainer & outgroup , const GeneticCode & gc) throw(Exception);
+		static vector<unsigned int> MKtable(const PolymorphismSequenceContainer & ingroup, const PolymorphismSequenceContainer & outgroup , const GeneticCode & gc);
 
 
 		/**
@@ -147,7 +157,7 @@ knowledge of the CeCILL license and that you accept its terms.
 		  * @param outgroup a PolymorphismSequenceContainer
 		  * @param gc a GeneticCode
 		  */
-		static double neutralityIndex(const PolymorphismSequenceContainer & ingroup, const PolymorphismSequenceContainer & outgroup , const GeneticCode & gc) throw(Exception);
+		static double neutralityIndex(const PolymorphismSequenceContainer & ingroup, const PolymorphismSequenceContainer & outgroup , const GeneticCode & gc);
 
 
 
