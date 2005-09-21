@@ -91,28 +91,20 @@ unsigned int SequenceStatistics::polymorphicSiteNumber(const PolymorphismSequenc
 
 
 // Method to compute number of parsimony informative sites in an alignment
-// Arguments: a SiteIterator
+// Arguments: a SiteContainer   a boolean (gapflag: true: do not count site with gap or undetermined)
 // Return: Number of parsimony informative site
-unsigned int SequenceStatistics::parsimonyInformativeSiteNumber( SiteIterator & si ) {
+unsigned int SequenceStatistics::parsimonyInformativeSiteNumber(const PolymorphismSequenceContainer & psc, bool gapflag) {
+        SiteIterator *si;
+        if(gapflag) si = new CompleteSiteIterator(psc);
+	else si = new SimpleSiteIterator(psc);
 	unsigned int S=0;
 	const Site *site;
-	while ( si.hasMoreSites() ) {
-		site=si.nextSite();
+	while ( si->hasMoreSites() ) {
+		site=si->nextSite();
 		if (SiteTools::isParsimonyInformativeSite(*site)) {
 			S++;
 		}
 	}
-	return S;
-}
-
-// Method to compute number of parsimony informative sites in an alignment
-// Arguments: a SiteContainer   a boolean (gapflag: true: do not count site with gap or undetermined)
-// Return: Number of parsimony informative site
-unsigned int SequenceStatistics::parsimonyInformativeSiteNumber(const SiteContainer & v, bool gapflag) {
-        SiteIterator *si;
-        if(gapflag) si = new CompleteSiteIterator(v);
-	else si = new SimpleSiteIterator(v);
-	unsigned int S = SequenceStatistics::parsimonyInformativeSiteNumber(*si);
         delete si;
 	return S;
 }
@@ -136,31 +128,24 @@ unsigned int SequenceStatistics::countSingleton(const PolymorphismSequenceContai
 	return nus;
 }
 
-// Method to compute number of triplet sites in an alignment
-// Arguments: a SiteIterator
-// Return: Number of triplet sites
-unsigned int SequenceStatistics::tripletNumber( SiteIterator & si ) {
-	int S=0;
-	const Site *site;
-	while ( si.hasMoreSites() ) {
-		site=si.nextSite();
-		if ( SiteTools::isTriplet(*site) ) {
-			S++;
-		}
-	}
-	return S;
-}
-
 
 // Method to compute number of triplet sites in an alignment
 // Arguments: a SiteContainer
 // Return: Number of triplet sites
-unsigned int SequenceStatistics::tripletNumber(const SiteContainer & v, bool gapflag) {
+unsigned int SequenceStatistics::tripletNumber(const PolymorphismSequenceContainer & psc, bool gapflag) {
          SiteIterator *si;
-         if(gapflag) si = new CompleteSiteIterator(v);
- 	else si = new SimpleSiteIterator(v);
- 	int S = SequenceStatistics::tripletNumber( *si );
-         delete si;
+         if(gapflag) si = new CompleteSiteIterator(psc);
+ 	else si = new SimpleSiteIterator(psc);
+	int S=0;
+	const Site *site;
+	while ( si->hasMoreSites() ) {
+		site=si->nextSite();
+		if ( SiteTools::isTriplet(*site) ) {
+			S++;
+		}
+	}
+
+        delete si;
  	return S;
  }
 
@@ -296,12 +281,12 @@ vector<unsigned int> SequenceStatistics::gcPolymorphism(const PolymorphismSequen
 
 // Method to compute diversity estimator Theta of Watterson (1975)// Arguments: a SiteContainer
 // Return: theta of Watterson (1975)
-double SequenceStatistics::watterson75( const SiteContainer & v ) {
+double SequenceStatistics::watterson75( const PolymorphismSequenceContainer & psc ) {
 	double ThetaW;
-	int n = v.getNumberOfSequences();
+	int n = psc.getNumberOfSequences();
 	double an = 0.0;
-	SiteIterator *si = new NoGapSiteIterator( v );
-	unsigned int S = polymorphicSiteNumber( v );
+	SiteIterator *si = new NoGapSiteIterator( psc );
+	unsigned int S = polymorphicSiteNumber( psc );
 	for ( int i = 1; i < n; i++ ) {
 			an += (double) 1/i;
 	}
@@ -313,14 +298,14 @@ double SequenceStatistics::watterson75( const SiteContainer & v ) {
 
 // Method to compute diversity estimator Theta of Tajima (1983)// Arguments: a SiteContainer
 // Return: theta of Tajima (1983)
-double SequenceStatistics::tajima83( const SiteContainer & v ) {
+double SequenceStatistics::tajima83( const PolymorphismSequenceContainer & psc ) {
 	double ThetaPi;
 	int S = 0;
 	const Site *site;
-	int n = v.getNumberOfSequences();
+	int n = psc.getNumberOfSequences();
 	double etha[20];
 	double somme = 0.0;
-	SiteIterator *si = new NoGapSiteIterator( v );
+	SiteIterator *si = new NoGapSiteIterator( psc );
 	while ( si->hasMoreSites() ) {
 		site = si->nextSite();
 	if ( !SiteTools::isConstant(*site) ) {
@@ -524,296 +509,101 @@ double SequenceStatistics::getTransitionsTransversionsRatio( const PolymorphismS
 //******************************************************************************************************************
 
 
-// Method to compute the number of codon sites with stop codon
-// Arguments: a SiteIterator
-// Return: Number of codon sites with stop codon
-unsigned int SequenceStatistics::stopCodonSiteNumber(SiteIterator & si, const CodonAlphabet & alpha) {
-	unsigned int S=0;
-	const Site *site;
-	while ( si.hasMoreSites() ) {
-		site=si.nextSite();
-		if (CodonSiteTools::hasStop(*site,alpha)) {
-			S++;
-		}
-	}
-	return S;
-}
 
 // Method to compute the number of codon sites with stop codon
 // Arguments: a SiteContainer, a boolean
 // Return: Number of codon sites with stop codon
-unsigned int SequenceStatistics::stopCodonSiteNumber(const SiteContainer & v, bool gapflag) {
+unsigned int SequenceStatistics::stopCodonSiteNumber(const PolymorphismSequenceContainer & psc, bool gapflag) {
     SiteIterator *si = NULL;
-    const CodonAlphabet * ca = dynamic_cast<const CodonAlphabet*>(v.getAlphabet());
-    if(gapflag) si = new NoGapSiteIterator(v);
-    else si = new SimpleSiteIterator(v);
-    unsigned int S = SequenceStatistics::stopCodonSiteNumber(*si,*ca);
+    const CodonAlphabet * ca = dynamic_cast<const CodonAlphabet*>(psc.getAlphabet());
+    if(gapflag) si = new NoGapSiteIterator(psc);
+    else si = new SimpleSiteIterator(psc);
+    unsigned int S=0;
+    const Site *site;
+    while ( si->hasMoreSites() ) {
+        site=si->nextSite();
+        if (CodonSiteTools::hasStop(*site,*ca))S++;
+    }
     delete si;
     return S;
 }
 
 
-// Method to compute the number of polymorphic codon with only one mutated site
-// Arguments: a SiteIterator, a NucleicAlphabet, a CodonAlphabet (Alphabets are given by the following method)
-// Return: Number of monosite polymorphic codons
-unsigned int SequenceStatistics::monoSitePolymorphicCodonNumber(SiteIterator & si, const NucleicAlphabet & na, const CodonAlphabet & ca) {
-	unsigned int S=0;
-	const Site *site;
-	while ( si.hasMoreSites() ) {
-		site=si.nextSite();
-		if (CodonSiteTools::isMonoSitePolymorphic(*site,na,ca)) {
-			S++;
-		}
-	}
-	return S;
-}
 
 // Method to compute the number of polymorphic codon with only one mutated site
 // Arguments: a SiteContainer, two booleans
 // Return: Number of monosite polymorphic codons
-unsigned int SequenceStatistics::monoSitePolymorphicCodonNumber(const SiteContainer & v, bool stopflag, bool gapflag) {
+unsigned int SequenceStatistics::monoSitePolymorphicCodonNumber(const PolymorphismSequenceContainer & psc, bool stopflag, bool gapflag) {
     SiteIterator *si = NULL;
     const NucleicAlphabet* na = new DNA();
-    const CodonAlphabet* ca = new StandardCodonAlphabet(na);
-    if(stopflag) si = new CompleteSiteIterator(v);
+    const CodonAlphabet* ca = dynamic_cast<const CodonAlphabet*>(psc.getAlphabet());
+    if(stopflag) si = new CompleteSiteIterator(psc);
     else {
-		if(gapflag) si = new NoGapSiteIterator(v);
-		else si = new SimpleSiteIterator(v);
+		if(gapflag) si = new NoGapSiteIterator(psc);
+		else si = new SimpleSiteIterator(psc);
 	}
-    unsigned int S = SequenceStatistics::monoSitePolymorphicCodonNumber(*si,*na,*ca);
+    unsigned int S=0;
+    const Site *site;
+    while ( si->hasMoreSites() ) {
+        site=si->nextSite();
+        if (CodonSiteTools::isMonoSitePolymorphic(*site,*na,*ca))S++;
+    }
     delete si;
     delete na;
-    delete ca;
     return S;
 }
 
-
-// Method to compute the number of synonymous polymorphic codon sites
-// Arguments: a SiteIterator, a NucleicAlphabet, a CodonAlphabet (Alphabets are given by the following method)
-// Return: Number of synonymous codon sites
-unsigned int SequenceStatistics::synonymousPolymorphicCodonNumber(SiteIterator & si, const NucleicAlphabet & na, const CodonAlphabet & ca) {
-	unsigned int S=0;
-	const Site *site;
-	while ( si.hasMoreSites() ) {
-		site=si.nextSite();
-		if (CodonSiteTools::isSynonymousPolymorphic(*site,na,ca)) {
-			S++;
-		}
-	}
-	return S;
-}
-
-// Method to compute the number of synonymous polymorphic codon sites
-// Arguments: a SiteIterator, a NucleicAlphabet, a CodonAlphabet (Alphabets are given by the following method)
-// Return: Number of synonymous codon sites
-unsigned int SequenceStatistics::synonymousPolymorphicCodonNumber(SiteIterator & si, const GeneticCode & gc) {
-	unsigned int S=0;
-	const Site *site;
-	while ( si.hasMoreSites() ) {
-		site=si.nextSite();
-		if (CodonSiteTools::isSynonymousPolymorphic(*site,gc)) {
-			S++;
-		}
-	}
-	return S;
-}
-
-
-// Method to compute the number of synonymous polymorphic codon sites// Arguments: a SiteContainer, a boolean
-// Return: Number of synonymous codon sites
-unsigned int SequenceStatistics::synonymousPolymorphicCodonNumber(const SiteContainer & v, bool stopflag) {
-    SiteIterator* si = NULL;
-    const NucleicAlphabet* na = new DNA();
-    const CodonAlphabet* ca = new StandardCodonAlphabet(na);
-    if(stopflag) si = new CompleteSiteIterator(v);
-    else new NoGapSiteIterator(v);
-    unsigned int S = SequenceStatistics::synonymousPolymorphicCodonNumber(*si,*na,*ca);
-    delete si;
-    delete na;
-    delete ca;
-    return S;
-}
 
 // Method to compute the number of synonymous polymorphic codon sites
 // Arguments: a SiteContainer, a boolean
 // Return: Number of synonymous codon sites
-unsigned int SequenceStatistics::synonymousPolymorphicCodonNumber(const SiteContainer & v, const GeneticCode & gc,  bool stopflag) {
+unsigned int SequenceStatistics::synonymousPolymorphicCodonNumber(const PolymorphismSequenceContainer & psc, const GeneticCode & gc,  bool stopflag) {
     SiteIterator* si = NULL;
-    if(stopflag) si = new CompleteSiteIterator(v);
-    else new NoGapSiteIterator(v);
-    unsigned int S = SequenceStatistics::synonymousPolymorphicCodonNumber(*si,gc);
+    if(stopflag) si = new CompleteSiteIterator(psc);
+    else new NoGapSiteIterator(psc);
+    unsigned int S=0;
+    const Site *site;
+    while ( si->hasMoreSites() ) {
+        site=si->nextSite();
+        if (CodonSiteTools::isSynonymousPolymorphic(*site,gc)) S++;
+    }
     delete si;
     return S;
 }
 
-
-// Method to compute the synonymous nucleotide diversity pi
-// Arguments: a SiteIterator, a CodonAlphabet, a GeneticCode (given by the following method)
-// Return: pi synonymous
-double SequenceStatistics::piSynonymous(SiteIterator & si, const CodonAlphabet & ca, const GeneticCode & gc, bool minchange) {
-	double S=0.0;
-	const Site *site;
-	while(si.hasMoreSites()) {
-		site=si.nextSite();
-                S += CodonSiteTools::piSynonymous(*site,ca,gc,minchange);
-	}
-	return S;
-}
-
-// Method to compute the synonymous nucleotide diversity pi
-// Arguments: a SiteIterator, a GeneticCode (given by the following method)
-// Return: pi synonymous
-double SequenceStatistics::piSynonymous(SiteIterator & si, const GeneticCode & gc, bool minchange) {
-	double S=0.0;
-	const Site *site;
-	while(si.hasMoreSites()) {
-		site=si.nextSite();
-                S += CodonSiteTools::piSynonymous(*site,gc,minchange);
-	}
-	return S;
-}
-
-// Method to compute the synonymous nucleotide diversity pi
-// Arguments: a SiteContainer, a boolean
-// Return: pi synonymous
-double SequenceStatistics::piSynonymous(const SiteContainer & v, bool stopflag, bool minchange) {
-    SiteIterator *si = NULL;
-    NucleicAlphabet* na = new DNA();
-    CodonAlphabet* ca = new StandardCodonAlphabet(na);
-    GeneticCode* gc = new StandardGeneticCode(na);
-    if(stopflag) si = new CompleteSiteIterator(v);
-    else si = new NoGapSiteIterator(v);
-    double S = SequenceStatistics::piSynonymous(*si,*ca,*gc,minchange);
-    delete si;
-    delete na;
-    delete ca;
-    delete gc;
-    return S;
-}
 
 
 // Method to compute the synonymous nucleotide diversity pi// Arguments: a SiteContainer, a boolean
 // Return: pi synonymous
 
-double SequenceStatistics::piSynonymous(const SiteContainer & v, const GeneticCode & gc, bool stopflag, bool minchange) {    SiteIterator *si = NULL;
-    const CodonAlphabet * ca = dynamic_cast<const CodonAlphabet*>(v.getAlphabet());
-    if(stopflag) si = new CompleteSiteIterator(v);
-    else si = new NoGapSiteIterator(v);
-    double S = SequenceStatistics::piSynonymous(*si,gc,minchange);
+double SequenceStatistics::piSynonymous(const PolymorphismSequenceContainer & psc, const GeneticCode & gc, bool stopflag, bool minchange) {    SiteIterator *si = NULL;
+    const CodonAlphabet * ca = dynamic_cast<const CodonAlphabet*>(psc.getAlphabet());
+    if(stopflag) si = new CompleteSiteIterator(psc);
+    else si = new NoGapSiteIterator(psc);
+    double S=0.0;
+    const Site *site;
+    while(si->hasMoreSites()) {
+        site=si->nextSite();
+        S += CodonSiteTools::piSynonymous(*site,gc,minchange);
+    }
     delete si;
-    return S;
-}
-
-
-// Method to compute the non-synonymous nucleotide diversity pi// Arguments: a SiteIterator
-// Return: pi synonymous
-double SequenceStatistics::piNonSynonymous(SiteIterator & si, const NucleicAlphabet & na, const CodonAlphabet & ca, const GeneticCode & gc, bool minchange) {
-	double S=0;
-	const Site *site;
-	while(si.hasMoreSites()) {
-		site=si.nextSite();
-                S += CodonSiteTools::piNonSynonymous(*site,gc,minchange);
-	}
-	return S;
-}
-
-// Method to compute the non-synonymous nucleotide diversity pi
-// Arguments: a SiteIterator
-// Return: pi synonymous
-double SequenceStatistics::piNonSynonymous(SiteIterator & si, const GeneticCode & gc, bool minchange) {
-	double S=0;
-	const Site *site;
-	while(si.hasMoreSites()) {
-		site=si.nextSite();
-                S += CodonSiteTools::piNonSynonymous(*site,gc,minchange);
-	}
-return S;
-}
-
-// Method to compute the non-synonymous nucleotide diversity pi// Arguments: a SiteContainer, a boolean
-// Return: pi synonymous
-double SequenceStatistics::piNonSynonymous(const SiteContainer & v, bool stopflag, bool minchange) {
-    SiteIterator *si = NULL;
-    NucleicAlphabet* na = new DNA();
-    CodonAlphabet* ca = new StandardCodonAlphabet(na);
-    GeneticCode* gc = new StandardGeneticCode(na);
-    if(stopflag) si = new CompleteSiteIterator(v);
-    else si = new NoGapSiteIterator(v);
-    double S = SequenceStatistics::piNonSynonymous(*si,*na,*ca,*gc,minchange);
-    delete si;
-    delete na;
-    delete ca;
-    delete gc;
     return S;
 }
 
 
 // Method to compute the non-synonymous nucleotide diversity pi// Arguments: a SiteContainer, a boolean
 // Return: pi synonymous
-double SequenceStatistics::piNonSynonymous(const SiteContainer & v, const GeneticCode & gc, bool stopflag, bool minchange) {
+double SequenceStatistics::piNonSynonymous(const PolymorphismSequenceContainer & psc, const GeneticCode & gc, bool stopflag, bool minchange) {
     SiteIterator *si = NULL;
-    if(stopflag) si = new CompleteSiteIterator(v);
-    else si = new NoGapSiteIterator(v);
-    double S = SequenceStatistics::piNonSynonymous(*si,gc,minchange);
+    if(stopflag) si = new CompleteSiteIterator(psc);
+    else si = new NoGapSiteIterator(psc);
+    double S=0;
+    const Site *site;
+    while(si->hasMoreSites()) {
+        site=si->nextSite();
+        S += CodonSiteTools::piNonSynonymous(*site,gc,minchange);
+    }
     delete si;
-    return S;
-}
-
-// Method to compute the mean number of synonymous site in an alignment
-// Arguments: a SiteIterator
-// Return: mean number of synonymous site
-double SequenceStatistics::meanSynonymousSitesNumber(SiteIterator & si, const CodonAlphabet & ca, const GeneticCode &gc, double ratio) {
-	double S=0;
-	const Site *site;
-	while(si.hasMoreSites()) {
-		site=si.nextSite();
-                S += CodonSiteTools::MeanNumberOfSynonymousPositions(*site,ca,gc,ratio);
-	}
-	return S;
-}
-
-// Method to compute the mean number of synonymous site in an alignment
-// Arguments: a SiteIterator
-// Return: mean number of synonymous site
-double SequenceStatistics::meanSynonymousSitesNumber(SiteIterator & si, const GeneticCode &gc, double ratio){
-	double S=0;
-	const Site *site;
-	while(si.hasMoreSites()) {
-		site=si.nextSite();
-                S += CodonSiteTools::MeanNumberOfSynonymousPositions(*site,gc,ratio);
-	}
-	return S;
-}
-
-// Method to compute the mean number of non-synonymous site in an alignment
-// Arguments: a SiteIterator
-// Return: mean number of synonymous site
-double SequenceStatistics::meanNonSynonymousSitesNumber(SiteIterator & si, const GeneticCode &gc, double ratio){
-	double S=0;
-	int n=0;
-	const Site *site;
-	while(si.hasMoreSites()) {
-		site=si.nextSite();
-		n = n + 3;
-                S += CodonSiteTools::MeanNumberOfSynonymousPositions(*site,gc,ratio);
-	}
-	return ((double) n - S);
-}
-
-
-// Method to compute the mean number of synonymous site in an alignment// Return: mean number of synonymous site
-double SequenceStatistics::meanSynonymousSitesNumber(const SiteContainer & v, double ratio, bool stopflag) {
-    SiteIterator *si = NULL;
-    NucleicAlphabet* na = new DNA();
-    CodonAlphabet* ca = new StandardCodonAlphabet(na);
-    GeneticCode* gc = new StandardGeneticCode(na);
-    if(stopflag) si = new CompleteSiteIterator(v);
-    else si = new NoGapSiteIterator(v);
-    double S = SequenceStatistics::meanSynonymousSitesNumber(*si,*ca,*gc,ratio);
-    delete si;
-    delete na;
-    delete ca;
-    delete gc;
     return S;
 }
 
@@ -823,11 +613,16 @@ double SequenceStatistics::meanSynonymousSitesNumber(const SiteContainer & v, do
 //            a double 1.0 by default Transition/Tarnsversion rate
 //            a boolean true by default if you don't want to take gap in account
 // Return: mean number of synonymous site
-double SequenceStatistics::meanSynonymousSitesNumber(const SiteContainer & v, const GeneticCode & gc, double ratio, bool stopflag){
+double SequenceStatistics::meanSynonymousSitesNumber(const PolymorphismSequenceContainer & v, const GeneticCode & gc, double ratio, bool stopflag){
     SiteIterator *si = NULL;
     if(stopflag) si = new CompleteSiteIterator(v);
     else si = new NoGapSiteIterator(v);
-    double S = SequenceStatistics::meanSynonymousSitesNumber(*si,gc,ratio);
+    double S=0;
+    const Site *site;
+    while(si->hasMoreSites()) {
+        site=si->nextSite();
+        S += CodonSiteTools::MeanNumberOfSynonymousPositions(*site,gc,ratio);
+    }
     delete si;
     return S;
 }
@@ -839,12 +634,19 @@ double SequenceStatistics::meanSynonymousSitesNumber(const SiteContainer & v, co
 //            a boolean true by default if you don't want to take gap in account
 // Return: mean number of synonymous site
 
-double SequenceStatistics::meanNonSynonymousSitesNumber(const SiteContainer & v, const GeneticCode & gc, double ratio, bool stopflag){    SiteIterator *si = NULL;
-    if(stopflag) si = new CompleteSiteIterator(v);
-    else si = new NoGapSiteIterator(v);
-    double NS = SequenceStatistics::meanNonSynonymousSitesNumber(*si,gc,ratio);
+double SequenceStatistics::meanNonSynonymousSitesNumber(const PolymorphismSequenceContainer & psc, const GeneticCode & gc, double ratio, bool stopflag){    SiteIterator *si = NULL;
+    if(stopflag) si = new CompleteSiteIterator(psc);
+    else si = new NoGapSiteIterator(psc);
+    double S=0;
+    int n=0;
+    const Site *site;
+    while(si->hasMoreSites()) {
+        site=si->nextSite();
+        n = n + 3;
+        S += CodonSiteTools::MeanNumberOfSynonymousPositions(*site,gc,ratio);
+    }
     delete si;
-    return NS;
+    return ((double) n - S);
 }
 
 
@@ -856,7 +658,7 @@ unsigned int SequenceStatistics::synonymousSubstitutionsNumber(const Polymorphis
     SiteIterator *si = new CompleteSiteIterator(psc);
     const Site * site;
     const NucleicAlphabet * na = new DNA();
-    const CodonAlphabet * ca = new StandardCodonAlphabet(na);
+        const CodonAlphabet * ca = dynamic_cast<const CodonAlphabet*>(psc.getAlphabet());
     unsigned int St = 0, Sns = 0;
 	while(si->hasMoreSites()) {
                 site=si->nextSite();
@@ -865,7 +667,6 @@ unsigned int SequenceStatistics::synonymousSubstitutionsNumber(const Polymorphis
 	}
 	delete si;
 	delete na;
-	delete ca;
 	return St - Sns;
 }
 
@@ -878,7 +679,7 @@ unsigned int SequenceStatistics::nonSynonymousSubstitutionsNumber(const Polymorp
     SiteIterator *si = new CompleteSiteIterator(psc);
     const Site * site;
     const NucleicAlphabet * na = new DNA();
-    const CodonAlphabet * ca = new StandardCodonAlphabet(na);
+    const CodonAlphabet * ca = dynamic_cast<const CodonAlphabet*>(psc.getAlphabet());
     unsigned int Sns = 0;
 	while(si->hasMoreSites()) {
 		site=si->nextSite();
@@ -886,7 +687,6 @@ unsigned int SequenceStatistics::nonSynonymousSubstitutionsNumber(const Polymorp
 	}
 	delete si;
 	delete na;
-        delete ca;
 	return Sns;
 }
 
@@ -896,7 +696,7 @@ vector<unsigned int> SequenceStatistics::fixedDifferences(const PolymorphismSequ
    SiteIterator *siCons = new CompleteSiteIterator(psccons);
    const Site *siteIn, *siteOut, *siteCons;
    const NucleicAlphabet * na = new DNA();
-   const CodonAlphabet * ca = new StandardCodonAlphabet(na);
+   const CodonAlphabet * ca = dynamic_cast<const CodonAlphabet*>(pscin.getAlphabet());
    unsigned int NfixS=0;
    unsigned int NfixA=0;
    while(siIn->hasMoreSites()){
@@ -914,7 +714,6 @@ vector<unsigned int> SequenceStatistics::fixedDifferences(const PolymorphismSequ
    delete siOut;
    delete siCons;
    delete na;
-   delete ca;
    return v;
 }
 
@@ -981,11 +780,7 @@ Vdouble SequenceStatistics::pairwiseR2(const PolymorphismSequenceContainer & psc
 	/***********************************/	/* Global LD and distance measures */	/***********************************/
 
 
-//Return the mean D over all pairwise comparisonsdouble SequenceStatistics::meanD(const PolymorphismSequenceContainer & psc, bool keepsingleton, double freqmin){	Vdouble D = SequenceStatistics::pairwiseD(psc,keepsingleton,freqmin);	return mean(D);}//Return the mean D' over all pairwise comparisonsdouble SequenceStatistics::meanDprime(const PolymorphismSequenceContainer & psc, bool keepsingleton, double freqmin){	Vdouble Dprime = SequenceStatistics::pairwiseDprime(psc,keepsingleton,freqmin);	return mean(Dprime);}//Return the mean R� over all pairwise comparisonsdouble SequenceStatistics::meanR2(const PolymorphismSequenceContainer & psc, bool keepsingleton, double freqmin){	Vdouble R2 = SequenceStatistics::pairwiseR2(psc,keepsingleton,freqmin);	return mean(R2);}//Return the mean pairwise distances between sites / method 1: differences between sequences are not taken into accountdouble SequenceStatistics::meanDistance1(const PolymorphismSequenceContainer & psc, bool keepsingleton, double freqmin){	Vdouble dist = pairwiseDistances1(psc,keepsingleton,freqmin);	return mean(dist);}//Return the mean pairwise distances between sites / method 2: differences between sequences are taken into accountdouble SequenceStatistics::meanDistance2(const PolymorphismSequenceContainer & psc, bool keepsingleton, double freqmin){	Vdouble dist = SequenceStatistics::pairwiseDistances2(psc,keepsingleton,freqmin);	return mean(dist);}	/**********************/	/* Regression methods */	/**********************/// Return the slope,a, of the regression |D| = 1+a*distance// The slope is given in |D'| per kb// Distance1 or distance2 are chose through the boolean distance1 (false by default)double SequenceStatistics::originRegressionD(const PolymorphismSequenceContainer & psc, bool distance1, bool keepsingleton, double freqmin){        Vdouble D = SequenceStatistics::pairwiseD(psc,keepsingleton,freqmin)-1;        Vdouble dist;        if(distance1) dist = pairwiseDistances1(psc,keepsingleton,freqmin)/1000;        else  dist = pairwiseDistances2(psc,keepsingleton,freqmin)/1000;        return sum(D*dist)/sum(dist*dist);}// Return the slope of the regression |D'| = 1+a*distance// The slope is given in |D'| per kb// Distance1 or distance2 are chose through the boolean distance1 (false by default)double SequenceStatistics::originRegressionDprime(const PolymorphismSequenceContainer & psc, bool distance1, bool keepsingleton, double freqmin){        Vdouble Dprime = SequenceStatistics::pairwiseDprime(psc,keepsingleton,freqmin)-1;        Vdouble dist;        if(distance1) dist = pairwiseDistances1(psc,keepsingleton,freqmin)/1000;        else  dist = pairwiseDistances2(psc,keepsingleton,freqmin)/1000;        return sum(Dprime*dist)/sum(dist*dist);}// Return the slope of the regression R� = 1+a*distance// The slope is given in R� per kb// Distance1 or distance2 are chose through the boolean distance1 (false by default)double SequenceStatistics::originRegressionR2(const PolymorphismSequenceContainer & psc, bool distance1, bool keepsingleton, double freqmin){        Vdouble R2 = SequenceStatistics::pairwiseR2(psc,keepsingleton,freqmin)-1;        Vdouble dist;        if(distance1) dist = pairwiseDistances1(psc,keepsingleton,freqmin)/1000;        else  dist = pairwiseDistances2(psc,keepsingleton,freqmin)/1000;        return sum(R2*dist)/sum(dist*dist);}// Return the slope and the origin of the regression |D| = a*distance + b// The slope is given in |D| per kb// Distance1 or distance2 are chose through the boolean distance1 (false by default)Vdouble SequenceStatistics::linearRegressionD(const PolymorphismSequenceContainer & psc, bool distance1, bool keepsingleton, double freqmin){        Vdouble D = SequenceStatistics::pairwiseD(psc,keepsingleton,freqmin);        Vdouble dist;        Vdouble reg(2);        if(distance1) dist = pairwiseDistances1(psc,keepsingleton,freqmin)/1000;        else  dist = pairwiseDistances2(psc,keepsingleton,freqmin)/1000;        reg[0]=cov(dist,D)/var(dist);        reg[1]=mean(D)-reg[0]*mean(dist);        return reg;}// Return the slope and the origin of the regression |D'| = a*distance + b// The slope is given in |D'| per kb// Distance1 or distance2 are chose through the boolean distance1 (false by default)Vdouble SequenceStatistics::linearRegressionDprime(const PolymorphismSequenceContainer & psc, bool distance1, bool keepsingleton, double freqmin){        Vdouble Dprime = SequenceStatistics::pairwiseDprime(psc,keepsingleton,freqmin);        Vdouble dist;        Vdouble reg(2);        if(distance1) dist = pairwiseDistances1(psc,keepsingleton,freqmin)/1000;        else  dist = pairwiseDistances2(psc,keepsingleton,freqmin)/1000;        reg[0]=cov(dist,Dprime)/var(dist);        reg[1]=mean(Dprime)-reg[0]*mean(dist);        return reg;}// Return the slope and the origin of the regression R� = a*distance + b// The slope is given in R� per kb// Distance1 or distance2 are chose through the boolean distance1 (false by default)Vdouble SequenceStatistics::linearRegressionR2(const PolymorphismSequenceContainer & psc, bool distance1, bool keepsingleton, double freqmin){        Vdouble R2 = SequenceStatistics::pairwiseR2(psc,keepsingleton,freqmin);        Vdouble dist;        Vdouble reg(2);        if(distance1) dist = pairwiseDistances1(psc,keepsingleton,freqmin)/1000;        else  dist = pairwiseDistances2(psc,keepsingleton,freqmin)/1000;        reg[0]=cov(dist,R2)/var(dist);        reg[1]=mean(R2)-reg[0]*mean(dist);        return reg;}// Return the slope the regression R� = 1/(1+a*distance)// To fit the theoretical expectation R�=1/(1+4Nr)// The slope is given in R� per kb// Distance1 or distance2 are chose through the boolean distance1 (false by default)double SequenceStatistics::inverseRegressionR2(const PolymorphismSequenceContainer & psc, bool distance1, bool keepsingleton, double freqmin){        Vdouble R2 = SequenceStatistics::pairwiseR2(psc,keepsingleton,freqmin);        Vdouble unit(R2.size(),1);        Vdouble R2transformed = unit/R2 -1;        Vdouble dist;        if(distance1) dist = pairwiseDistances1(psc,keepsingleton,freqmin)/1000;        else  dist = pairwiseDistances2(psc,keepsingleton,freqmin)/1000;        return sum(R2transformed*dist)/sum(dist*dist);}	/**********************/	/*   Hudson method	  */	/**********************///Return left hand term of equation (4) in Hudson (1987)//This statistic is used to compute Hudson's estimator//It is not necessary to generate a LDContainer for this statisticdouble SequenceStatistics::leftHandHudson(const PolymorphismSequenceContainer & psc){	PolymorphismSequenceContainer *newpsc = PolymorphismSequenceContainerTools::getCompleteSites(psc);	unsigned int nbseq = newpsc->getNumberOfSequences();	unsigned int S = 0;	for(unsigned int i=0; i<nbseq-1; i++){		for(unsigned int j=i+1; j<nbseq; j++){			SequenceSelection ss;            ss[0]=i;ss[1]=j;            PolymorphismSequenceContainer *psc2 = PolymorphismSequenceContainerTools::getSelectedSequences(*newpsc,ss);
-			S+=SequenceStatistics::watterson75(*psc2)*SequenceStatistics::watterson75(*psc2);
-			delete psc2;
-		}	}	unsigned int K = 2*S;	double H = SequenceStatistics::heterozygosity(*newpsc);	double H2 = SequenceStatistics::squaredHeterozygosity(*newpsc);	delete newpsc;	return (K/(nbseq*nbseq)-H*H-H+H2)/(H*(nbseq/(nbseq-1))*(nbseq/(nbseq-1))*H);}
-
+//Return the mean D over all pairwise comparisonsdouble SequenceStatistics::meanD(const PolymorphismSequenceContainer & psc, bool keepsingleton, double freqmin){	Vdouble D = SequenceStatistics::pairwiseD(psc,keepsingleton,freqmin);	return mean(D);}//Return the mean D' over all pairwise comparisonsdouble SequenceStatistics::meanDprime(const PolymorphismSequenceContainer & psc, bool keepsingleton, double freqmin){	Vdouble Dprime = SequenceStatistics::pairwiseDprime(psc,keepsingleton,freqmin);	return mean(Dprime);}//Return the mean R� over all pairwise comparisonsdouble SequenceStatistics::meanR2(const PolymorphismSequenceContainer & psc, bool keepsingleton, double freqmin){	Vdouble R2 = SequenceStatistics::pairwiseR2(psc,keepsingleton,freqmin);	return mean(R2);}//Return the mean pairwise distances between sites / method 1: differences between sequences are not taken into accountdouble SequenceStatistics::meanDistance1(const PolymorphismSequenceContainer & psc, bool keepsingleton, double freqmin){	Vdouble dist = pairwiseDistances1(psc,keepsingleton,freqmin);	return mean(dist);}//Return the mean pairwise distances between sites / method 2: differences between sequences are taken into accountdouble SequenceStatistics::meanDistance2(const PolymorphismSequenceContainer & psc, bool keepsingleton, double freqmin){	Vdouble dist = SequenceStatistics::pairwiseDistances2(psc,keepsingleton,freqmin);	return mean(dist);}	/**********************/	/* Regression methods */	/**********************/// Return the slope,a, of the regression |D| = 1+a*distance// The slope is given in |D'| per kb// Distance1 or distance2 are chose through the boolean distance1 (false by default)double SequenceStatistics::originRegressionD(const PolymorphismSequenceContainer & psc, bool distance1, bool keepsingleton, double freqmin){        Vdouble D = SequenceStatistics::pairwiseD(psc,keepsingleton,freqmin)-1;        Vdouble dist;        if(distance1) dist = pairwiseDistances1(psc,keepsingleton,freqmin)/1000;        else  dist = pairwiseDistances2(psc,keepsingleton,freqmin)/1000;        return sum(D*dist)/sum(dist*dist);}// Return the slope of the regression |D'| = 1+a*distance// The slope is given in |D'| per kb// Distance1 or distance2 are chose through the boolean distance1 (false by default)double SequenceStatistics::originRegressionDprime(const PolymorphismSequenceContainer & psc, bool distance1, bool keepsingleton, double freqmin){        Vdouble Dprime = SequenceStatistics::pairwiseDprime(psc,keepsingleton,freqmin)-1;        Vdouble dist;        if(distance1) dist = pairwiseDistances1(psc,keepsingleton,freqmin)/1000;        else  dist = pairwiseDistances2(psc,keepsingleton,freqmin)/1000;        return sum(Dprime*dist)/sum(dist*dist);}// Return the slope of the regression R� = 1+a*distance// The slope is given in R� per kb// Distance1 or distance2 are chose through the boolean distance1 (false by default)double SequenceStatistics::originRegressionR2(const PolymorphismSequenceContainer & psc, bool distance1, bool keepsingleton, double freqmin){        Vdouble R2 = SequenceStatistics::pairwiseR2(psc,keepsingleton,freqmin)-1;        Vdouble dist;        if(distance1) dist = pairwiseDistances1(psc,keepsingleton,freqmin)/1000;        else  dist = pairwiseDistances2(psc,keepsingleton,freqmin)/1000;        return sum(R2*dist)/sum(dist*dist);}// Return the slope and the origin of the regression |D| = a*distance + b// The slope is given in |D| per kb// Distance1 or distance2 are chose through the boolean distance1 (false by default)Vdouble SequenceStatistics::linearRegressionD(const PolymorphismSequenceContainer & psc, bool distance1, bool keepsingleton, double freqmin){        Vdouble D = SequenceStatistics::pairwiseD(psc,keepsingleton,freqmin);        Vdouble dist;        Vdouble reg(2);        if(distance1) dist = pairwiseDistances1(psc,keepsingleton,freqmin)/1000;        else  dist = pairwiseDistances2(psc,keepsingleton,freqmin)/1000;        reg[0]=cov(dist,D)/var(dist);        reg[1]=mean(D)-reg[0]*mean(dist);        return reg;}// Return the slope and the origin of the regression |D'| = a*distance + b// The slope is given in |D'| per kb// Distance1 or distance2 are chose through the boolean distance1 (false by default)Vdouble SequenceStatistics::linearRegressionDprime(const PolymorphismSequenceContainer & psc, bool distance1, bool keepsingleton, double freqmin){        Vdouble Dprime = SequenceStatistics::pairwiseDprime(psc,keepsingleton,freqmin);        Vdouble dist;        Vdouble reg(2);        if(distance1) dist = pairwiseDistances1(psc,keepsingleton,freqmin)/1000;        else  dist = pairwiseDistances2(psc,keepsingleton,freqmin)/1000;        reg[0]=cov(dist,Dprime)/var(dist);        reg[1]=mean(Dprime)-reg[0]*mean(dist);        return reg;}// Return the slope and the origin of the regression R� = a*distance + b// The slope is given in R� per kb// Distance1 or distance2 are chose through the boolean distance1 (false by default)Vdouble SequenceStatistics::linearRegressionR2(const PolymorphismSequenceContainer & psc, bool distance1, bool keepsingleton, double freqmin){        Vdouble R2 = SequenceStatistics::pairwiseR2(psc,keepsingleton,freqmin);        Vdouble dist;        Vdouble reg(2);        if(distance1) dist = pairwiseDistances1(psc,keepsingleton,freqmin)/1000;        else  dist = pairwiseDistances2(psc,keepsingleton,freqmin)/1000;        reg[0]=cov(dist,R2)/var(dist);        reg[1]=mean(R2)-reg[0]*mean(dist);        return reg;}// Return the slope the regression R� = 1/(1+a*distance)// To fit the theoretical expectation R�=1/(1+4Nr)// The slope is given in R� per kb// Distance1 or distance2 are chose through the boolean distance1 (false by default)double SequenceStatistics::inverseRegressionR2(const PolymorphismSequenceContainer & psc, bool distance1, bool keepsingleton, double freqmin){        Vdouble R2 = SequenceStatistics::pairwiseR2(psc,keepsingleton,freqmin);        Vdouble unit(R2.size(),1);        Vdouble R2transformed = unit/R2 -1;        Vdouble dist;        if(distance1) dist = pairwiseDistances1(psc,keepsingleton,freqmin)/1000;        else  dist = pairwiseDistances2(psc,keepsingleton,freqmin)/1000;        return sum(R2transformed*dist)/sum(dist*dist);}	/**********************/	/*   Hudson method	  */	/**********************/
 
 //******************************************************************************************************************
 //Private methods
@@ -1061,3 +856,9 @@ map<string, double> SequenceStatistics::_getUsefullValues(unsigned int n) {
 	}
 	return values;
 }
+
+//Return left hand term of equation (4) in Hudson (1987)
+//This statistic is used to compute Hudson's estimator//It is not necessary to generate a LDContainer for this statisticdouble SequenceStatistics::_leftHandHudson(const PolymorphismSequenceContainer & psc){	PolymorphismSequenceContainer *newpsc = PolymorphismSequenceContainerTools::getCompleteSites(psc);	unsigned int nbseq = newpsc->getNumberOfSequences();	unsigned int S = 0;	for(unsigned int i=0; i<nbseq-1; i++){		for(unsigned int j=i+1; j<nbseq; j++){			SequenceSelection ss;            ss[0]=i;ss[1]=j;            PolymorphismSequenceContainer *psc2 = PolymorphismSequenceContainerTools::getSelectedSequences(*newpsc,ss);
+			S+=SequenceStatistics::watterson75(*psc2,true)*SequenceStatistics::watterson75(*psc2,true);
+			delete psc2;
+		}	}	unsigned int K = 2*S;	double H = SequenceStatistics::heterozygosity(*newpsc);	double H2 = SequenceStatistics::squaredHeterozygosity(*newpsc);	delete newpsc;	return (K/(nbseq*nbseq)-H*H-H+H2)/(H*(nbseq/(nbseq-1))*(nbseq/(nbseq-1))*H);}
