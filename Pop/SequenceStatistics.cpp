@@ -279,52 +279,6 @@ vector<unsigned int> SequenceStatistics::gcPolymorphism(const PolymorphismSequen
 //Diversity statistics
 //******************************************************************************************************************
 
-// Method to compute diversity estimator Theta of Watterson (1975)// Arguments: a SiteContainer
-// Return: theta of Watterson (1975)
-double SequenceStatistics::watterson75( const PolymorphismSequenceContainer & psc ) {
-	double ThetaW;
-	int n = psc.getNumberOfSequences();
-	double an = 0.0;
-	SiteIterator *si = new NoGapSiteIterator( psc );
-	unsigned int S = polymorphicSiteNumber( psc );
-	for ( int i = 1; i < n; i++ ) {
-			an += (double) 1/i;
-	}
-	ThetaW = (double) S / an;
-	delete si;
-	return ThetaW;
-}
-
-
-// Method to compute diversity estimator Theta of Tajima (1983)// Arguments: a SiteContainer
-// Return: theta of Tajima (1983)
-double SequenceStatistics::tajima83( const PolymorphismSequenceContainer & psc ) {
-	double ThetaPi;
-	int S = 0;
-	const Site *site;
-	int n = psc.getNumberOfSequences();
-	double etha[20];
-	double somme = 0.0;
-	SiteIterator *si = new NoGapSiteIterator( psc );
-	while ( si->hasMoreSites() ) {
-		site = si->nextSite();
-	if ( !SiteTools::isConstant(*site) ) {
-			S++;
-			for ( int i = 0; i < 4; i++ ) {
-				etha[i] = 0;
-			}
-			for ( int j = 0; j < n; j++ ) {
-				etha[site->getValue( j )]++;
-			}
-			for ( int i = 0; i < 4; i++ ) {
-				somme += (etha[i] * (etha[i] - 1)) / (n * (n  - 1));
-			}
-		}
-	}
-	ThetaPi = S - somme;
-	delete si;
-	return ThetaPi;
-}
 
 
 // Method to compute diversity estimator Theta of Watterson (1975)// Arguments: a PolymorphismSequenceContainer
