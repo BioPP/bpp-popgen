@@ -642,7 +642,7 @@ double SequenceStatistics::meanSynonymousSitesNumber(const PolymorphismSequenceC
     const Site *site;
     while(si->hasMoreSites()) {
         site=si->nextSite();
-        S += CodonSiteTools::MeanNumberOfSynonymousPositions(*site,gc,ratio);
+        S += CodonSiteTools::meanNumberOfSynonymousPositions(*site,gc,ratio);
     }
     delete si;
     return S;
@@ -665,7 +665,7 @@ double SequenceStatistics::meanNonSynonymousSitesNumber(const PolymorphismSequen
     while(si->hasMoreSites()) {
         site=si->nextSite();
         n = n + 3;
-        S += CodonSiteTools::MeanNumberOfSynonymousPositions(*site,gc,ratio);
+        S += CodonSiteTools::meanNumberOfSynonymousPositions(*site,gc,ratio);
     }
     delete si;
     return ((double) n - S);
@@ -677,15 +677,15 @@ double SequenceStatistics::meanNonSynonymousSitesNumber(const PolymorphismSequen
 // Return: number of synonymous substitutions
 
 unsigned int SequenceStatistics::synonymousSubstitutionsNumber(const PolymorphismSequenceContainer & psc, const GeneticCode & gc){
-    SiteIterator *si = new CompleteSiteIterator(psc);
-    const Site * site;
-    const NucleicAlphabet * na = new DNA();
-        const CodonAlphabet * ca = dynamic_cast<const CodonAlphabet*>(psc.getAlphabet());
-    unsigned int St = 0, Sns = 0;
+  SiteIterator *si = new CompleteSiteIterator(psc);
+  const Site * site;
+  const NucleicAlphabet * na = new DNA();
+  const CodonAlphabet * ca = dynamic_cast<const CodonAlphabet*>(psc.getAlphabet());
+  unsigned int St = 0, Sns = 0;
 	while(si->hasMoreSites()) {
-                site=si->nextSite();
-                St += CodonSiteTools::getNumberOfSubsitutions(*site,*na,*ca);
-	        Sns += CodonSiteTools::getNumberOfNonSynonymousSubstitutions(*site,*ca,gc);
+    site=si->nextSite();
+    St += CodonSiteTools::numberOfSubsitutions(*site,*na,*ca);
+	 Sns += CodonSiteTools::numberOfNonSynonymousSubstitutions(*site,*ca,gc);
 	}
 	delete si;
 	delete na;
@@ -705,7 +705,7 @@ unsigned int SequenceStatistics::nonSynonymousSubstitutionsNumber(const Polymorp
     unsigned int Sns = 0;
 	while(si->hasMoreSites()) {
 		site=si->nextSite();
-	    Sns += CodonSiteTools::getNumberOfNonSynonymousSubstitutions(*site,*ca,gc);
+	  Sns += CodonSiteTools::numberOfNonSynonymousSubstitutions(*site,*ca,gc);
 	}
 	delete si;
 	delete na;
@@ -722,12 +722,12 @@ vector<unsigned int> SequenceStatistics::fixedDifferences(const PolymorphismSequ
    unsigned int NfixS=0;
    unsigned int NfixA=0;
    while(siIn->hasMoreSites()){
-        siteIn = siIn->nextSite();
-        siteOut = siOut->nextSite();
-        siteCons = siCons->nextSite();
-        vector<unsigned int> v = CodonSiteTools::getFixedDifferences(*siteIn,*siteOut,siteCons->getValue(0),siteCons->getValue(1),*na,*ca,gc);
-        NfixS += v[0];
-        NfixA += v[1];
+     siteIn = siIn->nextSite();
+     siteOut = siOut->nextSite();
+     siteCons = siCons->nextSite();
+     vector<unsigned int> v = CodonSiteTools::fixedDifferences(*siteIn,*siteOut,siteCons->getValue(0),siteCons->getValue(1),*na,*ca,gc);
+     NfixS += v[0];
+     NfixA += v[1];
    }
    vector<unsigned int> v(2);
    v[0]=NfixS;
@@ -1488,15 +1488,15 @@ map<string, double> SequenceStatistics::_getUsefullValues(unsigned int n) {
 double SequenceStatistics::_leftHandHudson(const PolymorphismSequenceContainer & psc){
 	PolymorphismSequenceContainer *newpsc = PolymorphismSequenceContainerTools::getCompleteSites(psc);
 	unsigned int nbseq = newpsc->getNumberOfSequences();
-	unsigned int S1 = 0;
-        unsigned int S2 = 0;
+	double S1 = 0;
+  double S2 = 0;
 	for(unsigned int i=0; i<nbseq-1; i++){
 		for(unsigned int j=i+1; j<nbseq; j++){
 			SequenceSelection ss(2);
-            ss[0]=i;ss[1]=j;
-            PolymorphismSequenceContainer *psc2 = PolymorphismSequenceContainerTools::getSelectedSequences(*newpsc,ss);
+      ss[0]=i;ss[1]=j;
+      PolymorphismSequenceContainer *psc2 = PolymorphismSequenceContainerTools::getSelectedSequences(*newpsc,ss);
 			S1+=SequenceStatistics::watterson75(*psc2,true);
-                        S2+=SequenceStatistics::watterson75(*psc2,true)*SequenceStatistics::watterson75(*psc2,true);
+      S2+=SequenceStatistics::watterson75(*psc2,true)*SequenceStatistics::watterson75(*psc2,true);
 			delete psc2;
 		}
 	}
