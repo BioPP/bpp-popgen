@@ -595,7 +595,6 @@ unsigned int SequenceStatistics::synonymousPolymorphicCodonNumber(const Polymorp
 
 double SequenceStatistics::piSynonymous(const PolymorphismSequenceContainer & psc, const GeneticCode & gc, bool stopflag, bool minchange) {
     SiteIterator *si = NULL;
-    const CodonAlphabet * ca = dynamic_cast<const CodonAlphabet*>(psc.getAlphabet());
     if(stopflag) si = new CompleteSiteIterator(psc);
     else si = new NoGapSiteIterator(psc);
     double S=0.0;
@@ -1315,16 +1314,15 @@ double SequenceStatistics::hudson87(const PolymorphismSequenceContainer & psc, d
 	double dif = 1;
 	double c1=cinf;
 	double c2=csup;
-	if((_rightHandHudson(c1,n)>=left) && (_rightHandHudson(c2,n)<=left)){
-		while(dif > precision){
-                        double test = _rightHandHudson((c1+c2)/2,n);
-			if(_rightHandHudson((c1+c2)/2,n)>left) c1=(c1+c2)/2;
-			else c2=(c1+c2)/2;
-			dif=std::abs(left - _rightHandHudson((c1+c2)/2,n))/left;
-		}
-	return (c1+c2)/2;
+	if(SequenceStatistics::polymorphicSiteNumber(psc) < 2) return -1;
+	if(_rightHandHudson(c1,n)<left) return cinf;
+	if(_rightHandHudson(c2,n)>left) return csup;
+	while(dif > precision){
+		if(_rightHandHudson((c1+c2)/2,n)>left) c1=(c1+c2)/2;
+		else c2=(c1+c2)/2;
+		dif=std::abs(2*(c1-c2)/(c1+c2));
 	}
-	else return -1;
+	return (c1+c2)/2;
 }
 
 
@@ -1489,14 +1487,14 @@ double SequenceStatistics::_leftHandHudson(const PolymorphismSequenceContainer &
 	PolymorphismSequenceContainer *newpsc = PolymorphismSequenceContainerTools::getCompleteSites(psc);
 	unsigned int nbseq = newpsc->getNumberOfSequences();
 	double S1 = 0;
-  double S2 = 0;
+        double S2 = 0;
 	for(unsigned int i=0; i<nbseq-1; i++){
 		for(unsigned int j=i+1; j<nbseq; j++){
 			SequenceSelection ss(2);
-      ss[0]=i;ss[1]=j;
-      PolymorphismSequenceContainer *psc2 = PolymorphismSequenceContainerTools::getSelectedSequences(*newpsc,ss);
+                        ss[0]=i;ss[1]=j;
+                        PolymorphismSequenceContainer *psc2 = PolymorphismSequenceContainerTools::getSelectedSequences(*newpsc,ss);
 			S1+=SequenceStatistics::watterson75(*psc2,true);
-      S2+=SequenceStatistics::watterson75(*psc2,true)*SequenceStatistics::watterson75(*psc2,true);
+                        S2+=SequenceStatistics::watterson75(*psc2,true)*SequenceStatistics::watterson75(*psc2,true);
 			delete psc2;
 		}
 	}

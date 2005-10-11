@@ -860,7 +860,7 @@ class SequenceStatistics
 	     * @param precision
 	     * @param cinf and csup, initial values
 	     */
-		static double hudson87(const PolymorphismSequenceContainer & psc, double precision = 0.000001, double cinf=1, double csup=10000);
+		static double hudson87(const PolymorphismSequenceContainer & psc, double precision = 0.000001, double cinf=0.001, double csup=10000);
 
 
 
