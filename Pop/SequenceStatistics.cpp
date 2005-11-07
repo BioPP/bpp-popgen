@@ -675,7 +675,7 @@ double SequenceStatistics::meanNonSynonymousSitesNumber(const PolymorphismSequen
 // Arguments: a SiteContainer, a GeneticCode
 // Return: number of synonymous substitutions
 
-unsigned int SequenceStatistics::synonymousSubstitutionsNumber(const PolymorphismSequenceContainer & psc, const GeneticCode & gc){
+unsigned int SequenceStatistics::synonymousSubstitutionsNumber(const PolymorphismSequenceContainer & psc, const GeneticCode & gc, double freqmin){
   SiteIterator *si = new CompleteSiteIterator(psc);
   const Site * site;
   const NucleicAlphabet * na = new DNA();
@@ -683,8 +683,8 @@ unsigned int SequenceStatistics::synonymousSubstitutionsNumber(const Polymorphis
   unsigned int St = 0, Sns = 0;
 	while(si->hasMoreSites()) {
     site=si->nextSite();
-    St += CodonSiteTools::numberOfSubsitutions(*site,*na,*ca);
-	 Sns += CodonSiteTools::numberOfNonSynonymousSubstitutions(*site,*ca,gc);
+    St += CodonSiteTools::numberOfSubsitutions(*site,*na,*ca,freqmin);
+	 Sns += CodonSiteTools::numberOfNonSynonymousSubstitutions(*site,*na,*ca,gc,freqmin);
 	}
 	delete si;
 	delete na;
@@ -696,7 +696,7 @@ unsigned int SequenceStatistics::synonymousSubstitutionsNumber(const Polymorphis
 // Arguments: a SiteContainer, a GeneticCode
 // Return: number of synonymous substitutions
 
-unsigned int SequenceStatistics::nonSynonymousSubstitutionsNumber(const PolymorphismSequenceContainer & psc, const GeneticCode & gc){
+unsigned int SequenceStatistics::nonSynonymousSubstitutionsNumber(const PolymorphismSequenceContainer & psc, const GeneticCode & gc, double freqmin){
     SiteIterator *si = new CompleteSiteIterator(psc);
     const Site * site;
     const NucleicAlphabet * na = new DNA();
@@ -704,7 +704,7 @@ unsigned int SequenceStatistics::nonSynonymousSubstitutionsNumber(const Polymorp
     unsigned int Sns = 0;
 	while(si->hasMoreSites()) {
 		site=si->nextSite();
-	  Sns += CodonSiteTools::numberOfNonSynonymousSubstitutions(*site,*ca,gc);
+	  Sns += CodonSiteTools::numberOfNonSynonymousSubstitutions(*site,*na,*ca,gc,freqmin);
 	}
 	delete si;
 	delete na;
@@ -741,7 +741,7 @@ vector<unsigned int> SequenceStatistics::fixedDifferences(const PolymorphismSequ
 //Method to compute synonymous and nonsynonymous substitutions in polymorphism and divergence (MacDonald-Kreitman table)
 //Arguments: two PolymorphismSequenceContainer, a GeneticCode
 //Return: a vector: <Pa,Ps,Da,Ds>
-vector<unsigned int> SequenceStatistics::MKtable(const PolymorphismSequenceContainer & ingroup, const PolymorphismSequenceContainer & outgroup , const GeneticCode & gc){
+vector<unsigned int> SequenceStatistics::MKtable(const PolymorphismSequenceContainer & ingroup, const PolymorphismSequenceContainer & outgroup , const GeneticCode & gc, double freqmin){
         PolymorphismSequenceContainer * psctot = new PolymorphismSequenceContainer(ingroup);
         for(unsigned int i = 0; i<outgroup.getNumberOfSequences();i++){
                 psctot->addSequence(*outgroup.getSequence(i));
@@ -757,8 +757,8 @@ vector<unsigned int> SequenceStatistics::MKtable(const PolymorphismSequenceConta
         consensus->addSequence(*consensusOut);
         vector<unsigned int> u = SequenceStatistics::fixedDifferences(*pscin,*pscout,*consensus,gc);
 	vector<unsigned int> v(4);
-        v[0] = SequenceStatistics::nonSynonymousSubstitutionsNumber(*pscin,gc);
-	v[1] = SequenceStatistics::synonymousSubstitutionsNumber(*pscin,gc);
+        v[0] = SequenceStatistics::nonSynonymousSubstitutionsNumber(*pscin,gc,freqmin);
+	v[1] = SequenceStatistics::synonymousSubstitutionsNumber(*pscin,gc,freqmin);
 	v[2] = u[1];
 	v[3] = u[0];
         delete consensus;
@@ -942,12 +942,19 @@ PolymorphismSequenceContainer * SequenceStatistics::generateLDContainer(const Po
 			Site* siteclone =  new Site(*site);
 			bool deletesite = false;
 			map<int, double> freqs = SymbolListTools::getFrequencies(*siteclone);
+                        bool firstOne = true;
 			for(unsigned int j=0; j<sc->getNumberOfSequences(); j++){
-				if(freqs[siteclone->getValue(j)]>=0.5){
-					if(freqs[siteclone->getValue(j)]<1-freqmin) siteclone->setElement(j,1);
+				if(freqs[siteclone->getValue(j)]>=0.5 && firstOne){
+					if(freqs[siteclone->getValue(j)]<=1-freqmin) {
+                                                siteclone->setElement(j,1);
+                                                firstOne = false;
+                                        }
 					else deletesite = true;
 				}
-				else siteclone->setElement(j,0);
+				else {
+                                        if(freqs[siteclone->getValue(j)]>=freqmin) siteclone->setElement(j,0);
+                                        else deletesite = true;
+                                }
 			}
                         if(!deletesite)	ldpsc->addSite(*siteclone);
 			delete siteclone;
@@ -1159,6 +1166,7 @@ Vdouble SequenceStatistics::pairwiseR2(const PolymorphismSequenceContainer & psc
 			R2.push_back(r);
 		}
 	}
+
 	return R2;
 }
 

@@ -335,8 +335,9 @@ class SequenceStatistics
 		  * Gaps and unresolved sites are automatically excluded
 		  * @param psc a PolymorphismSequenceContainer
 		  * @param gc a GeneticCode
+		  * @param freqmin a double, to exclude snp in frequency strictly lower than freqmin
 		  */
-		static unsigned int synonymousSubstitutionsNumber(const PolymorphismSequenceContainer & psc, const GeneticCode & gc);
+		static unsigned int synonymousSubstitutionsNumber(const PolymorphismSequenceContainer & psc, const GeneticCode & gc, double freqmin = 0);
 
 
 		/**
@@ -345,8 +346,9 @@ class SequenceStatistics
 		  * Gaps and unresolved sites are automatically excluded
 		  * @param sc a PolymorphismSequenceContainer
 		  * @param gc a GeneticCode
+		  * @param freqmin a double, to exclude snp in frequency strictly lower than freqmin
 		  */
-		static unsigned int nonSynonymousSubstitutionsNumber(const PolymorphismSequenceContainer & psc, const GeneticCode & gc);
+		static unsigned int nonSynonymousSubstitutionsNumber(const PolymorphismSequenceContainer & psc, const GeneticCode & gc, double freqmin = 0);
 
 
 		/**
@@ -366,8 +368,9 @@ class SequenceStatistics
 		  * @param ingroup a PolymorphismSequenceContainer
 		  * @param outgroup a PolymorphismSequenceContainer
 		  * @param gc a GeneticCode
+		  * @param freqmin a double, to exclude snp in frequency strictly lower than freqmin
 		  */
-		static vector<unsigned int> MKtable(const PolymorphismSequenceContainer & ingroup, const PolymorphismSequenceContainer & outgroup , const GeneticCode & gc);
+		static vector<unsigned int> MKtable(const PolymorphismSequenceContainer & ingroup, const PolymorphismSequenceContainer & outgroup , const GeneticCode & gc, double freqmin = 0);
 
 
 		/**
