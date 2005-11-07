@@ -588,6 +588,31 @@ unsigned int SequenceStatistics::synonymousPolymorphicCodonNumber(const Polymorp
 }
 
 
+// Method to compute Theta of Watterson (1975) for synonymous positions
+// Arguments: a PolymorphismSequenceContainer
+// Return: synonymous theta of Watterson (1975)
+double SequenceStatistics::watterson75Synonymous(const PolymorphismSequenceContainer & psc, const GeneticCode & gc) {
+	double ThetaW;
+	unsigned int n = psc.getNumberOfSequences();
+	unsigned int S = synonymousSubstitutionsNumber(psc,gc);
+	map<string, double> values = _getUsefullValues(n);
+	ThetaW = (double) S / values["a1"];
+	return ThetaW;
+}
+
+// Method to compute Theta of Watterson (1975) for non synonymous positions
+// Arguments: a PolymorphismSequenceContainer
+// Return: synonymous theta of Watterson (1975)
+double SequenceStatistics::watterson75NonSynonymous(const PolymorphismSequenceContainer & psc, const GeneticCode & gc) {
+	double ThetaW;
+	unsigned int n = psc.getNumberOfSequences();
+	unsigned int S = nonSynonymousSubstitutionsNumber(psc,gc);
+	map<string, double> values = _getUsefullValues(n);
+	ThetaW = (double) S / values["a1"];
+	return ThetaW;
+}
+
+
 
 // Method to compute the synonymous nucleotide diversity pi
 // Arguments: a SiteContainer, a boolean

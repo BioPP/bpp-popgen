@@ -274,10 +274,28 @@ class SequenceStatistics
 
 
 		/**
+		 * @brief Compute the Watterson(1975) estimator for synonymous positions
+		 *
+		 * Gaps are automatically excluded
+		 * @param psc a PolymorphismSequenceContainer
+		 * @param gc a GeneticCode
+		 */
+		static double watterson75Synonymous(const PolymorphismSequenceContainer & psc, const GeneticCode & gc);
+
+		/**
+		 * @brief Compute the Watterson(1975) estimator for non synonymous positions
+		 *
+		 * Gaps are automatically excluded
+		 * @param psc a PolymorphismSequenceContainer
+		 * @param gc a GeneticCode
+		 */
+		static double watterson75NonSynonymous(const PolymorphismSequenceContainer & psc, const GeneticCode & gc);
+
+		/**
 		  * @brief Compute the synonymous nucleotide diversity, pi
 		  *
 		  * Gaps are automatically excluded
-		  * @param v a SiteContainer
+		  * @param psc a PolymorphismSiteContainer
 		  * @param gc a GeneticCode
 		  * @param stopfalg a boolean set by default to true if you don't want
 		  * to take gaps into account
