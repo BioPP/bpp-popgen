@@ -398,8 +398,9 @@ class SequenceStatistics
 		  * @param ingroup a PolymorphismSequenceContainer
 		  * @param outgroup a PolymorphismSequenceContainer
 		  * @param gc a GeneticCode
+		  * @param freqmin a double, to exclude snp in frequency strictly lower than freqmin
 		  */
-		static double neutralityIndex(const PolymorphismSequenceContainer & ingroup, const PolymorphismSequenceContainer & outgroup , const GeneticCode & gc);
+		static double neutralityIndex(const PolymorphismSequenceContainer & ingroup, const PolymorphismSequenceContainer & outgroup , const GeneticCode & gc, double freqmin = 0);
 
 
 

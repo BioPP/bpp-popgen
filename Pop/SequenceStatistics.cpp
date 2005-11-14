@@ -793,8 +793,8 @@ vector<unsigned int> SequenceStatistics::MKtable(const PolymorphismSequenceConta
 //Method to compute the neutrality index : NI = (pa/ps)/(Da/Ds)
 //Arguments: two PolymorphismSequenceContainer, a GeneticCode
 //Return: neutrality index
-double SequenceStatistics::neutralityIndex(const PolymorphismSequenceContainer & ingroup, const PolymorphismSequenceContainer & outgroup , const GeneticCode & gc){
-	vector<unsigned int> v = SequenceStatistics::MKtable(ingroup,outgroup,gc);
+double SequenceStatistics::neutralityIndex(const PolymorphismSequenceContainer & ingroup, const PolymorphismSequenceContainer & outgroup , const GeneticCode & gc, double freqmin){
+	vector<unsigned int> v = SequenceStatistics::MKtable(ingroup,outgroup,gc,freqmin);
         if(v[1]!=0 && v[2]!=0) return (double)(v[0]*v[3])/(v[1]*v[2]);
         else return -1;
 }
