@@ -783,7 +783,7 @@ vector<unsigned int> SequenceStatistics::MKtable(const PolymorphismSequenceConta
 	vector<unsigned int> u = SequenceStatistics::fixedDifferences(*pscin,*pscout,*consensus,gc);
 	vector<unsigned int> v(4);
 	v[0] = SequenceStatistics::nonSynonymousSubstitutionsNumber(*pscin,gc,freqmin);
-	v[1] = SequenceStatistics::nonSynonymousSubstitutionsNumber(*pscin,gc,freqmin);
+	v[1] = SequenceStatistics::synonymousSubstitutionsNumber(*pscin,gc,freqmin);
 	v[2] = u[1];
 	v[3] = u[0];
 	delete consensus;
