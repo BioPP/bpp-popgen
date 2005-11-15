@@ -701,7 +701,7 @@ double SequenceStatistics::meanNonSynonymousSitesNumber(const PolymorphismSequen
 // Return: number of synonymous substitutions
 
 unsigned int SequenceStatistics::synonymousSubstitutionsNumber(const PolymorphismSequenceContainer & psc, const GeneticCode & gc, double freqmin){
-  SiteIterator *si = new CompleteSiteIterator(psc);
+  SiteIterator * si = new CompleteSiteIterator(psc);
   const Site * site;
   const NucleicAlphabet * na = new DNA();
   const CodonAlphabet * ca = dynamic_cast<const CodonAlphabet*>(psc.getAlphabet());
@@ -767,26 +767,32 @@ vector<unsigned int> SequenceStatistics::fixedDifferences(const PolymorphismSequ
 //Arguments: two PolymorphismSequenceContainer, a GeneticCode
 //Return: a vector: <Pa,Ps,Da,Ds>
 vector<unsigned int> SequenceStatistics::MKtable(const PolymorphismSequenceContainer & ingroup, const PolymorphismSequenceContainer & outgroup , const GeneticCode & gc, double freqmin){
-        PolymorphismSequenceContainer * psctot = new PolymorphismSequenceContainer(ingroup);
-        for(unsigned int i = 0; i<outgroup.getNumberOfSequences();i++){
-                psctot->addSequence(*outgroup.getSequence(i));
-                psctot->setAsOutgroupMember(i+ingroup.getNumberOfSequences());
-        }
-        const PolymorphismSequenceContainer * psccomplet = PolymorphismSequenceContainerTools::getCompleteSites(*psctot);
-        const PolymorphismSequenceContainer * pscin = PolymorphismSequenceContainerTools::extractIngroup(*psccomplet);
-        const PolymorphismSequenceContainer * pscout = PolymorphismSequenceContainerTools::extractOutgroup(*psccomplet);
-        const Sequence * consensusIn = SiteContainerTools::getConsensus(*pscin,"consensusIn");
-        const Sequence * consensusOut = SiteContainerTools::getConsensus(*pscout,"consensusOut");
-        PolymorphismSequenceContainer * consensus = new PolymorphismSequenceContainer(ingroup.getAlphabet());
-        consensus->addSequence(*consensusIn);
-        consensus->addSequence(*consensusOut);
-        vector<unsigned int> u = SequenceStatistics::fixedDifferences(*pscin,*pscout,*consensus,gc);
+	PolymorphismSequenceContainer * psctot = new PolymorphismSequenceContainer(ingroup);
+	for(unsigned int i = 0; i<outgroup.getNumberOfSequences();i++){
+		psctot->addSequence(*outgroup.getSequence(i));
+		psctot->setAsOutgroupMember(i+ingroup.getNumberOfSequences());
+	}
+	const PolymorphismSequenceContainer * psccomplet = PolymorphismSequenceContainerTools::getCompleteSites(*psctot);
+	const PolymorphismSequenceContainer * pscin = PolymorphismSequenceContainerTools::extractIngroup(*psccomplet);
+	const PolymorphismSequenceContainer * pscout = PolymorphismSequenceContainerTools::extractOutgroup(*psccomplet);
+	const Sequence * consensusIn = SiteContainerTools::getConsensus(*pscin,"consensusIn");
+	const Sequence * consensusOut = SiteContainerTools::getConsensus(*pscout,"consensusOut");
+	PolymorphismSequenceContainer * consensus = new PolymorphismSequenceContainer(ingroup.getAlphabet());
+	consensus->addSequence(*consensusIn);
+	consensus->addSequence(*consensusOut);
+	vector<unsigned int> u = SequenceStatistics::fixedDifferences(*pscin,*pscout,*consensus,gc);
 	vector<unsigned int> v(4);
-        v[0] = SequenceStatistics::nonSynonymousSubstitutionsNumber(*pscin,gc,freqmin);
-	v[1] = SequenceStatistics::synonymousSubstitutionsNumber(*pscin,gc,freqmin);
+	v[0] = SequenceStatistics::nonSynonymousSubstitutionsNumber(*pscin,gc,freqmin);
+	v[1] = SequenceStatistics::nonSynonymousSubstitutionsNumber(*pscin,gc,freqmin);
 	v[2] = u[1];
 	v[3] = u[0];
-        delete consensus;
+	delete consensus;
+	if(psccomplet) {delete psccomplet;}
+	if(pscin) {delete pscin;}
+	if(pscout) {delete pscout;}
+	if(consensusIn) {delete consensusIn;}
+	if(consensusOut) {delete consensusOut;}
+	delete psctot;
 	return v;
 }
 
