@@ -196,7 +196,7 @@ unsigned int SequenceStatistics::totNumberMutations(const PolymorphismSequenceCo
 //This requires an ingroup and an outgroup
 //This is counted as the number of distinct singleton nucleotide  in the ingroup
 // that are not shared with the outgroup
-//A site is ignored if there it contains more than one variant in the outgroup
+//A site is ignored it contains more than one variant in the outgroup
 //A site must have fully resolved variants and without gaps
 unsigned int SequenceStatistics::totMutationsExternalBranchs(const PolymorphismSequenceContainer & ing,
                                                                 const PolymorphismSequenceContainer outg)
@@ -206,19 +206,22 @@ unsigned int SequenceStatistics::totMutationsExternalBranchs(const PolymorphismS
 	const Site * site_out;
 
 	SiteIterator * si = NULL;
-        SiteIterator * so = NULL;
-        //use fully resolved sites
-	si = new CompleteSiteIterator(ing);
-        so = new CompleteSiteIterator(outg);
+    SiteIterator * so = NULL;
 
-        while (si->hasMoreSites()) {
-	        site_in= si->nextSite();
-                site_out= so->nextSite();
 
+	si = new SimpleSiteIterator(ing);
+    so = new SimpleSiteIterator(outg);
+
+    while (si->hasMoreSites()) {
+	        site_in = si->nextSite();
+            site_out= so->nextSite();
+            //use fully resolved sites
+            if ( SiteTools::isComplete(site_in) &&  SiteTools::isComplete(site_out) )
 	        nmuts += _getDerivedSingletonNumber(* site_in, *site_out);//singletons that are not in outgroup
 	}
-        delete si;
-        delete so;
+
+    delete si;
+    delete so;
 	return nmuts;
 }
 
