@@ -216,7 +216,7 @@ unsigned int SequenceStatistics::totMutationsExternalBranchs(const PolymorphismS
 	        site_in = si->nextSite();
             site_out= so->nextSite();
             //use fully resolved sites
-            if ( SiteTools::isComplete(site_in) &&  SiteTools::isComplete(site_out) )
+            if ( SiteTools::isComplete(*site_in) &&  SiteTools::isComplete(*site_out) )
 	        nmuts += _getDerivedSingletonNumber(* site_in, *site_out);//singletons that are not in outgroup
 	}
 
