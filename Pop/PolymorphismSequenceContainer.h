@@ -283,12 +283,6 @@ class PolymorphismSequenceContainer : public VectorSiteContainer
 		 */
 		unsigned int getSequenceCount(const string &name) const throw (SequenceNotFoundException);
 
-		/**
-		 * @brief Get the phase of a given coding region from a polymorphix families
-		 *
-		 * @param setName a PolymorphismSequenceContainer
-		 */
-		unsigned int getPhase(const string &setName) const throw (Exception);
 
 	protected:
 		vector<bool> _ingroup;

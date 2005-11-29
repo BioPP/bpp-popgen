@@ -73,7 +73,7 @@ class SequenceStatistics
 		 * polymorphic site, you have to give a NonGapSiteIterator
 		 *
 		 * @param psc a PolymorphismSequenceContainer
-		 * @param gapflag flag set by default to true if you don't want to
+		 * @param gapflag a boolean set by default to true if you don't want to
 		 * take gap into account
 		 */
 		static unsigned int polymorphicSiteNumber(const PolymorphismSequenceContainer & psc, bool gapflag = true);
@@ -81,17 +81,20 @@ class SequenceStatistics
 
 
         /**
-         *@brief Compute the number of parsimony informative sites in an alignment
-         *@param a PolymorphicSequenceContainer, a boolean
+         * @brief Compute the number of parsimony informative sites in an alignment
+         *
+         * @param psc a PolymorphicSequenceContainer
+         * @param gapflag a boolean set by default to true if you don't want to
+		 * take gap into account
          */
-        static unsigned int parsimonyInformativeSiteNumber(const PolymorphismSequenceContainer & psc, bool gapflag =true);
+        static unsigned int parsimonyInformativeSiteNumber(const PolymorphismSequenceContainer & psc, bool gapflag = true);
 
 
 		/**
 		 * @brief Count the number of singleton nucleotides in an alignment.
 		 *
 		 * @param psc a PolymorphismSequenceContainer
-		 * @param gapflag flag set by default to true if you don't want to
+		 * @param gapflag a boolean set by default to true if you don't want to
 		 * take gap into account
 		 */
 		static unsigned int countSingleton(const PolymorphismSequenceContainer & psc, bool gapflag = true);
@@ -100,44 +103,52 @@ class SequenceStatistics
 		 * @brief Count the total number of mutations in an alignment.
 		 *
 		 * This count is assumed to be under an infinite site model.
+		 *
 		 * @param psc a PolymorphismSequenceContainer
-		 * @param gapflag flag set by default to true if you don't want to
+		 * @param gapflag a boolean set by default to true if you don't want to
 		 * take gap into account
 		 */
 		static unsigned int totNumberMutations(const PolymorphismSequenceContainer & psc, bool gapflag = true);
 
         /**
 		 * @brief Count the total number of mutations in external branchs.
-                 * This is counted as the number of distinct singleton nucleotide  in the ingroup
-                 * that are not shared with the outgroup
-		 * @param  requires an ingroup and an outgroup
-                 * @param gapflag flag set by default to true if you don't want to
-		 * take gap into account
-                 */
+         *
+         * This is counted as the number of distinct singleton nucleotide  in the ingroup
+         * that are not shared with the outgroup
+		 * A site is ignored if it contains more than one variant in the outgroup
+		 * A site is ignored if it contains unresolved variants or gaps
+         *
+		 * @param  ing a PolymorphismSequenceContainer the ingroup alignement
+		 * @param  outg a PolymorphismSequenceContainer the outgroup alignement
+         */
         static unsigned int totMutationsExternalBranchs(const PolymorphismSequenceContainer & ing,
                                                                  const PolymorphismSequenceContainer outg);
 
 
-         /**
+        /**
 		 * @brief Compute the number of triplet in an alignment
 		 *
-		 * @param v a SiteContainer
-		 * @param gapflag set by default to true if you don't want to take gap into account
+		 * @param psc a PolymorphismSequenceContainer
+		 * @param gapflag a boolean set by default to true if you don't want to take gap into account
 		 */
         static unsigned int tripletNumber(const PolymorphismSequenceContainer & psc, bool gapflag = true);
 
 
 
         /**
-         *@brief Compute the sum of per site heterozygosity in an alignment
-         *@param a SiteContainer, a boolean
+         * @brief Compute the sum of per site heterozygosity in an alignment
+		 *
+		 * @param psc a PolymorphismSequenceContainer
+		 * @param gapflag a boolean set by default to true if you don't want to take gap into account
          */
         static double heterozygosity(const PolymorphismSequenceContainer & psc, bool gapflag=true);
 
 
         /**
-         *@brief Compute the sum of per site squared heterozygosity in an alignment
-         *@param a SiteContainer, a boolean
+         * @brief Compute the sum of per site squared heterozygosity in an alignment
+		 *
+		 * @param psc a PolymorphismSequenceContainer
+		 * @param gapflag a boolean set by default to true if you don't want to take gap into account
          */
         static double squaredHeterozygosity(const PolymorphismSequenceContainer & psc, bool gapflag=true);
 
@@ -145,7 +156,7 @@ class SequenceStatistics
         /**
 		 * @brief Compute the mean GC content in an alignment
 		 *
-		 * @param v a PolymorphismSequenceContainer
+		 * @param psc a PolymorphismSequenceContainer
 		 */
 		static double gcContent(const PolymorphismSequenceContainer & psc);
 
@@ -154,6 +165,7 @@ class SequenceStatistics
 		 * @brief Return the number of GC alleles and the total number of alleles at polymorphic sites only
 		 *
 		 * G vs C and A vs T polymorphism are not taken into account
+		 *
 		 * @param psc a PolymorphismSequenceContainer
 		 * @param stopflag a boolean set by default to true if you don't want
 		 * to take stop codons into account
@@ -163,12 +175,13 @@ class SequenceStatistics
 
 
 		/**
-		 * @brief Compute diversity estimator Theta of Watterson (1975)
+		 * @brief Compute diversity estimator Theta of Watterson (1975, Theor Popul Biol, 7 pp256-276)
 		 *
 		 * @f[
 		 * \hat{\theta}_S=\frac{S}{a_1}
 		 * @f]
 		 * where @f$S@f$ is the number of polymorphic sites and @f$a_1@f$ is describe in SequenceStatistics::_getUsefullValues().
+		 *
 		 * @param psc a PolymorphismSequenceContainer
 		 * @param gapflag flag set by default to true if you don't want to
 		 * take gap into account
@@ -177,7 +190,7 @@ class SequenceStatistics
 
 
 		/**
-		 * @brief Compute diversity estimator Theta of Tajima (1983)
+		 * @brief Compute diversity estimator Theta of Tajima (1983, Genetics, 105 pp437-460)
 		 *
 		 * @f[
 		 * \hat{\theta}_\pi=1-\sum_{i=1}^{S}\sum_{j=1}^{4}\frac{k_{j,i}\times\left(k_{j,i}-1\right)}
@@ -185,6 +198,7 @@ class SequenceStatistics
 		 * @f]
 		 * where @f$k_{j,i}@f$ is the count of the j<sup>th</sup> state at the i<sup>th</sup> site,
 		 * @f$n_i@f$ the number of nucleotides and @f$S@f$ the number of polymorphic sites.
+		 *
 		 * @param psc a PolymorphismSequenceContainer
 		 * @param gapflag flag set by default to true if you don't want to
 		 * take gap into account
@@ -194,7 +208,7 @@ class SequenceStatistics
 
 		/**
 		 * @brief Return the number of haplotype in the sample.
-		 * Depaulis and Veuille (1998)
+		 * Depaulis and Veuille (1998, Mol Biol Evol, 12 pp1788-1790)
 		 *
 		 * @param psc a PolymorphismSequenceContainer
 		 * @param gapflag flag set by default to true if you don't want to
@@ -205,7 +219,7 @@ class SequenceStatistics
 
 		/**
 		 * @brief Return the haplotype diversity of a sample.
-		 * Depaulis and Veuille (1998)
+		 * Depaulis and Veuille (1998, Mol Biol Evol, 12 pp1788-1790)
 		 *
 		 * @param psc a PolymorphismSequenceContainer
 		 * @param gapflag flag set by default to true if you don't want to
@@ -242,7 +256,8 @@ class SequenceStatistics
 
 		/**
 		 * @brief Compute the number of codon sites with stop codon
-		 * @param v a SiteContainer
+		 *
+		 * @param psc a PolymorphismSequenceContainer
 		 * @param gapfalg a boolean set by default to true if you don't want to take gaps into account
 		 */
 		static unsigned int stopCodonSiteNumber(const PolymorphismSequenceContainer & psc, bool gapflag = true);
@@ -252,9 +267,10 @@ class SequenceStatistics
 
 		/**
 		 * @brief Compute the number of polymorphic codon with only one mutated site
-		 * @param v a SiteContainer
+		 *
+		 * @param psc a PolymorphismSequenceContainer
 		 * @param stopflag a boolean set by default to true if you don't want
-		 * to take stop codon into account
+		 * to take stop codon neither undefined sites into account
 		 * @param gapflag a boolean set by default to true if you don't want
 		 * to take gaps into account
 		 */
@@ -265,27 +281,37 @@ class SequenceStatistics
 		/**
 		 * @brief Compute the number of synonymous polymorphic codon sites
 		 *
-		 * Gaps are automatically excluded
-		 * @param v a SiteContainer
-		 * @param v a GeneticCode
-		 * @param stopflag a boolean set by default to true if you don't want to take stop codons into account
+		 * Gaps and unresolved sites are automatically excluded
+		 *
+		 * @param psc a PolymorphismSequenceContainer
+		 * @param gc a GeneticCode
 		 */
-		static unsigned int synonymousPolymorphicCodonNumber(const PolymorphismSequenceContainer & psc, const GeneticCode & gc,  bool stopflag = true);
+		static unsigned int synonymousPolymorphicCodonNumber(const PolymorphismSequenceContainer & psc, const GeneticCode & gc);
 
 
 		/**
-		 * @brief Compute the Watterson(1975) estimator for synonymous positions
+		 * @brief Compute the Watterson(1975,Theor Popul Biol, 7 pp256-276) estimator for synonymous positions
 		 *
-		 * Gaps are automatically excluded
+		 * Gaps and unresolved sites are automatically excluded
+		 *
+		 * In case of complex codon, the path that gives the minimum number of non-synonymous changes
+		 * is chosen. The argument minchange=true is sent to numberOfSynonymousDifferences used in this method.
+		 * Otherwise, a non-integer number could be return.
+		 *
 		 * @param psc a PolymorphismSequenceContainer
 		 * @param gc a GeneticCode
 		 */
 		static double watterson75Synonymous(const PolymorphismSequenceContainer & psc, const GeneticCode & gc);
 
 		/**
-		 * @brief Compute the Watterson(1975) estimator for non synonymous positions
+		 * @brief Compute the Watterson(1975, Theor Popul Biol, 7 pp256-276) estimator for non synonymous positions
 		 *
-		 * Gaps are automatically excluded
+		 * Gaps and unresolved sites are automatically excluded
+		 *
+		 * In case of complex codon, the path that gives the minimum number of non-synonymous changes
+		 * is chosen. The argument minchange=true is sent to numberOfSynonymousDifferences used in this method.
+		 * Otherwise, a non-integer number could be return.
+		 *
 		 * @param psc a PolymorphismSequenceContainer
 		 * @param gc a GeneticCode
 		 */
@@ -294,27 +320,29 @@ class SequenceStatistics
 		/**
 		  * @brief Compute the synonymous nucleotide diversity, pi
 		  *
-		  * Gaps are automatically excluded
-		  * @param psc a PolymorphismSiteContainer
+		  * Gaps and unresolved sites are automatically excluded
+		  * If minchange = false (default option) the different paths are equally weighted.
+		  * If minchange = true the path with the minimum number of non-synonymous change is chosen.
+		  *
+		  * @param psc a PolymorphismSequenceContainer
 		  * @param gc a GeneticCode
-		  * @param stopfalg a boolean set by default to true if you don't want
-		  * to take gaps into account
-		  * @param minchange a boolean set to false (see CodonSiteTools)
+		  * @param minchange a boolean set to false
 		  */
-         static double piSynonymous(const PolymorphismSequenceContainer & psc, const GeneticCode & gc, bool stopflag = true, bool minchange=false);
+         static double piSynonymous(const PolymorphismSequenceContainer & psc, const GeneticCode & gc, bool minchange=false);
 
 
 		/**
 		  * @brief Compute the non-synonymous nucleotide diversity, pi
 		  *
-		  * Gaps are automatically excluded
-		  * @param v a SiteContainer
+		  * Gaps and unresolved sites are automatically excluded
+		  * If minchange = false (default option) the different paths are equally weighted.
+		  * If minchange = true the path with the minimum number of non-synonymous change is chosen.
+		  *
+		  * @param psc a PolymorphismSequenceContainer
 		  * @param gc a GeneticCode
-		  * @param stopfalg a boolean set by default to true if you don't want
-		  * to take gaps into account
-		  * @param minchange a boolean set to false (see CodonSiteTools)
+		  * @param minchange a boolean set by default to false
 		  */
-         static double piNonSynonymous(const PolymorphismSequenceContainer & psc, const GeneticCode & gc, bool stopflag = true, bool minchange=false);
+         static double piNonSynonymous(const PolymorphismSequenceContainer & psc, const GeneticCode & gc, bool minchange=false);
 
 
 		/**
@@ -322,14 +350,13 @@ class SequenceStatistics
 		  *
 		  * A site is x% synonymous if x% of possible mutations are synonymous
 		  * The transition/transversion can be taken into account (use the variable ratio)
-		  * Gaps are automatically excluded
-		  * @param v a SiteContainer
+		  * Gaps and unresolved sites are automatically excluded
+		  *
+		  * @param psc a PolymorphismSequenceContainer
 		  * @param gc a GeneticCode
 		  * @param ratio a double
-		  * @param stopfalg a boolean set by default to true if you don't want
-		  * to take stop codons into account
 		  */
-		static double meanSynonymousSitesNumber(const PolymorphismSequenceContainer & psc, const GeneticCode & gc, double ratio=1.0, bool stopflag=true);
+		static double meanSynonymousSitesNumber(const PolymorphismSequenceContainer & psc, const GeneticCode & gc, double ratio=1.0);
 
 
 		/**
@@ -338,19 +365,23 @@ class SequenceStatistics
 		  * A site is x% synonymous if x% of possible mutations are synonymous
 		  * The transition/transversion can be taken into account (use the variable ratio)
 		  * Gaps are automatically excluded
-		  * @param v a SiteContainer
+		  *
+		  * @param psc a PolymorphismSequenceContainer
 		  * @param gc a GeneticCode
 		  * @param ratio a double
-		  * @param stopfalg a boolean set by default to true if you don't want
-		  * to take stop codons into account
 		  */
-		static double meanNonSynonymousSitesNumber(const PolymorphismSequenceContainer & psc, const GeneticCode & gc, double ratio=1.0, bool stopflag=true);
+		static double meanNonSynonymousSitesNumber(const PolymorphismSequenceContainer & psc, const GeneticCode & gc, double ratio=1.0);
 
 
 		/**
 		  * @brief compute the number of synonymous subsitutions in an alignment
 		  *
 		  * Gaps and unresolved sites are automatically excluded
+		  *
+		  * In case of complex codon, the path that gives the minimum number of non-synonymous changes
+		  * is chosen. The argument minchange=true is sent to numberOfSynonymousDifferences used in this method.
+		  * Otherwise, a non-integer number could be return.
+		  *
 		  * @param psc a PolymorphismSequenceContainer
 		  * @param gc a GeneticCode
 		  * @param freqmin a double, to exclude snp in frequency strictly lower than freqmin
@@ -359,9 +390,14 @@ class SequenceStatistics
 
 
 		/**
-		  * @brief compute the number of  non synonymous subsitutions in an alignment
+		  * @brief compute the number of non synonymous subsitutions in an alignment
 		  *
 		  * Gaps and unresolved sites are automatically excluded
+		  *
+		  * In case of complex codon, the path that gives the minimum number of non-synonymous changes
+		  * is chosen. The argument minchange=true is sent to numberOfSynonymousDifferences used in this method.
+		  * Otherwise, a non-integer number could be return.
+		  *
 		  * @param sc a PolymorphismSequenceContainer
 		  * @param gc a GeneticCode
 		  * @param freqmin a double, to exclude snp in frequency strictly lower than freqmin
@@ -372,12 +408,17 @@ class SequenceStatistics
 		/**
 		  * @brief compute the number of fixed differences between two alignements
 		  *
+		  * Gaps and unresolved sites are automatically excluded
+		  *
+		  * In case of complex codon, the path that gives the minimum number of non-synonymous changes
+		  * is chosen. The argument minchange=true is sent to numberOfSynonymousDifferences used in this method.
+		  * Otherwise, a non-integer number could be return.
 		  * @param pscin a PolymorphismSequenceContainer
 		  * @param pscout a PolymorphismSequenceContainer
 		  * @param psccons a PolymorphismSequenceContainer
 		  * @param gc a GeneticCode
 		  */
-		static vector<unsigned int> fixedDifferences(const PolymorphismSequenceContainer & pscin, const PolymorphismSequenceContainer & pscout, PolymorphismSequenceContainer & psccons, const GeneticCode & gs);
+		static vector<unsigned int> fixedDifferences(const PolymorphismSequenceContainer & pscin, const PolymorphismSequenceContainer & pscout, PolymorphismSequenceContainer & psccons, const GeneticCode & gc);
 
 		/**
 		  * @brief return a vector containing Pa, Ps, Da, Ds
@@ -392,9 +433,10 @@ class SequenceStatistics
 
 
 		/**
-		  * @brief return the neutrality index NI = (Pa/Ps)/(Da/Ds)
+		  * @brief return the neutrality index NI = (Pa/Ps)/(Da/Ds) (Rand & Kann 1996, Mol. Biol. Evol. 13 pp735-748)
 		  *
 		  * Gaps and unresolved sites are automatically excluded
+		  *
 		  * @param ingroup a PolymorphismSequenceContainer
 		  * @param outgroup a PolymorphismSequenceContainer
 		  * @param gc a GeneticCode
@@ -405,13 +447,14 @@ class SequenceStatistics
 
 
 		/**
-		 * @brief Return the Tajima's D test (Tajima 1989).
+		 * @brief Return the Tajima's D test (Tajima 1989, Genetics 123 pp 585-595).
 		 *
 		 * Calculation using the number of polymorphic (segregating) sites.
 		 * @f[
 		 * D=\frac{\hat{\theta}_\pi-\hat{\theta}_S}{\sqrt{\textrm{V}\left(\hat{\theta}_\pi-\hat{\theta}_S\right)}}
 		 * =\frac{\hat{\theta}_\pi-\hat{\theta}_S}{\sqrt{e_1S+e_2S(S-1)}}
 		 * @f]
+		 *
 		 * @param psc a PolymorphismSequenceContainer
 		 * @param gapflag flag set by default to true if you don't want to
 		 * take gap into account
@@ -420,7 +463,7 @@ class SequenceStatistics
 
 
 		/**
-		 * @brief Return the Tajima's D test (Tajima 1989).
+		 * @brief Return the Tajima's D test (Tajima 1989, Genetics 123 pp 585-595).
 		 *
 		 * Calculation using the total number of mutation.
 		 * @f[
@@ -434,19 +477,20 @@ class SequenceStatistics
 
 
 		/**
-		 * @brief Return the Fu and Li D test (1993).
+		 * @brief Return the Fu and Li D test  (Fu & Li 1993, Genetics, 133 pp693-709).
 		 *
 		 * @param ingroup a PolymorphismSequenceContainer
 		 * @param outgroup a PolymorphismSequenceContainer
-                 * This version uses the number of mutations
-                 * If the outgroup contains more than one sequence the sites with more than one
-                 * variant will not be considered for external branch mutations !
+         *
+         * This version uses the number of mutations
+         * If the outgroup contains more than one sequence the sites with more than one
+         * variant will not be considered for external branch mutations !
 		 */
 		static double fuliD(const PolymorphismSequenceContainer & ingroup, const PolymorphismSequenceContainer & outgroup);
 
 
 		/**
-		 * @brief Return the Fu and Li D<sup>*</sup> test (1993).
+		 * @brief Return the Fu and Li D<sup>*</sup> test (Fu & Li 1993, Genetics, 133 pp693-709).
 		 *
 		 * @param group a PolymorphismSequenceContainer
 		 */
@@ -456,431 +500,249 @@ class SequenceStatistics
 
 		/**
 
-		 * @brief Return the Fu and Li F test (1993).
-
+		 * @brief Return the Fu and Li F test (Fu & Li 1993, Genetics, 133 pp693-709).
 		 *
-
-		 * @param ingroup a PolymorphismSequenceContainer
-
-		 * @param outgroup a PolymorphismSequenceContainer
-
-                 * This version uses the number of mutations
-
+         * This version uses the number of mutations
 		 * This version uses the number of mutations
-
-                 * If the outgroup contains more than one sequence the sites with more than one
-
-                 * variant will not be considered for externalbranch mutations !
-
-                 */
-
+         * If the outgroup contains more than one sequence the sites with more than one
+         * variant will not be considered for externalbranch mutations !
+         *
+		 * @param ingroup a PolymorphismSequenceContainer
+		 * @param outgroup a PolymorphismSequenceContainer
+         */
 		static double fuliF(const PolymorphismSequenceContainer & ingroup, const PolymorphismSequenceContainer & outgroup);
 
 
-
 		/**
-
-		 * @brief Return the Fu and Li F<sup>*</sup> test (1993).
-
+		 * @brief Return the Fu and Li F<sup>*</sup> test (Fu & Li 1993, Genetics, 133 pp693-709).
 		 *
-
 		 * @param group a PolymorphismSequenceContainer
-
 		 */
-
 		static double fuliFstar(const PolymorphismSequenceContainer & group);
 
 
-
-
-
 	    /**
-
 	     * @brief generate a special PolymorphismSequenceContainer for linkage disequilbrium analysis
-
 	     *
-
+		 * Create a PolymorphismSequenceContainer with only polymorphic site :
+		 * The value 1 is assigned to the most frequent allele, and 0 to the least frequent
+		 * This psc is needed to compute Linkage Disequilibrium Statistics
+		 * Should be used before excluding gaps, but sites with gaps are not counted as polymorphic sites
+		 * Singleton can be excluded
+		 * Polymorphix site with the lowest frequency < threshold can be excluded
          * Only polymorphic sites with 2 alleles are kept
-
-         * The value 1 is assigned to the more frequent allele, and 0 to the less frequent
-
+         *
 	     * @param psc a PolymorphismSequenceContainer
-
 	     * @param keepsingleton a boolean (true by default, false to exclude singleton)
-
 	     * @param freqmin a float (to exlude site with the lowest allele frequency less than the threshold given by freqmin, 0 by default)
-
 	     */
+		static PolymorphismSequenceContainer * generateLDContainer(const PolymorphismSequenceContainer & psc, bool keepsingleton=true, double freqmin=0);
 
-		static PolymorphismSequenceContainer * generateLDContainer(const PolymorphismSequenceContainer & psc, bool keepsingleton=true, double freqmin=0) throw (Exception);
 
 	    /**
-
 	     * @brief give the vector of the pairwise distances between site positions corresponding to a LD SequencePolymorphismContainer
-
 	     *
-
+	     * Assume that all sequences have the same length
+	     *
 	     * @param psc a PolymorphismSequenceContainer
-
 	     * @param keepsingleton a boolean (true by default, false to exclude singleton)
-
 	     * @param freqmin a float (to exlude site with the lowest allele frequency less than the threshold given by freqmin, 0 by default)
-
 	     */
-
 		static Vdouble pairwiseDistances1(const PolymorphismSequenceContainer & psc, bool keepsingleton=true, double freqmin=0);
 
 
 
-
-
 	    /**
-
 	     * @brief give the vector of all mean pairwise distance between two sites to a LD SequencePolymorphismContainer
-
 	     *
-
 	     * pairwise distances are computed for each sequence separately, excluding gaps. Then the mean is taken over all the sequences
-
+	     *
 	     * @param psc a PolymorphismSequenceContainer
-
 	     * @param keepsingleton a boolean (true by default, false to exclude singleton)
-
 	     * @param freqmin a float (to exlude site with the lowest allele frequency less than the threshold given by freqmin, 0 by default)
-
 	     */
-
 		static Vdouble pairwiseDistances2(const PolymorphismSequenceContainer & psc, bool keepsingleton=true, double freqmin=0);
 
 
-
-
-
 	    /**
-
-	     * @brief give the vector of all mean pairwise D value between two sites (Lewontin & Kojima 1964)
-
+	     * @brief give the vector of all mean pairwise D value between two sites (Lewontin & Kojima 1964, Evolution 14 pp458-472)
 	     *
-
 	     * @param psc a PolymorphismSequenceContainer
-
 	     * @param keepsingleton a boolean (true by default, false to exclude singleton)
-
 	     * @param freqmin a float (to exlude site with the lowest allele frequency less than the threshold given by freqmin, 0 by default)
-
 	     */
-
 		static Vdouble pairwiseD(const PolymorphismSequenceContainer & psc, bool keepsingleton=true, double freqmin=0);
 
 
-
 	    /**
-
-	     * @brief give the vector of all mean pairwise D' value between two sites (Lewontin 1964)
-
+	     * @brief give the vector of all mean pairwise D' value between two sites (Lewontin 1964, Genetics 49 pp49-67))
 	     *
-
 	     * @param psc a PolymorphismSequenceContainer
-
 	     * @param keepsingleton a boolean (true by default, false to exclude singleton)
-
 	     * @param freqmin a float (to exlude site with the lowest allele frequency less than the threshold given by freqmin, 0 by default)
-
 	     */
-
 		static Vdouble pairwiseDprime(const PolymorphismSequenceContainer & psc, bool keepsingleton=true, double freqmin=0);
 
 
-
 	    /**
-
-	     * @brief give the vector of all mean pairwise R� value between two sites (Hill&Robertson 1968)
-
+	     * @brief give the vector of all mean pairwise R� value between two sites (Hill & Robertson 1968, Theor. Appl. Genet., 38 pp226-231)
 	     *
-
 	     * @param psc a PolymorphismSequenceContainer
-
 	     * @param keepsingleton a boolean (true by default, false to exclude singleton)
-
 	     * @param freqmin a float (to exlude site with the lowest allele frequency less than the threshold given by freqmin, 0 by default)
-
 	     */
-
 		static Vdouble pairwiseR2(const PolymorphismSequenceContainer & psc, bool keepsingleton=true, double freqmin=0);
 
 
-
-
-
 	    /**
-
 	     * @brief give mean D over all pairwise comparisons
-
 	     *
-
 	     * @param psc a PolymorphismSequenceContainer
-
 	     * @param keepsingleton a boolean (true by default, false to exclude singleton)
-
 	     * @param freqmin a float (to exlude site with the lowest allele frequency less than the threshold given by freqmin, 0 by default)
-
 	     */
-
 		static double meanD(const PolymorphismSequenceContainer & psc, bool keepsingleton=true, double freqmin=0);
 
 
-
 	    /**
-
 	     * @brief give mean D' over all pairwise comparisons
-
 	     *
-
 	     * @param psc a PolymorphismSequenceContainer
-
 	     * @param keepsingleton a boolean (true by default, false to exclude singleton)
-
 	     * @param freqmin a float (to exlude site with the lowest allele frequency less than the threshold given by freqmin, 0 by default)
-
 	     */
-
 		static double meanDprime(const PolymorphismSequenceContainer & psc, bool keepsingleton=true, double freqmin=0);
 
 
-
 	    /**
-
 	     * @brief give mean R� over all pairwise comparisons
-
 	     *
-
 	     * @param psc a PolymorphismSequenceContainer
-
 	     * @param keepsingleton a boolean (true by default, false to exclude singleton)
-
 	     * @param freqmin a float (to exlude site with the lowest allele frequency less than the threshold given by freqmin, 0 by default)
-
 	     */
-
 		static double meanR2(const PolymorphismSequenceContainer & psc, bool keepsingleton=true, double freqmin=0);
 
 
-
 	    /**
-
 	     * @brief give mean pairwise distances between sites / method 1: differences between sequences are not taken into account
-
 	     *
-
 	     * @param psc a PolymorphismSequenceContainer
-
 	     * @param keepsingleton a boolean (true by default, false to exclude singleton)
-
 	     * @param freqmin a float (to exlude site with the lowest allele frequency less than the threshold given by freqmin, 0 by default)
-
 	     */
-
 		static double meanDistance1(const PolymorphismSequenceContainer & psc, bool keepsingleton=true, double freqmin=0);
 
 
 
 	    /**
-
 	     * @brief give mean pairwise distances between sites / method 2: differences between sequences are taken into account
-
 	     *
-
 	     * @param psc a PolymorphismSequenceContainer
-
 	     * @param keepsingleton a boolean (true by default, false to exclude singleton)
-
 	     * @param freqmin a float (to exlude site with the lowest allele frequency less than the threshold given by freqmin, 0 by default)
-
 	     */
-
 		static double meanDistance2(const PolymorphismSequenceContainer & psc, bool keepsingleton=true, double freqmin=0);
 
 
-
 	    /**
-
 	     * @brief give the slope of the regression |D| = 1+a*distance
-
 	     *
-
-             * The slope is given in |D| per kb
-
-             *
-
+         * The slope is given in |D| per kb
+         *
 	     * @param psc a PolymorphismSequenceContainer
-
-             * @param distance1 a boolean (true to use distance1, false to use distance2, false by default)
-
+         * @param distance1 a boolean (true to use distance1, false to use distance2, false by default)
 	     * @param keepsingleton a boolean (true by default, false to exclude singleton)
-
 	     * @param freqmin a float (to exlude site with the lowest allele frequency less than the threshold given by freqmin, 0 by default)
-
 	     */
-
         static double originRegressionD(const PolymorphismSequenceContainer & psc, bool distance1=false, bool keepsingleton=true, double freqmin=0);
 
 
-
-
-
 	    /**
-
 	     * @brief give the slope of the regression |D'| = 1+a*distance
-
 	     *
-
-             * The slope is given in |D'| per kb
-
-             *
-
+         * The slope is given in |D'| per kb
+         *
 	     * @param psc a PolymorphismSequenceContainer
-
-             * @param distance1 a boolean (true to use distance1, false to use distance2, false by default)
-
+         * @param distance1 a boolean (true to use distance1, false to use distance2, false by default)
 	     * @param keepsingleton a boolean (true by default, false to exclude singleton)
-
 	     * @param freqmin a float (to exlude site with the lowest allele frequency less than the threshold given by freqmin, 0 by default)
-
 	     */
-
         static double originRegressionDprime(const PolymorphismSequenceContainer & psc, bool distance1=false, bool keepsingleton=true, double freqmin=0);
 
 
-
 	    /**
-
 	     * @brief give the slope of the regression R� = 1+a*distance
-
 	     *
-
-             * The slope is given in R� per kb
-
-             *
-
+         * The slope is given in R� per kb
+         *
 	     * @param psc a PolymorphismSequenceContainer
-
-             * @param distance1 a boolean (true to use distance1, false to use distance2, false by default)
-
+         * @param distance1 a boolean (true to use distance1, false to use distance2, false by default)
 	     * @param keepsingleton a boolean (true by default, false to exclude singleton)
-
 	     * @param freqmin a float (to exlude site with the lowest allele frequency less than the threshold given by freqmin, 0 by default)
-
 	     */
-
         static double originRegressionR2(const PolymorphismSequenceContainer & psc, bool distance1=false, bool keepsingleton=true, double freqmin=0);
 
 
-
 	    /**
-
 	     * @brief give the slope and the origin of the regression |D| = a*distance+b
-
 	     *
-
-             * The slope is given in |D| per kb
-
-             *
-
+         * The slope is given in |D| per kb
+         *
 	     * @param psc a PolymorphismSequenceContainer
-
-             * @param distance1 a boolean (true to use distance1, false to use distance2, false by default)
-
+         * @param distance1 a boolean (true to use distance1, false to use distance2, false by default)
 	     * @param keepsingleton a boolean (true by default, false to exclude singleton)
-
 	     * @param freqmin a float (to exlude site with the lowest allele frequency less than the threshold given by freqmin, 0 by default)
-
 	     */
-
        static Vdouble linearRegressionD(const PolymorphismSequenceContainer & psc, bool distance1=false, bool keepsingleton=true, double freqmin=0);
 
 
-
 	    /**
-
 	     * @brief give the slope and the origin of the regression |D'| = a*distance+b
-
 	     *
-
-             * The slope is given in |D'| per kb
-
-             *
-
+         * The slope is given in |D'| per kb
+         *
 	     * @param psc a PolymorphismSequenceContainer
-
-             * @param distance1 a boolean (true to use distance1, false to use distance2, false by default)
-
+         * @param distance1 a boolean (true to use distance1, false to use distance2, false by default)
 	     * @param keepsingleton a boolean (true by default, false to exclude singleton)
-
 	     * @param freqmin a float (to exlude site with the lowest allele frequency less than the threshold given by freqmin, 0 by default)
-
 	     */
-
        static Vdouble linearRegressionDprime(const PolymorphismSequenceContainer & psc, bool distance1=false, bool keepsingleton=true, double freqmin=0);
 
 
-
 	    /**
-
 	     * @brief give the slope and the origin of the regression R� = a*distance+b
-
 	     *
-
-             * The slope is given in R� per kb
-
-             *
-
+         * The slope is given in R� per kb
+         *
 	     * @param psc a PolymorphismSequenceContainer
-
-             * @param distance1 a boolean (true to use distance1, false to use distance2, false by default)
-
+         * @param distance1 a boolean (true to use distance1, false to use distance2, false by default)
 	     * @param keepsingleton a boolean (true by default, false to exclude singleton)
-
 	     * @param freqmin a float (to exlude site with the lowest allele frequency less than the threshold given by freqmin, 0 by default)
-
 	     */
-
         static Vdouble linearRegressionR2(const PolymorphismSequenceContainer & psc, bool distance1=false, bool keepsingleton=true, double freqmin=0);
 
 
-
 	    /**
-
 	     * @brief give the slope of the regression R� = 1/(1+a*distance)
-
 	     *
-
-             * To fit the theoretical prediction R� = 1/(1+4Nr)
-
-             * The slope is given in R� per kb
-
-             *
-
+         * To fit the theoretical prediction R� = 1/(1+4Nr)
+         * The slope is given in R� per kb
+         *
 	     * @param psc a PolymorphismSequenceContainer
-
-             * @param distance1 a boolean (true to use distance1, false to use distance2, false by default)
-
+         * @param distance1 a boolean (true to use distance1, false to use distance2, false by default)
 	     * @param keepsingleton a boolean (true by default, false to exclude singleton)
-
 	     * @param freqmin a float (to exlude site with the lowest allele frequency less than the threshold given by freqmin, 0 by default)
-
 	     */
-
         static double inverseRegressionR2(const PolymorphismSequenceContainer & psc, bool distance1=false, bool keepsingleton=true, double freqmin=0);
 
 
-
-
 	    /**
-
-	     * @brief give estimate of C=4Nr using Hudson method (1987)
+	     * @brief give estimate of C=4Nr using Hudson method (Hudson 1987, Genet. Res., 50 pp245-250)
+	     *
 	     * @param psc a PolymorphismSequenceContainer
-	     * @param precision
-	     * @param cinf and csup, initial values
+	     * @param precision default value = 0.000001
+	     * @param cinf and csup, initial values, by default cinf=0.001 and csup = 10000
 	     */
 		static double hudson87(const PolymorphismSequenceContainer & psc, double precision = 0.000001, double cinf=0.001, double csup=10000);
 
@@ -888,124 +750,69 @@ class SequenceStatistics
 
 
 	private:
-
 		/**
-
 		 * @brief Count the number of mutation for a site.
-
 		 */
-
 		static unsigned int _getMutationNumber(const Site & site);
 
-
-
 		/**
-
 		 * @brief Count the number of singleton for a site.
-
 		 */
-
 		static unsigned int _getSingletonNumber(const Site & site);
 
-                /**
-
+        /**
 		 * @brief Count the number of singleton for a site.
-
-                //khalid
-
-                //will count singletons that are not in site_out (a site in outgroup)
-
-                //site_in is a site from an ingroup
-
-                */
-
-                static unsigned int _getDerivedSingletonNumber(const Site & site_in,const Site & site_out );
-
+		 *
+         * will count singletons that are not in site_out (a site in outgroup)
+         * site_in is a site from an ingroup
+         */
+	    static unsigned int _getDerivedSingletonNumber(const Site & site_in,const Site & site_out );
 
 
 		/**
-
 		 * @brief Get usefull values for theta estimators.
-
 		 *
-
 		 * @return A map with 11 values. Keys are a1, a2, a1n, b1, b2, c1, c2, cn, dn, e1 and e2.
-
 		 * The values are :
-
 		 * @f[
-
 		 * a_1=\sum_{i=1}^{n-1}\frac{1}{i} \qquad a_2=\sum_{i=1}^{n-1}\frac{1}{i^2}
-
 		 * @f]
-
 		 * @f[
-
 		 * a_{1n}=\sum_{i=1}^{n}\frac{1}{i}
-
 		 * @f]
-
 		 * @f[
-
 		 * b_1=\frac{n+1}{3(n-1)} \qquad b_2=\frac{2(n^2+n+3)}{9n(n-1)}
-
 		 * @f]
-
 		 * @f[
-
 		 * c_1=b_1-\frac{1}{a_1} \qquad c_2=b_2-\frac{n+2}{a_1n}+\frac{a_2}{a_1^2}
-
 		 * @f]
-
 		 * @f[
-
 		 * c_n=2\frac{na_1-2(n-1)}{(n-1)(n-2)}
-
 		 * @f]
-
 		 * @f[
-
 		 * d_n=c_n+\frac{n-2}{(n-1)^2}+\frac{2}{n-1}\left(\frac{3}{2}-\frac{2a_{1n}-3}{n-2}-\frac{1}{n}\right)
-
 		 * @f]
-
 		 * @f[
-
 		 * e_1=\frac{c_1}{a_1} \qquad e_2=\frac{c_2}{a_1^2+a_2}
-
 		 * @f]
-
 		 * where @f$n@f$ is the number of observed sequences.
-
 		 */
-
 		static map<string, double> _getUsefullValues(unsigned int n);
 
 
 	    /**
-
-	     * @brief give the left hand term of equation (4) in Hudson (1987)
-
+	     * @brief give the left hand term of equation (4) in Hudson (Hudson 1987, Genet. Res., 50 pp245-250)
          * This term is used in hudson87
-
 	     * @param psc a PolymorphismSequenceContainer
-
 	     */
-
-	    /**
-
-	     * @brief give the right hand term of equation (4) in Hudson (1987)
-
-         * This term is used in hudson87
-
-	     * @param psc a PolymorphismSequenceContainer
-
-	     */
-
 		static double _leftHandHudson(const PolymorphismSequenceContainer & psc);
 
+	    /**
+	     * @brief give the right hand term of equation (4) in Hudson (Hudson 1987, Genet. Res., 50 pp245-250)
+         * This term is used in hudson87
+	     * @param psc a PolymorphismSequenceContainer
+	     */
 		static double _rightHandHudson(double c, unsigned int n);
-
 
 		/*******************************************************************************/
 

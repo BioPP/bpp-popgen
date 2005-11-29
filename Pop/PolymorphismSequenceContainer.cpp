@@ -40,12 +40,12 @@ knowledge of the CeCILL license and that you accept its terms.
 #include "PolymorphismSequenceContainer.h"
 
 PolymorphismSequenceContainer::PolymorphismSequenceContainer(const Alphabet *alpha) :
-	VectorSiteContainer(alpha),
-	AbstractSequenceContainer(alpha) {}
+	AbstractSequenceContainer(alpha),
+	VectorSiteContainer(alpha) {}
 
 PolymorphismSequenceContainer::PolymorphismSequenceContainer(unsigned int size, const Alphabet *alpha) :
-	VectorSiteContainer(size, alpha),
-	AbstractSequenceContainer(alpha)
+	AbstractSequenceContainer(alpha),
+	VectorSiteContainer(size, alpha)
 {
 	_count.resize(size);
 	_ingroup.resize(size);
@@ -53,8 +53,8 @@ PolymorphismSequenceContainer::PolymorphismSequenceContainer(unsigned int size, 
 }
 
 PolymorphismSequenceContainer::PolymorphismSequenceContainer(const OrderedSequenceContainer & sc) :
-	VectorSiteContainer(sc),
-	AbstractSequenceContainer(sc.getAlphabet())
+	AbstractSequenceContainer(sc.getAlphabet()),
+	VectorSiteContainer(sc)
 {
 	for (unsigned int i = 0 ; i < sc.getNumberOfSequences() ; i++) {
 		_ingroup.push_back(true);
@@ -64,8 +64,9 @@ PolymorphismSequenceContainer::PolymorphismSequenceContainer(const OrderedSequen
 }
 
 PolymorphismSequenceContainer::PolymorphismSequenceContainer(const SiteContainer & sc) :
-	VectorSiteContainer(sc),
-	AbstractSequenceContainer(sc.getAlphabet())
+	AbstractSequenceContainer(sc.getAlphabet()),
+	VectorSiteContainer(sc)
+	
 {
 	Comments comments(1,"");
 	for (unsigned int i = 0 ; i < sc.getNumberOfSequences() ; i++) {
@@ -77,8 +78,8 @@ PolymorphismSequenceContainer::PolymorphismSequenceContainer(const SiteContainer
 }
 
 PolymorphismSequenceContainer::PolymorphismSequenceContainer(const PolymorphismSequenceContainer & psc) :
-	VectorSiteContainer(psc),
-	AbstractSequenceContainer(psc.getAlphabet())
+	AbstractSequenceContainer(psc.getAlphabet()),
+	VectorSiteContainer(psc)
 {
 	unsigned int nbSeq = psc.getNumberOfSequences();
 	_count.resize(nbSeq);
@@ -345,39 +346,3 @@ unsigned int PolymorphismSequenceContainer::getSequenceCount(const string &name)
 		throw SequenceNotFoundException("PolymorphismSequenceContainer::getSequenceCount.", name);
 	}
 }
-
-unsigned int PolymorphismSequenceContainer::getPhase(const string &setName) const throw (Exception) {
-	try {
-		unsigned int phase;
-		unsigned int index;
-		Comments maseFileHeader = getGeneralComments();
-		for(unsigned int i = 0; i < maseFileHeader.size(); i++) {
-			string current = maseFileHeader[i];
-
-			index = current.find("# of regions");
-			if(index < current.npos) {
-				StringTokenizer st(string(current.begin() + index + 12 , current.end()), " \t\n\f\r=;");
-				unsigned int numberOfSegments = TextTools::toInt(st.nextToken());
-				//cout << "Number of regions: " << st.nextToken() << endl;
-				string name;
-				while(st.hasMoreToken()) {
-					name = st.nextToken();
-					//cout << "Name of regions: " << name << endl;
-				}
-				if(name == setName) {
-					return phase;
-				}
-			}
-
-			index = current.find("/codon_start");
-			if(index < current.npos) {
-				StringTokenizer st(string(current.begin() + index + 12, current.end()), " \t\n\f\r=;");
-				phase = TextTools::toInt(st.nextToken());
-			}
-		}
-		cout << "No phase for " << setName << endl;
-	}
-	catch (...) {
-	}
-}
-

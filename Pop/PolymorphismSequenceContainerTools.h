@@ -42,12 +42,13 @@ knowledge of the CeCILL license and that you accept its terms.
 #define _POLYMORPHISMSEQUENCECONTAINERTOOL_H_
 
 // from SeqLib
+#include <Seq/CodonAlphabet.h>
 #include <Seq/Mase.h>
-#include <Seq/VectorSiteContainer.h>
 #include <Seq/MaseTools.h>
 #include <Seq/SequenceContainerTools.h>
 #include <Seq/SiteIterator.h>
 #include <Seq/SiteTools.h>
+#include <Seq/VectorSiteContainer.h>
 
 // from Utils
 #include <Utils/StringTokenizer.h>
@@ -60,6 +61,10 @@ knowledge of the CeCILL license and that you accept its terms.
 #include "GeneralExceptions.h"
 
 using namespace std;
+
+/**
+ * @brief Utilitary function to manipulate PolymorphismSequenceContainer
+ */
 
 class PolymorphismSequenceContainerTools
 {
@@ -76,6 +81,8 @@ class PolymorphismSequenceContainerTools
 		 *
 		 * @param path Path to the Mase+ file
 		 * @param alpha Sequence Alphabet
+		 *
+		 * @throw Exception if the file is not in the specified format
 		 */
 		static PolymorphismSequenceContainer * read(const string & path, const Alphabet * alpha) throw (Exception);
 
@@ -83,6 +90,8 @@ class PolymorphismSequenceContainerTools
 		 * @brief Extract ingroup sequences from a PolymorphismSequenceContainer and create a new one.
 		 *
 		 * @param psc a PolymorphismSequenceContainer reference
+		 *
+		 * @param throw Exception if there is no ingroup sequence
 		 */
 		static PolymorphismSequenceContainer * extractIngroup (const PolymorphismSequenceContainer & psc) throw (Exception);
 
@@ -90,6 +99,8 @@ class PolymorphismSequenceContainerTools
 		 * @brief Extract outgroup sequences from a PolymorphismSequenceContainer and create a new one.
 		 *
 		 * @param psc a PolymorphismSequenceContainer reference
+		 *
+		 * @param throw Exception if there is no outgroup sequence
 		 */
 		static PolymorphismSequenceContainer * extractOutgroup (const PolymorphismSequenceContainer & psc) throw (Exception);
 
@@ -126,6 +137,8 @@ class PolymorphismSequenceContainerTools
 		 *
 		 * @param psc a PolymorphismSequenceContainer reference
 		 * @param ingroup a boolean set to true if you want to take only ingroup sequences into account
+		 *
+		 * @throw Exception if there is no ingroup sequence
 		 */
 		static unsigned int getNumberOfNonGapSites(const PolymorphismSequenceContainer & psc, bool ingroup) throw (Exception);
 
@@ -135,6 +148,8 @@ class PolymorphismSequenceContainerTools
 		 *
 		 * @param psc a PolymorphismSequenceContainer reference
 		 * @param ingroup a boolean set to true if you want to take only ingroup sequences into account
+		 *
+		 * @throw Exception if there is no ingroup sequence
 		 */
 		static unsigned int getNumberOfCompleteSites(const PolymorphismSequenceContainer & psc, bool ingroup) throw (Exception);
 
@@ -152,74 +167,70 @@ class PolymorphismSequenceContainerTools
 	      *
 	      * @param psc a PolymorphismSequenceContainer reference
 	      */
-		static PolymorphismSequenceContainer * excludeFlankingGap(const PolymorphismSequenceContainer & psc) throw (Exception);
+		static PolymorphismSequenceContainer * excludeFlankingGap(const PolymorphismSequenceContainer & psc);
 
 		/**
-	     * @brief Retrieve coding sites defined in the mase file header
-	     *
-	     * @param psc a PolymorphismSequenceContainer reference
-	     * Be carefull: to use before excluding gap
-	     */
-		static PolymorphismSequenceContainer * getCodingSites(const PolymorphismSequenceContainer & psc) throw (Exception);
+		 * @brief Get a PolymorphismSequenceContainer corresponding to a site selection annotated in the mase comments
+		 *
+		 * Be carefull : in the new PolymorphismSequenceContainer the mase comments are lost
+		 * Information about cds positions and start codon is no more available
+		 *
+    	 * @param psc a PolymorphismSequenceContainer.
+		 * @param setName The name of the set to retrieve.
+		 * @param phase a boolean set to true if you want to take the phase into account during the extraction. It removes the useless sites.
+   	 	 */
+		static PolymorphismSequenceContainer * getSelectedSites(const PolymorphismSequenceContainer & psc, const string & setName, bool phase);
 
 	    /**
 	     * @brief Retrieve non-coding sites defined in the mase file header
 	     *
-	     * @param psc a PolymorphismSequenceContainer reference
 	     * Be carefull: to use before excluding gap
+	     *
+	     * @param psc a PolymorphismSequenceContainer reference
 	     */
-		static PolymorphismSequenceContainer * getNonCodingSites(const PolymorphismSequenceContainer & psc) throw (Exception);
+		static PolymorphismSequenceContainer * getNonCodingSites(const PolymorphismSequenceContainer & psc, const string & setName);
 
 	    /**
 	     * @brief Retrieve sites at one codon position (1,2,3)
-	     *
-	     * @param psc a PolymorphismSequenceContainer reference  *
-	     * Be carefull: to use before excluding gap
-	     * The first position of the alignement is supposed to be 1 (to be checked before using this method)
+		 *
+		 * Be carefull: to use before excluding gap
+	     * Be careful: if there is no phase information, the method catch an exception and set the phase to 1
+		 * This allows to use this method for PolymorphismSequenceContainer generated by getSelectedSequence
+		 *
+	     * @param psc a PolymorphismSequenceContainer reference
 	     */
-	    static PolymorphismSequenceContainer * getOnePosition(const PolymorphismSequenceContainer & psc, unsigned int pos) throw (Exception);
+	    static PolymorphismSequenceContainer * getOnePosition(const PolymorphismSequenceContainer & psc, const string & setName, unsigned int pos);
 
 	    /**
 	     * @brief Retrieve intron sites
 	     *
-	     * Same as getNonCodgingSites but exclude 5' and 3' falnking regions if there are
-         * Assumed that the first coding site correspond to the first position
+	     * Same as getNonCodgingSites but exclude 5' and 3' flanking regions if there are
+         *
 	     * @param psc a PolymorphismSequenceContainer
 	     */
-        static PolymorphismSequenceContainer * getIntrons(const PolymorphismSequenceContainer & psc) throw (Exception);
+        static PolymorphismSequenceContainer * getIntrons(const PolymorphismSequenceContainer & psc, const string &setName, const CodonAlphabet *ca );
 
 	    /**
 	     * @brief Retrieve 5' sites
 	     *
-             * Assumed that the first coding site correspond to the first position
 	     * @param psc a PolymorphismSequenceContainer
+	     * @param ca a CodonAlphabet
 	     */
-        static PolymorphismSequenceContainer * get5Prime(const PolymorphismSequenceContainer & psc) throw (Exception);
+        static PolymorphismSequenceContainer * get5Prime(const PolymorphismSequenceContainer & psc, const string &setName);
 
 	    /**
 	     * @brief Retrieve 3' sites
 	     *
-         * Assumed that the first coding site correspond to the first position
-	     * @param psc a PolymorphismSequenceContainer
+         * @param psc a PolymorphismSequenceContainer
 	     */
-        static PolymorphismSequenceContainer * get3Prime(const PolymorphismSequenceContainer & psc) throw (Exception);
+        static PolymorphismSequenceContainer * get3Prime(const PolymorphismSequenceContainer & psc, const string &setName, const CodonAlphabet *ca );
 
-	/**
-	 * @brief Get a PolymorphismSequenceContainer corresponding to a site selection annotated in the mase comments
-	 *
-         * Assumed that the first coding site correspond to the first position
-	 * @param psc a PolymorphismSequenceContainer.
-	 * @param setName The name of the set to retrieve.
-	 * @param phase a boolean set to true if you want to take the phase into account during the extraction. It removes the useless sites.
-   	 */
-	static PolymorphismSequenceContainer * getSelectedSites(const PolymorphismSequenceContainer & psc, const string &setName, bool phase) throw (Exception);
-
-	/**
-	 * @brief Get the species name of the ingroup
-         *
-	 * @param psc a PolymorphismSequenceContainer.
-   	 */
-	static string getIngroupSpeciesName(const PolymorphismSequenceContainer & psc) throw (Exception);
+		/**
+		 * @brief Get the species name of the ingroup
+     	 *
+	 	 * @param psc a PolymorphismSequenceContainer.
+   	 	 */
+		static string getIngroupSpeciesName(const PolymorphismSequenceContainer & psc);
 
 		/*******************************************************************************/
 };
