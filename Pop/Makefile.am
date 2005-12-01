@@ -65,9 +65,9 @@ PolymorphismSequenceContainerTools.cpp\
 PopgenlibIO.cpp\
 SequenceStatistics.cpp
 
-lib_LTLIBRARIES = libbpp-pop.la
-libbpp_pop_la_SOURCES = $(H_FILES) $(CPP_FILES)
-libbpp_pop_la_LDFLAGS = -version-info 0:1:0
+lib_LTLIBRARIES = libbpp-popgen.la
+libbpp_popgen_la_SOURCES = $(H_FILES) $(CPP_FILES)
+libbpp_popgen_la_LDFLAGS = -version-info 1:0:0
 
 library_includedir=$(includedir)/Pop
 library_include_HEADERS = $(H_FILES)
