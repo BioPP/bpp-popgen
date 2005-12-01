@@ -49,7 +49,6 @@ knowledge of the CeCILL license and that you accept its terms.
 #include "PolymorphismSequenceContainer.h"
 
 
-
 // From the STL:
 #include <ctype.h>
 #include <cmath>
@@ -75,6 +74,7 @@ using namespace std;
 
 // from NumCalc
 #include <NumCalc/VectorTools.h>
+#include <NumCalc/VectorExceptions.h>
 using namespace VectorOperators;
 using namespace VectorFunctions;
 using namespace VectorStatTools;
@@ -843,12 +843,15 @@ PolymorphismSequenceContainer * SequenceStatistics::generateLDContainer(const Po
 		Site* siteclone =  new Site(*site);
 		bool deletesite = false;
 		map<int, double> freqs = SymbolListTools::getFrequencies(*siteclone);
-		int firstOne = site->getValue(0);
+		int first;
+		for(map<int,double>::iterator it=freqs.begin(); it!=freqs.end(); it++){
+			if(it->second>=0.5) first = it->first;
+		}
 		for(unsigned int j=0; j<sc->getNumberOfSequences(); j++){
-			if(freqs[site->getValue(j)]>=0.5 && site->getValue(j)==firstOne){
+			if(freqs[site->getValue(j)]>=0.5 && site->getValue(j)==first){
 				if(freqs[site->getValue(j)]<=1-freqmin) {
 					siteclone->setElement(j,1);
-					firstOne = site->getValue(j);
+					first = site->getValue(j);
 				}
 				else deletesite = true;
 			}
@@ -869,7 +872,7 @@ PolymorphismSequenceContainer * SequenceStatistics::generateLDContainer(const Po
 	/* Pairwise LD and distance measures */
 	/*************************************/
 
-Vdouble SequenceStatistics::pairwiseDistances1(const PolymorphismSequenceContainer & psc,bool keepsingleton, double freqmin){
+Vdouble SequenceStatistics::pairwiseDistances1(const PolymorphismSequenceContainer & psc,bool keepsingleton, double freqmin) throw (DimensionException){
 	//get Positions with sites of interest
 	SiteSelection ss;
 	for(unsigned int i=0; i<psc.getNumberOfSites(); i++){
@@ -898,8 +901,8 @@ Vdouble SequenceStatistics::pairwiseDistances1(const PolymorphismSequenceContain
                 }
 	}
 	//compute pairwise distances
+	if(ss.size()<2) throw DimensionException("SequenceStatistics::pairwiseDistances1 : less than 2 sites are available",ss.size(),2);
 	Vdouble dist;
-        if(ss.size()==0) return dist;
 	for(unsigned int i=0; i<ss.size()-1; i++){
 		for(unsigned int j=i+1; j<ss.size(); j++){
 			dist.push_back(ss[j]-ss[i]);
@@ -910,7 +913,7 @@ Vdouble SequenceStatistics::pairwiseDistances1(const PolymorphismSequenceContain
 
 
 
-Vdouble SequenceStatistics::pairwiseDistances2(const PolymorphismSequenceContainer & psc, bool keepsingleton, double freqmin){
+Vdouble SequenceStatistics::pairwiseDistances2(const PolymorphismSequenceContainer & psc, bool keepsingleton, double freqmin) throw (DimensionException){
 	SiteSelection ss;
 	for(unsigned int i=0; i<psc.getNumberOfSites(); i++){
 		if(keepsingleton) {
@@ -938,9 +941,9 @@ Vdouble SequenceStatistics::pairwiseDistances2(const PolymorphismSequenceContain
                 }
 	}
 	unsigned int n = ss.size();
+	if(n<2) throw DimensionException("SequenceStatistics::pairwiseDistances1 : less than 2 sites are available",ss.size(),2);
 	Vdouble distance(n*(n-1)/2,0);
-        if(n==0) return distance;
-	unsigned int nbsite = psc.getNumberOfSites();
+ 	unsigned int nbsite = psc.getNumberOfSites();
 	for(unsigned int k=0; k<psc.getNumberOfSequences(); k++){
 		const Sequence* seq = psc.getSequence(k);
 		SiteSelection gap, newss = ss;
@@ -966,12 +969,13 @@ Vdouble SequenceStatistics::pairwiseDistances2(const PolymorphismSequenceContain
 }
 
 
-Vdouble SequenceStatistics::pairwiseD(const PolymorphismSequenceContainer & psc, bool keepsingleton, double freqmin) {
+Vdouble SequenceStatistics::pairwiseD(const PolymorphismSequenceContainer & psc, bool keepsingleton, double freqmin) throw (DimensionException){
 	PolymorphismSequenceContainer* newpsc = SequenceStatistics::generateLDContainer(psc, keepsingleton,  freqmin);
 	Vdouble D;
 	unsigned int nbsite = newpsc->getNumberOfSites();
 	unsigned int nbseq = newpsc->getNumberOfSequences();
-        if(nbsite==0) return D;
+	if(nbsite<2) throw DimensionException("SequenceStatistics::pairwiseD: less than two sites are available",nbsite,2);
+	if(nbseq<2) throw DimensionException("SequenceStatistics::pairwiseD: less than two sequences are available",nbseq,2);	
 	for(unsigned int i=0; i<nbsite-1; i++){
 		for(unsigned int j=i+1; j<nbsite; j++){
 			double haplo=0;
@@ -991,12 +995,13 @@ Vdouble SequenceStatistics::pairwiseD(const PolymorphismSequenceContainer & psc,
 
 
 
-Vdouble SequenceStatistics::pairwiseDprime(const PolymorphismSequenceContainer & psc, bool keepsingleton, double freqmin) {
+Vdouble SequenceStatistics::pairwiseDprime(const PolymorphismSequenceContainer & psc, bool keepsingleton, double freqmin) throw (DimensionException){
 	PolymorphismSequenceContainer* newpsc = SequenceStatistics::generateLDContainer(psc, keepsingleton, freqmin);
 	Vdouble Dprime;
 	unsigned int nbsite = newpsc->getNumberOfSites();
 	unsigned int nbseq = newpsc->getNumberOfSequences();
-        if(nbsite==0) return Dprime;
+	if(nbsite<2) throw DimensionException("SequenceStatistics::pairwiseD: less than two sites are available",nbsite,2);
+	if(nbseq<2) throw DimensionException("SequenceStatistics::pairwiseD: less than two sequences are available",nbseq,2);
 	for(unsigned int i=0; i<nbsite-1; i++){
 		for(unsigned int j=i+1; j<nbsite; j++){
 			double haplo=0;
@@ -1032,12 +1037,13 @@ Vdouble SequenceStatistics::pairwiseDprime(const PolymorphismSequenceContainer &
 }
 
 
-Vdouble SequenceStatistics::pairwiseR2(const PolymorphismSequenceContainer & psc, bool keepsingleton, double freqmin) {
+Vdouble SequenceStatistics::pairwiseR2(const PolymorphismSequenceContainer & psc, bool keepsingleton, double freqmin) throw (DimensionException){
 	PolymorphismSequenceContainer* newpsc = SequenceStatistics::generateLDContainer(psc, keepsingleton, freqmin);
 	Vdouble R2;
 	unsigned int nbsite = newpsc->getNumberOfSites();
-        if(nbsite==0) return R2;
 	unsigned int nbseq = newpsc->getNumberOfSequences();
+	if(nbsite<2) throw DimensionException("SequenceStatistics::pairwiseD: less than two sites are available",nbsite,2);
+	if(nbseq<2) throw DimensionException("SequenceStatistics::pairwiseD: less than two sequences are available",nbseq,2);	
 	for(unsigned int i=0; i<nbsite-1; i++){
 		for(unsigned int j=i+1; j<nbsite; j++){
 			double haplo=0;
@@ -1060,64 +1066,86 @@ Vdouble SequenceStatistics::pairwiseR2(const PolymorphismSequenceContainer & psc
 	/* Global LD and distance measures */
 	/***********************************/
 
-double SequenceStatistics::meanD(const PolymorphismSequenceContainer & psc, bool keepsingleton, double freqmin){
+double SequenceStatistics::meanD(const PolymorphismSequenceContainer & psc, bool keepsingleton, double freqmin) throw (DimensionException){
 	Vdouble D = SequenceStatistics::pairwiseD(psc,keepsingleton,freqmin);
 	return mean(D);
 }
 
-double SequenceStatistics::meanDprime(const PolymorphismSequenceContainer & psc, bool keepsingleton, double freqmin){
+double SequenceStatistics::meanDprime(const PolymorphismSequenceContainer & psc, bool keepsingleton, double freqmin) throw (DimensionException){
+	try{
 	Vdouble Dprime = SequenceStatistics::pairwiseDprime(psc,keepsingleton,freqmin);
 	return mean(Dprime);
+	}
+	catch (DimensionException & e) {throw e;}
 }
 
-double SequenceStatistics::meanR2(const PolymorphismSequenceContainer & psc, bool keepsingleton, double freqmin){
+double SequenceStatistics::meanR2(const PolymorphismSequenceContainer & psc, bool keepsingleton, double freqmin) throw (DimensionException){
+	try{
 	Vdouble R2 = SequenceStatistics::pairwiseR2(psc,keepsingleton,freqmin);
 	return mean(R2);
+	}
+	catch (DimensionException & e) {throw e;}
 }
 
-double SequenceStatistics::meanDistance1(const PolymorphismSequenceContainer & psc, bool keepsingleton, double freqmin){
+double SequenceStatistics::meanDistance1(const PolymorphismSequenceContainer & psc, bool keepsingleton, double freqmin) throw (DimensionException){
+	try{
 	Vdouble dist = pairwiseDistances1(psc,keepsingleton,freqmin);
 	return mean(dist);
+	}
+	catch (DimensionException & e) {throw e;}
 }
 
-double SequenceStatistics::meanDistance2(const PolymorphismSequenceContainer & psc, bool keepsingleton, double freqmin){
+double SequenceStatistics::meanDistance2(const PolymorphismSequenceContainer & psc, bool keepsingleton, double freqmin) throw (DimensionException){
+	try{
 	Vdouble dist = SequenceStatistics::pairwiseDistances2(psc,keepsingleton,freqmin);
 	return mean(dist);
+	}
+	catch (DimensionException & e) {throw e;}
 }
 
 	/**********************/
 	/* Regression methods */
 	/**********************/
 
-double SequenceStatistics::originRegressionD(const PolymorphismSequenceContainer & psc, bool distance1, bool keepsingleton, double freqmin){
-        Vdouble D = SequenceStatistics::pairwiseD(psc,keepsingleton,freqmin)-1;
+double SequenceStatistics::originRegressionD(const PolymorphismSequenceContainer & psc, bool distance1, bool keepsingleton, double freqmin) throw (DimensionException){
+        try{
+		Vdouble D = SequenceStatistics::pairwiseD(psc,keepsingleton,freqmin)-1;
         Vdouble dist;
         if(distance1) dist = pairwiseDistances1(psc,keepsingleton,freqmin)/1000;
         else  dist = pairwiseDistances2(psc,keepsingleton,freqmin)/1000;
         return sum(D*dist)/sum(dist*dist);
+		}
+		catch (DimensionException & e) {throw e;}
 }
 
 
-double SequenceStatistics::originRegressionDprime(const PolymorphismSequenceContainer & psc, bool distance1, bool keepsingleton, double freqmin){
-        Vdouble Dprime = SequenceStatistics::pairwiseDprime(psc,keepsingleton,freqmin)-1;
+double SequenceStatistics::originRegressionDprime(const PolymorphismSequenceContainer & psc, bool distance1, bool keepsingleton, double freqmin) throw (DimensionException){
+    try{    
+	Vdouble Dprime = SequenceStatistics::pairwiseDprime(psc,keepsingleton,freqmin)-1;
         Vdouble dist;
         if(distance1) dist = pairwiseDistances1(psc,keepsingleton,freqmin)/1000;
         else  dist = pairwiseDistances2(psc,keepsingleton,freqmin)/1000;
         return sum(Dprime*dist)/sum(dist*dist);
+	}
+	catch (DimensionException & e) {throw e;}
 }
 
 
-double SequenceStatistics::originRegressionR2(const PolymorphismSequenceContainer & psc, bool distance1, bool keepsingleton, double freqmin){
-        Vdouble R2 = SequenceStatistics::pairwiseR2(psc,keepsingleton,freqmin)-1;
+double SequenceStatistics::originRegressionR2(const PolymorphismSequenceContainer & psc, bool distance1, bool keepsingleton, double freqmin) throw (DimensionException){
+    try{    
+	Vdouble R2 = SequenceStatistics::pairwiseR2(psc,keepsingleton,freqmin)-1;
         Vdouble dist;
         if(distance1) dist = pairwiseDistances1(psc,keepsingleton,freqmin)/1000;
         else  dist = pairwiseDistances2(psc,keepsingleton,freqmin)/1000;
         return sum(R2*dist)/sum(dist*dist);
+	}
+	catch (DimensionException & e) {throw e;}
 }
 
 
-Vdouble SequenceStatistics::linearRegressionD(const PolymorphismSequenceContainer & psc, bool distance1, bool keepsingleton, double freqmin){
-        Vdouble D = SequenceStatistics::pairwiseD(psc,keepsingleton,freqmin);
+Vdouble SequenceStatistics::linearRegressionD(const PolymorphismSequenceContainer & psc, bool distance1, bool keepsingleton, double freqmin) throw (DimensionException){
+    try{    
+	Vdouble D = SequenceStatistics::pairwiseD(psc,keepsingleton,freqmin);
         Vdouble dist;
         Vdouble reg(2);
         if(distance1) dist = pairwiseDistances1(psc,keepsingleton,freqmin)/1000;
@@ -1125,11 +1153,14 @@ Vdouble SequenceStatistics::linearRegressionD(const PolymorphismSequenceContaine
         reg[0]=cov(dist,D)/var(dist);
         reg[1]=mean(D)-reg[0]*mean(dist);
         return reg;
+	}
+	catch (DimensionException & e) {throw e;}
 }
 
 
-Vdouble SequenceStatistics::linearRegressionDprime(const PolymorphismSequenceContainer & psc, bool distance1, bool keepsingleton, double freqmin){
-        Vdouble Dprime = SequenceStatistics::pairwiseDprime(psc,keepsingleton,freqmin);
+Vdouble SequenceStatistics::linearRegressionDprime(const PolymorphismSequenceContainer & psc, bool distance1, bool keepsingleton, double freqmin) throw (DimensionException){
+	try{
+	Vdouble Dprime = SequenceStatistics::pairwiseDprime(psc,keepsingleton,freqmin);
         Vdouble dist;
         Vdouble reg(2);
         if(distance1) dist = pairwiseDistances1(psc,keepsingleton,freqmin)/1000;
@@ -1137,11 +1168,14 @@ Vdouble SequenceStatistics::linearRegressionDprime(const PolymorphismSequenceCon
         reg[0]=cov(dist,Dprime)/var(dist);
         reg[1]=mean(Dprime)-reg[0]*mean(dist);
         return reg;
+	}
+	catch (DimensionException & e) {throw e;}
 }
 
 
-Vdouble SequenceStatistics::linearRegressionR2(const PolymorphismSequenceContainer & psc, bool distance1, bool keepsingleton, double freqmin){
-        Vdouble R2 = SequenceStatistics::pairwiseR2(psc,keepsingleton,freqmin);
+Vdouble SequenceStatistics::linearRegressionR2(const PolymorphismSequenceContainer & psc, bool distance1, bool keepsingleton, double freqmin) throw (DimensionException){
+    try{    
+	Vdouble R2 = SequenceStatistics::pairwiseR2(psc,keepsingleton,freqmin);
         Vdouble dist;
         Vdouble reg(2);
         if(distance1) dist = pairwiseDistances1(psc,keepsingleton,freqmin)/1000;
@@ -1149,18 +1183,23 @@ Vdouble SequenceStatistics::linearRegressionR2(const PolymorphismSequenceContain
         reg[0]=cov(dist,R2)/var(dist);
         reg[1]=mean(R2)-reg[0]*mean(dist);
         return reg;
+	}
+	catch (DimensionException & e) {throw e;}
 }
 
 
 
-double SequenceStatistics::inverseRegressionR2(const PolymorphismSequenceContainer & psc, bool distance1, bool keepsingleton, double freqmin){
-        Vdouble R2 = SequenceStatistics::pairwiseR2(psc,keepsingleton,freqmin);
+double SequenceStatistics::inverseRegressionR2(const PolymorphismSequenceContainer & psc, bool distance1, bool keepsingleton, double freqmin) throw (DimensionException){
+    try{    
+	Vdouble R2 = SequenceStatistics::pairwiseR2(psc,keepsingleton,freqmin);
         Vdouble unit(R2.size(),1);
         Vdouble R2transformed = unit/R2 -1;
         Vdouble dist;
         if(distance1) dist = pairwiseDistances1(psc,keepsingleton,freqmin)/1000;
         else  dist = pairwiseDistances2(psc,keepsingleton,freqmin)/1000;
         return sum(R2transformed*dist)/sum(dist*dist);
+	}
+	catch (DimensionException & e) {throw e;}
 }
 
 	/**********************/

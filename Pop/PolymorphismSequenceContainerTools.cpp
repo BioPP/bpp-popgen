@@ -311,7 +311,7 @@ PolymorphismSequenceContainer * PolymorphismSequenceContainerTools::getOnePositi
 	catch (Exception & e) {start = 1;}
 	SiteSelection ss;
 	unsigned int i;
-	if(pos-start>=0) i = pos-start;
+	if((int)pos - (int)start>=0) i = pos-start;
 	else i = pos-start+3;
 	while(i<psc.getNumberOfSites()) {
 		ss.push_back(i);

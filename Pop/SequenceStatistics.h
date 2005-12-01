@@ -435,6 +435,7 @@ class SequenceStatistics
 		/**
 		  * @brief return the neutrality index NI = (Pa/Ps)/(Da/Ds) (Rand & Kann 1996, Mol. Biol. Evol. 13 pp735-748)
 		  *
+		  * Return -1 if Ps or Da are zero
 		  * Gaps and unresolved sites are automatically excluded
 		  *
 		  * @param ingroup a PolymorphismSequenceContainer
@@ -547,8 +548,9 @@ class SequenceStatistics
 	     * @param psc a PolymorphismSequenceContainer
 	     * @param keepsingleton a boolean (true by default, false to exclude singleton)
 	     * @param freqmin a float (to exlude site with the lowest allele frequency less than the threshold given by freqmin, 0 by default)
+		 * @throw DimensionException if the number of sites is lower than 2
 	     */
-		static Vdouble pairwiseDistances1(const PolymorphismSequenceContainer & psc, bool keepsingleton=true, double freqmin=0);
+		static Vdouble pairwiseDistances1(const PolymorphismSequenceContainer & psc, bool keepsingleton=true, double freqmin=0) throw (DimensionException);
 
 
 
@@ -560,8 +562,9 @@ class SequenceStatistics
 	     * @param psc a PolymorphismSequenceContainer
 	     * @param keepsingleton a boolean (true by default, false to exclude singleton)
 	     * @param freqmin a float (to exlude site with the lowest allele frequency less than the threshold given by freqmin, 0 by default)
+		 * @throw DimensionException if the number of sites is lower than 2
 	     */
-		static Vdouble pairwiseDistances2(const PolymorphismSequenceContainer & psc, bool keepsingleton=true, double freqmin=0);
+		static Vdouble pairwiseDistances2(const PolymorphismSequenceContainer & psc, bool keepsingleton=true, double freqmin=0) throw (DimensionException);
 
 
 	    /**
@@ -570,8 +573,9 @@ class SequenceStatistics
 	     * @param psc a PolymorphismSequenceContainer
 	     * @param keepsingleton a boolean (true by default, false to exclude singleton)
 	     * @param freqmin a float (to exlude site with the lowest allele frequency less than the threshold given by freqmin, 0 by default)
+		 * @throw DimensionException if the number of sites or the number of sequences is lower than 2
 	     */
-		static Vdouble pairwiseD(const PolymorphismSequenceContainer & psc, bool keepsingleton=true, double freqmin=0);
+		static Vdouble pairwiseD(const PolymorphismSequenceContainer & psc, bool keepsingleton=true, double freqmin=0) throw (DimensionException);
 
 
 	    /**
@@ -580,8 +584,9 @@ class SequenceStatistics
 	     * @param psc a PolymorphismSequenceContainer
 	     * @param keepsingleton a boolean (true by default, false to exclude singleton)
 	     * @param freqmin a float (to exlude site with the lowest allele frequency less than the threshold given by freqmin, 0 by default)
+		 * @throw DimensionException if the number of sites or the number of sequences is lower than 2
 	     */
-		static Vdouble pairwiseDprime(const PolymorphismSequenceContainer & psc, bool keepsingleton=true, double freqmin=0);
+		static Vdouble pairwiseDprime(const PolymorphismSequenceContainer & psc, bool keepsingleton=true, double freqmin=0) throw (DimensionException);
 
 
 	    /**
@@ -590,8 +595,9 @@ class SequenceStatistics
 	     * @param psc a PolymorphismSequenceContainer
 	     * @param keepsingleton a boolean (true by default, false to exclude singleton)
 	     * @param freqmin a float (to exlude site with the lowest allele frequency less than the threshold given by freqmin, 0 by default)
+		 * @throw DimensionException if the number of sites or the number of sequences is lower than 2
 	     */
-		static Vdouble pairwiseR2(const PolymorphismSequenceContainer & psc, bool keepsingleton=true, double freqmin=0);
+		static Vdouble pairwiseR2(const PolymorphismSequenceContainer & psc, bool keepsingleton=true, double freqmin=0) throw (DimensionException);
 
 
 	    /**
@@ -600,8 +606,9 @@ class SequenceStatistics
 	     * @param psc a PolymorphismSequenceContainer
 	     * @param keepsingleton a boolean (true by default, false to exclude singleton)
 	     * @param freqmin a float (to exlude site with the lowest allele frequency less than the threshold given by freqmin, 0 by default)
+		 * @throw DimensionException if the number of sites or the number of sequences is lower than 2
 	     */
-		static double meanD(const PolymorphismSequenceContainer & psc, bool keepsingleton=true, double freqmin=0);
+		static double meanD(const PolymorphismSequenceContainer & psc, bool keepsingleton=true, double freqmin=0) throw (DimensionException);
 
 
 	    /**
@@ -610,8 +617,9 @@ class SequenceStatistics
 	     * @param psc a PolymorphismSequenceContainer
 	     * @param keepsingleton a boolean (true by default, false to exclude singleton)
 	     * @param freqmin a float (to exlude site with the lowest allele frequency less than the threshold given by freqmin, 0 by default)
+		 * @throw DimensionException if the number of sites or the number of sequences is lower than 2
 	     */
-		static double meanDprime(const PolymorphismSequenceContainer & psc, bool keepsingleton=true, double freqmin=0);
+		static double meanDprime(const PolymorphismSequenceContainer & psc, bool keepsingleton=true, double freqmin=0) throw (DimensionException);
 
 
 	    /**
@@ -620,8 +628,9 @@ class SequenceStatistics
 	     * @param psc a PolymorphismSequenceContainer
 	     * @param keepsingleton a boolean (true by default, false to exclude singleton)
 	     * @param freqmin a float (to exlude site with the lowest allele frequency less than the threshold given by freqmin, 0 by default)
+		 * @throw DimensionException if the number of sites or the number of sequences is lower than 2
 	     */
-		static double meanR2(const PolymorphismSequenceContainer & psc, bool keepsingleton=true, double freqmin=0);
+		static double meanR2(const PolymorphismSequenceContainer & psc, bool keepsingleton=true, double freqmin=0) throw (DimensionException);
 
 
 	    /**
@@ -630,8 +639,9 @@ class SequenceStatistics
 	     * @param psc a PolymorphismSequenceContainer
 	     * @param keepsingleton a boolean (true by default, false to exclude singleton)
 	     * @param freqmin a float (to exlude site with the lowest allele frequency less than the threshold given by freqmin, 0 by default)
+		 * @throw DimensionException if the number of sites is lower than 2
 	     */
-		static double meanDistance1(const PolymorphismSequenceContainer & psc, bool keepsingleton=true, double freqmin=0);
+		static double meanDistance1(const PolymorphismSequenceContainer & psc, bool keepsingleton=true, double freqmin=0) throw (DimensionException);
 
 
 
@@ -641,8 +651,9 @@ class SequenceStatistics
 	     * @param psc a PolymorphismSequenceContainer
 	     * @param keepsingleton a boolean (true by default, false to exclude singleton)
 	     * @param freqmin a float (to exlude site with the lowest allele frequency less than the threshold given by freqmin, 0 by default)
+		 * @throw DimensionException if the number of sites is lower than 2
 	     */
-		static double meanDistance2(const PolymorphismSequenceContainer & psc, bool keepsingleton=true, double freqmin=0);
+		static double meanDistance2(const PolymorphismSequenceContainer & psc, bool keepsingleton=true, double freqmin=0) throw (DimensionException);
 
 
 	    /**
@@ -654,8 +665,9 @@ class SequenceStatistics
          * @param distance1 a boolean (true to use distance1, false to use distance2, false by default)
 	     * @param keepsingleton a boolean (true by default, false to exclude singleton)
 	     * @param freqmin a float (to exlude site with the lowest allele frequency less than the threshold given by freqmin, 0 by default)
+		 * @throw DimensionException if the number of sites or the number of sequences is lower than 2
 	     */
-        static double originRegressionD(const PolymorphismSequenceContainer & psc, bool distance1=false, bool keepsingleton=true, double freqmin=0);
+        static double originRegressionD(const PolymorphismSequenceContainer & psc, bool distance1=false, bool keepsingleton=true, double freqmin=0) throw (DimensionException);
 
 
 	    /**
@@ -667,8 +679,9 @@ class SequenceStatistics
          * @param distance1 a boolean (true to use distance1, false to use distance2, false by default)
 	     * @param keepsingleton a boolean (true by default, false to exclude singleton)
 	     * @param freqmin a float (to exlude site with the lowest allele frequency less than the threshold given by freqmin, 0 by default)
+		 * @throw DimensionException if the number of sites or the number of sequences is lower than 2
 	     */
-        static double originRegressionDprime(const PolymorphismSequenceContainer & psc, bool distance1=false, bool keepsingleton=true, double freqmin=0);
+        static double originRegressionDprime(const PolymorphismSequenceContainer & psc, bool distance1=false, bool keepsingleton=true, double freqmin=0) throw (DimensionException);
 
 
 	    /**
@@ -680,8 +693,9 @@ class SequenceStatistics
          * @param distance1 a boolean (true to use distance1, false to use distance2, false by default)
 	     * @param keepsingleton a boolean (true by default, false to exclude singleton)
 	     * @param freqmin a float (to exlude site with the lowest allele frequency less than the threshold given by freqmin, 0 by default)
+		 * @throw DimensionException if the number of sites or the number of sequences is lower than 2
 	     */
-        static double originRegressionR2(const PolymorphismSequenceContainer & psc, bool distance1=false, bool keepsingleton=true, double freqmin=0);
+        static double originRegressionR2(const PolymorphismSequenceContainer & psc, bool distance1=false, bool keepsingleton=true, double freqmin=0) throw (DimensionException);
 
 
 	    /**
@@ -693,8 +707,9 @@ class SequenceStatistics
          * @param distance1 a boolean (true to use distance1, false to use distance2, false by default)
 	     * @param keepsingleton a boolean (true by default, false to exclude singleton)
 	     * @param freqmin a float (to exlude site with the lowest allele frequency less than the threshold given by freqmin, 0 by default)
+		 * @throw DimensionException if the number of sites or the number of sequences is lower than 2
 	     */
-       static Vdouble linearRegressionD(const PolymorphismSequenceContainer & psc, bool distance1=false, bool keepsingleton=true, double freqmin=0);
+       static Vdouble linearRegressionD(const PolymorphismSequenceContainer & psc, bool distance1=false, bool keepsingleton=true, double freqmin=0) throw (DimensionException);
 
 
 	    /**
@@ -706,8 +721,9 @@ class SequenceStatistics
          * @param distance1 a boolean (true to use distance1, false to use distance2, false by default)
 	     * @param keepsingleton a boolean (true by default, false to exclude singleton)
 	     * @param freqmin a float (to exlude site with the lowest allele frequency less than the threshold given by freqmin, 0 by default)
+		 * @throw DimensionException if the number of sites or the number of sequences is lower than 2
 	     */
-       static Vdouble linearRegressionDprime(const PolymorphismSequenceContainer & psc, bool distance1=false, bool keepsingleton=true, double freqmin=0);
+       static Vdouble linearRegressionDprime(const PolymorphismSequenceContainer & psc, bool distance1=false, bool keepsingleton=true, double freqmin=0) throw (DimensionException);
 
 
 	    /**
@@ -719,8 +735,9 @@ class SequenceStatistics
          * @param distance1 a boolean (true to use distance1, false to use distance2, false by default)
 	     * @param keepsingleton a boolean (true by default, false to exclude singleton)
 	     * @param freqmin a float (to exlude site with the lowest allele frequency less than the threshold given by freqmin, 0 by default)
+		 * @throw DimensionException if the number of sites or the number of sequences is lower than 2
 	     */
-        static Vdouble linearRegressionR2(const PolymorphismSequenceContainer & psc, bool distance1=false, bool keepsingleton=true, double freqmin=0);
+        static Vdouble linearRegressionR2(const PolymorphismSequenceContainer & psc, bool distance1=false, bool keepsingleton=true, double freqmin=0) throw (DimensionException);
 
 
 	    /**
@@ -733,8 +750,9 @@ class SequenceStatistics
          * @param distance1 a boolean (true to use distance1, false to use distance2, false by default)
 	     * @param keepsingleton a boolean (true by default, false to exclude singleton)
 	     * @param freqmin a float (to exlude site with the lowest allele frequency less than the threshold given by freqmin, 0 by default)
+		 * @throw DimensionException if the number of sites or the number of sequences is lower than 2
 	     */
-        static double inverseRegressionR2(const PolymorphismSequenceContainer & psc, bool distance1=false, bool keepsingleton=true, double freqmin=0);
+        static double inverseRegressionR2(const PolymorphismSequenceContainer & psc, bool distance1=false, bool keepsingleton=true, double freqmin=0) throw (DimensionException);
 
 
 	    /**
