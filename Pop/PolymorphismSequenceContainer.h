@@ -1,12 +1,13 @@
-/*
- * File: PolymorphismSequenceContainer.h
- * Authors: Eric Bazin <bazin@univ-montp2.fr>
- *          Sylvain Gaillard <yragael2001@yahoo.fr>
- * Last modification : Wednesday August 04 2004
-*/
+//
+// File: PolymorphismSequenceContainer.h
+// Authors: Eric Bazin
+//          Sylvain Gaillard
+// Last modification : Wednesday August 04 2004
+//
+//
+
 /*
 Copyright or © or Copr. CNRS, (November 17, 2004)
-
 
 This software is a computer program whose purpose is to provide classes
 for population genetics analysis.

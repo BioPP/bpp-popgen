@@ -1,12 +1,12 @@
-/*
- * File SequenceStatistics.h
- * Author : Eric Bazin <bazin@univ-montp2.fr>
- *          Sylvain Gaillard <yragael2001@yahoo.fr>
- * Last modification : Friday August 06 2004
-*/
+//
+// File SequenceStatistics.h
+// Author : Eric Bazin
+//          Sylvain Gaillard
+// Last modification : Friday August 06 2004
+//
+
 /*
 Copyright or © or Copr. CNRS, (November 17, 2004)
-
 
 This software is a computer program whose purpose is to provide classes
 for population genetics analysis.
@@ -258,7 +258,7 @@ class SequenceStatistics
 		 * @brief Compute the number of codon sites with stop codon
 		 *
 		 * @param psc a PolymorphismSequenceContainer
-		 * @param gapfalg a boolean set by default to true if you don't want to take gaps into account
+		 * @param gapflag a boolean set by default to true if you don't want to take gaps into account
 		 */
 		static unsigned int stopCodonSiteNumber(const PolymorphismSequenceContainer & psc, bool gapflag = true);
 
@@ -318,90 +318,90 @@ class SequenceStatistics
 		static double watterson75NonSynonymous(const PolymorphismSequenceContainer & psc, const GeneticCode & gc);
 
 		/**
-		  * @brief Compute the synonymous nucleotide diversity, pi
-		  *
-		  * Gaps and unresolved sites are automatically excluded
-		  * If minchange = false (default option) the different paths are equally weighted.
-		  * If minchange = true the path with the minimum number of non-synonymous change is chosen.
-		  *
-		  * @param psc a PolymorphismSequenceContainer
-		  * @param gc a GeneticCode
-		  * @param minchange a boolean set to false
-		  */
-         static double piSynonymous(const PolymorphismSequenceContainer & psc, const GeneticCode & gc, bool minchange=false);
+		 * @brief Compute the synonymous nucleotide diversity, pi
+		 *
+		 * Gaps and unresolved sites are automatically excluded
+		 * If minchange = false (default option) the different paths are equally weighted.
+		 * If minchange = true the path with the minimum number of non-synonymous change is chosen.
+		 *
+		 * @param psc a PolymorphismSequenceContainer
+		 * @param gc a GeneticCode
+		 * @param minchange a boolean set to false
+		 */
+    static double piSynonymous(const PolymorphismSequenceContainer & psc, const GeneticCode & gc, bool minchange=false);
 
 
 		/**
-		  * @brief Compute the non-synonymous nucleotide diversity, pi
-		  *
-		  * Gaps and unresolved sites are automatically excluded
-		  * If minchange = false (default option) the different paths are equally weighted.
-		  * If minchange = true the path with the minimum number of non-synonymous change is chosen.
-		  *
-		  * @param psc a PolymorphismSequenceContainer
-		  * @param gc a GeneticCode
-		  * @param minchange a boolean set by default to false
-		  */
-         static double piNonSynonymous(const PolymorphismSequenceContainer & psc, const GeneticCode & gc, bool minchange=false);
+		 * @brief Compute the non-synonymous nucleotide diversity, pi
+		 *
+		 * Gaps and unresolved sites are automatically excluded
+		 * If minchange = false (default option) the different paths are equally weighted.
+		 * If minchange = true the path with the minimum number of non-synonymous change is chosen.
+		 *
+		 * @param psc a PolymorphismSequenceContainer
+		 * @param gc a GeneticCode
+		 * @param minchange a boolean set by default to false
+		 */
+    static double piNonSynonymous(const PolymorphismSequenceContainer & psc, const GeneticCode & gc, bool minchange=false);
 
 
 		/**
-		  * @brief compute the mean number of synonymous site in an alignment
-		  *
-		  * A site is x% synonymous if x% of possible mutations are synonymous
-		  * The transition/transversion can be taken into account (use the variable ratio)
-		  * Gaps and unresolved sites are automatically excluded
-		  *
-		  * @param psc a PolymorphismSequenceContainer
-		  * @param gc a GeneticCode
-		  * @param ratio a double
-		  */
+		 * @brief compute the mean number of synonymous site in an alignment
+		 *
+		 * A site is x% synonymous if x% of possible mutations are synonymous
+		 * The transition/transversion can be taken into account (use the variable ratio)
+		 * Gaps and unresolved sites are automatically excluded
+		 *
+		 * @param psc a PolymorphismSequenceContainer
+		 * @param gc a GeneticCode
+		 * @param ratio a double
+		 */
 		static double meanSynonymousSitesNumber(const PolymorphismSequenceContainer & psc, const GeneticCode & gc, double ratio=1.0);
 
 
 		/**
-		  * @brief compute the mean number of non-synonymous site in an alignment
-		  *
-		  * A site is x% synonymous if x% of possible mutations are synonymous
-		  * The transition/transversion can be taken into account (use the variable ratio)
-		  * Gaps are automatically excluded
-		  *
-		  * @param psc a PolymorphismSequenceContainer
-		  * @param gc a GeneticCode
-		  * @param ratio a double
-		  */
+		 * @brief compute the mean number of non-synonymous site in an alignment
+		 *
+		 * A site is x% synonymous if x% of possible mutations are synonymous
+		 * The transition/transversion can be taken into account (use the variable ratio)
+		 * Gaps are automatically excluded
+		 *
+		 * @param psc a PolymorphismSequenceContainer
+		 * @param gc a GeneticCode
+		 * @param ratio a double
+		 */
 		static double meanNonSynonymousSitesNumber(const PolymorphismSequenceContainer & psc, const GeneticCode & gc, double ratio=1.0);
 
 
 		/**
-		  * @brief compute the number of synonymous subsitutions in an alignment
-		  *
-		  * Gaps and unresolved sites are automatically excluded
-		  *
-		  * In case of complex codon, the path that gives the minimum number of non-synonymous changes
-		  * is chosen. The argument minchange=true is sent to numberOfSynonymousDifferences used in this method.
-		  * Otherwise, a non-integer number could be return.
-		  *
-		  * @param psc a PolymorphismSequenceContainer
-		  * @param gc a GeneticCode
-		  * @param freqmin a double, to exclude snp in frequency strictly lower than freqmin
-		  */
+		 * @brief compute the number of synonymous subsitutions in an alignment
+		 *
+		 * Gaps and unresolved sites are automatically excluded
+		 *
+		 * In case of complex codon, the path that gives the minimum number of non-synonymous changes
+		 * is chosen. The argument minchange=true is sent to numberOfSynonymousDifferences used in this method.
+		 * Otherwise, a non-integer number could be return.
+		 *
+		 * @param psc a PolymorphismSequenceContainer
+		 * @param gc a GeneticCode
+		 * @param freqmin a double, to exclude snp in frequency strictly lower than freqmin
+		 */
 		static unsigned int synonymousSubstitutionsNumber(const PolymorphismSequenceContainer & psc, const GeneticCode & gc, double freqmin = 0);
 
 
 		/**
-		  * @brief compute the number of non synonymous subsitutions in an alignment
-		  *
-		  * Gaps and unresolved sites are automatically excluded
-		  *
-		  * In case of complex codon, the path that gives the minimum number of non-synonymous changes
-		  * is chosen. The argument minchange=true is sent to numberOfSynonymousDifferences used in this method.
-		  * Otherwise, a non-integer number could be return.
-		  *
-		  * @param sc a PolymorphismSequenceContainer
-		  * @param gc a GeneticCode
-		  * @param freqmin a double, to exclude snp in frequency strictly lower than freqmin
-		  */
+		 * @brief compute the number of non synonymous subsitutions in an alignment
+		 *
+		 * Gaps and unresolved sites are automatically excluded
+		 *
+		 * In case of complex codon, the path that gives the minimum number of non-synonymous changes
+		 * is chosen. The argument minchange=true is sent to numberOfSynonymousDifferences used in this method.
+		 * Otherwise, a non-integer number could be return.
+		 *
+		 * @param psc a PolymorphismSequenceContainer
+		 * @param gc a GeneticCode
+		 * @param freqmin a double, to exclude snp in frequency strictly lower than freqmin
+		 */
 		static unsigned int nonSynonymousSubstitutionsNumber(const PolymorphismSequenceContainer & psc, const GeneticCode & gc, double freqmin = 0);
 
 
@@ -740,28 +740,29 @@ class SequenceStatistics
         static Vdouble linearRegressionR2(const PolymorphismSequenceContainer & psc, bool distance1=false, bool keepsingleton=true, double freqmin=0) throw (DimensionException);
 
 
-	    /**
-	     * @brief give the slope of the regression R² = 1/(1+a*distance)
-	     *
-         * To fit the theoretical prediction R² = 1/(1+4Nr)
-         * The slope is given in R² per kb
-         *
-	     * @param psc a PolymorphismSequenceContainer
-         * @param distance1 a boolean (true to use distance1, false to use distance2, false by default)
-	     * @param keepsingleton a boolean (true by default, false to exclude singleton)
-	     * @param freqmin a float (to exlude site with the lowest allele frequency less than the threshold given by freqmin, 0 by default)
+	  /**
+	   * @brief give the slope of the regression R² = 1/(1+a*distance)
+	   *
+     * To fit the theoretical prediction R² = 1/(1+4Nr)
+     * The slope is given in R² per kb
+     *
+	   * @param psc a PolymorphismSequenceContainer
+     * @param distance1 a boolean (true to use distance1, false to use distance2, false by default)
+	   * @param keepsingleton a boolean (true by default, false to exclude singleton)
+	   * @param freqmin a float (to exlude site with the lowest allele frequency less than the threshold given by freqmin, 0 by default)
 		 * @throw DimensionException if the number of sites or the number of sequences is lower than 2
-	     */
-        static double inverseRegressionR2(const PolymorphismSequenceContainer & psc, bool distance1=false, bool keepsingleton=true, double freqmin=0) throw (DimensionException);
+	   */
+    static double inverseRegressionR2(const PolymorphismSequenceContainer & psc, bool distance1=false, bool keepsingleton=true, double freqmin=0) throw (DimensionException);
 
 
-	    /**
-	     * @brief give estimate of C=4Nr using Hudson method (Hudson 1987, Genet. Res., 50 pp245-250)
-	     *
-	     * @param psc a PolymorphismSequenceContainer
-	     * @param precision default value = 0.000001
-	     * @param cinf and csup, initial values, by default cinf=0.001 and csup = 10000
-	     */
+	  /**
+	   * @brief give estimate of C=4Nr using Hudson method (Hudson 1987, Genet. Res., 50 pp245-250)
+	   *
+	   * @param psc a PolymorphismSequenceContainer
+	   * @param precision default value = 0.000001
+	   * @param cinf initial value, by default cinf=0.001
+     * @param csup initial value, by default csup = 10000
+	   */
 		static double hudson87(const PolymorphismSequenceContainer & psc, double precision = 0.000001, double cinf=0.001, double csup=10000);
 
 
@@ -825,11 +826,10 @@ class SequenceStatistics
 	     */
 		static double _leftHandHudson(const PolymorphismSequenceContainer & psc);
 
-	    /**
-	     * @brief give the right hand term of equation (4) in Hudson (Hudson 1987, Genet. Res., 50 pp245-250)
-         * This term is used in hudson87
-	     * @param psc a PolymorphismSequenceContainer
-	     */
+	  /**
+	   * @brief give the right hand term of equation (4) in Hudson (Hudson 1987, Genet. Res., 50 pp245-250)
+     * This term is used in hudson87
+	   */
 		static double _rightHandHudson(double c, unsigned int n);
 
 		/*******************************************************************************/
