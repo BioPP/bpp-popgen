@@ -2,7 +2,8 @@
  * File SequenceStatistics.cpp
  * Author : Eric Bazin <bazin@univ-montp2.fr>
  *          Sylvain Gailard <yragael2001@yahoo.fr>
- * Last modification : Friday August 06 2004
+ *          khalid Belkhir
+ * Last modification : Friday December 12 2005
 */
 /*
 
@@ -232,7 +233,8 @@ double SequenceStatistics::squaredHeterozygosity(const PolymorphismSequenceConta
 	double S=0;
 	while ( si->hasMoreSites() ) {
         	site=si->nextSite();
-		S+=SiteTools::heterozygosity(*site)*SiteTools::heterozygosity(*site);
+        	double h = SiteTools::heterozygosity(*site);
+		    S+= h*h;
 	}
     delete si;
     return S;
@@ -338,10 +340,10 @@ unsigned int SequenceStatistics::DVK( const PolymorphismSequenceContainer & psc,
 		sc = PolymorphismSequenceContainerTools::getSitesWithoutGaps(psc);
 	else
 		sc = new PolymorphismSequenceContainer(psc);
-	int K = 0;
+	//int K = 0;
 	vector<string> pscvector;
 	pscvector.push_back(sc->toString(0));
-	K++;
+	//K++;
 	for ( unsigned int i = 1; i < sc->getNumberOfSequences(); i++ ) {
 		bool uniq = true;
 		string query = sc->toString(i);
@@ -352,12 +354,13 @@ unsigned int SequenceStatistics::DVK( const PolymorphismSequenceContainer & psc,
 			}
 		}
 		if (uniq) {
-			K++;
+			//K++;
 			pscvector.push_back(query);
 		}
 	}
 	delete sc;
-	return K;
+	//return K;
+	return pscvector.size();
 }
 
 
@@ -407,10 +410,11 @@ unsigned int SequenceStatistics::getNumberOfTransitions( const PolymorphismSeque
 	si = new CompleteSiteIterator(psc);
 	while (si->hasMoreSites()) {
 		site = si->nextSite();
-		if(SiteTools::isConstant(*site) || SiteTools::isTriplet(*site)) continue;
+		//if(SiteTools::isConstant(*site) || SiteTools::isTriplet(*site)) continue;
+		if (SiteTools::getNumberOfDistinctCharacters(*site) != 2) continue;
 		vector<int> seq = site->getContent();
 		int state1 = seq[0];
-		int state2;
+		int state2 = seq[0];
 		for(unsigned int i = 1; i < seq.size(); i++) {
 			if(state1 != seq[i]) {
 				state2 = seq[i];
@@ -430,31 +434,70 @@ unsigned int SequenceStatistics::getNumberOfTransitions( const PolymorphismSeque
 unsigned int SequenceStatistics::getNumberOfTransversions( const PolymorphismSequenceContainer & psc ) {
 	const Site *site;
 	SiteIterator *si;
-	unsigned int nbT = 0;
+	unsigned int nbTv = 0;
 	si = new CompleteSiteIterator(psc);
 	while (si->hasMoreSites()) {
 		site = si->nextSite();
-		if(SiteTools::isConstant(*site) || SiteTools::isTriplet(*site)) continue;
-		vector<int> seq = site->getContent();
-		int state1 = seq[0];
-		int state2;
-		for(unsigned int i = 1; i < seq.size(); i++) {
-			if(state1 != seq[i]) {
-				state2 = seq[i];
-				break;
-			}
-		}
+		//if(SiteTools::isConstant(*site) || SiteTools::isTriplet(*site)) continue;
+		if (SiteTools::getNumberOfDistinctCharacters(*site) != 2) continue;
+				vector<int> seq = site->getContent();
+				int state1 = seq[0];
+				int state2 = seq[0];
+				for(unsigned int i = 1; i < seq.size(); i++) {
+					if(state1 != seq[i]) {
+						state2 = seq[i];
+						break;
+					}
+				}
 		if(!(((state1==0 && state2==2) || (state1==2 && state2==0)) ||
-		   ((state1==1 && state2==3) || (state1==3 && state2==1)))) {
-			nbT++;
+				   ((state1==1 && state2==3) || (state1==3 && state2==1)))) {
+					nbTv++;
 		}
+
 	}
-	return nbT;
+	return nbTv;
 }
 
 
-double SequenceStatistics::getTransitionsTransversionsRatio( const PolymorphismSequenceContainer & psc ) {
-	return (double) getNumberOfTransitions(psc)/getNumberOfTransversions(psc);
+double SequenceStatistics::getTransitionsTransversionsRatio( const PolymorphismSequenceContainer & psc ) throw(Exception) {
+	//return (double) getNumberOfTransitions(psc)/getNumberOfTransversions(psc);
+
+	const Site *site;
+	SiteIterator *si;
+	unsigned int nbT = 0;
+	unsigned int nbTv = 0;
+	si = new CompleteSiteIterator(psc);
+	map<int,unsigned int> count ;
+	vector < int > state(2);
+
+	while (si->hasMoreSites()) {
+			site = si->nextSite();
+			count = SymbolListTools::getCounts(*site);
+			if (count.size() != 2) continue;
+			int i = 0;
+			for(map<int, unsigned int>::iterator it=count.begin(); it!=count.end(); it++)
+			{
+			            state[i] = it->first;
+			            i++;
+             }
+
+
+			if(((state[0]==0 && state[1]==2) || (state[0]==2 && state[1]==0)) ||
+					   ((state[0]==1 && state[1]==3) || (state[0]==3 && state[1]==1))) {
+						nbT++;//transitions
+		    }
+		    else
+			{
+						nbTv++;//transversion
+		    }
+
+		}
+
+	if (nbTv == 0)
+    throw ZeroDivisionException("SequenceStatistics::getTransitionsTransversionsRatio.");
+
+	return (double)nbT/nbTv;
+
 }
 
 
@@ -975,7 +1018,7 @@ Vdouble SequenceStatistics::pairwiseD(const PolymorphismSequenceContainer & psc,
 	unsigned int nbsite = newpsc->getNumberOfSites();
 	unsigned int nbseq = newpsc->getNumberOfSequences();
 	if(nbsite<2) throw DimensionException("SequenceStatistics::pairwiseD: less than two sites are available",nbsite,2);
-	if(nbseq<2) throw DimensionException("SequenceStatistics::pairwiseD: less than two sequences are available",nbseq,2);	
+	if(nbseq<2) throw DimensionException("SequenceStatistics::pairwiseD: less than two sequences are available",nbseq,2);
 	for(unsigned int i=0; i<nbsite-1; i++){
 		for(unsigned int j=i+1; j<nbsite; j++){
 			double haplo=0;
@@ -1043,7 +1086,7 @@ Vdouble SequenceStatistics::pairwiseR2(const PolymorphismSequenceContainer & psc
 	unsigned int nbsite = newpsc->getNumberOfSites();
 	unsigned int nbseq = newpsc->getNumberOfSequences();
 	if(nbsite<2) throw DimensionException("SequenceStatistics::pairwiseD: less than two sites are available",nbsite,2);
-	if(nbseq<2) throw DimensionException("SequenceStatistics::pairwiseD: less than two sequences are available",nbseq,2);	
+	if(nbseq<2) throw DimensionException("SequenceStatistics::pairwiseD: less than two sequences are available",nbseq,2);
 	for(unsigned int i=0; i<nbsite-1; i++){
 		for(unsigned int j=i+1; j<nbsite; j++){
 			double haplo=0;
@@ -1120,7 +1163,7 @@ double SequenceStatistics::originRegressionD(const PolymorphismSequenceContainer
 
 
 double SequenceStatistics::originRegressionDprime(const PolymorphismSequenceContainer & psc, bool distance1, bool keepsingleton, double freqmin) throw (DimensionException){
-    try{    
+    try{
 	Vdouble Dprime = SequenceStatistics::pairwiseDprime(psc,keepsingleton,freqmin)-1;
         Vdouble dist;
         if(distance1) dist = pairwiseDistances1(psc,keepsingleton,freqmin)/1000;
@@ -1132,7 +1175,7 @@ double SequenceStatistics::originRegressionDprime(const PolymorphismSequenceCont
 
 
 double SequenceStatistics::originRegressionR2(const PolymorphismSequenceContainer & psc, bool distance1, bool keepsingleton, double freqmin) throw (DimensionException){
-    try{    
+    try{
 	Vdouble R2 = SequenceStatistics::pairwiseR2(psc,keepsingleton,freqmin)-1;
         Vdouble dist;
         if(distance1) dist = pairwiseDistances1(psc,keepsingleton,freqmin)/1000;
@@ -1144,7 +1187,7 @@ double SequenceStatistics::originRegressionR2(const PolymorphismSequenceContaine
 
 
 Vdouble SequenceStatistics::linearRegressionD(const PolymorphismSequenceContainer & psc, bool distance1, bool keepsingleton, double freqmin) throw (DimensionException){
-    try{    
+    try{
 	Vdouble D = SequenceStatistics::pairwiseD(psc,keepsingleton,freqmin);
         Vdouble dist;
         Vdouble reg(2);
@@ -1174,7 +1217,7 @@ Vdouble SequenceStatistics::linearRegressionDprime(const PolymorphismSequenceCon
 
 
 Vdouble SequenceStatistics::linearRegressionR2(const PolymorphismSequenceContainer & psc, bool distance1, bool keepsingleton, double freqmin) throw (DimensionException){
-    try{    
+    try{
 	Vdouble R2 = SequenceStatistics::pairwiseR2(psc,keepsingleton,freqmin);
         Vdouble dist;
         Vdouble reg(2);
@@ -1190,7 +1233,7 @@ Vdouble SequenceStatistics::linearRegressionR2(const PolymorphismSequenceContain
 
 
 double SequenceStatistics::inverseRegressionR2(const PolymorphismSequenceContainer & psc, bool distance1, bool keepsingleton, double freqmin) throw (DimensionException){
-    try{    
+    try{
 	Vdouble R2 = SequenceStatistics::pairwiseR2(psc,keepsingleton,freqmin);
         Vdouble unit(R2.size(),1);
         Vdouble R2transformed = unit/R2 -1;
