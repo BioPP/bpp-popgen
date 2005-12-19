@@ -2,7 +2,8 @@
 // File SequenceStatistics.h
 // Author : Eric Bazin
 //          Sylvain Gaillard
-// Last modification : Friday August 06 2004
+//          khalid Belkhir
+// Last modification : Friday December 12 2005
 //
 
 /*
@@ -249,7 +250,7 @@ class SequenceStatistics
 		 *
 		 * @param psc a PolymorphismSequenceContainer
 		 */
-		 static double getTransitionsTransversionsRatio( const PolymorphismSequenceContainer & psc );
+		 static double getTransitionsTransversionsRatio( const PolymorphismSequenceContainer & psc ) throw(Exception);
 
 
 
