@@ -1,6 +1,7 @@
 /*
  * File Genetix.cpp
- * Author : Sylvain Gaillard <yragael2001@yahoo.fr>
+ * Authors : Sylvain Gaillard <yragael2001@yahoo.fr>
+ *           Khalid Belkhir
  * Last modification : Monday August 02 2004
  *
 */
@@ -86,9 +87,11 @@ void Genetix::read(istream & is, DataSet & data_set) throw (Exception) {
 	
 	// Groups
 	for (unsigned int i = 0 ; i < grp_nbr ; i++) {
-		// Group name ... not used
-		temp = FileTools::getNextLine(is);
 		data_set.addEmptyGroup(i);
+		// Group name ... Now used khalid
+		temp = FileTools::getNextLine(is);
+        data_set.setGroupName(i, temp);
+        
 		// Number of individuals
 		unsigned int ind_nbr;
 		temp = FileTools::getNextLine(is);

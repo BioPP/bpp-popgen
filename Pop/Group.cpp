@@ -75,6 +75,14 @@ unsigned int Group::getGroupId() const {
 	return _id;
 }
 
+void Group::setGroupName(string group_name) {
+	_name = group_name;
+}
+
+string Group::getGroupName() const {
+	return _name;
+}
+
 void Group::addIndividual(const Individual & ind) throw (BadIdentifierException) {
 	try {
 		getIndividualPosition(ind.getId());

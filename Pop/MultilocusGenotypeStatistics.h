@@ -1,6 +1,7 @@
 /*
  * File MultilocusGenotypeStatistics.h
- * Author : Sylvain Gaillard <yragael2001@yahoo.fr>
+ * Authors : Sylvain Gaillard <yragael2001@yahoo.fr>
+ *           khalid Belkhir
  * Last modification : Wednesday August 04 2004
  *
 */
@@ -55,6 +56,9 @@ using namespace std;
 #include <Utils/Exceptions.h>
 #include <Utils/MapTools.h>
 
+// From Phylib
+#include <Phyl/DistanceMatrix.h>
+
 // From popgenlib
 #include "PolymorphismMultiGContainer.h"
 #include "MultilocusGenotype.h"
@@ -79,6 +83,12 @@ class MultilocusGenotypeStatistics {
 			double Fis;
 		};
 
+        struct PermResults{
+               double Statistic;
+               double Percent_sup;
+               double Percent_inf;
+               };
+               
 		/**
 		 * @brief Get the alleles' id at one locus for a set of groups.
 		 *
@@ -188,7 +198,7 @@ class MultilocusGenotypeStatistics {
 		static double getDnei72(const PolymorphismMultiGContainer & pmgc, vector<unsigned int> locus_positions, unsigned int grp1, unsigned int grp2) throw (Exception);
 
 		/**
-		 * @brief Compute the Nei unbiased distance between two groups at one locus.
+		 * @brief Compute the Nei unbiased distance between two groups at a given number of loci.
 		 *
 		 * Nei 1978
 		 * @f[
@@ -210,22 +220,22 @@ class MultilocusGenotypeStatistics {
 		static double getDnei78(const PolymorphismMultiGContainer & pmgc, vector<unsigned int> locus_positions, unsigned int grp1, unsigned int grp2) throw (Exception);
 
 		/**
-		 * @brief Compute the three F statistics of Weir and Cockerham.
+		 * @brief Compute the three F statistics of Weir and Cockerham for each allele of a given locus.
 		 */
 		static map<unsigned int, Fstats>  getAllelesFstats(const PolymorphismMultiGContainer & pmgc, unsigned int locus_position, const set<unsigned int> & groups) throw (Exception);
 		
 		/**
-		 * @brief Compute the Weir and Cockerham Fit on a set of groups.
+		 * @brief Compute the Weir and Cockerham Fit on a set of groups for each allele of a given locus.
 		 */
 		static map<unsigned int, double> getAllelesFit(const PolymorphismMultiGContainer & pmgc, unsigned int locus_position, const set<unsigned int> & groups) throw (Exception);
 
 		/**
-		 * @brief Compute the Weir and Cockerham Fst on a set of groups.
+		 * @brief Compute the Weir and Cockerham \theta on a set of groups for each allele of a given locus.
 		 */
 		static map<unsigned int, double> getAllelesFst(const PolymorphismMultiGContainer & pmgc, unsigned int locus_position, const set<unsigned int> & groups) throw (Exception);
 
 		/**
-		 * @brief Compute the Weir and Cockerham Fis on a set of groups.
+		 * @brief Compute the Weir and Cockerham Fis on a set of groups for each allele of a given locus.
 		 */
 		static map<unsigned int, double> getAllelesFis(const PolymorphismMultiGContainer & pmgc, unsigned int locus_position, const set<unsigned int> & groups) throw (Exception);
 		
@@ -233,6 +243,49 @@ class MultilocusGenotypeStatistics {
 		 * @brief Get the variance components a, b and c (Weir and Cockerham, 1983).
 		 */
 		static map<unsigned int, VarComp> getVarianceComponents(const PolymorphismMultiGContainer & pmgc, unsigned int locus_position, const set<unsigned int> & groups) throw (ZeroDivisionException);
+		
+		/**
+		 * @brief Compute the Weir and Cockerham \theta{wc} on a set of groups for a given set of loci.
+		 * The variance componenets for each allele are calculated and then combined over loci using Weir and Cockerham weighting.
+		 */
+		static double getWCMultilocusFst(const PolymorphismMultiGContainer & pmgc, vector<unsigned int> locus_positions, const set<unsigned int> & groups) throw (Exception);
+
+         /**
+		 * @brief Compute the Weir and Cockerham Fis on a set of groups for a given set of loci.
+		 * The variance componenets for each allele are calculated and then combined over loci using Weir and Cockerham weighting.
+		 */
+        static double getWCMultilocusFis(const PolymorphismMultiGContainer & pmgc, vector<unsigned int> locus_positions, const set<unsigned int> & groups) throw (Exception);
+        
+		/**
+		 * @brief Compute the Weir and Cockerham \theta_{wc} on a set of groups for a given set of loci and make a permutation test.
+		 * Multilocus \theta is calculated as in getWCMultilocusFst on the original data set and on nb_perm data sets obtained after
+		 * a permutation of individuals between the different groups.
+         * Return values are theta, % of values > theta and % of values < theta. 
+		 */
+		static PermResults getWCMultilocusFstAndPerm(const PolymorphismMultiGContainer & pmgc, vector<unsigned int> locus_positions,set<unsigned int> groups, int nb_perm) throw (Exception);
+
+        /**
+		 * @brief Compute the Weir and Cockerham Fis on a set of groups for a given set of loci and make a permutation test.
+		 * Multilocus Fis is calculated as in getWCMultilocusFis on the original data set and on nb_perm data sets obtained after
+		 * a permutation of alleles between individual of each group.
+         * Return values are theta, % of values > theta and % of values < theta. 
+		 */
+		static PermResults getWCMultilocusFisAndPerm(const PolymorphismMultiGContainer & pmgc, vector<unsigned int> locus_positions,set<unsigned int> groups, int nb_perm) throw (Exception);
+
+
+		/**
+		 * @brief Compute the \theta{RH} on a set of groups for a given set of loci.
+		 * The variance componenets for each allele are calculated and then combined over loci using RH weighting with alleles frequency.
+		 */
+		static double getRHMultilocusFst(const PolymorphismMultiGContainer & pmgc, vector<unsigned int> locus_positions, const set<unsigned int> & groups) throw (Exception);
+		
+		/**
+		 * @brief Compute pairwise distances on a set of groups for a given set of loci.
+		 * distance is either Nei72, Nei78, Fst W&C or Fst Robertson & Hill, Nm, 
+         * D=-ln(1-Fst) of Reynolds et al. 1983, Rousset 1997 Fst/(1-Fst)
+		 */
+		static DistanceMatrix * MultilocusGenotypeStatistics::getDistanceMatrix(const PolymorphismMultiGContainer & pmgc, vector<unsigned int> locus_positions, const set<unsigned int> & groups, string distance_methode) throw (Exception);
+
 };
 
 #endif // _MULTILOCUSGENOTYPESTATISTICS_H_

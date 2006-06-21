@@ -167,6 +167,19 @@ class DataSet {
 		unsigned int getGroupPosition(unsigned int group_id) const throw (GroupNotFoundException);
 		
 		/**
+		 * @brief Get the name of a Group. If the name is an empty string it just returns the group_id
+		 *
+		 * @throw GroupNotFoundException if the group_id is not found.
+		 */
+		string DataSet::getGroupName(unsigned int group_id) const throw (GroupNotFoundException);
+		/**
+		 * @brief set the name of a Group. 
+		 *
+		 * @throw GroupNotFoundException if the group_id is not found.
+		 */
+		void DataSet::setGroupName(unsigned int group_id, string group_name) const throw (GroupNotFoundException);
+		
+		/**
 		 * @brief Get a group by position.
 		 *
 		 * @throw IndexOutOfBoundsException if group_position excedes the number of groups.

@@ -1,6 +1,7 @@
 /*
  * File Genetix.h
  * Author : Sylvain Gaillard <yragael2001@yahoo.fr>
+ *           Khalid Belkhir
  * Last modification : Friday July 30 2004
  *
 */

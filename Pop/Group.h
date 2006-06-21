@@ -1,6 +1,7 @@
 /*
  * File Group.h
  * Author : Sylvain Gaillard <yragael2001@yahoo.fr>
+ *        : Khalid Belkhir
  * Last modification : Thursday July 29 2004
  *
 */
@@ -101,7 +102,21 @@ class Group {
 		 * @param group_id The id of the Group as an unsigned int.
 		 */
 		void setGroupId(unsigned int group_id);
-
+		
+		/**
+		 * @brief Get the name of the Group.
+		 *
+		 * @return The name of the Group as a string.
+		 */
+		string getGroupName() const;
+		
+		/**
+		 * @brief Set the name of the Group.
+		 *
+		 * @param named of the Group as string.
+		 */
+		void setGroupName(string group_name);
+		
 		/**
 		 * @brief Get the id of the Group.
 		 *
@@ -478,6 +493,7 @@ class Group {
 
 	protected:
 		unsigned int _id;
+		string _name;
 		vector <Individual *> _individuals;
 };
 #endif // _GROUP_H_

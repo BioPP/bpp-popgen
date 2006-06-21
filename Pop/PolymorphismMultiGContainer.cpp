@@ -1,7 +1,8 @@
 /*
  * File PolymorphismMultiGContainer.cpp
  * Author : Sylvain Gaillard <yragael2001@yahoo.fr>
- * Last modification : Tuesday September 28 2004
+ *        : Khalid Belkhir
+ * Last modification : june 14 2006
  *
 */
 /*
@@ -12,16 +13,16 @@ This software is a computer program whose purpose is to provide classes
 for population genetics analysis.
 
 This software is governed by the CeCILL  license under French law and
-abiding by the rules of distribution of free software.  You can  use, 
+abiding by the rules of distribution of free software.  You can  use,
 modify and/ or redistribute the software under the terms of the CeCILL
 license as circulated by CEA, CNRS and INRIA at the following URL
-"http://www.cecill.info". 
+"http://www.cecill.info".
 
 As a counterpart to the access to the source code and  rights to copy,
 modify and redistribute granted by the license, users are provided only
 with a limited warranty  and the software's author,  the holder of the
 economic rights,  and the successive licensors  have only  limited
-liability. 
+liability.
 
 In this respect, the user's attention is drawn to the risks associated
 with loading,  using,  modifying and/or developing or reproducing the
@@ -30,14 +31,15 @@ that may mean  that it is complicated to manipulate,  and  that  also
 therefore means  that it is reserved for developers  and  experienced
 professionals having in-depth computer knowledge. Users are therefore
 encouraged to load and test the software's suitability as regards their
-requirements in conditions enabling the security of their systems and/or 
-data to be ensured and,  more generally, to use and operate it in the 
-same conditions as regards security. 
+requirements in conditions enabling the security of their systems and/or
+data to be ensured and,  more generally, to use and operate it in the
+same conditions as regards security.
 
 The fact that you are presently reading this means that you have had
 knowledge of the CeCILL license and that you accept its terms.
 */
 #include "PolymorphismMultiGContainer.h"
+
 
 //** Constructors : **********************************************************/
 PolymorphismMultiGContainer::PolymorphismMultiGContainer() {}
@@ -47,6 +49,13 @@ PolymorphismMultiGContainer::PolymorphismMultiGContainer(const PolymorphismMulti
 		_multilocusGenotypes.push_back(new MultilocusGenotype(* pmgc.getMultilocusGenotype(i)));
 		_groups.push_back(pmgc.getGroupId(i));
 	}
+	set<unsigned int> grp_ids = pmgc.getAllGroupsIds();
+	for (set<unsigned int>::iterator it = grp_ids.begin(); it != grp_ids.end(); it++)
+	{
+        unsigned int id = *it;
+        string name = pmgc.getGroupName(id);
+        _groups_names[id] = name;
+    }
 }
 
 //** Destructor : ************************************************************/
@@ -60,12 +69,26 @@ PolymorphismMultiGContainer & PolymorphismMultiGContainer::operator= (const Poly
 		_multilocusGenotypes.push_back(new MultilocusGenotype(* pmgc.getMultilocusGenotype(i)));
 		_groups.push_back(pmgc.getGroupId(i));
 	}
+	set<unsigned int> grp_ids = pmgc.getAllGroupsIds();
+	for (set<unsigned int>::iterator it = grp_ids.begin(); it != grp_ids.end(); it++)
+	{
+        unsigned int id = *it;
+        string name = pmgc.getGroupName(id);
+        _groups_names[id] = name;
+    }
+
 	return * this;
 }
 
 void PolymorphismMultiGContainer::addMultilocusGenotype(const MultilocusGenotype & mg, unsigned int group) {
 	_multilocusGenotypes.push_back(new MultilocusGenotype(mg));
 	_groups.push_back(group);
+	map<unsigned int, string>::const_iterator it = _groups_names.find(group);
+	if ( ! (it != _groups_names.end()) )
+	{
+	  //ajouter ce groupe avec un nom vide
+	  _groups_names[group] = "";
+	}
 }
 
 const MultilocusGenotype * PolymorphismMultiGContainer::getMultilocusGenotype(unsigned int position) const throw (IndexOutOfBoundsException) {
@@ -130,6 +153,22 @@ set<unsigned int> PolymorphismMultiGContainer::getAllGroupsIds() const {
 	return groups_ids;
 }
 
+vector<string> PolymorphismMultiGContainer::getAllGroupsNames() const
+{
+    vector<string> grps_names;
+    map<unsigned int, string>::const_iterator it;
+	for ( it = _groups_names.begin(); it != _groups_names.end(); it++)
+	{
+        string name = it->second;
+        if (! name.empty())
+		grps_names.push_back(name);
+		else
+		grps_names.push_back(TextTools::toString(it->first) );
+    }
+
+    return grps_names;
+}
+
 bool PolymorphismMultiGContainer::groupExists(unsigned int group) const {
 	for (unsigned int i = 0 ; i < size() ; i++)
 		if (_groups[i] == group)
@@ -141,12 +180,35 @@ unsigned int PolymorphismMultiGContainer::getNumberOfGroups() const {
 	return getAllGroupsIds().size();
 }
 
-unsigned int PolymorphismMultiGContainer::getGroupSize(unsigned int group) const {
+unsigned int PolymorphismMultiGContainer::getGroupSize(unsigned int group) const  {
 	unsigned int counter = 0;
 	for (unsigned int i = 0 ; i < size() ; i++)
 		if (_groups[i] == group)
 			counter++;
 	return counter;
+}
+
+string PolymorphismMultiGContainer::getGroupName(unsigned int group_id) const  throw (GroupNotFoundException)
+{
+   string name = TextTools::toString(group_id); //par defaut on retourne le n° de groupe
+   map<unsigned int, string>::const_iterator it = _groups_names.find(group_id);
+   if (it != _groups_names.end() ) name = it->second;
+   else throw GroupNotFoundException("PolymorphismMultiGContainer::getGroupName: group not found.", group_id);
+   return name;
+}
+
+void PolymorphismMultiGContainer::setGroupName(unsigned int group_id, string name)  throw (GroupNotFoundException)
+{
+   map<unsigned int, string>::iterator it = _groups_names.find(group_id);
+   if (it != _groups_names.end() ) it->second = name;
+   else throw GroupNotFoundException("PolymorphismMultiGContainer::getGroupName: group not found.", group_id);
+   return ;
+}
+
+void PolymorphismMultiGContainer::addGroupName(unsigned int group_id, string name)
+{
+ _groups_names[group_id] = name;
+ return;
 }
 
 unsigned int PolymorphismMultiGContainer::getLocusGroupSize(unsigned int group, unsigned int locus_position) const {
@@ -172,4 +234,5 @@ void PolymorphismMultiGContainer::clear() {
 		delete _multilocusGenotypes[i];
 	_multilocusGenotypes.clear();
 	_groups.clear();
+	_groups_names.clear();
 }

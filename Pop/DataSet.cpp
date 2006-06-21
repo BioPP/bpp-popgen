@@ -1,6 +1,7 @@
 /*
  * File DataSet.cpp
  * Author : Sylvain Gaillard <yragael2001@yahoo.fr>
+  *           Khalid Belkhir
  * Last modification : Thursday July 29 2004
  *
 */
@@ -131,6 +132,27 @@ const Group * DataSet::getGroupById(unsigned int group_id) const {
 		if (group_id == _groups[i]->getGroupId())
 			return _groups[i];
 	return NULL;
+}
+
+string DataSet::getGroupName(unsigned int group_id) const throw (GroupNotFoundException) {
+	for (unsigned int i = 0 ; i < _groups.size() ; i++)
+	{   
+        string name;
+		if (group_id == _groups[i]->getGroupId()) name = _groups[i]->getGroupName();
+		if (!name.empty() ) return  name;
+		else return TextTools::toString(group_id);
+    }
+    throw GroupNotFoundException("DataSet::getGroupName: group_id not found.", group_id);
+}
+
+void DataSet::setGroupName(unsigned int group_id, string group_name) const throw (GroupNotFoundException) {
+	for (unsigned int i = 0 ; i < _groups.size() ; i++)
+		if (group_id == _groups[i]->getGroupId()) 
+        {
+         _groups[i]->setGroupName(group_name);
+         return;
+        }
+	throw GroupNotFoundException("DataSet::setGroupName: group_id not found.", group_id);
 }
 
 unsigned int DataSet::getGroupPosition(unsigned int group_id) const throw (GroupNotFoundException) {
@@ -800,6 +822,9 @@ unsigned int DataSet::getPloidyByLocusPosition(unsigned int locus_position) cons
 PolymorphismMultiGContainer * DataSet::getPolymorphismMultiGContainer() const {
 	PolymorphismMultiGContainer * pmgc = new PolymorphismMultiGContainer();
 	for (unsigned int i = 0 ; i < getNumberOfGroups() ; i++) {
+        //nommer les groupes khalid
+        string name = _groups[i]->getGroupName();
+        pmgc->addGroupName(i, name);
 		for (unsigned int j = 0 ; j < getNumberOfIndividualsInGroup(i) ; j++) {
 			const Individual * tmp_ind = getIndividualAtPositionFromGroup(i, j);
 			if (tmp_ind->hasGenotype()) {
@@ -821,6 +846,8 @@ PolymorphismMultiGContainer * DataSet::getPolymorphismMultiGContainer(const map<
 		catch (GroupNotFoundException & gnfe) {
 			throw gnfe;
 		}
+		string name = _groups[i]->getGroupName();
+        pmgc->addGroupName(i, name);
 		for (unsigned int j = 0 ; j < it->second.size() ; j++) {
 			const Individual * tmp_ind = NULL;
 			try {

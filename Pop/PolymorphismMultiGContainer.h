@@ -44,22 +44,25 @@ knowledge of the CeCILL license and that you accept its terms.
 // From C library
 #include <cmath>
 
-// From STL
-#include <vector>
-#include <map>
-#include <set>
-#include <algorithm>
-using namespace std;
+
 
 // From Utils
 #include <Utils/Clonable.h>
 #include <Utils/Exceptions.h>
 #include <Utils/MapTools.h>
+#include <Utils/TextTools.h>
 
 // From popgenlib
 #include "MultilocusGenotype.h"
 #include "GeneralExceptions.h"
 
+// From STL
+#include <string>
+#include <vector>
+#include <map>
+#include <set>
+#include <algorithm>
+using namespace std;
 /**
  * @brief The PolymorphismMultiGContainer class
  *
@@ -128,14 +131,14 @@ class PolymorphismMultiGContainer {
 		unsigned int getNumberOfLoci() const throw (Exception);
 
 		/**
-		 * @brief Get the Group of a MultilocusGenotype.
+		 * @brief Get the Group id of a MultilocusGenotype.
 		 *
 		 * @throw IndexOutOfBoundsException if position excedes the size of the container.
 		 */
 		unsigned int getGroupId(unsigned int position) const throw (IndexOutOfBoundsException);
 
 		/**
-		 * @brief Set the Group of a MultilocusGenotype.
+		 * @brief Set the Group id of a MultilocusGenotype.
 		 *
 		 * @throw IndexOutOfBoundsException if position excedes the size of the container.
 		 */
@@ -146,6 +149,11 @@ class PolymorphismMultiGContainer {
 		 */
 		set<unsigned int> getAllGroupsIds() const;
 
+         /**
+		 * @brief Get the groups names or ids if not available
+		 */
+		vector<string> getAllGroupsNames() const;
+		
 		/**
 		 * @brief Tell if a group exists.
 		 */
@@ -159,7 +167,22 @@ class PolymorphismMultiGContainer {
 		/**
 		 * @brief Get group size.
 		 */
-		unsigned int getGroupSize(unsigned int group) const;
+		unsigned int getGroupSize(unsigned int group) const ;
+		
+		/**
+		 * @brief Get the group name for a given group id or just the id if not available juste return it's id
+		 */
+		string getGroupName(unsigned int group_id) const throw (GroupNotFoundException);
+		
+		/**
+		 * @brief Set the name for the given group id.
+		 */
+		void setGroupName(unsigned int group_id, string name)  throw (GroupNotFoundException);
+		
+		/**
+		 * @brief Inserts a name for the given group id.
+		 */
+		void addGroupName(unsigned int group_id, string name)  ;
 
 		/**
 		 * @brief Get the size of a group for a given locus.
@@ -178,7 +201,9 @@ class PolymorphismMultiGContainer {
 
 	protected:
 		vector<MultilocusGenotype *> _multilocusGenotypes;
-		vector<unsigned int> _groups;
+		vector<unsigned int> _groups;//group id for each multilocusgenotype
+		map<unsigned int, string> _groups_names;
+		
 };
 
 #endif // _POLYMORPHYSMMULTIGCONTAINER_H_

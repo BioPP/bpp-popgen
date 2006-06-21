@@ -38,8 +38,11 @@ The fact that you are presently reading this means that you have had
 knowledge of the CeCILL license and that you accept its terms.
 */
 #include "MultilocusGenotypeStatistics.h"
+#include "PolymorphismMultiGContainerTools.h"
 
 #include <iostream>
+#include <math.h>
+
 using namespace std;
 
 vector<unsigned int> MultilocusGenotypeStatistics::getAllelesIdsForGroups(const PolymorphismMultiGContainer & pmgc, unsigned int locus_position, const set<unsigned int> & groups) throw (IndexOutOfBoundsException) {
@@ -72,7 +75,9 @@ map<unsigned int, unsigned int> MultilocusGenotypeStatistics::getAllelesMapForGr
 	map<unsigned int, unsigned int> alleles_count;
 	for (unsigned int i = 0 ; i < pmgc.size() ; i++) {
 		try {
-			if (! pmgc.getMultilocusGenotype(i)->isMonolocusGenotypeMissing(locus_position) && find(groups.begin(), groups.end(), pmgc.getGroupId(i)) != groups.end()) {
+              
+             if (! pmgc.getMultilocusGenotype(i)->isMonolocusGenotypeMissing(locus_position) &&  (groups.find(pmgc.getGroupId(i)) != groups.end()) ) { 
+			//if (! pmgc.getMultilocusGenotype(i)->isMonolocusGenotypeMissing(locus_position) &&  (find(groups.begin(), groups.end(), pmgc.getGroupId(i)) != groups.end()) ) {
 				vector<unsigned int> tmp_alleles = pmgc.getMultilocusGenotype(i)->getMonolocusGenotype(locus_position)->getAlleleIndex();
 				for (unsigned int j = 0 ; j < tmp_alleles.size() ; j++) alleles_count[tmp_alleles[j]]++;
 			}
@@ -108,7 +113,8 @@ unsigned int MultilocusGenotypeStatistics::countNonMissingForGroups(const Polymo
 	unsigned int counter = 0;
 	for (unsigned int i = 0 ; i < pmgc.size() ; i++) {
 		try {
-			if (! pmgc.getMultilocusGenotype(i)->isMonolocusGenotypeMissing(locus_position) && find(groups.begin(), groups.end(), pmgc.getGroupId(i)) != groups.end())
+			//if (! pmgc.getMultilocusGenotype(i)->isMonolocusGenotypeMissing(locus_position) &&  (find(groups.begin(), groups.end(), pmgc.getGroupId(i)) != groups.end()) )
+			 if (! pmgc.getMultilocusGenotype(i)->isMonolocusGenotypeMissing(locus_position) &&  (groups.find(pmgc.getGroupId(i) ) != groups.end()) )
 				counter++;
 		}
 		catch (IndexOutOfBoundsException & ioobe) {
@@ -122,7 +128,8 @@ unsigned int MultilocusGenotypeStatistics::countBiAllelicForGroups(const Polymor
 	unsigned int counter = 0;
 	for (unsigned int i = 0 ; i < pmgc.size() ; i++) {
 		try {
-			if (! pmgc.getMultilocusGenotype(i)->isMonolocusGenotypeMissing(locus_position) && find(groups.begin(), groups.end(), pmgc.getGroupId(i)) != groups.end())
+			//if (! pmgc.getMultilocusGenotype(i)->isMonolocusGenotypeMissing(locus_position) && (find(groups.begin(), groups.end(), pmgc.getGroupId(i)) != groups.end()) )
+			 if (! pmgc.getMultilocusGenotype(i)->isMonolocusGenotypeMissing(locus_position) && (groups.find(pmgc.getGroupId(i)) != groups.end()) )
 				if ((pmgc.getMultilocusGenotype(i)->getMonolocusGenotype(locus_position)->getAlleleIndex()).size() == 2)
 					counter++;
 		}
@@ -137,7 +144,7 @@ map<unsigned int, unsigned int> MultilocusGenotypeStatistics::countHeterozygousF
 	map<unsigned int, unsigned int> counter;
 	for (unsigned int i = 0 ; i < pmgc.size() ; i++) {
 		try {
-			if (! pmgc.getMultilocusGenotype(i)->isMonolocusGenotypeMissing(locus_position) && find(groups.begin(), groups.end(), pmgc.getGroupId(i)) != groups.end()) {
+			if (! pmgc.getMultilocusGenotype(i)->isMonolocusGenotypeMissing(locus_position) && (groups.find(pmgc.getGroupId(i)) != groups.end() )) {
 				const MonolocusGenotype * tmp_mg = pmgc.getMultilocusGenotype(i)->getMonolocusGenotype(locus_position);
 				if ((tmp_mg->getAlleleIndex()).size() == 2) {
 					if (! dynamic_cast<const BiAlleleMonolocusGenotype *>(tmp_mg)->isHomozygous()) {
@@ -159,7 +166,7 @@ map<unsigned int, double> MultilocusGenotypeStatistics::getHeterozygousFrqForGro
 	unsigned int counter = 0;
 	for (unsigned int i = 0 ; i < pmgc.size() ; i++) {
 		try {
-			if (! pmgc.getMultilocusGenotype(i)->isMonolocusGenotypeMissing(locus_position) && find(groups.begin(), groups.end(), pmgc.getGroupId(i)) != groups.end()) {
+			if (! pmgc.getMultilocusGenotype(i)->isMonolocusGenotypeMissing(locus_position) && (groups.find(pmgc.getGroupId(i)) != groups.end()) ) {
 				const MonolocusGenotype * tmp_mg = pmgc.getMultilocusGenotype(i)->getMonolocusGenotype(locus_position);
 				if ((tmp_mg->getAlleleIndex()).size() == 2) {
 					counter++;
@@ -323,14 +330,20 @@ map<unsigned int, MultilocusGenotypeStatistics::Fstats> MultilocusGenotypeStatis
 	map<unsigned int, MultilocusGenotypeStatistics::VarComp> vc = getVarianceComponents(pmgc, locus_position, groups);
 	map<unsigned int, MultilocusGenotypeStatistics::Fstats> f_stats;
 	for (map<unsigned int, MultilocusGenotypeStatistics::VarComp>::iterator it = vc.begin() ; it != vc.end() ; it++) {
-		f_stats[it->first].Fit = it->second.a + it->second.b + it->second.c;
-		f_stats[it->first].Fst = it->second.a + it->second.b + it->second.c;
-		f_stats[it->first].Fis = it->second.b + it->second.c;
-		if (f_stats[it->first].Fit == 0. || f_stats[it->first].Fis == 0.)
-			throw ZeroDivisionException("MultilocusGenotypeStatistics::getAllelesFstats.");
-		f_stats[it->first].Fit = 1. - it->second.c / f_stats[it->first].Fit;
-		f_stats[it->first].Fst = it->second.a / f_stats[it->first].Fst;
-		f_stats[it->first].Fis = 1. - it->second.c / f_stats[it->first].Fis;
+        double abc = it->second.a + it->second.b + it->second.c;
+        double bc  = it->second.b + it->second.c;
+	
+		if (abc == 0) 
+        {
+                f_stats[it->first].Fit = NAN;
+                f_stats[it->first].Fst = NAN;
+        }        
+        {
+                f_stats[it->first].Fit = 1. - it->second.c / abc;
+        		f_stats[it->first].Fst = it->second.a / abc;
+        } 
+        if (bc == 0) f_stats[it->first].Fis = NAN;
+		else f_stats[it->first].Fis = 1. - it->second.c / bc;
 	}
 	return f_stats;
 }
@@ -341,7 +354,7 @@ map<unsigned int, double> MultilocusGenotypeStatistics::getAllelesFit(const Poly
 	for (map<unsigned int, MultilocusGenotypeStatistics::VarComp>::iterator it = values.begin() ; it != values.end() ; it++) {
 		Fit[it->first] = it->second.a + it->second.b + it->second.c;
 		if (Fit[it->first] == 0.)
-			throw ZeroDivisionException("MultilocusGenotypeStatistics::getWCFit.");
+			throw ZeroDivisionException("MultilocusGenotypeStatistics::getAllelesFit.");
 		Fit[it->first] = 1. - it->second.c / Fit[it->first];
 	}
 	return Fit;
@@ -349,17 +362,19 @@ map<unsigned int, double> MultilocusGenotypeStatistics::getAllelesFit(const Poly
 
 map<unsigned int, double> MultilocusGenotypeStatistics::getAllelesFst(const PolymorphismMultiGContainer & pmgc, unsigned int locus_position, const set<unsigned int> & groups) throw (Exception) {
 	if (groups.size() <= 1)
-		throw BadIntegerException("MultilocusGenotypeStatistics::getWCFst: groups must be >= 2.", groups.size());
+		throw BadIntegerException("MultilocusGenotypeStatistics::getAllelesFst: groups must be >= 2.", groups.size());
 	map<unsigned int, MultilocusGenotypeStatistics::VarComp> values = getVarianceComponents(pmgc, locus_position, groups);
 	map<unsigned int, double> Fst;
 	for (map<unsigned int, MultilocusGenotypeStatistics::VarComp>::iterator it = values.begin() ; it != values.end() ; it++) {
 		Fst[it->first] = it->second.a + it->second.b + it->second.c;
 		if (Fst[it->first] == 0.)
-			throw ZeroDivisionException("MultilocusGenotypeStatistics::getWCFst.");
+			throw ZeroDivisionException("MultilocusGenotypeStatistics::getAllelesFst.");
 		Fst[it->first] = it->second.a / Fst[it->first];
 	}
 	return Fst;
 }
+
+
 
 map<unsigned int, double> MultilocusGenotypeStatistics::getAllelesFis(const PolymorphismMultiGContainer & pmgc, unsigned int locus_position, const set<unsigned int> & groups) throw (Exception) {
 	map<unsigned int, MultilocusGenotypeStatistics::VarComp> values = getVarianceComponents(pmgc, locus_position, groups);
@@ -367,7 +382,7 @@ map<unsigned int, double> MultilocusGenotypeStatistics::getAllelesFis(const Poly
 	for (map<unsigned int, MultilocusGenotypeStatistics::VarComp>::iterator it = values.begin() ; it != values.end() ; it++) {
 		Fis[it->first] = it->second.b + it->second.c;
 		if (Fis[it->first] == 0.)
-			throw ZeroDivisionException("MultilocusGenotypeStatistics::getWCFis.");
+			throw ZeroDivisionException("MultilocusGenotypeStatistics::getAllelesFis.");
 		Fis[it->first] = 1. - it->second.c / Fis[it->first];
 	}
 	return Fis;
@@ -388,19 +403,24 @@ map<unsigned int, MultilocusGenotypeStatistics::VarComp> MultilocusGenotypeStati
 		hbar[ids[i]] = 0.;
 	}
 	unsigned int r = groups.size();
-	for (unsigned int i = 0 ; i < r ; i++) {
-		double ni = (double) pmgc.getLocusGroupSize(i, locus_position);
+	for (set<unsigned int>::iterator set_it = groups.begin() ; set_it != groups.end() ; set_it++) 
+    {
+        int i  = (*set_it); 
+		double ni = (double) pmgc.getLocusGroupSize( i, locus_position);
 		set<unsigned int> group_id;
-		group_id.insert(* groups.begin() + i);
+		group_id.insert( i ); 
 		map<unsigned int, double> pi = getAllelesFrqForGroups(pmgc, locus_position, group_id);
 		map<unsigned int, double> hi = getHeterozygousFrqForGroups(pmgc, locus_position, group_id);
 		nbar += ni;
 		if (r > 1)
 			nc += ni * ni;
+        
 		for (map<unsigned int, double>::iterator it = pi.begin() ; it != pi.end() ; it++)
 			pbar[it->first] += ni * it->second;
 		for (map<unsigned int, double>::iterator it = hi.begin() ; it != hi.end() ; it++)
 			hbar[it->first] += ni * it->second;
+			
+		group_id.clear();	//khalid
 	}
 	nbar = nbar / (double) r;
 	if (nbar <= 1)
@@ -411,15 +431,19 @@ map<unsigned int, MultilocusGenotypeStatistics::VarComp> MultilocusGenotypeStati
 		it->second = it->second / ((double) r * nbar);
 	for (map<unsigned int, double>::iterator it = hbar.begin() ; it != hbar.end() ; it++)
 		it->second = it->second / ((double) r * nbar);
-	for (unsigned int i = 0 ; i < r ; i++) {
-		double ni = (double) pmgc.getLocusGroupSize(i, locus_position);
+		
+	for (set<unsigned int>::iterator set_it = groups.begin() ; set_it != groups.end() ; set_it++) 
+    {
+        int i  = (*set_it); 
+		double ni = (double) pmgc.getLocusGroupSize( i, locus_position);
 		set<unsigned int> group_id;
-		group_id.insert(* groups.begin() + i);
+		group_id.insert( i );
 		map<unsigned int, double> pi = getAllelesFrqForGroups(pmgc, locus_position, group_id);
-		for (unsigned int i = 0 ; i < ids.size() ; i++)
-			pi[ids[i]];
+		for (unsigned int j = 0 ; j < ids.size() ; j++)
+			pi[ids[j]];
 		for (map<unsigned int, double>::iterator it = pi.begin() ; it != pi.end() ; it++)
 			s2[it->first] += ni * (it->second - pbar[it->first]) * (it->second - pbar[it->first]);
+		group_id.clear();	//khalid	
 	}
 	for (map<unsigned int, double>::iterator it = s2.begin() ; it != s2.end() ; it++)
 		it->second = it->second / (((double) r - 1.) * nbar);
@@ -427,11 +451,240 @@ map<unsigned int, MultilocusGenotypeStatistics::VarComp> MultilocusGenotypeStati
 	// a, b, c computation
 	for (unsigned int i = 0 ; i < ids.size() ; i++) {
 		values[ids[i]];
-	}
-	for (map<unsigned int, MultilocusGenotypeStatistics::VarComp>::iterator it = values.begin() ; it != values.end() ; it++) {
+		}
+	
+	for (map<unsigned int, MultilocusGenotypeStatistics::VarComp>::iterator it = values.begin() ; it != values.end() ; it++) 
+    {
 		it->second.a = (nbar / nc) * (s2[it->first] - ((1. / (nbar - 1.)) * ((pbar[it->first] * (1. - pbar[it->first])) - (s2[it->first] * ((double) r - 1.) / (double) r) - ((1. / 4.) * hbar[it->first]))));
 		it->second.b = (nbar / (nbar - 1.)) * ((pbar[it->first] * (1. - pbar[it->first])) - (s2[it->first] * ((double) r - 1.) / (double) r) - ((((2. * nbar) - 1.) / (4. * nbar)) * hbar[it->first]));
 		it->second.c = hbar[it->first] / 2.;
 	}
 	return values;
+}
+
+//khalid 9 juin 2006
+double MultilocusGenotypeStatistics::getWCMultilocusFst(const PolymorphismMultiGContainer & pmgc, vector<unsigned int> locus_positions, const set<unsigned int> & groups) throw (Exception)
+{
+    double A, B, C;
+    A=B=C = 0.0;   
+    for (int i=0; i < locus_positions.size(); i++) 
+    {
+     //limiter les calculs pour les locus polymorphes pour ces groupes  
+     vector<unsigned int> ids = getAllelesIdsForGroups(pmgc, i, groups);
+     if (ids.size() >= 2)
+     { 
+      map<unsigned int, MultilocusGenotypeStatistics::VarComp> values = getVarianceComponents(pmgc, locus_positions[i], groups);   
+      for (map<unsigned int, MultilocusGenotypeStatistics::VarComp>::iterator it = values.begin() ; it != values.end() ; it++)
+      {
+		A += it->second.a ;
+        B += it->second.b ;
+        C += it->second.c ;
+      }
+     }    
+    } 
+    if ((A+B+C) == 0)  throw ZeroDivisionException("MultilocusGenotypeStatistics::getWCMultilocusFst.");
+    return A/(A+B+C);   
+}
+//khalid juin 2006
+double MultilocusGenotypeStatistics::getWCMultilocusFis(const PolymorphismMultiGContainer & pmgc, vector<unsigned int> locus_positions, const set<unsigned int> & groups) throw (Exception)
+{
+    double A, B, C;
+    A=B=C = 0.0;   
+    for (int i=0; i < locus_positions.size(); i++) 
+    {
+     //limiter les calculs pour les locus polymorphes pour ces groupes  
+     vector<unsigned int> ids = getAllelesIdsForGroups(pmgc, i, groups);
+     if (ids.size() >= 2)
+     { 
+      map<unsigned int, MultilocusGenotypeStatistics::VarComp> values = getVarianceComponents(pmgc, locus_positions[i], groups);   
+      for (map<unsigned int, MultilocusGenotypeStatistics::VarComp>::iterator it = values.begin() ; it != values.end() ; it++)
+      {
+		A += it->second.a ;
+        B += it->second.b ;
+        C += it->second.c ;
+      }
+     }    
+    } 
+    if ((B+C) == 0)  throw ZeroDivisionException("MultilocusGenotypeStatistics::getWCMultilocusFis.");
+    return 1.0 - C/(B+C);   
+}
+
+//khalid 19/06/2006
+MultilocusGenotypeStatistics::PermResults MultilocusGenotypeStatistics::getWCMultilocusFstAndPerm(const PolymorphismMultiGContainer & pmgc, vector<unsigned int> locus_positions,set<unsigned int> groups, int nb_perm) throw (Exception)
+{
+    //extraire un  PolymorphismMultiGContainer avec uniquement les groupes dans groups
+    PolymorphismMultiGContainer sub_pmgc =  PolymorphismMultiGContainerTools::extractGroups(pmgc, groups);
+    double nb_sup = 0.0;
+    double nb_inf = 0.0;
+    PermResults results;
+    results.Statistic =  getWCMultilocusFst(sub_pmgc, locus_positions, groups);
+    if (nb_perm > 0)
+    {
+                            
+     for (int  i = 0; i < nb_perm; i++)
+     {
+      PolymorphismMultiGContainer permuted_pmgc = PolymorphismMultiGContainerTools::permutMultiG( sub_pmgc);    
+      double Fst_perm =  getWCMultilocusFst(permuted_pmgc, locus_positions, groups); 
+      //cout << Fst_perm << endl;
+      if (Fst_perm > results.Statistic) nb_sup++;
+      if (Fst_perm < results.Statistic) nb_inf++;  
+     }          
+                
+     nb_sup /= (double) nb_perm;
+     nb_inf /= (double) nb_perm;           
+    }   
+    
+    results.Percent_sup = nb_sup;
+    results.Percent_inf = nb_inf;
+    return results;
+}
+
+MultilocusGenotypeStatistics::PermResults MultilocusGenotypeStatistics::getWCMultilocusFisAndPerm(const PolymorphismMultiGContainer & pmgc, vector<unsigned int> locus_positions,set<unsigned int> groups, int nb_perm) throw (Exception)
+{
+    //extraire un  PolymorphismMultiGContainer avec uniquement les groupes dans groups
+    PolymorphismMultiGContainer sub_pmgc =  PolymorphismMultiGContainerTools::extractGroups(pmgc, groups);
+    double nb_sup = 0.0;
+    double nb_inf = 0.0;
+    PermResults results;
+    results.Statistic =  getWCMultilocusFis(sub_pmgc, locus_positions, groups);
+    if (nb_perm > 0)
+    {
+                            
+     for (int  i = 0; i < nb_perm; i++)
+     {
+      PolymorphismMultiGContainer permuted_pmgc = PolymorphismMultiGContainerTools::permutIntraGroupAlleles(sub_pmgc, groups);    
+      double Fis_perm =  getWCMultilocusFis(permuted_pmgc, locus_positions, groups); 
+      //cout << Fst_perm << endl;
+      if (Fis_perm > results.Statistic) nb_sup++;
+      if (Fis_perm < results.Statistic) nb_inf++;  
+     }          
+                
+     nb_sup /= (double) nb_perm;
+     nb_inf /= (double) nb_perm;           
+    }   
+    
+    results.Percent_sup = nb_sup;
+    results.Percent_inf = nb_inf;
+    return results;
+}
+
+//khalid 14 juin 2006
+double MultilocusGenotypeStatistics::getRHMultilocusFst(const PolymorphismMultiGContainer & pmgc, vector<unsigned int> locus_positions, const set<unsigned int> & groups) throw (Exception)
+{
+    double Au, Bu, Cu;
+    double RH      = 0.0;   
+    int nb_alleles = 0;
+    int total_alleles   = 0;
+    
+    for (int i=0; i < locus_positions.size(); i++) 
+    {
+     //limiter les calculs pour les locus polymorphes pour ces groupes  
+     vector<unsigned int> ids = getAllelesIdsForGroups(pmgc, i, groups);
+     if (ids.size() >= 2)
+     { 
+      nb_alleles = 0;              
+      //les frequences allèliques moyennes
+      map < unsigned int , double > P = MultilocusGenotypeStatistics::getAllelesFrqForGroups (pmgc ,locus_positions[i] , groups);
+      //les composantes de la variance selon W&C              
+      map<unsigned int, MultilocusGenotypeStatistics::VarComp> values = getVarianceComponents(pmgc, locus_positions[i], groups);   
+      for (map<unsigned int, MultilocusGenotypeStatistics::VarComp>::iterator it = values.begin() ; it != values.end() ; it++)
+      {
+          
+		Au = it->second.a ;
+        Bu = it->second.b ;
+        Cu = it->second.c ;
+        if ((Au + Bu + Cu) != 0 ) 
+        {
+                double Pu = P[it->first]; //it->first contient le n° de l'allèle
+                RH += (1- Pu) * Au / (Au + Bu + Cu);
+                nb_alleles ++;
+        }
+      }
+      total_alleles += (nb_alleles - 1) ;
+     }    
+    } 
+    if (total_alleles == 0)  throw ZeroDivisionException("MultilocusGenotypeStatistics::getRHMultilocusFst.");
+    return  RH/ double(total_alleles);   
+}
+
+//khalid 13 juin 2006
+DistanceMatrix * MultilocusGenotypeStatistics::getDistanceMatrix(const PolymorphismMultiGContainer & pmgc, vector<unsigned int> locus_positions, const set<unsigned int> & groups, string distance_methode) throw (Exception)
+{//retourne une matrice de distance pour chaque paire de l'ensemble de groupes 
+
+    vector< string > names = pmgc.getAllGroupsNames();
+    vector< unsigned int> grp_ids_vect;
+    for (set<unsigned int>::iterator i=groups.begin(); i != groups.end(); i++)
+    {
+         //names.push_back(TextTools::toString(*i));
+         grp_ids_vect.push_back(*i);
+    }            
+    
+    DistanceMatrix *_dist = new DistanceMatrix(names);
+    for (int i=0; i < groups.size(); i++) (* _dist)(i, i) = 0;
+    
+    set<unsigned int> pairwise_grp;
+    //for each pair in the groups set
+    
+    for ( unsigned int j =0; j < groups.size () - 1; j ++)
+    {
+     for ( unsigned int k=j +1; k < groups.size (); k ++)
+     {
+      double distance = 0;   
+	  if (distance_methode ==  "nei72" )
+   	  distance = MultilocusGenotypeStatistics::getDnei72( pmgc,locus_positions, grp_ids_vect[j] , grp_ids_vect[k] );
+	  else if  (distance_methode == "nei78" )
+	  distance = MultilocusGenotypeStatistics::getDnei78( pmgc,locus_positions, grp_ids_vect[j] , grp_ids_vect[k] );
+	  else if (distance_methode == "WC" ) // Fst multilocus selon W&C
+	  {
+       pairwise_grp.insert(grp_ids_vect[j] );
+       pairwise_grp.insert(grp_ids_vect[k] );    
+	   distance = MultilocusGenotypeStatistics::getWCMultilocusFst( pmgc, locus_positions, pairwise_grp) ;
+	   pairwise_grp.clear();
+      }
+      else if (distance_methode == "RH" ) // Fst multilocus selon ponderation Robertson & Hill
+	  {
+       pairwise_grp.insert(grp_ids_vect[j] );
+       pairwise_grp.insert(grp_ids_vect[k] );    
+	   distance = MultilocusGenotypeStatistics::getRHMultilocusFst( pmgc, locus_positions, pairwise_grp) ;
+	   pairwise_grp.clear();
+      }
+      else if (distance_methode == "Nm" ) // Nm déduit des Fst multilocus selon W&C modèle en îles Fst = 1/(1+4Nm) 
+	  {
+       pairwise_grp.insert(grp_ids_vect[j] );
+       pairwise_grp.insert(grp_ids_vect[k] );    
+	   distance = MultilocusGenotypeStatistics::getWCMultilocusFst( pmgc, locus_positions, pairwise_grp) ;
+	   if (distance != 0)
+       	   distance = 0.25 * (1- distance)/distance;
+       else distance = NAN;	   
+	   pairwise_grp.clear();
+      }
+      else if (distance_methode == "D" ) // D=-ln(1-Fst) of Reynolds, Weir and Cockerham, 1983  
+	  {
+       pairwise_grp.insert(grp_ids_vect[j] );
+       pairwise_grp.insert(grp_ids_vect[k] );    
+	   distance = MultilocusGenotypeStatistics::getWCMultilocusFst( pmgc, locus_positions, pairwise_grp) ;
+	   if (distance != 1)
+       	   distance =  -log(1- distance);
+       else distance = NAN;	   
+	   pairwise_grp.clear();
+      }
+      else if (distance_methode == "Rousset" ) // Calcul de Fst/(1-Fst). Rousset F. 1997
+	  {
+       pairwise_grp.insert(grp_ids_vect[j] );
+       pairwise_grp.insert(grp_ids_vect[k] );    
+	   distance = MultilocusGenotypeStatistics::getWCMultilocusFst( pmgc, locus_positions, pairwise_grp) ;
+	   if (distance != 1)
+       	   distance = distance/(1- distance);
+       else distance = NAN;	   
+	   pairwise_grp.clear();
+      }
+      
+      
+      
+      (* _dist)(k, j) =  distance;
+      (* _dist)(j, k) =  distance;
+     }//for k
+    }//for j     
+    
+    return _dist;   
 }
