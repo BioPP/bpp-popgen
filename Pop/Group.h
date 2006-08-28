@@ -113,7 +113,7 @@ class Group {
 		/**
 		 * @brief Set the name of the Group.
 		 *
-		 * @param named of the Group as string.
+		 * @param group_name Name of the Group as string.
 		 */
 		void setGroupName(string group_name);
 		
