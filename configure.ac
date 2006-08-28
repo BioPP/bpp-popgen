@@ -1,0 +1,12 @@
+AC_INIT(Bio++ PopGenLib, 1.1.0, belkhir@univ-montp2.fr, Bpp-PopGen)
+AC_CONFIG_SRCDIR(Pop/Coord.h)
+AM_INIT_AUTOMAKE()
+AC_LANG_CPLUSPLUS
+AC_CHECK_LIB(bpp-utils,   main, , [AC_MSG_ERROR([Library bpp-utils not found.])])
+AC_CHECK_LIB(bpp-numcalc, main, , [AC_MSG_ERROR([Library bpp-numcalc not found.])])
+AC_CHECK_LIB(bpp-seq,     main, , [AC_MSG_ERROR([Library bpp-seq not found.])])
+AC_PROG_CC
+AC_PROG_CXX
+AC_PROG_INSTALL
+AC_PROG_LIBTOOL
+AC_OUTPUT(Makefile Pop/Makefile)

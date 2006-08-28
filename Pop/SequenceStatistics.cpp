@@ -1,17 +1,13 @@
+//
+// File SequenceStatistics.cpp
+// Author : Eric Bazin <bazin@univ-montp2.fr>
+//          Sylvain Gailard <yragael2001@yahoo.fr>
+//          khalid Belkhir
+// Last modification : Friday December 12 2005
+//
+//
 /*
- * File SequenceStatistics.cpp
- * Author : Eric Bazin <bazin@univ-montp2.fr>
- *          Sylvain Gailard <yragael2001@yahoo.fr>
- *          khalid Belkhir
- * Last modification : Friday December 12 2005
-*/
-/*
-
 Copyright or © or Copr. CNRS, (November 17, 2004)
-
-
-
-
 
 This software is a computer program whose purpose is to provide classes
 for population genetics analysis.
@@ -78,7 +74,6 @@ using namespace std;
 #include <NumCalc/VectorExceptions.h>
 using namespace VectorOperators;
 using namespace VectorFunctions;
-using namespace VectorStatTools;
 
 
 SequenceStatistics::~SequenceStatistics() {}
@@ -886,7 +881,7 @@ PolymorphismSequenceContainer * SequenceStatistics::generateLDContainer(const Po
 		Site* siteclone =  new Site(*site);
 		bool deletesite = false;
 		map<int, double> freqs = SymbolListTools::getFrequencies(*siteclone);
-		int first;
+		int first = 0;
 		for(map<int,double>::iterator it=freqs.begin(); it!=freqs.end(); it++){
 			if(it->second>=0.5) first = it->first;
 		}
