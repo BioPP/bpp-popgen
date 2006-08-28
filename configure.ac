@@ -5,8 +5,10 @@ AC_LANG_CPLUSPLUS
 AC_CHECK_LIB(bpp-utils,   main, , [AC_MSG_ERROR([Library bpp-utils not found.])])
 AC_CHECK_LIB(bpp-numcalc, main, , [AC_MSG_ERROR([Library bpp-numcalc not found.])])
 AC_CHECK_LIB(bpp-seq,     main, , [AC_MSG_ERROR([Library bpp-seq not found.])])
+AC_CHECK_LIB(bpp-phyl,    main, , [AC_MSG_ERROR([Library bpp-phyl not found.])])
 AC_PROG_CC
 AC_PROG_CXX
 AC_PROG_INSTALL
 AC_PROG_LIBTOOL
 AC_OUTPUT(Makefile Pop/Makefile)
+

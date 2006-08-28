@@ -18,6 +18,7 @@ Requires: libstdc++6
 Requires: Bpp-Utils >= 1.0.0
 Requires: Bpp-NumCalc >= 1.0.0
 Requires: Bpp-Seq >= 1.1.0
+Requires: Bpp-Phyl >= 1.0.0
 
 %description
 This library contains utilitary and classes for population genetics analysis.
@@ -30,6 +31,7 @@ Requires: %{name} = %{version}
 Requires: Bpp-Utils-devel >= 1.0.0
 Requires: Bpp-NumCalc-devel >= 1.0.0
 Requires: Bpp-Seq-devel >= 1.1.0
+Requires: Bpp-Phyl-devel >= 1.0.0
 
 %description devel
 The %{name}-devel package contains the header files and static libraries for
@@ -68,7 +70,7 @@ rm -rf $RPM_BUILD_ROOT
 
 %changelog
 * Mon Aug 28 2006 Julien Dutheil <Julien.Dutheil@univ-montp2.fr>
-- Version 1.1.0
+- Version 1.1.0, now requires Bpp-Phyl too!
 * Tue Apr 18 2006 Julien Dutheil <Julien.Dutheil@univ-montp2.fr>
 - Build 2 for compatibility with other libs. added STL dependency.
 * Fri Nov 16 2005 Julien Dutheil <Julien.Dutheil@univ-montp2.fr>
