@@ -12,16 +12,16 @@ This software is a computer program whose purpose is to provide classes
 for population genetics analysis.
 
 This software is governed by the CeCILL  license under French law and
-abiding by the rules of distribution of free software.  You can  use, 
+abiding by the rules of distribution of free software.  You can  use,
 modify and/ or redistribute the software under the terms of the CeCILL
 license as circulated by CEA, CNRS and INRIA at the following URL
-"http://www.cecill.info". 
+"http://www.cecill.info".
 
 As a counterpart to the access to the source code and  rights to copy,
 modify and redistribute granted by the license, users are provided only
 with a limited warranty  and the software's author,  the holder of the
 economic rights,  and the successive licensors  have only  limited
-liability. 
+liability.
 
 In this respect, the user's attention is drawn to the risks associated
 with loading,  using,  modifying and/or developing or reproducing the
@@ -30,9 +30,9 @@ that may mean  that it is complicated to manipulate,  and  that  also
 therefore means  that it is reserved for developers  and  experienced
 professionals having in-depth computer knowledge. Users are therefore
 encouraged to load and test the software's suitability as regards their
-requirements in conditions enabling the security of their systems and/or 
-data to be ensured and,  more generally, to use and operate it in the 
-same conditions as regards security. 
+requirements in conditions enabling the security of their systems and/or
+data to be ensured and,  more generally, to use and operate it in the
+same conditions as regards security.
 
 The fact that you are presently reading this means that you have had
 knowledge of the CeCILL license and that you accept its terms.
@@ -78,7 +78,7 @@ class DataSet {
 		 * @brief Destroy a DataSet.
 		 */
 		~DataSet();
-		
+
 	public: // Methodes
 
 //** Locality manipulation ***************************************************/
@@ -98,7 +98,7 @@ class DataSet {
 		 * @throw LocalityNotFoundException if the locality's name doesn't match any name in the DataSet.
 		 */
 		unsigned int getLocalityPosition(const string & name) const throw (LocalityNotFoundException);
-		
+
 		/**
 		 * @brief Get a Locality by locality_position.
 		 *
@@ -138,7 +138,7 @@ class DataSet {
 		 * @brief Tell if there is at least one locality.
 		 */
 		bool hasLocality() const;
-		
+
 //** Group manipulation ******************************************************/
 		/**
 		 * @brief Add a Group to the DataSet.
@@ -153,32 +153,32 @@ class DataSet {
 		 * @brief Add an empty Group to the DataSet.
 		 */
 		void addEmptyGroup(unsigned int group_id) throw (BadIdentifierException);
-		
+
 		/**
 		 * @brief Get a group by identifier.
 		 */
 		const Group * getGroupById(unsigned int group_id) const;
-		
+
 		/**
 		 * @brief Get the position of a Group.
 		 *
 		 * @throw GroupNotFoundException if the group_id is not found.
 		 */
 		unsigned int getGroupPosition(unsigned int group_id) const throw (GroupNotFoundException);
-		
+
 		/**
 		 * @brief Get the name of a Group. If the name is an empty string it just returns the group_id
 		 *
 		 * @throw GroupNotFoundException if the group_id is not found.
 		 */
-		string DataSet::getGroupName(unsigned int group_id) const throw (GroupNotFoundException);
+		string getGroupName(unsigned int group_id) const throw (GroupNotFoundException);
 		/**
-		 * @brief set the name of a Group. 
+		 * @brief set the name of a Group.
 		 *
 		 * @throw GroupNotFoundException if the group_id is not found.
 		 */
-		void DataSet::setGroupName(unsigned int group_id, string group_name) const throw (GroupNotFoundException);
-		
+		void setGroupName(unsigned int group_id, string group_name) const throw (GroupNotFoundException);
+
 		/**
 		 * @brief Get a group by position.
 		 *
@@ -205,7 +205,7 @@ class DataSet {
 		 * and then is deleted.
 		 */
 		void mergeTwoGroups(unsigned int source_id, unsigned int target_id) throw (GroupNotFoundException);
-		
+
 		/**
 		 * @brief Merge some Groups in one.
 		 *
@@ -261,7 +261,6 @@ class DataSet {
 		 */
 		unsigned int getIndividualPositionInGroup(unsigned int group_position, const string & individual_id) const
 			throw (Exception);
-
 		/**
 		 * @brief Get an Individual from a Group.
 		 *
@@ -288,7 +287,7 @@ class DataSet {
 		 */
 		void deleteIndividualAtPositionFromGroup(unsigned int group_position, unsigned int individual_position)
 			throw (IndexOutOfBoundsException);
-		
+
 		/**
 		 * @brief Delete an Individual from a group.
 		 *
@@ -491,7 +490,7 @@ class DataSet {
 		 */
 		void deleteIndividualGenotypeInGroup(unsigned int group_position, unsigned int individual_position)
 			throw (IndexOutOfBoundsException);
-		
+
 		/**
 		 * @brief Set a MonolocusGenotype of an Individual from a group.
 		 *
@@ -583,7 +582,7 @@ class DataSet {
 		 * @brief Delete the AnalyzedLoci.
 		 */
 		void deleteAnalyzedLoci();
-		
+
 		/**
 		 * @brief Set a LocusInfo.
 		 *
@@ -610,7 +609,7 @@ class DataSet {
 		 */
 		void addAlleleInfoByLocusName(const string & locus_name, const AlleleInfo & allele)
 			throw (Exception);
-		
+
 		/**
 		 * @brief Add an AlleleInfo to a LocusInfo.
 		 */
@@ -659,12 +658,12 @@ class DataSet {
 		 * @brief Tell if at least one individual has at least one sequence.
 		 */
 		bool hasSequenceData() const;
-		
+
 		/**
 		 * @brief Tell if there is alelelic data.
 		 */
 		bool hasAlleleicData() const;
-		
+
 	protected:
 		AnalyzedLoci * _analyzedLoci;
 		AnalyzedSequences * _analyzedSequences;

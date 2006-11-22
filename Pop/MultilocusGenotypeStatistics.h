@@ -284,7 +284,7 @@ class MultilocusGenotypeStatistics {
      * distance is either Nei72, Nei78, Fst W&C or Fst Robertson & Hill, Nm,
      * D=-ln(1-Fst) of Reynolds et al. 1983, Rousset 1997 Fst/(1-Fst)
      */
-    static DistanceMatrix * MultilocusGenotypeStatistics::getDistanceMatrix(const PolymorphismMultiGContainer & pmgc, vector<unsigned int> locus_positions, const set<unsigned int> & groups, string distance_methode) throw (Exception);
+    static DistanceMatrix * getDistanceMatrix(const PolymorphismMultiGContainer & pmgc, vector<unsigned int> locus_positions, const set<unsigned int> & groups, string distance_methode) throw (Exception);
 
 };
 
