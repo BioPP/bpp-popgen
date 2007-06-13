@@ -56,8 +56,8 @@ using namespace std;
 #include <Utils/Exceptions.h>
 #include <Utils/MapTools.h>
 
-// From Phylib
-#include <Phyl/DistanceMatrix.h>
+// From SeqLib
+#include <Seq/DistanceMatrix.h>
 
 // From popgenlib
 #include "PolymorphismMultiGContainer.h"
