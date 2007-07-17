@@ -53,67 +53,67 @@ using namespace std;
 template <class T> class Locality:
   public Coord<T>
 {
-	protected:
-		string _name;
+  protected:
+    string _name;
 
-	public: // Constructors and destructor
-		/**
-		 * @brief Build a new locality with name and coordinates.
-		 *
-		 * @param name The name of the locality.
-		 * @param x The longitude.
-		 * @param y The latitude.
-		 */
-		Locality<T>(const string name, const T x=0, const T y=0):
+  public: // Constructors and destructor
+    /**
+     * @brief Build a new locality with name and coordinates.
+     *
+     * @param name The name of the locality.
+     * @param x The longitude.
+     * @param y The latitude.
+     */
+    Locality<T>(const string name, const T x=0, const T y=0):
       Coord<T>(x, y), _name(name) {}
 
-		/**
-		 * @brief Build a new locality with name and coordinates.
-		 *
-		 * @param name The name of the locality.
-		 * @param coord The coordinates of the locality.
-		 */
-		Locality<T>(const string name, const Coord<T> & coord):
+    /**
+     * @brief Build a new locality with name and coordinates.
+     *
+     * @param name The name of the locality.
+     * @param coord The coordinates of the locality.
+     */
+    Locality<T>(const string name, const Coord<T> & coord):
       Coord<T>(coord), _name(name) {}
 
-		/**
-		 * @brief Destroy a locality.
-		 */
-		virtual ~Locality<T>() {}
+    /**
+     * @brief Destroy a locality.
+     */
+    virtual ~Locality<T>() {}
 
-	public: // Methodes
-		/**
-		 * @brief Implements the Clonable interface.
-		 */
-		Locality<T> * clone() const { return new Locality<T>(* this); }
+  public: // Methodes
+    /**
+     * @brief Implements the Clonable interface.
+     */
+    Locality<T> * clone() const { return new Locality<T>(* this); }
 
-		/**
-		 * @brief The == operator.
-		 *
-		 * returns true if both name and coordinates are identical between the two Locality objects.
-		 */
-		virtual bool operator== (const Locality<T> & locality) const
+    /**
+     * @brief The == operator.
+     *
+     * returns true if both name and coordinates are identical between the two Locality objects.
+     */
+    virtual bool operator== (const Locality<T> & locality) const
     {
-	    return this->_x == locality.getX() && this->_y == locality.getY() && _name == locality._name;
+      return this->_x == locality.getX() && this->_y == locality.getY() && _name == locality._name;
     }
 
-		/**
-		 * @brief The != operator.
-		 */
-		virtual bool operator!= (const Locality<T> & locality) const
+    /**
+     * @brief The != operator.
+     */
+    virtual bool operator!= (const Locality<T> & locality) const
     {
-	    return !(locality == *this);
+      return !(locality == *this);
     }
 
-		/**
-		 * @brief Set the name of the locality.
-		 */
-		void setName(const string & name) { _name = name; }
+    /**
+     * @brief Set the name of the locality.
+     */
+    void setName(const string & name) { _name = name; }
 
-		/**
-		 * @brief Get the name of the locality.
-		 */
-		string getName() const { return _name; }
+    /**
+     * @brief Get the name of the locality.
+     */
+    string getName() const { return _name; }
 
 };
 

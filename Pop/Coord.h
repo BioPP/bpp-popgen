@@ -52,86 +52,86 @@ knowledge of the CeCILL license and that you accept its terms.
 template <class T> class Coord:
   public Clonable
 {
-	protected:
-		T _x;
-		T _y;
+  protected:
+    T _x;
+    T _y;
 
-	public: // Constructors and destructor :
+  public: // Constructors and destructor :
 
-		/**
-		 * @brief Build a new Coord from two values.
-		 * 
-		 * The two values are set to 0 if no parametre is given to the constructor.
-		 *
-		 * @param x The longitude or abscissa.
-		 * @param y The latitude or ordinate.
-		 */
-		Coord<T>(const T x=0, const T y=0): _x(x), _y(y) {}
-		
-		/**
-		 * @brief Destroy the Coord object.
-		 */
-		virtual ~Coord() {}
+    /**
+     * @brief Build a new Coord from two values.
+     * 
+     * The two values are set to 0 if no parametre is given to the constructor.
+     *
+     * @param x The longitude or abscissa.
+     * @param y The latitude or ordinate.
+     */
+    Coord<T>(const T x=0, const T y=0): _x(x), _y(y) {}
+    
+    /**
+     * @brief Destroy the Coord object.
+     */
+    virtual ~Coord() {}
 
-	public: // Methodes
+  public: // Methodes
 
-		/**
-		 * @brief Implement the Clonable interface.
-		 */
-		Coord<T> * clone() const { return new Coord(*this); }
+    /**
+     * @brief Implement the Clonable interface.
+     */
+    Coord<T> * clone() const { return new Coord(*this); }
 
-		/**
-		 * @brief Set the two values.
-		 */
-		void setCoord(const T x, const T y);
+    /**
+     * @brief Set the two values.
+     */
+    void setCoord(const T x, const T y);
 
-		/**
-		 * @brief Set only the longitude.
-		 */
-		void setX(const T x) { _x = x; }
+    /**
+     * @brief Set only the longitude.
+     */
+    void setX(const T x) { _x = x; }
 
-		/**
-		 * @brief Set only the latitude.
-		 */
-		void setY(const T y) { _y = y; }
+    /**
+     * @brief Set only the latitude.
+     */
+    void setY(const T y) { _y = y; }
 
-		/**
-		 * @brief Get the longitude.
-		 */
-		T getX() const { return _x; }
+    /**
+     * @brief Get the longitude.
+     */
+    T getX() const { return _x; }
 
-		/**
-		 * @brief Get the latitude.
-		 */
-		T getY() const { return _y; }
+    /**
+     * @brief Get the latitude.
+     */
+    T getY() const { return _y; }
 
-		/**
-		 * @brief Compares two Coord objets.
-		 *
-		 * Return true if the coordinates of the 2 Coords are equals.
-		 */
-		bool hasSameCoordsAs(const Coord<T> & coord) const
+    /**
+     * @brief Compares two Coord objets.
+     *
+     * Return true if the coordinates of the 2 Coords are equals.
+     */
+    bool hasSameCoordsAs(const Coord<T> & coord) const
     {
       return _x == coord._x && _y == coord._y;
     }
 
-		/**
-		 * @brief The == operator.
-		 *
-		 * Return true if the coordinates of the 2 Coords are equals.
-		 * Does the same as the asSameCoords() methode.
-		 */
-		virtual bool operator== (const Coord<T> & coord) const
+    /**
+     * @brief The == operator.
+     *
+     * Return true if the coordinates of the 2 Coords are equals.
+     * Does the same as the asSameCoords() methode.
+     */
+    virtual bool operator== (const Coord<T> & coord) const
     {
       return hasSameCoordsAs(coord);
     }
 
-		/**
-		 * @brief The != operator.
-		 */
-		virtual bool operator!= (const Coord<T> & coord) const
+    /**
+     * @brief The != operator.
+     */
+    virtual bool operator!= (const Coord<T> & coord) const
     {
-	    return !hasSameCoordsAs(coord);
+      return !hasSameCoordsAs(coord);
     }
 
 };
