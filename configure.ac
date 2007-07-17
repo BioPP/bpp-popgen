@@ -1,4 +1,4 @@
-AC_INIT(Bio++ PopGenLib, 1.1.0, belkhir@univ-montp2.fr, Bpp-PopGen)
+AC_INIT(Bio++ PopGenLib, 1.1.1, belkhir@univ-montp2.fr, Bpp-PopGen)
 AC_CONFIG_SRCDIR(Pop/Coord.h)
 AM_INIT_AUTOMAKE()
 AC_LANG_CPLUSPLUS

@@ -50,7 +50,12 @@ using namespace std;
  * This is a class derivated from the Coord class.
  * It's a Coord with a name.
  */
-template <class T> class Locality : public Coord<T> {
+template <class T> class Locality:
+  public Coord<T>
+{
+	protected:
+		string _name;
+
 	public: // Constructors and destructor
 		/**
 		 * @brief Build a new locality with name and coordinates.
@@ -59,7 +64,8 @@ template <class T> class Locality : public Coord<T> {
 		 * @param x The longitude.
 		 * @param y The latitude.
 		 */
-		Locality(const string name, const T x=0, const T y=0);
+		Locality<T>(const string name, const T x=0, const T y=0):
+      Coord<T>(x, y), _name(name) {}
 
 		/**
 		 * @brief Build a new locality with name and coordinates.
@@ -67,108 +73,49 @@ template <class T> class Locality : public Coord<T> {
 		 * @param name The name of the locality.
 		 * @param coord The coordinates of the locality.
 		 */
-		Locality(const string name, const Coord<T> coord);
-
-		/**
-		 * @brief The Locality copy constructor.
-		 */
-		Locality(const Locality<T> & locality);
+		Locality<T>(const string name, const Coord<T> & coord):
+      Coord<T>(coord), _name(name) {}
 
 		/**
 		 * @brief Destroy a locality.
 		 */
-		~Locality();
+		virtual ~Locality<T>() {}
 
 	public: // Methodes
 		/**
 		 * @brief Implements the Clonable interface.
 		 */
-		Clonable * clone() const;
-
-		/**
-		 * @brief The Locality copy operator.
-		 *
-		 * @return A ref toward the assigned Locality.
-		 */
-		Locality & operator= (const Locality & locality);
+		Locality<T> * clone() const { return new Locality<T>(* this); }
 
 		/**
 		 * @brief The == operator.
 		 *
 		 * returns true if both name and coordinates are identical between the two Locality objects.
 		 */
-		virtual bool operator== (const Locality<T> & locality) const;
+		virtual bool operator== (const Locality<T> & locality) const
+    {
+	    return this->_x == locality.getX() && this->_y == locality.getY() && _name == locality._name;
+    }
 
 		/**
 		 * @brief The != operator.
 		 */
-		virtual bool operator!= (const Locality<T> & locality) const;
+		virtual bool operator!= (const Locality<T> & locality) const
+    {
+	    return !(locality == *this);
+    }
 
 		/**
 		 * @brief Set the name of the locality.
 		 */
-		void setName(const string name);
+		void setName(const string & name) { _name = name; }
 
 		/**
 		 * @brief Get the name of the locality.
 		 */
-		string getName() const;
+		string getName() const { return _name; }
 
-	protected:
-		string _name;
 };
 
-//** Class constructor: *******************************************************/
-template <class T> Locality<T>::Locality(const string name, const T x, const T y) {
-	_name = name;
-	Coord<T>::_x = x;
-	Coord<T>::_y = y;
-}
-
-template <class T> Locality<T>::Locality(const string name, const Coord<T> coord) {
-	_name = name;
-	Coord<T>::_x = coord.getX();
-	Coord<T>::_y = coord.getY();
-}
-
-template <class T> Locality<T>::Locality(const Locality<T> & locality) {
-	this->_x = locality.getX();
-	this->_y = locality.getY();
-	this->_name = locality.getName();
-}
-
-//** Class destructor: *******************************************************/
-template <class T> Locality<T>::~Locality() {}
-
-//** Clonable interface: *****************************************************/
-template <class T> Clonable * Locality<T>::clone() const {
-	return new Locality<T>(* this);
-}
-
-//** Copy operator: **********************************************************/
-template <class T> Locality<T> & Locality<T>::operator= (const Locality<T> & locality) {
-	this->_x = locality.getX();
-	this->_y = locality.getY();
-	this->_name = locality.getName();
-	return * this;
-}
-
-//** Comparison operators: ***************************************************/
-template <class T> bool Locality<T>::operator== (const Locality<T> & locality) const {
-	return (Coord<T>::_x == locality.getX() && Coord<T>::_y == locality.getY() && _name == locality.getName());
-}
-
-template <class T> bool Locality<T>::operator!= (const Locality<T> & locality) const {
-	return !(locality == *this);
-}
-
-//** Assignation opperators: *************************************************/
-template <class T> void Locality<T>::setName(string name) {
-	_name = name;
-}
-
-//** Consultation opperators: ************************************************/
-template <class T> string Locality<T>::getName() const {
-	return _name;
-}
 #endif // _LOCALITY_H_
+

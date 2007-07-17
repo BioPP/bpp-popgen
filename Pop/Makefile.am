@@ -68,7 +68,7 @@ SequenceStatistics.cpp
 lib_LTLIBRARIES = libbpp-popgen.la
 libbpp_popgen_la_SOURCES = $(H_FILES) $(CPP_FILES)
 # CURRENT:REVISION:AGE => file.so.(C-A).A.R
-libbpp_popgen_la_LDFLAGS = -version-info 2:0:1
+libbpp_popgen_la_LDFLAGS = -version-info 2:1:1
 
 library_includedir=$(includedir)/Pop
 library_include_HEADERS = $(H_FILES)

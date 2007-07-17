@@ -1,5 +1,9 @@
+06/07/07 -*- Version 1.1.1 -*-
+
 15/05/07 Julien Dutheil
 * Compatibility update (NumCalc).
+* PopGenLib does not depend anymore on PhylLib.
+* Coord and Locality classes code improved.
 
 28/08/06 -*- Version 1.1.0 -*-
 
