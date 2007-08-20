@@ -1103,7 +1103,7 @@ Vdouble SequenceStatistics::pairwiseR2(const PolymorphismSequenceContainer & psc
 double SequenceStatistics::meanD(const PolymorphismSequenceContainer & psc, bool keepsingleton, double freqmin) throw (DimensionException)
 {
   Vdouble D = pairwiseD(psc, keepsingleton, freqmin);
-  return VectorTools::mean(D);
+  return VectorTools::mean<double, double>(D);
 }
 
 double SequenceStatistics::meanDprime(const PolymorphismSequenceContainer & psc, bool keepsingleton, double freqmin) throw (DimensionException)
@@ -1111,7 +1111,7 @@ double SequenceStatistics::meanDprime(const PolymorphismSequenceContainer & psc,
   try
   {
     Vdouble Dprime = pairwiseDprime(psc, keepsingleton, freqmin);
-    return VectorTools::mean(Dprime);
+    return VectorTools::mean<double, double>(Dprime);
   }
   catch (DimensionException & e) {throw e;}
 }
@@ -1121,7 +1121,7 @@ double SequenceStatistics::meanR2(const PolymorphismSequenceContainer & psc, boo
   try
   {
     Vdouble R2 = SequenceStatistics::pairwiseR2(psc, keepsingleton, freqmin);
-    return VectorTools::mean(R2);
+    return VectorTools::mean<double, double>(R2);
   }
   catch (DimensionException & e) {throw e;}
 }
@@ -1131,7 +1131,7 @@ double SequenceStatistics::meanDistance1(const PolymorphismSequenceContainer & p
   try
   {
     Vdouble dist = pairwiseDistances1(psc, keepsingleton, freqmin);
-    return VectorTools::mean(dist);
+    return VectorTools::mean<double, double>(dist);
   }
   catch (DimensionException & e) {throw e;}
 }
@@ -1141,7 +1141,7 @@ double SequenceStatistics::meanDistance2(const PolymorphismSequenceContainer & p
   try
   {
     Vdouble dist = pairwiseDistances2(psc, keepsingleton, freqmin);
-    return VectorTools::mean(dist);
+    return VectorTools::mean<double, double>(dist);
   }
   catch (DimensionException & e) {throw e;}
 }
@@ -1201,8 +1201,8 @@ Vdouble SequenceStatistics::linearRegressionD(const PolymorphismSequenceContaine
     Vdouble reg(2);
     if(distance1) dist = pairwiseDistances1(psc, keepsingleton, freqmin) / 1000;
     else dist = pairwiseDistances2(psc, keepsingleton, freqmin) / 1000;
-    reg[0] = VectorTools::cov(dist, D) / VectorTools::var(dist);
-    reg[1] = VectorTools::mean(D) - reg[0] * VectorTools::mean(dist);
+    reg[0] = VectorTools::cov<double, double>(dist, D) / VectorTools::var<double, double>(dist);
+    reg[1] = VectorTools::mean<double, double>(D) - reg[0] * VectorTools::mean<double, double>(dist);
     return reg;
   }
   catch (DimensionException & e) {throw e;}
@@ -1218,8 +1218,8 @@ Vdouble SequenceStatistics::linearRegressionDprime(const PolymorphismSequenceCon
     Vdouble reg(2);
     if(distance1) dist = pairwiseDistances1(psc, keepsingleton, freqmin) / 1000;
     else dist = pairwiseDistances2(psc, keepsingleton, freqmin) / 1000;
-    reg[0] = VectorTools::cov(dist, Dprime) / VectorTools::var(dist);
-    reg[1] = VectorTools::mean(Dprime) - reg[0] * VectorTools::mean(dist);
+    reg[0] = VectorTools::cov<double, double>(dist, Dprime) / VectorTools::var<double, double>(dist);
+    reg[1] = VectorTools::mean<double, double>(Dprime) - reg[0] * VectorTools::mean<double, double>(dist);
     return reg;
   }
   catch (DimensionException & e) {throw e;}
@@ -1235,8 +1235,8 @@ Vdouble SequenceStatistics::linearRegressionR2(const PolymorphismSequenceContain
     Vdouble reg(2);
     if(distance1) dist = pairwiseDistances1(psc, keepsingleton, freqmin) / 1000;
     else dist = pairwiseDistances2(psc, keepsingleton, freqmin) / 1000;
-    reg[0] = VectorTools::cov(dist, R2) / VectorTools::var(dist);
-    reg[1] = VectorTools::mean(R2) - reg[0] * VectorTools::mean(dist);
+    reg[0] = VectorTools::cov<double, double>(dist, R2) / VectorTools::var<double, double>(dist);
+    reg[1] = VectorTools::mean<double, double>(R2) - reg[0] * VectorTools::mean<double, double>(dist);
     return reg;
   }
   catch (DimensionException & e) {throw e;}
