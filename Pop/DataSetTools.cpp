@@ -1,12 +1,11 @@
-/*
- * File DataSetTools.cpp
- * Author : Sylvain Gaillard <yragael2001@yahoo.fr>
- * Last modification : Wednesday August 04 2004
- *
-*/
+//
+// File DataSetTools.cpp
+// Author : Sylvain Gaillard
+// Last modification : Wednesday August 04 2004
+//
+
 /*
 Copyright or © or Copr. CNRS, (November 17, 2004)
-
 
 This software is a computer program whose purpose is to provide classes
 for population genetics analysis.
@@ -37,9 +36,13 @@ same conditions as regards security.
 The fact that you are presently reading this means that you have had
 knowledge of the CeCILL license and that you accept its terms.
 */
+
 #include "DataSetTools.h"
 
-DataSet * DataSetTools::buildDataSet(const OrderedSequenceContainer & osc) throw (Exception) {
+using namespace bpp;
+
+DataSet * DataSetTools::buildDataSet(const OrderedSequenceContainer & osc) throw (Exception)
+{
 	DataSet * d_s = new DataSet();
 	d_s->addEmptyGroup(0);
 	for (unsigned int i = 0 ; i < osc.getNumberOfSequences() ; i++) {
@@ -54,7 +57,8 @@ DataSet * DataSetTools::buildDataSet(const OrderedSequenceContainer & osc) throw
 	return d_s;
 }
 
-DataSet * DataSetTools::buildDataSet(const PolymorphismSequenceContainer & psc) throw (Exception) {
+DataSet * DataSetTools::buildDataSet(const PolymorphismSequenceContainer & psc) throw (Exception)
+{
 	DataSet * d_s = new DataSet();
 	set<unsigned int> grp_ids = psc.getAllGroupsIds();
 	for (set<unsigned int>::iterator it = grp_ids.begin() ; it != grp_ids.end() ; it++)
@@ -73,3 +77,4 @@ DataSet * DataSetTools::buildDataSet(const PolymorphismSequenceContainer & psc) 
 	}
 	return d_s;
 }
+

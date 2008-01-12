@@ -1,13 +1,12 @@
-/*
- * File PolymorphismMultiGContainerTools.cpp
- * Author : Sylvain Gailard <yragael2001@yahoo.fr>
- *           Khalid Belkhir
- * Last modification : june 15 2006
- *
-*/
+//
+// File PolymorphismMultiGContainerTools.cpp
+// Author : Sylvain Gailard
+//          Khalid Belkhir
+// Last modification : june 15 2006
+//
+
 /*
 Copyright or © or Copr. CNRS, (November 17, 2004)
-
 
 This software is a computer program whose purpose is to provide classes
 for population genetics analysis.
@@ -38,11 +37,15 @@ same conditions as regards security.
 The fact that you are presently reading this means that you have had
 knowledge of the CeCILL license and that you accept its terms.
 */
+
 #include "PolymorphismMultiGContainerTools.h"
+
+using namespace bpp;
 
 PolymorphismMultiGContainerTools::~PolymorphismMultiGContainerTools() {}
 
-PolymorphismMultiGContainer PolymorphismMultiGContainerTools::permutMultiG(const PolymorphismMultiGContainer & pmgc) {
+PolymorphismMultiGContainer PolymorphismMultiGContainerTools::permutMultiG(const PolymorphismMultiGContainer & pmgc)
+{
 	PolymorphismMultiGContainer permuted_pmgc(pmgc);
 	vector<unsigned int> groups;
 	for (unsigned int i = 0 ; i < permuted_pmgc.size() ; i++)
@@ -53,7 +56,8 @@ PolymorphismMultiGContainer PolymorphismMultiGContainerTools::permutMultiG(const
 	return permuted_pmgc;
 }
 
-PolymorphismMultiGContainer PolymorphismMultiGContainerTools::permutMonoG(const PolymorphismMultiGContainer & pmgc, const set<unsigned int> & groups) {
+PolymorphismMultiGContainer PolymorphismMultiGContainerTools::permutMonoG(const PolymorphismMultiGContainer & pmgc, const set<unsigned int> & groups)
+{
 	PolymorphismMultiGContainer permuted_pmgc;
 	unsigned int loc_num = pmgc.getNumberOfLoci();
 	vector<vector<const MonolocusGenotype *> > mono_gens;
@@ -97,7 +101,8 @@ PolymorphismMultiGContainer PolymorphismMultiGContainerTools::permutMonoG(const 
 	return permuted_pmgc;
 }
 
-PolymorphismMultiGContainer PolymorphismMultiGContainerTools::permutIntraGroupMonoG(const PolymorphismMultiGContainer & pmgc, const set<unsigned int> & groups) {
+PolymorphismMultiGContainer PolymorphismMultiGContainerTools::permutIntraGroupMonoG(const PolymorphismMultiGContainer & pmgc, const set<unsigned int> & groups)
+{
 	PolymorphismMultiGContainer permuted_pmgc;
 	unsigned int loc_num = pmgc.getNumberOfLoci();
 	vector<vector<const MonolocusGenotype *> > mono_gens;
@@ -160,7 +165,8 @@ PolymorphismMultiGContainer PolymorphismMultiGContainerTools::permutIntraGroupMo
 	return permuted_pmgc;
 }
 
-PolymorphismMultiGContainer PolymorphismMultiGContainerTools::permutAlleles(const PolymorphismMultiGContainer & pmgc, const set<unsigned int> & groups) {
+PolymorphismMultiGContainer PolymorphismMultiGContainerTools::permutAlleles(const PolymorphismMultiGContainer & pmgc, const set<unsigned int> & groups)
+{
 	PolymorphismMultiGContainer permuted_pmgc;
 	unsigned int loc_num = pmgc.getNumberOfLoci();
 	vector<vector<unsigned int> > alleles;
@@ -209,8 +215,8 @@ PolymorphismMultiGContainer PolymorphismMultiGContainerTools::permutAlleles(cons
 	return permuted_pmgc;
 }
 
-
-PolymorphismMultiGContainer PolymorphismMultiGContainerTools::permutIntraGroupAlleles(const PolymorphismMultiGContainer & pmgc, const set<unsigned int> & groups) {
+PolymorphismMultiGContainer PolymorphismMultiGContainerTools::permutIntraGroupAlleles(const PolymorphismMultiGContainer & pmgc, const set<unsigned int> & groups)
+{
 	PolymorphismMultiGContainer permuted_pmgc;
 	unsigned int loc_num = pmgc.getNumberOfLoci();
 	vector<vector<unsigned int> > alleles;
@@ -291,12 +297,10 @@ PolymorphismMultiGContainer PolymorphismMultiGContainerTools::permutIntraGroupAl
     }
 
     return permuted_pmgc;
-
-
 }
 
-PolymorphismMultiGContainer PolymorphismMultiGContainerTools::extractGroups(const PolymorphismMultiGContainer & pmgc, const set<unsigned int> & groups) {
-
+PolymorphismMultiGContainer PolymorphismMultiGContainerTools::extractGroups(const PolymorphismMultiGContainer & pmgc, const set<unsigned int> & groups)
+{
 	PolymorphismMultiGContainer sub_pmgc;
     for (set<unsigned int>::const_iterator g = groups.begin(); g != groups.end() ; g++)//for each group
     {
@@ -330,3 +334,4 @@ PolymorphismMultiGContainer PolymorphismMultiGContainerTools::extractGroups(cons
 
 	return sub_pmgc;
 }
+

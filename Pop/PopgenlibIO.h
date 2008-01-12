@@ -1,12 +1,11 @@
-/*
- * File PopgenlibIO.h
- * Author : Sylvain Gaillard <yragael2001@yahoo.fr>
- * Last modification : Thursday July 29 2004
- *
-*/
+//
+// File PopgenlibIO.h
+// Author : Sylvain Gaillard
+// Last modification : Thursday July 29 2004
+//
+
 /*
 Copyright or © or Copr. CNRS, (November 17, 2004)
-
 
 This software is a computer program whose purpose is to provide classes
 for population genetics analysis.
@@ -37,7 +36,7 @@ same conditions as regards security.
 The fact that you are presently reading this means that you have had
 knowledge of the CeCILL license and that you accept its terms.
 */
-// Secured inclusion of header's file
+
 #ifndef _POPULIBIO_H_
 #define _POPULIBIO_H_
 
@@ -55,10 +54,16 @@ knowledge of the CeCILL license and that you accept its terms.
 #include "AbstractODataSet.h"
 #include "BasicAlleleInfo.h"
 
+namespace bpp
+{
+
 /**
  * @brief The natif I/O format for popgenlib.
  */
-class PopgenlibIO : public AbstractIDataSet, public AbstractODataSet {
+class PopgenlibIO:
+  public AbstractIDataSet,
+  public AbstractODataSet
+{
 	public: // Constantes
 		static const string WHITESPACE;
 		static const string TAB;
@@ -172,4 +177,7 @@ class PopgenlibIO : public AbstractIDataSet, public AbstractODataSet {
 		void _parseIndividual(const vector<string> & in, DataSet & data_set, const VectorSequenceContainer & vsc);
 };
 
+} //end of namespace bpp;
+
 #endif // _POPULIBIO_H_
+

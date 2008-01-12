@@ -43,6 +43,7 @@ knowledge of the CeCILL license and that you accept its terms.
 #define _POLYMORPHISMSEQUENCECONTAINER_H_
 
 #include <set>
+
 using namespace std;
 
 #include <Utils/Clonable.h>
@@ -52,13 +53,17 @@ using namespace std;
 #include <Seq/VectorSiteContainer.h>
 #include <Seq/SequenceContainerTools.h>
 
+namespace bpp
+{
+
 /**
  * @brief The PolymorphismSequenceContainer class.
  *
  * This is a VectorSiteContainer with effectif for each sequence.
  * It also has flag for ingroup and outgroup.
  */
-class PolymorphismSequenceContainer : public VectorSiteContainer
+class PolymorphismSequenceContainer:
+  public VectorSiteContainer
 {
 	public: // Constructors and destructor
 		/**
@@ -291,4 +296,7 @@ class PolymorphismSequenceContainer : public VectorSiteContainer
 		vector<unsigned int> _group;
 };
 
+} //end of namespace bpp;
+
 #endif	//_POLYMORPHISMSEQUENCECONTAINER_H_
+

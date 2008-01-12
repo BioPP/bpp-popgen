@@ -1,12 +1,11 @@
-/*
- * File PolymorphismMultiGContainer.h
- * Author : Sylvain Gaillard <yragael2001@yahoo.fr>
- * Last modification : Tuesday September 28 2004
- *
-*/
+//
+// File PolymorphismMultiGContainer.h
+// Author : Sylvain Gaillard <yragael2001@yahoo.fr>
+// Last modification : Tuesday September 28 2004
+//
+
 /*
 Copyright or © or Copr. CNRS, (November 17, 2004)
-
 
 This software is a computer program whose purpose is to provide classes
 for population genetics analysis.
@@ -37,14 +36,9 @@ same conditions as regards security.
 The fact that you are presently reading this means that you have had
 knowledge of the CeCILL license and that you accept its terms.
 */
-// Secured inclusion of header's file
+
 #ifndef _POLYMORPHYSMMULTIGCONTAINER_H_
 #define _POLYMORPHYSMMULTIGCONTAINER_H_
-
-// From C library
-#include <cmath>
-
-
 
 // From Utils
 #include <Utils/Clonable.h>
@@ -57,18 +51,25 @@ knowledge of the CeCILL license and that you accept its terms.
 #include "GeneralExceptions.h"
 
 // From STL
+#include <cmath>
 #include <string>
 #include <vector>
 #include <map>
 #include <set>
 #include <algorithm>
+
 using namespace std;
+
+namespace bpp
+{
+
 /**
  * @brief The PolymorphismMultiGContainer class
  *
  * This class is a container of MultilocusGenotype.
  */
-class PolymorphismMultiGContainer {
+class PolymorphismMultiGContainer
+{
 	public: // Constructors and destructor
 
 		/**
@@ -205,5 +206,7 @@ class PolymorphismMultiGContainer {
 		map<unsigned int, string> _groups_names;
 		
 };
+
+} //end of namespace bpp;
 
 #endif // _POLYMORPHYSMMULTIGCONTAINER_H_

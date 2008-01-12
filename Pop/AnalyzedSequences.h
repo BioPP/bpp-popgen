@@ -1,9 +1,9 @@
-/*
- * File AnalyzedSequences.h
- * Author : Sylvain Gaillard <yragael2001@yahoo.fr>
- * Last modification : Thursday July 29 2004
- *
-*/
+//
+// File AnalyzedSequences.h
+// Author : Sylvain Gaillard
+// Last modification : Thursday July 29 2004
+//
+
 /*
 Copyright or © or Copr. CNRS, (November 17, 2004)
 
@@ -37,7 +37,7 @@ same conditions as regards security.
 The fact that you are presently reading this means that you have had
 knowledge of the CeCILL license and that you accept its terms.
 */
-// Secured inclusion of header's file
+
 #ifndef _ANALYZEDSEQUENCES_H_
 #define _ANALYZEDSEQUENCES_H_
 
@@ -47,12 +47,16 @@ knowledge of the CeCILL license and that you accept its terms.
 #include <Seq/RNA.h>
 #include <Seq/ProteicAlphabet.h>
 
+namespace bpp
+{
+
 /**
  * @brief The AnalyzedSequences class.
  *
  * This is a class to store info about the sequences.
  */
-class AnalyzedSequences {
+class AnalyzedSequences
+{
 	public: // Constructor and destructor
 		AnalyzedSequences();
 		~AnalyzedSequences();
@@ -82,4 +86,7 @@ class AnalyzedSequences {
 		const Alphabet * _alphabet;
 };
 
+} //end of namespace bpp;
+
 #endif // _ANALYZEDSEQUENCES_H_
+

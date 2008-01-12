@@ -1,9 +1,9 @@
-/*
- * File Group.cpp
- * Author : Sylvain Gaillard <yragael2001@yahoo.fr>
- * Last modification : Thursday July 29 2004
- *
-*/
+//
+// File Group.cpp
+// Author : Sylvain Gaillard
+// Last modification : Thursday July 29 2004
+//
+
 /*
 Copyright or © or Copr. CNRS, (November 17, 2004)
 
@@ -37,53 +37,67 @@ same conditions as regards security.
 The fact that you are presently reading this means that you have had
 knowledge of the CeCILL license and that you accept its terms.
 */
+
 #include "Group.h"
 
+using namespace bpp;
+
 //** Class constructors: ******************************************************/
-Group::Group(unsigned int group_id) {
+Group::Group(unsigned int group_id)
+{
 	setGroupId(group_id);
 }
 
-Group::Group(const Group & group) {
+Group::Group(const Group & group)
+{
 	setGroupId(group.getGroupId());
 	for (unsigned int i = 0 ; i < group.getNumberOfIndividuals() ; i++)
 		addIndividual(* (group.getIndividualAtPosition(i)));
 }
 
-Group::Group(const Group & group, unsigned int group_id) {
+Group::Group(const Group & group, unsigned int group_id)
+{
 	setGroupId(group_id);
 	for (unsigned int i = 0 ; i < group.getNumberOfIndividuals() ; i++)
 		addIndividual(* (group.getIndividualAtPosition(i)));
 }
 
 //** Class destructor: ********************************************************/
+
 Group::~Group () {}
 
 //** Other methodes: **********************************************************/
-Group & Group::operator= (const Group & group) {
+
+Group & Group::operator= (const Group & group)
+{
 	setGroupId(group.getGroupId());
 	for (unsigned int i = 0 ; i < group.getNumberOfIndividuals() ; i++)
 		addIndividual(* (group.getIndividualAtPosition(i)));
 	return * this;
 }
 
-void Group::setGroupId(unsigned int group_id) {
+void Group::setGroupId(unsigned int group_id)
+{
 	_id = group_id;
 }
 
-unsigned int Group::getGroupId() const {
+unsigned int Group::getGroupId() const
+{
 	return _id;
 }
 
-void Group::setGroupName(string group_name) {
+void Group::setGroupName(string group_name)
+{
 	_name = group_name;
 }
 
-string Group::getGroupName() const {
+string Group::getGroupName() const
+{
 	return _name;
 }
 
-void Group::addIndividual(const Individual & ind) throw (BadIdentifierException) {
+void Group::addIndividual(const Individual & ind) throw (BadIdentifierException)
+{
 	try {
 		getIndividualPosition(ind.getId());
 		throw BadIdentifierException("Group::addIndividual: individual id already used.", ind.getId());
@@ -92,21 +106,24 @@ void Group::addIndividual(const Individual & ind) throw (BadIdentifierException)
 	_individuals.push_back(new Individual(ind));
 }
 
-void Group::addEmptyIndividual(const string & individual_id) throw (BadIdentifierException) {
+void Group::addEmptyIndividual(const string & individual_id) throw (BadIdentifierException)
+{
 	for (unsigned int i = 0 ; i < getNumberOfIndividuals() ; i++)
 		if (_individuals[i]->getId() == individual_id)
 			throw BadIdentifierException("Group::addEmptyIndividual: individual_id already in use.", individual_id);
 	_individuals.push_back(new Individual(individual_id));
 }
 
-unsigned int Group::getIndividualPosition(const string individual_id) const throw (IndividualNotFoundException) {
+unsigned int Group::getIndividualPosition(const string individual_id) const throw (IndividualNotFoundException)
+{
 	for (unsigned int i = 0 ; i < getNumberOfIndividuals() ; i++)
 		if (_individuals[i]->getId() == individual_id)
 			return i;
 	throw IndividualNotFoundException("Group::getIndividualPosition: individual_id not found.", individual_id);
 }
 
-Individual * Group::removeIndividualById(const string individual_id) throw (IndividualNotFoundException) {
+Individual * Group::removeIndividualById(const string individual_id) throw (IndividualNotFoundException)
+{
 	try {
 		unsigned int indPos = getIndividualPosition(individual_id);
 		Individual * ind = _individuals[indPos];
@@ -118,7 +135,8 @@ Individual * Group::removeIndividualById(const string individual_id) throw (Indi
 	}
 }
 
-Individual * Group::removeIndividualAtPosition(unsigned int individual_position) throw (IndexOutOfBoundsException) {
+Individual * Group::removeIndividualAtPosition(unsigned int individual_position) throw (IndexOutOfBoundsException)
+{
 	if (individual_position >= _individuals.size())
 		throw IndexOutOfBoundsException("Group::removeIndividualAtPosition.", individual_position, 0, _individuals.size());
 	Individual * ind = _individuals[individual_position];
@@ -126,7 +144,8 @@ Individual * Group::removeIndividualAtPosition(unsigned int individual_position)
 	return ind;
 }
 
-void Group::deleteIndividualById(const string individual_id) throw (IndividualNotFoundException) {
+void Group::deleteIndividualById(const string individual_id) throw (IndividualNotFoundException)
+{
 	try {
 		Individual * ind = removeIndividualById(individual_id);
 		delete ind;
@@ -136,7 +155,8 @@ void Group::deleteIndividualById(const string individual_id) throw (IndividualNo
 	}
 }
 
-void Group::deleteIndividualAtPosition(unsigned int individual_position) throw (IndexOutOfBoundsException) {
+void Group::deleteIndividualAtPosition(unsigned int individual_position) throw (IndexOutOfBoundsException)
+{
 	try {
 		Individual * ind = removeIndividualAtPosition(individual_position);
 		delete ind;
@@ -146,13 +166,15 @@ void Group::deleteIndividualAtPosition(unsigned int individual_position) throw (
 	}
 }
 
-void Group::clear() {
+void Group::clear()
+{
 	for (unsigned int i = 0 ; i < _individuals.size() ; i++)
 		delete(_individuals[i]);
 	_individuals.clear();
 }
 
-const Individual * Group::getIndividualById(const string individual_id) const {
+const Individual * Group::getIndividualById(const string individual_id) const
+{
 	for (unsigned int i = 0 ; i < _individuals.size() ; i++) {
 		if (_individuals[i]->getId() == individual_id)
 			return getIndividualAtPosition(i);
@@ -161,17 +183,20 @@ const Individual * Group::getIndividualById(const string individual_id) const {
 }
 
 const Individual * Group::getIndividualAtPosition(unsigned int individual_position) const
-throw (IndexOutOfBoundsException) {
+  throw (IndexOutOfBoundsException)
+{
 	if (individual_position >= _individuals.size())
 		throw IndexOutOfBoundsException("Group::getIndividualAtPosition: individual_position out of bounds.", individual_position, 0, _individuals.size());
 	return _individuals[individual_position];
 }
 
-unsigned int Group::getNumberOfIndividuals() const {
+unsigned int Group::getNumberOfIndividuals() const
+{
 	return _individuals.size();
 }
 
-unsigned int Group::getMaxNumberOfSequences() const {
+unsigned int Group::getMaxNumberOfSequences() const
+{
 	unsigned int maxnum = 0;
 	for (unsigned int i = 0 ; i < getNumberOfIndividuals() ; i++) {
 		vector<unsigned int> seqpos = _individuals[i]->getSequencesPositions();
@@ -182,25 +207,30 @@ unsigned int Group::getMaxNumberOfSequences() const {
 }
 
 //-- Dealing with individual's properties -----------------
-void Group::setIndividualSexAtPosition(unsigned int individual_position, const unsigned short sex) throw (IndexOutOfBoundsException) {
+
+void Group::setIndividualSexAtPosition(unsigned int individual_position, const unsigned short sex) throw (IndexOutOfBoundsException)
+{
 	if (individual_position >= getNumberOfIndividuals())
 		throw IndexOutOfBoundsException("Group::setIndividualSexAtPosition: individual_position out of bounds.", individual_position, 0, getNumberOfIndividuals());
 	_individuals[individual_position]->setSex(sex);
 }
 
-unsigned short Group::getIndividualSexAtPosition(unsigned int individual_position) const throw (IndexOutOfBoundsException) {
+unsigned short Group::getIndividualSexAtPosition(unsigned int individual_position) const throw (IndexOutOfBoundsException)
+{
 	if (individual_position >= getNumberOfIndividuals())
 		throw IndexOutOfBoundsException("Group::getIndividualSexAtPosition: individual_position out of bounds.", individual_position, 0, getNumberOfIndividuals());
 	return _individuals[individual_position]->getSex();
 }
 
-void Group::setIndividualDateAtPosition(unsigned int individual_position, const Date & date) throw (IndexOutOfBoundsException) {
+void Group::setIndividualDateAtPosition(unsigned int individual_position, const Date & date) throw (IndexOutOfBoundsException)
+{
 	if (individual_position >= getNumberOfIndividuals())
 		throw IndexOutOfBoundsException("Group::setIndividualDateAtPosition: individual_position out of bounds.", individual_position, 0, getNumberOfIndividuals());
 	_individuals[individual_position]->setDate(date);
 }
 
-const Date * Group::getIndividualDateAtPosition(unsigned int individual_position) const throw (Exception) {
+const Date * Group::getIndividualDateAtPosition(unsigned int individual_position) const throw (Exception)
+{
 	if (individual_position >= getNumberOfIndividuals())
 		throw IndexOutOfBoundsException("Group::getIndividualDateAtPosition: individual_position out of bounds.", individual_position, 0, getNumberOfIndividuals());
 	try {
@@ -211,13 +241,15 @@ const Date * Group::getIndividualDateAtPosition(unsigned int individual_position
 	}
 }
 
-void Group::setIndividualCoordAtPosition(unsigned int individual_position, const Coord<double> & coord) throw (IndexOutOfBoundsException) {
+void Group::setIndividualCoordAtPosition(unsigned int individual_position, const Coord<double> & coord) throw (IndexOutOfBoundsException)
+{
 	if (individual_position >= getNumberOfIndividuals())
 		throw IndexOutOfBoundsException("Group::setIndividualCoordAtPosition: individual_position out of bounds.", individual_position, 0, getNumberOfIndividuals());
 	_individuals[individual_position]->setCoord(coord);
 }
 
-const Coord<double> * Group::getIndividualCoordAtPosition(unsigned int individual_position) const throw (Exception) {
+const Coord<double> * Group::getIndividualCoordAtPosition(unsigned int individual_position) const throw (Exception)
+{
 	if (individual_position >= getNumberOfIndividuals())
 		throw IndexOutOfBoundsException("Group::getIndividualCoordAtPosition: individual_position out of bounds.", individual_position, 0, getNumberOfIndividuals());
 	try {
@@ -228,13 +260,15 @@ const Coord<double> * Group::getIndividualCoordAtPosition(unsigned int individua
 	}
 }
 
-void Group::setIndividualLocalityAtPosition(unsigned int individual_position, const Locality<double> * locality) throw (IndexOutOfBoundsException) {
+void Group::setIndividualLocalityAtPosition(unsigned int individual_position, const Locality<double> * locality) throw (IndexOutOfBoundsException)
+{
 	if (individual_position >= getNumberOfIndividuals())
 		throw IndexOutOfBoundsException("Group::setIndividualLocalityAtPosition: individual_position out of bounds.", individual_position, 0, getNumberOfIndividuals());
 	_individuals[individual_position]->setLocality(locality);
 }
 
-const Locality<double> * Group::getIndividualLocalityAtPosition(unsigned int individual_position) const throw (Exception) {
+const Locality<double> * Group::getIndividualLocalityAtPosition(unsigned int individual_position) const throw (Exception)
+{
 	if (individual_position >= getNumberOfIndividuals())
 		throw IndexOutOfBoundsException("Group::getIndividualLocalityAtPosition: individual_position out of bounds.", individual_position, 0, getNumberOfIndividuals());
 	try {
@@ -245,7 +279,8 @@ const Locality<double> * Group::getIndividualLocalityAtPosition(unsigned int ind
 	}
 }
 
-void Group::addIndividualSequenceAtPosition(unsigned int individual_position, unsigned int sequence_position, const Sequence & sequence) throw (Exception) {
+void Group::addIndividualSequenceAtPosition(unsigned int individual_position, unsigned int sequence_position, const Sequence & sequence) throw (Exception)
+{
 	if (individual_position >= getNumberOfIndividuals())
 		throw IndexOutOfBoundsException("Group::addIndividualSequenceAtPosition: individual_position out of bounds.", individual_position, 0, getNumberOfIndividuals());
 	try {
@@ -262,7 +297,8 @@ void Group::addIndividualSequenceAtPosition(unsigned int individual_position, un
 	}
 }
 
-const Sequence * Group::getIndividualSequenceByName(unsigned int individual_position, const string & sequence_name) const throw (Exception) {
+const Sequence * Group::getIndividualSequenceByName(unsigned int individual_position, const string & sequence_name) const throw (Exception)
+{
 	if (individual_position >= getNumberOfIndividuals())
 		throw IndexOutOfBoundsException("Group::getIndividualSequenceByName: individual_position out of bounds.", individual_position, 0, getNumberOfIndividuals());
 	try {
@@ -276,7 +312,8 @@ const Sequence * Group::getIndividualSequenceByName(unsigned int individual_posi
 	}
 }
 
-const Sequence * Group::getIndividualSequenceAtPosition(unsigned int individual_position, unsigned int sequence_position) const throw (Exception) {
+const Sequence * Group::getIndividualSequenceAtPosition(unsigned int individual_position, unsigned int sequence_position) const throw (Exception)
+{
 	if (individual_position >= getNumberOfIndividuals())
 		 throw IndexOutOfBoundsException("Group::getIndividualAtPosition: individual_position out of bounds.", individual_position, 0, getNumberOfIndividuals());
 	try {
@@ -290,7 +327,8 @@ const Sequence * Group::getIndividualSequenceAtPosition(unsigned int individual_
 	}
 }
 
-void Group::deleteIndividualSequenceByName(unsigned int individual_position, const string & sequence_name) throw (Exception) {
+void Group::deleteIndividualSequenceByName(unsigned int individual_position, const string & sequence_name) throw (Exception)
+{
 	if (individual_position >= getNumberOfIndividuals())
 		throw IndexOutOfBoundsException("Group::deleteIndividualSequenceByName: individual_position out of bounds.", individual_position, 0, getNumberOfIndividuals());
 	try {
@@ -304,7 +342,8 @@ void Group::deleteIndividualSequenceByName(unsigned int individual_position, con
 	}
 }
 
-void Group::deleteIndividualSequenceAtPosition(unsigned int individual_position, unsigned int sequence_position) throw (Exception) {
+void Group::deleteIndividualSequenceAtPosition(unsigned int individual_position, unsigned int sequence_position) throw (Exception)
+{
 	if (individual_position >= getNumberOfIndividuals())
 		throw IndexOutOfBoundsException("Group::deleteIndividualSequenceAtPosition: individual_position out of bounds.", individual_position, 0, getNumberOfIndividuals());
 	try {
@@ -318,13 +357,15 @@ void Group::deleteIndividualSequenceAtPosition(unsigned int individual_position,
 	}
 }
 
-bool Group::hasIndividualSequences(unsigned int individual_position) const throw (IndexOutOfBoundsException) {
+bool Group::hasIndividualSequences(unsigned int individual_position) const throw (IndexOutOfBoundsException)
+{
 	if (individual_position >= getNumberOfIndividuals())
 		throw IndexOutOfBoundsException("Group::hasIndividualSequences: individual_position out of bounds.", individual_position, 0, getNumberOfIndividuals());
 	return _individuals[individual_position]->hasSequences();
 }
 
-vector<string> Group::getIndividualSequencesNames(unsigned int individual_position) const throw (Exception) {
+vector<string> Group::getIndividualSequencesNames(unsigned int individual_position) const throw (Exception)
+{
 	if (individual_position >= getNumberOfIndividuals())
 		throw IndexOutOfBoundsException("Group::getIndividualSequencesNames: individual_position out of bounds.", individual_position, 0, getNumberOfIndividuals());
 	try {
@@ -335,7 +376,8 @@ vector<string> Group::getIndividualSequencesNames(unsigned int individual_positi
 	}
 }
 
-unsigned int Group::getIndividualSequencePosition(unsigned int individual_position, const string & sequence_name) const throw (Exception) {
+unsigned int Group::getIndividualSequencePosition(unsigned int individual_position, const string & sequence_name) const throw (Exception)
+{
 	if (individual_position >= getNumberOfIndividuals())
 		throw IndexOutOfBoundsException("Group::getIndividualSequencePosition: individual_position out of bounds.", individual_position, 0, getNumberOfIndividuals());
 	try {
@@ -349,7 +391,8 @@ unsigned int Group::getIndividualSequencePosition(unsigned int individual_positi
 	}
 }
 
-unsigned int Group::getIndividualNumberOfSequences(unsigned int individual_position) const throw (Exception) {
+unsigned int Group::getIndividualNumberOfSequences(unsigned int individual_position) const throw (Exception)
+{
 	if (individual_position >= getNumberOfIndividuals())
 		throw IndexOutOfBoundsException("Group::getIndividualNumberOfSequences: individual_position out of bounds.", individual_position, 0, getNumberOfIndividuals());
 	try {
@@ -360,19 +403,22 @@ unsigned int Group::getIndividualNumberOfSequences(unsigned int individual_posit
 	}
 }
 
-void Group::setIndividualSequences(unsigned int individual_position, const MapSequenceContainer & msc) throw (IndexOutOfBoundsException) {
+void Group::setIndividualSequences(unsigned int individual_position, const MapSequenceContainer & msc) throw (IndexOutOfBoundsException)
+{
 	if (individual_position >= getNumberOfIndividuals())
 		throw IndexOutOfBoundsException("Group::setIndividualSequences: individual_position out of bounds.", individual_position, 0, getNumberOfIndividuals());
 	_individuals[individual_position]->setSequences(msc);
 }
 
-void Group::setIndividualGenotype(unsigned int individual_position, const MultilocusGenotype & genotype) throw (IndexOutOfBoundsException) {
+void Group::setIndividualGenotype(unsigned int individual_position, const MultilocusGenotype & genotype) throw (IndexOutOfBoundsException)
+{
 	if (individual_position >= getNumberOfIndividuals())
 		throw IndexOutOfBoundsException("Group::setIndividualGenotype: individual_position out of bounds.", individual_position, 0, getNumberOfIndividuals());
 	_individuals[individual_position]->setGenotype(genotype);
 }
 
-void Group::initIndividualGenotype(unsigned int individual_position, unsigned int loci_number) throw (Exception) {
+void Group::initIndividualGenotype(unsigned int individual_position, unsigned int loci_number) throw (Exception)
+{
 	if (individual_position >= getNumberOfIndividuals())
 		throw IndexOutOfBoundsException("Group::initIndividualGenotype: individual_position out of bounds.", individual_position, 0, getNumberOfIndividuals());
 	try {
@@ -386,19 +432,22 @@ void Group::initIndividualGenotype(unsigned int individual_position, unsigned in
 	}
 }
 
-void Group::deleteIndividualGenotype(unsigned int individual_position) throw (IndexOutOfBoundsException) {
+void Group::deleteIndividualGenotype(unsigned int individual_position) throw (IndexOutOfBoundsException)
+{
 	if (individual_position >= getNumberOfIndividuals())
 		throw IndexOutOfBoundsException("Group::deleteIndividualGenotype: individual_position out of bounds.", individual_position, 0, getNumberOfIndividuals());
 	_individuals[individual_position]->deleteGenotype();
 }
 
-bool Group::hasIndividualGenotype(unsigned int individual_position) const throw (IndexOutOfBoundsException) {
+bool Group::hasIndividualGenotype(unsigned int individual_position) const throw (IndexOutOfBoundsException)
+{
 	if (individual_position >= getNumberOfIndividuals())
 		throw IndexOutOfBoundsException("Group::hasIndividualGenotype: individual_position out of bounds.", individual_position, 0, getNumberOfIndividuals());
 	return _individuals[individual_position]->hasGenotype();
 }
 
-void Group::setIndividualMonolocusGenotype(unsigned int individual_position, unsigned int locus_position, const MonolocusGenotype & monogen) throw (Exception) {
+void Group::setIndividualMonolocusGenotype(unsigned int individual_position, unsigned int locus_position, const MonolocusGenotype & monogen) throw (Exception)
+{
 	if (individual_position >= getNumberOfIndividuals())
 		throw IndexOutOfBoundsException("Group::setIndividualMonolocusGenotype: individual_position out of bounds.", individual_position, 0, getNumberOfIndividuals());
 	try {
@@ -412,7 +461,8 @@ void Group::setIndividualMonolocusGenotype(unsigned int individual_position, uns
 	}
 }
 
-void Group::setIndividualMonolocusGenotypeByAlleleKey(unsigned int individual_position, unsigned int locus_position, const vector<unsigned int> allele_keys) throw (Exception) {
+void Group::setIndividualMonolocusGenotypeByAlleleKey(unsigned int individual_position, unsigned int locus_position, const vector<unsigned int> allele_keys) throw (Exception)
+{
 	if (individual_position >= getNumberOfIndividuals())
 		throw IndexOutOfBoundsException("Group::setIndividualMonolocusGenotypeByAlleleKey: individual_position out of bounds.", individual_position, 0, getNumberOfIndividuals());
 	try {
@@ -429,7 +479,8 @@ void Group::setIndividualMonolocusGenotypeByAlleleKey(unsigned int individual_po
 	}
 }
 
-void Group::setIndividualMonolocusGenotypeByAlleleId(unsigned int individual_position, unsigned int locus_position, const vector<string> allele_id, const LocusInfo & locus_info) throw (Exception) {
+void Group::setIndividualMonolocusGenotypeByAlleleId(unsigned int individual_position, unsigned int locus_position, const vector<string> allele_id, const LocusInfo & locus_info) throw (Exception)
+{
 	if (individual_position >= getNumberOfIndividuals())
 		throw IndexOutOfBoundsException("Group::setIndividualMonolocusGenotypeByAlleleId: individual_position out of bounds.", individual_position, 0, getNumberOfIndividuals());
 	try {
@@ -446,7 +497,8 @@ void Group::setIndividualMonolocusGenotypeByAlleleId(unsigned int individual_pos
 	}
 }
 
-const MonolocusGenotype *  Group::getIndividualMonolocusGenotype(unsigned int individual_position, unsigned int locus_position) const throw (Exception) {
+const MonolocusGenotype *  Group::getIndividualMonolocusGenotype(unsigned int individual_position, unsigned int locus_position) const throw (Exception)
+{
 	if (individual_position >= getNumberOfIndividuals())
 		throw IndexOutOfBoundsException("Group::getIndividualMonolocusGenotype: individual_position out of bounds.", individual_position, 0, getNumberOfIndividuals());
 	try {
@@ -460,20 +512,23 @@ const MonolocusGenotype *  Group::getIndividualMonolocusGenotype(unsigned int in
 	}
 }
 
-bool Group::hasSequenceData() const {
+bool Group::hasSequenceData() const
+{
 	for (unsigned int i = 0 ; i < getNumberOfIndividuals() ; i++)
 		if (hasIndividualSequences(i)) return true;
 	return false;
 }
 
-const Alphabet * Group::getAlphabet() const throw (NullPointerException) {
+const Alphabet * Group::getAlphabet() const throw (NullPointerException)
+{
 	for (unsigned int i = 0 ; i < getNumberOfIndividuals() ; i++)
 		if (hasIndividualSequences(i))
 			return _individuals[i]->getSequenceAlphabet();
 	throw NullPointerException("Group::getAlphabet: individual has no sequence data.");
 }
 
-unsigned int Group::getGroupSizeForLocus(unsigned int locus_position) const {
+unsigned int Group::getGroupSizeForLocus(unsigned int locus_position) const
+{
 	unsigned int count = 0;
 	for (unsigned int i = 0 ; i < _individuals.size() ; i++)
 		if (_individuals[i]->hasGenotype() && !_individuals[i]->getGenotype()->isMonolocusGenotypeMissing(locus_position))
@@ -481,7 +536,8 @@ unsigned int Group::getGroupSizeForLocus(unsigned int locus_position) const {
 	return count;
 }
 
-unsigned int Group::getGroupSizeForSequence(unsigned int sequence_position) const {
+unsigned int Group::getGroupSizeForSequence(unsigned int sequence_position) const
+{
 	unsigned int count = 0;
 	for (unsigned int i = 0 ; i < _individuals.size() ; i++)
 		if (_individuals[i]->hasSequences()) {
@@ -493,3 +549,4 @@ unsigned int Group::getGroupSizeForSequence(unsigned int sequence_position) cons
 		}
 	return count;
 }
+

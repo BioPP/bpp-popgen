@@ -1,12 +1,11 @@
-/*
- * File MonoAlleleMonolocusGenotype.cpp
- * Author : Sylvain Gaillard <yragael2001@yahoo.fr>
- * Last modification : Thursday July 29 2004
- *
-*/
+//
+// File MonoAlleleMonolocusGenotype.cpp
+// Author : Sylvain Gaillard
+// Last modification : Thursday July 29 2004
+//
+
 /*
 Copyright or © or Copr. CNRS, (November 17, 2004)
-
 
 This software is a computer program whose purpose is to provide classes
 for population genetics analysis.
@@ -37,42 +36,56 @@ same conditions as regards security.
 The fact that you are presently reading this means that you have had
 knowledge of the CeCILL license and that you accept its terms.
 */
+
 #include "MonoAlleleMonolocusGenotype.h"
 
+using namespace bpp;
+
 //** Class constructor: *******************************************************/
-MonoAlleleMonolocusGenotype::MonoAlleleMonolocusGenotype(unsigned int allele_index) {
+
+MonoAlleleMonolocusGenotype::MonoAlleleMonolocusGenotype(unsigned int allele_index)
+{
 	_allele_index = allele_index;
 }
 
-MonoAlleleMonolocusGenotype::MonoAlleleMonolocusGenotype(vector<unsigned int> allele_index) throw (BadIntegerException) {
+MonoAlleleMonolocusGenotype::MonoAlleleMonolocusGenotype(vector<unsigned int> allele_index) throw (BadIntegerException)
+{
 	if (allele_index.size() != 1)
 		throw BadIntegerException("MonoAlleleMonolocusGenotype::MonoAlleleMonolocusGenotype: allele_index must conaines one value.", allele_index.size());
 	_allele_index = allele_index[0];
 }
 
-MonoAlleleMonolocusGenotype::MonoAlleleMonolocusGenotype(const MonoAlleleMonolocusGenotype & mmg) {
+MonoAlleleMonolocusGenotype::MonoAlleleMonolocusGenotype(const MonoAlleleMonolocusGenotype & mmg)
+{
 	_allele_index = mmg.getAlleleIndex()[0];
 }
 
 //** Class destructor: ********************************************************/
+
 MonoAlleleMonolocusGenotype::~MonoAlleleMonolocusGenotype() {}
 
 //** Other methodes: **********************************************************/
-MonoAlleleMonolocusGenotype & MonoAlleleMonolocusGenotype::operator= (const MonoAlleleMonolocusGenotype & mmg) {
+
+MonoAlleleMonolocusGenotype & MonoAlleleMonolocusGenotype::operator= (const MonoAlleleMonolocusGenotype & mmg)
+{
 	_allele_index = mmg.getAlleleIndex()[0];
 	return * this;
 }
 
-bool MonoAlleleMonolocusGenotype::operator== (const MonoAlleleMonolocusGenotype & mmg) const {
+bool MonoAlleleMonolocusGenotype::operator== (const MonoAlleleMonolocusGenotype & mmg) const
+{
 	return (_allele_index == mmg.getAlleleIndex()[0]);
 }
 
-vector<unsigned int> MonoAlleleMonolocusGenotype::getAlleleIndex() const {
+vector<unsigned int> MonoAlleleMonolocusGenotype::getAlleleIndex() const
+{
 	vector<unsigned int> index;
 	index.push_back(_allele_index);
 	return index;
 }
 
-Clonable * MonoAlleleMonolocusGenotype::clone() const {
+Clonable * MonoAlleleMonolocusGenotype::clone() const
+{
 	return new MonoAlleleMonolocusGenotype(* this);
 }
+

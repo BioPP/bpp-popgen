@@ -1,13 +1,12 @@
-/*
- * File PolymorphismMultiGContainerTools.h
- * Authors : Sylvain Gailard <yragael2001@yahoo.fr>
- *           Khalid Belkhir
- * Last modification : june 15 2006
- *
-*/
+//
+// File PolymorphismMultiGContainerTools.h
+// Authors : Sylvain Gailard
+//           Khalid Belkhir
+// Last modification : june 15 2006
+//
+
 /*
 Copyright or © or Copr. CNRS, (November 17, 2004)
-
 
 This software is a computer program whose purpose is to provide classes
 for population genetics analysis.
@@ -38,27 +37,32 @@ same conditions as regards security.
 The fact that you are presently reading this means that you have had
 knowledge of the CeCILL license and that you accept its terms.
 */
-//Secured inclusion of header's file
+
 #ifndef _POLYMORPHISMMULTIGCONTAINERTOOLS_H_
 #define _POLYMORPHISMMULTIGCONTAINERTOOLS_H_
 
 // From the STL
 #include <vector>
 #include <set>
+
 using namespace std;
 
-//From the PolyLib library
+//From the PolGenLib library
 #include "PolymorphismMultiGContainer.h"
 
 //From the NumCalc library
 #include <NumCalc/RandomTools.h>
+
+namespace bpp
+{
 
 /**
  * @brief Tools for PolymorphismMultiGContainer.
  *
  * Provides static methods for permutations.
  */
-class PolymorphismMultiGContainerTools {
+class PolymorphismMultiGContainerTools
+{
 	public:
 		virtual ~PolymorphismMultiGContainerTools();
 
@@ -118,8 +122,9 @@ class PolymorphismMultiGContainerTools {
 		 */
 		static PolymorphismMultiGContainer permutIntraGroupAlleles(const PolymorphismMultiGContainer & pmgc, const set<unsigned int> & groups) ;
 		static PolymorphismMultiGContainer extractGroups(const PolymorphismMultiGContainer & pmgc, const set<unsigned int> & groups) ;
-
-
 };
 
+} //end of namespace bpp;
+
 #endif // _POLYMORPHISMMULTIGCONTAINERTOOLS_H_
+

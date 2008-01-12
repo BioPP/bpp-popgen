@@ -1,12 +1,11 @@
-/*
- * File GeneralExceptions.h
- * Author : Sylvain Gaillard <yragael2001@yahoo.fr>
- * Last modification : Thursday July 29 2004
- *
-*/
+//
+// File GeneralExceptions.h
+// Author : Sylvain Gaillard
+// Last modification : Thursday July 29 2004
+//
+
 /*
 Copyright or © or Copr. CNRS, (November 17, 2004)
-
 
 This software is a computer program whose purpose is to provide classes
 for population genetics analysis.
@@ -37,13 +36,18 @@ same conditions as regards security.
 The fact that you are presently reading this means that you have had
 knowledge of the CeCILL license and that you accept its terms.
 */
-// Secured inclusion of header's file
+
 #ifndef _GENERALEXCEPTIONS_H_
 #define _GENERALEXCEPTIONS_H_
 
 // From Utils
 #include <Utils/Exceptions.h>
+
+namespace bpp
+{
+
 //*****************************************************************************
+//
 /**
  * @brief The BadIdentifierException class.
  *
@@ -51,7 +55,9 @@ knowledge of the CeCILL license and that you accept its terms.
  * The identifier can be either a string or an integer but its
  * value is stored as a string.
  */
-class BadIdentifierException : public Exception {
+class BadIdentifierException:
+  public Exception
+{
 	public:
 		// Class constructor
 		/**
@@ -86,10 +92,13 @@ class BadIdentifierException : public Exception {
 };
 
 //*****************************************************************************
+
 /**
  * @brief The LocusNotFoundException class.
  */
-class LocusNotFoundException : public BadIdentifierException {
+class LocusNotFoundException:
+  public BadIdentifierException
+{
 	public:
 		// Class constructor
 		/**
@@ -123,10 +132,13 @@ class LocusNotFoundException : public BadIdentifierException {
 };
 
 //*****************************************************************************
+
 /**
  * @brief The AlleleNotFoundException class.
  */
-class AlleleNotFoundException : public BadIdentifierException {
+class AlleleNotFoundException:
+  public BadIdentifierException
+{
 	public:
 		// Class constructor
 		/**
@@ -160,10 +172,13 @@ class AlleleNotFoundException : public BadIdentifierException {
 };
 
 //*****************************************************************************
+
 /**
  * @brief The LocalityNotFoundException class.
  */
-class LocalityNotFoundException : public BadIdentifierException {
+class LocalityNotFoundException:
+  public BadIdentifierException
+{
 	public:
 		// Class constructor
 		/**
@@ -197,10 +212,13 @@ class LocalityNotFoundException : public BadIdentifierException {
 };
 
 //*****************************************************************************
+
 /**
  * @brief The IndividualNotFoundException class.
  */
-class IndividualNotFoundException : public BadIdentifierException {
+class IndividualNotFoundException:
+  public BadIdentifierException
+{
 	public:
 		// Class constructor
 		/**
@@ -234,10 +252,13 @@ class IndividualNotFoundException : public BadIdentifierException {
 };
 
 //*****************************************************************************
+
 /**
  * @brief The GroupNotFoundException class.
  */
-class GroupNotFoundException : public BadIdentifierException {
+class GroupNotFoundException:
+  public BadIdentifierException
+{
 	public:
 		// Class constructor
 		/**
@@ -270,4 +291,7 @@ class GroupNotFoundException : public BadIdentifierException {
 		virtual const string getIdentifier() const;
 };
 
+} //end of namespace bpp;
+
 #endif // _GENERALEXCEPTIONS_H_
+

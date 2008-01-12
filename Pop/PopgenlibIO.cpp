@@ -1,12 +1,11 @@
-/*
- * File PopgenlibIO.cpp
- * Author : Sylvain Gaillard <yragael2001@yahoo.fr>
- * Last modification : Thursday July 29 2004
- *
-*/
+//
+// File PopgenlibIO.cpp
+// Author : Sylvain Gaillard
+// Last modification : Thursday July 29 2004
+//
+
 /*
 Copyright or © or Copr. CNRS, (November 17, 2004)
-
 
 This software is a computer program whose purpose is to provide classes
 for population genetics analysis.
@@ -37,7 +36,10 @@ same conditions as regards security.
 The fact that you are presently reading this means that you have had
 knowledge of the CeCILL license and that you accept its terms.
 */
+
 #include "PopgenlibIO.h"
+
+using namespace bpp;
 
 const string PopgenlibIO::WHITESPACE = string("WHITESPACE");
 const string PopgenlibIO::TAB = string("TAB");
@@ -48,12 +50,14 @@ const string PopgenlibIO::DIPLOID = string("DIPLOID");
 const string PopgenlibIO::HAPLOID = string("HAPLOID");
 const string PopgenlibIO::HAPLODIPLOID = string("HAPLODIPLOID");
 
-PopgenlibIO::PopgenlibIO() {
+PopgenlibIO::PopgenlibIO()
+{
 	setDataSeparator(WHITESPACE);
 	setMissingDataSymbol("$");
 }
 
-PopgenlibIO::PopgenlibIO(const string & missing_data_symbol, const string & data_separator) throw (Exception) {
+PopgenlibIO::PopgenlibIO(const string & missing_data_symbol, const string & data_separator) throw (Exception)
+{
 	try {
 		setDataSeparator(data_separator);
 		setMissingDataSymbol(missing_data_symbol);
@@ -65,15 +69,18 @@ PopgenlibIO::PopgenlibIO(const string & missing_data_symbol, const string & data
 
 PopgenlibIO::~PopgenlibIO() {}
 
-const string PopgenlibIO::getFormatName() {
+const string PopgenlibIO::getFormatName()
+{
 	return "PopgenlibIO ver 0.1";
 }
 
-const string PopgenlibIO::getFormatDescription() {
+const string PopgenlibIO::getFormatDescription()
+{
 	return "A very clear description coming soon ;-)";
 }
 
-void PopgenlibIO::setMissingDataSymbol(const string & missing_data_symbol) throw (Exception) {
+void PopgenlibIO::setMissingDataSymbol(const string & missing_data_symbol) throw (Exception)
+{
 	if (missing_data_symbol.size() != 1 || isdigit(missing_data_symbol[0])
 			|| TextTools::isWhiteSpaceCharacter(missing_data_symbol[0])
 			|| missing_data_symbol[0] == _data_separator
@@ -83,8 +90,8 @@ void PopgenlibIO::setMissingDataSymbol(const string & missing_data_symbol) throw
 	_missing_data_symbol = missing_data_symbol[0];
 }
 
-void PopgenlibIO::setDataSeparator(const string & data_separator) throw (Exception) {
-
+void PopgenlibIO::setDataSeparator(const string & data_separator) throw (Exception)
+{
 	if (data_separator == WHITESPACE) _data_separator = ' ';
 	else if (data_separator == TAB) _data_separator = '\t';
 	else if (data_separator == COMA) _data_separator = ',';
@@ -98,11 +105,13 @@ void PopgenlibIO::setDataSeparator(const string & data_separator) throw (Excepti
 	}
 }
 
-string PopgenlibIO::getMissingDataSymbol() const {
+string PopgenlibIO::getMissingDataSymbol() const
+{
 	return TextTools::toString(_missing_data_symbol);
 }
 
-string PopgenlibIO::getDataSeparator() const {
+string PopgenlibIO::getDataSeparator() const
+{
 	switch (_data_separator) {
 		case (' '): return WHITESPACE;
 		case ('\t'): return TAB;
@@ -112,15 +121,18 @@ string PopgenlibIO::getDataSeparator() const {
 	}
 }
 
-char PopgenlibIO::getMissingDataChar() const {
+char PopgenlibIO::getMissingDataChar() const
+{
 	return _missing_data_symbol;
 }
 
-char PopgenlibIO::getDataSeparatorChar() const {
+char PopgenlibIO::getDataSeparatorChar() const
+{
 	return _data_separator;
 }
 
-void PopgenlibIO::read(istream & is, DataSet & data_set) throw (Exception) {
+void PopgenlibIO::read(istream & is, DataSet & data_set) throw (Exception)
+{
 	if (!is)
 		throw IOException("PopgenlibIO::read: fail to open stream.");
 	string temp = "";
@@ -258,7 +270,8 @@ void PopgenlibIO::read(istream & is, DataSet & data_set) throw (Exception) {
 	temp_v.clear();
 }
 
-void PopgenlibIO::_parseGeneral(const vector<string> & in, DataSet & data_set) {
+void PopgenlibIO::_parseGeneral(const vector<string> & in, DataSet & data_set)
+{
 	stringstream is;
 	for (unsigned int i = 0 ; i < in.size() ; i++)
 		is << in[i] << endl;
@@ -274,7 +287,8 @@ void PopgenlibIO::_parseGeneral(const vector<string> & in, DataSet & data_set) {
 	}
 }
 
-void PopgenlibIO::_parseLocality(const vector<string> & in, DataSet & data_set) {
+void PopgenlibIO::_parseLocality(const vector<string> & in, DataSet & data_set)
+{
 	stringstream is;
 	for (unsigned int i = 0 ; i < in.size() ; i++)
 		is << in[i] << endl;
@@ -296,7 +310,8 @@ void PopgenlibIO::_parseLocality(const vector<string> & in, DataSet & data_set) 
 		data_set.addLocality(tmp_locality);
 }
 
-void PopgenlibIO::_parseSequence(const vector<string> & in, VectorSequenceContainer & vsc) {
+void PopgenlibIO::_parseSequence(const vector<string> & in, VectorSequenceContainer & vsc) 
+{
 	Fasta ifasta;
 	stringstream is;
 	for (unsigned int i = 0 ; i < in.size() ; i++)
@@ -304,7 +319,8 @@ void PopgenlibIO::_parseSequence(const vector<string> & in, VectorSequenceContai
 	ifasta.read(is, vsc);
 }
 
-void PopgenlibIO::_parseLoci(const vector<string> & in, vector<LocusInfo> & locus_info) {
+void PopgenlibIO::_parseLoci(const vector<string> & in, vector<LocusInfo> & locus_info)
+{
 	stringstream is;
 	for (unsigned int i = 0 ; i < in.size() ; i++)
 		is << in[i] << endl;
@@ -336,7 +352,8 @@ void PopgenlibIO::_parseLoci(const vector<string> & in, vector<LocusInfo> & locu
 		locus_info.push_back(LocusInfo(locinf_name, locinf_ploidy));
 }
 
-void PopgenlibIO::_parseIndividual(const vector<string> & in, DataSet & data_set, const VectorSequenceContainer & vsc) {
+void PopgenlibIO::_parseIndividual(const vector<string> & in, DataSet & data_set, const VectorSequenceContainer & vsc)
+{
 	Individual tmp_indiv;
 	unsigned int tmp_group_pos = 0;
 	string temp = "";
@@ -441,19 +458,23 @@ void PopgenlibIO::_parseIndividual(const vector<string> & in, DataSet & data_set
 	}
 }
 
-void PopgenlibIO::read(const string & path, DataSet & data_set) throw (Exception) {
+void PopgenlibIO::read(const string & path, DataSet & data_set) throw (Exception)
+{
 	AbstractIDataSet::read(path, data_set);
 }
 	
-DataSet * PopgenlibIO::read(istream & is) throw (Exception) {
+DataSet * PopgenlibIO::read(istream & is) throw (Exception)
+{
 	return AbstractIDataSet::read(is);
 }
 
-DataSet * PopgenlibIO::read(const string & path) throw (Exception) {
+DataSet * PopgenlibIO::read(const string & path) throw (Exception)
+{
 	return AbstractIDataSet::read(path);
 }
 
-void PopgenlibIO::write(ostream & os, const DataSet & data_set) const throw (Exception) {
+void PopgenlibIO::write(ostream & os, const DataSet & data_set) const throw (Exception)
+{
 	unsigned int seqcpt = 1;
 	// General section --------------------------------------
 	os << "[General]" << endl;
@@ -565,11 +586,13 @@ void PopgenlibIO::write(ostream & os, const DataSet & data_set) const throw (Exc
 		}
 }
 
-void PopgenlibIO::write(const string & path, const DataSet & data_set, bool overwrite) const throw (Exception) {
+void PopgenlibIO::write(const string & path, const DataSet & data_set, bool overwrite) const throw (Exception) 
+{
 	AbstractODataSet::write(path, data_set, overwrite);
 }
 
-vector<string> PopgenlibIO::_getValues(string & param_line, const string & delim) {
+vector<string> PopgenlibIO::_getValues(string & param_line, const string & delim)
+{
 	vector<string> values;
 	int limit = param_line.find(delim, 0);
 	if (limit >= 0)
@@ -586,3 +609,4 @@ vector<string> PopgenlibIO::_getValues(string & param_line, const string & delim
 	values.push_back(string(param_line.begin() + bi, param_line.end()));
 	return values;
 }
+

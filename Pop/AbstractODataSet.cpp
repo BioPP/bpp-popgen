@@ -1,9 +1,9 @@
-/*
- * File AbstractODataSet.cpp
- * Author : Sylvain Gaillard <yragael2001@yahoo.fr>
- * Last modification : Thursday July 29 2004
- *
-*/
+//
+// File AbstractODataSet.cpp
+// Author : Sylvain Gaillard
+// Last modification : Thursday July 29 2004
+//
+
 /*
 Copyright or © or Copr. CNRS, (November 17, 2004)
 
@@ -37,10 +37,14 @@ same conditions as regards security.
 The fact that you are presently reading this means that you have had
 knowledge of the CeCILL license and that you accept its terms.
 */
+
 #include "AbstractODataSet.h"
+
+using namespace bpp;
 
 // From STL
 #include <fstream>
+
 using namespace std;
 
 AbstractODataSet::~AbstractODataSet() {}
@@ -50,3 +54,4 @@ void AbstractODataSet::write(const string & path, const DataSet & data_set, bool
 	write(output, data_set);
 	output.close();
 }
+

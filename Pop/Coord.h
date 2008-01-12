@@ -1,12 +1,11 @@
-/*
- * File Coord.h
- * Author : Sylvain Gaillard <yragael2001@yahoo.fr>
- * Last modification : Thursday July 29 2004
- *
-*/
+//
+// File Coord.h
+// Author : Sylvain Gaillard
+// Last modification : Thursday July 29 2004
+//
+
 /*
 Copyright or © or Copr. CNRS, (November 17, 2004)
-
 
 This software is a computer program whose purpose is to provide classes
 for population genetics analysis.
@@ -37,12 +36,16 @@ same conditions as regards security.
 The fact that you are presently reading this means that you have had
 knowledge of the CeCILL license and that you accept its terms.
 */
-// Secured inclusion of header's file
+
 #ifndef _COORD_H_
 #define _COORD_H_
 
 // From Utils
 #include<Utils/Clonable.h>
+
+namespace bpp
+{
+
 /**
  * @brief The Coord class.
  *
@@ -50,7 +53,7 @@ knowledge of the CeCILL license and that you accept its terms.
  * The type of the two coordinates is defined as a template.
  */
 template <class T> class Coord:
-  public Clonable
+  public virtual Clonable
 {
   protected:
     T _x;
@@ -135,6 +138,8 @@ template <class T> class Coord:
     }
 
 };
+
+} //end of namespace bpp;
 
 #endif // _COORD_H_
 

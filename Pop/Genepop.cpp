@@ -1,12 +1,11 @@
-/*
- * File Genepop.cpp
- * Author : Sylvain Gaillard <yragael2001@yahoo.fr>
- * Last modification : Tuesday September 21 2004
- *
-*/
+//
+// File Genepop.cpp
+// Author : Sylvain Gaillard
+// Last modification : Tuesday September 21 2004
+//
+
 /*
 Copyright or © or Copr. CNRS, (November 17, 2004)
-
 
 This software is a computer program whose purpose is to provide classes
 for population genetics analysis.
@@ -37,7 +36,10 @@ same conditions as regards security.
 The fact that you are presently reading this means that you have had
 knowledge of the CeCILL license and that you accept its terms.
 */
+
 #include "Genepop.h"
+
+using namespace bpp;
 
 Genepop::Genepop() {}
 
@@ -47,11 +49,13 @@ const string Genepop::getFormatName() {
 	return "Genepop ver 3.4";
 }
 
-const string Genepop::getFormatDescription() {
+const string Genepop::getFormatDescription()
+{
 	return "Genepop is a software for populations genetic for DOS operating system";
 }
 
-void Genepop::read(istream & is, DataSet & data_set) throw (Exception) {
+void Genepop::read(istream & is, DataSet & data_set) throw (Exception)
+{
 	if (!is)
 		throw IOException("Genepop::read: fail to open stream.");
 	// Skip first line
@@ -174,14 +178,18 @@ void Genepop::read(istream & is, DataSet & data_set) throw (Exception) {
 	}
 }
 
-void Genepop::read(const string & path, DataSet & data_set) throw (Exception) {
+void Genepop::read(const string & path, DataSet & data_set) throw (Exception)
+{
 	AbstractIDataSet::read(path, data_set);
 }
 	
-DataSet * Genepop::read(istream & is) throw (Exception) {
+DataSet * Genepop::read(istream & is) throw (Exception)
+{
 	return AbstractIDataSet::read(is);
 }
 
-DataSet * Genepop::read(const string & path) throw (Exception) {
+DataSet * Genepop::read(const string & path) throw (Exception)
+{
 	return AbstractIDataSet::read(path);
 }
+

@@ -1,12 +1,11 @@
-/*
- * File ODataSet.h
- * Author : Sylvain Gaillard <yragael2001@yahoo.fr>
- * Last modification : Thursday July 29 2004
- *
-*/
+//
+// File ODataSet.h
+// Author : Sylvain Gaillard
+// Last modification : Thursday July 29 2004
+//
+
 /*
 Copyright or © or Copr. CNRS, (November 17, 2004)
-
 
 This software is a computer program whose purpose is to provide classes
 for population genetics analysis.
@@ -37,7 +36,7 @@ same conditions as regards security.
 The fact that you are presently reading this means that you have had
 knowledge of the CeCILL license and that you accept its terms.
 */
-// Secured inclusion of header's file
+
 #ifndef _ODATASET_H_
 #define _ODATASET_H_
 
@@ -46,12 +45,17 @@ knowledge of the CeCILL license and that you accept its terms.
 // From Utils
 #include <Utils/Exceptions.h>
 
+namespace bpp
+{
+
 /**
  * @brief The ODataSet interface.
  */
-class ODataSet : public IODataSet {
+class ODataSet:
+  public virtual IODataSet
+{
 	public: // Class destructor
-		virtual ~ODataSet();
+		virtual ~ODataSet() {}
 
 	public:
 		/**
@@ -65,4 +69,7 @@ class ODataSet : public IODataSet {
 		virtual void write(const string & path, const DataSet & data_set, bool overwrite) const throw (Exception) = 0;
 };
 
+} //end of namespace bpp;
+
 #endif // _ODATASET_H_
+

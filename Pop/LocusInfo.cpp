@@ -1,12 +1,11 @@
-/*
- * File LocusInfo.cpp
- * Author : Sylvain Gaillard <yragael2001@yahoo.fr>
- * Last modification : Thursday July 29 2004
- *
-*/
+//
+// File LocusInfo.cpp
+// Author : Sylvain Gaillard
+// Last modification : Thursday July 29 2004
+//
+
 /*
 Copyright or © or Copr. CNRS, (November 17, 2004)
-
 
 This software is a computer program whose purpose is to provide classes
 for population genetics analysis.
@@ -37,23 +36,29 @@ same conditions as regards security.
 The fact that you are presently reading this means that you have had
 knowledge of the CeCILL license and that you accept its terms.
 */
+
 // From Utils
 #include <Utils/TextTools.h>
 
 #include "LocusInfo.h"
 #include "GeneralExceptions.h"
 
+using namespace bpp;
+
 unsigned int LocusInfo::HAPLODIPLOID = 0;
 unsigned int LocusInfo::HAPLOID = 1;
 unsigned int LocusInfo::DIPLOID = 2;
 
 //** Class constructor: *******************************************************/
-LocusInfo::LocusInfo(const string &name, const unsigned int ploidy) {
+
+LocusInfo::LocusInfo(const string &name, const unsigned int ploidy)
+{
 	_name = name;
 	_ploidy = ploidy;
 }
 
-LocusInfo::LocusInfo(const LocusInfo & locus_info) {
+LocusInfo::LocusInfo(const LocusInfo & locus_info)
+{
 	_name = locus_info.getName();
 	_ploidy = locus_info.getPloidy();
 	for (unsigned int i = 0 ; i < locus_info.getNumberOfAlleles() ; i++) {
@@ -63,25 +68,30 @@ LocusInfo::LocusInfo(const LocusInfo & locus_info) {
 }
 
 //** Class destructor: *******************************************************/
-LocusInfo::~LocusInfo() {
-	for (unsigned int i = 0 ; i < _alleles.size() ; i++)
+
+LocusInfo::~LocusInfo()
+{
+	for(unsigned int i = 0; i < _alleles.size(); i++)
 		delete _alleles[i];
 	_alleles.clear();
 }
 
 //** Other methodes: *********************************************************/
 // Name
-string LocusInfo::getName() const {
+string LocusInfo::getName() const
+{
 	return _name;
 }
 
 // Ploidie
-unsigned int LocusInfo::getPloidy() const {
+unsigned int LocusInfo::getPloidy() const
+{
 	return _ploidy;
 }
 
 // AlleleInfos
-void LocusInfo::addAlleleInfo(const AlleleInfo &allele) throw (BadIdentifierException) {
+void LocusInfo::addAlleleInfo(const AlleleInfo &allele) throw (BadIdentifierException)
+{
 	// Check if the allele id is not already in use
 	for (unsigned int i = 0 ; i < _alleles.size() ; i++)
 		if (_alleles[i]->getId() == allele.getId())
@@ -90,33 +100,39 @@ void LocusInfo::addAlleleInfo(const AlleleInfo &allele) throw (BadIdentifierExce
 }
 
 AlleleInfo * LocusInfo::getAlleleInfoById(const string & id) const
-throw (AlleleNotFoundException) {
-	for (unsigned int i = 0 ; i < _alleles.size() ; i++)
+  throw (AlleleNotFoundException)
+{
+	for (unsigned int i = 0; i < _alleles.size(); i++)
 		if (_alleles[i]->getId() == id)
 			return _alleles[i];
 	throw AlleleNotFoundException("LocusInfo::getAlleleInfoById: AlleleInfo id unknown.", id);
 }
 
-AlleleInfo * LocusInfo::getAlleleInfoByKey(unsigned int key) const throw (IndexOutOfBoundsException) {
+AlleleInfo * LocusInfo::getAlleleInfoByKey(unsigned int key) const throw (IndexOutOfBoundsException)
+{
 	if (key >= _alleles.size())
 		throw IndexOutOfBoundsException("LocusInfo::getAlleleInfoByKey: key out of bounds.", key, 0, _alleles.size());
 	return _alleles[key];
 }
 
 unsigned int LocusInfo::getAlleleInfoKey(const string & id) const
-throw (AlleleNotFoundException) {
-	for (unsigned int i = 0 ; i < _alleles.size() ; i++)
+  throw (AlleleNotFoundException)
+{
+	for(unsigned int i = 0; i < _alleles.size(); i++)
 		if (_alleles[i]->getId() == id)
 			return i;
 	throw AlleleNotFoundException("LocusInfo::getAlleleInfoKey: AlleleInfo id not found.", id);
 }
 
-unsigned int LocusInfo::getNumberOfAlleles() const {
+unsigned int LocusInfo::getNumberOfAlleles() const
+{
 	return _alleles.size();
 }
 
-void LocusInfo::clear() {
-	for (unsigned int i = 0 ; i < _alleles.size() ; i++)
+void LocusInfo::clear()
+{
+	for(unsigned int i = 0; i < _alleles.size(); i++)
 		delete _alleles[i];
 	_alleles.clear();
 }
+

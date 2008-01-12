@@ -1,13 +1,12 @@
-/*
- * File PolymorphismMultiGContainer.cpp
- * Author : Sylvain Gaillard <yragael2001@yahoo.fr>
- *        : Khalid Belkhir
- * Last modification : june 14 2006
- *
-*/
+//
+// File PolymorphismMultiGContainer.cpp
+// Author : Sylvain Gaillard
+//          Khalid Belkhir
+// Last modification : june 14 2006
+//
+
 /*
 Copyright or © or Copr. CNRS, (November 17, 2004)
-
 
 This software is a computer program whose purpose is to provide classes
 for population genetics analysis.
@@ -38,49 +37,60 @@ same conditions as regards security.
 The fact that you are presently reading this means that you have had
 knowledge of the CeCILL license and that you accept its terms.
 */
+
 #include "PolymorphismMultiGContainer.h"
 
+using namespace bpp;
 
 //** Constructors : **********************************************************/
+
 PolymorphismMultiGContainer::PolymorphismMultiGContainer() {}
 
-PolymorphismMultiGContainer::PolymorphismMultiGContainer(const PolymorphismMultiGContainer & pmgc) {
-	for (unsigned int i = 0 ; i < pmgc.size() ; i++) {
+PolymorphismMultiGContainer::PolymorphismMultiGContainer(const PolymorphismMultiGContainer & pmgc)
+{
+	for(unsigned int i = 0; i < pmgc.size(); i++)
+  {
 		_multilocusGenotypes.push_back(new MultilocusGenotype(* pmgc.getMultilocusGenotype(i)));
 		_groups.push_back(pmgc.getGroupId(i));
 	}
 	set<unsigned int> grp_ids = pmgc.getAllGroupsIds();
 	for (set<unsigned int>::iterator it = grp_ids.begin(); it != grp_ids.end(); it++)
 	{
-        unsigned int id = *it;
-        string name = pmgc.getGroupName(id);
-        _groups_names[id] = name;
-    }
+    unsigned int id = *it;
+    string name = pmgc.getGroupName(id);
+    _groups_names[id] = name;
+  }
 }
 
 //** Destructor : ************************************************************/
-PolymorphismMultiGContainer::~PolymorphismMultiGContainer() {
+
+PolymorphismMultiGContainer::~PolymorphismMultiGContainer()
+{
 	clear();
 }
 
 //** Other methodes : ********************************************************/
-PolymorphismMultiGContainer & PolymorphismMultiGContainer::operator= (const PolymorphismMultiGContainer & pmgc) {
-	for (unsigned int i = 0 ; i < pmgc.size() ; i++) {
+
+PolymorphismMultiGContainer & PolymorphismMultiGContainer::operator= (const PolymorphismMultiGContainer & pmgc)
+{
+	for(unsigned int i = 0; i < pmgc.size(); i++)
+  {
 		_multilocusGenotypes.push_back(new MultilocusGenotype(* pmgc.getMultilocusGenotype(i)));
 		_groups.push_back(pmgc.getGroupId(i));
 	}
 	set<unsigned int> grp_ids = pmgc.getAllGroupsIds();
 	for (set<unsigned int>::iterator it = grp_ids.begin(); it != grp_ids.end(); it++)
 	{
-        unsigned int id = *it;
-        string name = pmgc.getGroupName(id);
-        _groups_names[id] = name;
-    }
+    unsigned int id = *it;
+    string name = pmgc.getGroupName(id);
+    _groups_names[id] = name;
+  }
 
 	return * this;
 }
 
-void PolymorphismMultiGContainer::addMultilocusGenotype(const MultilocusGenotype & mg, unsigned int group) {
+void PolymorphismMultiGContainer::addMultilocusGenotype(const MultilocusGenotype & mg, unsigned int group)
+{
 	_multilocusGenotypes.push_back(new MultilocusGenotype(mg));
 	_groups.push_back(group);
 	map<unsigned int, string>::const_iterator it = _groups_names.find(group);
@@ -91,13 +101,15 @@ void PolymorphismMultiGContainer::addMultilocusGenotype(const MultilocusGenotype
 	}
 }
 
-const MultilocusGenotype * PolymorphismMultiGContainer::getMultilocusGenotype(unsigned int position) const throw (IndexOutOfBoundsException) {
+const MultilocusGenotype * PolymorphismMultiGContainer::getMultilocusGenotype(unsigned int position) const throw (IndexOutOfBoundsException)
+{
 	if (position >= size())
 		throw IndexOutOfBoundsException("PolymorphismMultiGContainer::getMultilocusGenotype: position out of bounds.", position, 0, size() - 1);
 	return _multilocusGenotypes[position];
 }
 
-MultilocusGenotype * PolymorphismMultiGContainer::removeMultilocusGenotype(unsigned int position) throw (IndexOutOfBoundsException) {
+MultilocusGenotype * PolymorphismMultiGContainer::removeMultilocusGenotype(unsigned int position) throw (IndexOutOfBoundsException)
+{
 	if (position >= size())
 		throw IndexOutOfBoundsException("PolymorphismMultiGContainer::removeMultilocusGenotype: position out of bounds.", position, 0, size() - 1);
 	MultilocusGenotype * tmp_mg = _multilocusGenotypes[position];
@@ -106,7 +118,8 @@ MultilocusGenotype * PolymorphismMultiGContainer::removeMultilocusGenotype(unsig
 	return tmp_mg;
 }
 
-void PolymorphismMultiGContainer::deleteMultilocusGenotype(unsigned int position) throw (IndexOutOfBoundsException) {
+void PolymorphismMultiGContainer::deleteMultilocusGenotype(unsigned int position) throw (IndexOutOfBoundsException)
+{
 	if (position >= size())
 		throw IndexOutOfBoundsException("PolymorphismMultiGContainer::deleteMultilocusGenotype: position out of bounds.", position, 0, size() - 1);
 	delete _multilocusGenotypes[position];
@@ -114,7 +127,8 @@ void PolymorphismMultiGContainer::deleteMultilocusGenotype(unsigned int position
 	_groups.erase(_groups.begin() + position);
 }
 
-bool PolymorphismMultiGContainer::isAligned() const {
+bool PolymorphismMultiGContainer::isAligned() const
+{
 	unsigned int value = 0;
 	for (unsigned int i = 0 ; i < size() ; i++) {
 		if (i == 0)
@@ -126,7 +140,8 @@ bool PolymorphismMultiGContainer::isAligned() const {
 	return true;
 }
 
-unsigned int PolymorphismMultiGContainer::getNumberOfLoci() const throw (Exception) {
+unsigned int PolymorphismMultiGContainer::getNumberOfLoci() const throw (Exception)
+{
 	if (!isAligned())
 		throw Exception("MultilocusGenotypes are not aligned.");
 	if (size() < 1)
@@ -134,19 +149,22 @@ unsigned int PolymorphismMultiGContainer::getNumberOfLoci() const throw (Excepti
 	return _multilocusGenotypes[0]->size();
 }
 
-unsigned int PolymorphismMultiGContainer::getGroupId(unsigned int position) const throw (IndexOutOfBoundsException) {
+unsigned int PolymorphismMultiGContainer::getGroupId(unsigned int position) const throw (IndexOutOfBoundsException)
+{
 	if (position >= size())
 		throw IndexOutOfBoundsException("PolymorphismMultiGContainer::getGroupId: position out of bounds.", position, 0, size() - 1);
 	return _groups[position];
 }
 
-void PolymorphismMultiGContainer::setGroupId(unsigned int position, unsigned int group_id) throw (IndexOutOfBoundsException) {
+void PolymorphismMultiGContainer::setGroupId(unsigned int position, unsigned int group_id) throw (IndexOutOfBoundsException)
+{
 	if (position >= size())
 		throw IndexOutOfBoundsException("PolymorphismMultiGContainer::setGroupId: position out of bounds.", position, 0, size() - 1);
 	_groups[position] = group_id;
 }
 
-set<unsigned int> PolymorphismMultiGContainer::getAllGroupsIds() const {
+set<unsigned int> PolymorphismMultiGContainer::getAllGroupsIds() const
+{
 	set<unsigned int> groups_ids;
 	for (unsigned int i = 0 ; i < size() ; i++)
 		groups_ids.insert(_groups[i]);
@@ -169,18 +187,21 @@ vector<string> PolymorphismMultiGContainer::getAllGroupsNames() const
     return grps_names;
 }
 
-bool PolymorphismMultiGContainer::groupExists(unsigned int group) const {
+bool PolymorphismMultiGContainer::groupExists(unsigned int group) const
+{
 	for (unsigned int i = 0 ; i < size() ; i++)
 		if (_groups[i] == group)
 			return true;
 	return false;
 }
 
-unsigned int PolymorphismMultiGContainer::getNumberOfGroups() const {
+unsigned int PolymorphismMultiGContainer::getNumberOfGroups() const
+{
 	return getAllGroupsIds().size();
 }
 
-unsigned int PolymorphismMultiGContainer::getGroupSize(unsigned int group) const  {
+unsigned int PolymorphismMultiGContainer::getGroupSize(unsigned int group) const
+{
 	unsigned int counter = 0;
 	for (unsigned int i = 0 ; i < size() ; i++)
 		if (_groups[i] == group)
@@ -211,7 +232,8 @@ void PolymorphismMultiGContainer::addGroupName(unsigned int group_id, string nam
  return;
 }
 
-unsigned int PolymorphismMultiGContainer::getLocusGroupSize(unsigned int group, unsigned int locus_position) const {
+unsigned int PolymorphismMultiGContainer::getLocusGroupSize(unsigned int group, unsigned int locus_position) const
+{
 	unsigned int counter = 0;
 	for (unsigned int i = 0 ; i < size() ; i++) {
 		try {
@@ -225,14 +247,17 @@ unsigned int PolymorphismMultiGContainer::getLocusGroupSize(unsigned int group, 
 	return counter;
 }
 
-unsigned int PolymorphismMultiGContainer::size() const {
+unsigned int PolymorphismMultiGContainer::size() const
+{
 	return _multilocusGenotypes.size();
 }
 
-void PolymorphismMultiGContainer::clear() {
-	for (unsigned int i = 0 ; i < _multilocusGenotypes.size() ; i++)
+void PolymorphismMultiGContainer::clear()
+{
+	for(unsigned int i = 0; i < _multilocusGenotypes.size(); i++)
 		delete _multilocusGenotypes[i];
 	_multilocusGenotypes.clear();
 	_groups.clear();
 	_groups_names.clear();
 }
+

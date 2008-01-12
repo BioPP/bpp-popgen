@@ -1,9 +1,9 @@
-/*
- * File AbstractODataSet.h
- * Author : Sylvain Gaillard <yragael2001@yahoo.fr>
- * Last modification : Thursday July 29 2004
- *
-*/
+//
+// File AbstractODataSet.h
+// Author : Sylvain Gaillard
+// Last modification : Thursday July 29 2004
+//
+
 /*
 Copyright or © or Copr. CNRS, (November 17, 2004)
 
@@ -37,14 +37,19 @@ same conditions as regards security.
 The fact that you are presently reading this means that you have had
 knowledge of the CeCILL license and that you accept its terms.
 */
-// Secured inclusion of header's file
+
 #ifndef _ABSTRACTODATASET_H_
 #define _ABSTRACTODATASET_H_
 
 #include "ODataSet.h"
 
-class AbstractODataSet : public ODataSet {
-	public: // Calss destructor
+namespace bpp
+{
+
+class AbstractODataSet:
+  public ODataSet
+{
+	public:
 		virtual ~AbstractODataSet();
 
 	public:
@@ -59,4 +64,7 @@ class AbstractODataSet : public ODataSet {
 		 */
 };
 
+} //end of namespace bpp;
+
 #endif // _ABSTRACTODATASET_H_
+

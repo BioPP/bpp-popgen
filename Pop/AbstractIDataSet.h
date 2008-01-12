@@ -1,9 +1,9 @@
-/*
- * File AbstractIDataSet.h
- * Author : Sylvain Gaillard <yragael2001@yahoo.fr>
- * Last modification : Thursday July 29 2004
- *
-*/
+//
+// File AbstractIDataSet.h
+// Author : Sylvain Gaillard
+// Last modification : Thursday July 29 2004
+//
+
 /*
 Copyright or © or Copr. CNRS, (November 17, 2004)
 
@@ -37,7 +37,7 @@ same conditions as regards security.
 The fact that you are presently reading this means that you have had
 knowledge of the CeCILL license and that you accept its terms.
 */
-// Secured inclusion of header's file
+
 #ifndef _ABSTRACTIDATASET_H_
 #define _ABSTRACTIDATASET_H_
 
@@ -46,7 +46,12 @@ knowledge of the CeCILL license and that you accept its terms.
 // From Utils
 #include <Utils/Exceptions.h>
 
-class AbstractIDataSet : public IDataSet {
+namespace bpp
+{
+
+class AbstractIDataSet:
+  public IDataSet
+{
 	public: // Class destructor
 		virtual ~AbstractIDataSet();
 
@@ -66,5 +71,7 @@ class AbstractIDataSet : public IDataSet {
 		 * @}
 		 */
 };
+
+} //end of namespace bpp;
 
 #endif // _ABSTRACTIDATASET_H_

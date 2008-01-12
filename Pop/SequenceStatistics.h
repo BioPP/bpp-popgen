@@ -39,8 +39,6 @@ The fact that you are presently reading this means that you have had
 knowledge of the CeCILL license and that you accept its terms.
 */
 
-
-
 //Secured inclusion of header's file
 #ifndef _SEQUENCESTATISTICS_H_
 #define _SEQUENCESTATISTICS_H_
@@ -57,6 +55,9 @@ knowledge of the CeCILL license and that you accept its terms.
 #include "PolymorphismSequenceContainer.h"
 
 using namespace std;
+
+namespace bpp
+{
 
 class SequenceStatistics
 {
@@ -836,6 +837,8 @@ class SequenceStatistics
 		/*******************************************************************************/
 
 };
+
+} //end of namespace bpp;
 
 #endif // _SEQUENCESTATISTICS_H_
 

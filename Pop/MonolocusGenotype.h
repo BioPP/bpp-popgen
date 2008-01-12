@@ -1,12 +1,11 @@
-/*
- * File MonolocusGenotype.h
- * Author : Sylvain Gaillard <yragael2001@yahoo.fr>
- * Last modification : Thursday July 29 2004
- *
-*/
+//
+// File MonolocusGenotype.h
+// Author : Sylvain Gaillard
+// Last modification : Thursday July 29 2004
+//
+
 /*
 Copyright or © or Copr. CNRS, (November 17, 2004)
-
 
 This software is a computer program whose purpose is to provide classes
 for population genetics analysis.
@@ -37,16 +36,20 @@ same conditions as regards security.
 The fact that you are presently reading this means that you have had
 knowledge of the CeCILL license and that you accept its terms.
 */
-// Secured inclusion of header's file
+
 #ifndef _MONOLOCUSGENOTYPE_H_
 #define _MONOLOCUSGENOTYPE_H_
 
 // From STL
 #include <vector>
+
 using namespace std;
 
 // From Utils
 #include <Utils/Clonable.h>
+
+namespace bpp
+{
 
 /**
  * @brief The MonolocusGenotype virtual class.
@@ -55,12 +58,14 @@ using namespace std;
  * This keys are returned as unsigned integers.
  * This class is an interface for all monolocus genotypes.
  */
-class MonolocusGenotype : public Clonable {
+class MonolocusGenotype:
+  public Clonable
+{
 	public: // Constructors and Destructor
 		/**
 		 * @brief Destroy a MonolocusGenotype.
 		 */
-		virtual ~MonolocusGenotype();
+		virtual ~MonolocusGenotype() {}
 		
 	public: // Methodes
 		/**
@@ -75,4 +80,8 @@ class MonolocusGenotype : public Clonable {
 		 */
 		virtual vector<unsigned int> getAlleleIndex() const = 0;
 };
+
+} //end of namespace bpp;
+
 #endif // _MONOLOCUSGENOTYPE_H_
+

@@ -1,12 +1,11 @@
-/*
- * File AnalyzedLoci.h
- * Author : Sylvain Gaillard <yragael2001@yahoo.fr>
- * Last modification : Thursday July 29 2004
- *
-*/
+//
+// File AnalyzedLoci.h
+// Author : Sylvain Gaillard
+// Last modification : Thursday July 29 2004
+//
+
 /*
 Copyright or © or Copr. CNRS, (November 17, 2004)
-
 
 This software is a computer program whose purpose is to provide classes
 for population genetics analysis.
@@ -37,12 +36,13 @@ same conditions as regards security.
 The fact that you are presently reading this means that you have had
 knowledge of the CeCILL license and that you accept its terms.
 */
-// Secured inclusion of header's file
+
 #ifndef _ANALYZEDLOCI_H_
 #define _ANALYZEDLOCI_H_
 
 // From STL
 #include <vector>
+
 using namespace std;
 
 //From Utils
@@ -52,6 +52,9 @@ using namespace std;
 #include "LocusInfo.h"
 #include "GeneralExceptions.h"
 
+namespace bpp
+{
+
 /**
  * @brief The AnalyzedLoci class.
  *
@@ -59,7 +62,8 @@ using namespace std;
  * Its instanciation requires a number of locus wich is fixed
  * and can't be modified.
  */
-class AnalyzedLoci {
+class AnalyzedLoci
+{
 	public: // Constructors and Destructor
 		/**
 		 * @brief Build a void AnalyzedLoci with a specific number of loci.
@@ -159,4 +163,8 @@ class AnalyzedLoci {
 	protected:
 		vector<LocusInfo *> _loci;
 };
+
+} //end of namespace bpp;
+
 #endif // _ANALYZEDLOCI_H_
+

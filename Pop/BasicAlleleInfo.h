@@ -1,12 +1,11 @@
-/*
- * File BasicAlleleInfo.h
- * Author : Sylvain Gaillard <yragael2001@yahoo.fr>
- * Last modification : Thursday July 29 2004
- *
-*/
+//
+// File BasicAlleleInfo.h
+// Author : Sylvain Gaillard
+// Last modification : Thursday July 29 2004
+//
+
 /*
 Copyright or © or Copr. CNRS, (November 17, 2004)
-
 
 This software is a computer program whose purpose is to provide classes
 for population genetics analysis.
@@ -37,7 +36,7 @@ same conditions as regards security.
 The fact that you are presently reading this means that you have had
 knowledge of the CeCILL license and that you accept its terms.
 */
-// Secured inclusion of header's file
+
 #ifndef _BASICALLELEINFO_H_
 #define _BASICALLELEINFO_H_
 
@@ -45,12 +44,17 @@ knowledge of the CeCILL license and that you accept its terms.
 #include "AlleleInfo.h"
 #include "GeneralExceptions.h"
 
+namespace bpp
+{
+
 /**
  * @brief The BasicAlleleInfo class.
  *
  * This is the simplest allele class implementation which contains just an identitier.
  */
-class BasicAlleleInfo : public AlleleInfo {
+class BasicAlleleInfo:
+  public AlleleInfo
+{
 	public: // Constructors and destructor
 		/**
 		 * @brief Build a new allele.
@@ -100,4 +104,7 @@ class BasicAlleleInfo : public AlleleInfo {
 		string _id;
 };
 
+} //end of namespace bpp;
+
 #endif // _BASICALLELEINFO_H_
+

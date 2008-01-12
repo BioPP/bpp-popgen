@@ -1,12 +1,11 @@
-/*
- * File AnalyzedSequences.cpp
- * Author : Sylvain Gaillard <yragael2001@yahoo.fr>
- * Last modification : Thursday July 29 2004
- *
-*/
+//
+// File AnalyzedSequences.cpp
+// Author : Sylvain Gaillard
+// Last modification : Thursday July 29 2004
+//
+
 /*
 Copyright or © or Copr. CNRS, (November 17, 2004)
-
 
 This software is a computer program whose purpose is to provide classes
 for population genetics analysis.
@@ -37,22 +36,29 @@ same conditions as regards security.
 The fact that you are presently reading this means that you have had
 knowledge of the CeCILL license and that you accept its terms.
 */
+
 #include "AnalyzedSequences.h"
 
-AnalyzedSequences::AnalyzedSequences() {
+using namespace bpp;
+
+AnalyzedSequences::AnalyzedSequences()
+{
 	_alphabet = NULL;
 }
 
-AnalyzedSequences::~AnalyzedSequences() {
+AnalyzedSequences::~AnalyzedSequences()
+{
 	if (_alphabet != NULL)
 		delete _alphabet;
 }
 
-void AnalyzedSequences::setAlphabet(const Alphabet * alpha) {
+void AnalyzedSequences::setAlphabet(const Alphabet * alpha)
+{
 	_alphabet = alpha;
 }
 
-void AnalyzedSequences::setAlphabet(const string & alpha_type) throw (Exception) {
+void AnalyzedSequences::setAlphabet(const string & alpha_type) throw (Exception)
+{
 	if (alpha_type != string("DNA") && alpha_type != string("RNA") && alpha_type != string("PROTEIN"))
 		throw Exception(string("AnalyzedSequences::setAlphabet: bad alphabet type. (") + alpha_type + string(")."));
 	Alphabet * alpha = NULL;
@@ -65,11 +71,13 @@ void AnalyzedSequences::setAlphabet(const string & alpha_type) throw (Exception)
 	setAlphabet(alpha);
 }
 
-const Alphabet * AnalyzedSequences::getAlphabet() const {
+const Alphabet * AnalyzedSequences::getAlphabet() const
+{
 	return _alphabet;
 }
 
-string AnalyzedSequences::getAlphabetType() const {
+string AnalyzedSequences::getAlphabetType() const
+{
 	if (_alphabet == NULL)
 		return string("---");
 	string alpha_type = _alphabet->getAlphabetType();
@@ -79,3 +87,4 @@ string AnalyzedSequences::getAlphabetType() const {
 		alpha_type = "PROTEIN";
 	return alpha_type;
 }
+

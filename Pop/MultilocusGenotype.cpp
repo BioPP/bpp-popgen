@@ -1,12 +1,11 @@
-/*
- * File MultilocusGenotype.cpp
- * Author : Sylvain Gaillard <yragael2001@yahoo.fr>
- * Last modification : Thursday July 29 2004
- *
-*/
+//
+// File MultilocusGenotype.cpp
+// Author : Sylvain Gaillard <yragael2001@yahoo.fr>
+// Last modification : Thursday July 29 2004
+//
+
 /*
 Copyright or © or Copr. CNRS, (November 17, 2004)
-
 
 This software is a computer program whose purpose is to provide classes
 for population genetics analysis.
@@ -37,10 +36,15 @@ same conditions as regards security.
 The fact that you are presently reading this means that you have had
 knowledge of the CeCILL license and that you accept its terms.
 */
+
 #include "MultilocusGenotype.h"
 
+using namespace bpp;
+
 //** Class constructor: *******************************************************/
-MultilocusGenotype::MultilocusGenotype(unsigned int loci_number) throw (BadIntegerException) {
+
+MultilocusGenotype::MultilocusGenotype(unsigned int loci_number) throw (BadIntegerException)
+{
 	if (loci_number < 1)
 		throw BadIntegerException("MultilocusGenotype::MultilocusGenotype: loci_number must be > 0.", loci_number);
 
@@ -52,8 +56,10 @@ MultilocusGenotype::MultilocusGenotype(unsigned int loci_number) throw (BadInteg
 		_loci[i] = NULL;
 }
 
-MultilocusGenotype::MultilocusGenotype(const MultilocusGenotype & genotype) {
-	for (unsigned int i=0 ; i<genotype.size() ; i++) {
+MultilocusGenotype::MultilocusGenotype(const MultilocusGenotype & genotype)
+{
+	for(unsigned int i = 0; i < genotype.size(); i++)
+  {
 		if (! genotype.isMonolocusGenotypeMissing(i))
 			_loci.push_back(dynamic_cast<MonolocusGenotype *>((genotype.getMonolocusGenotype(i))->clone()));
 		else
@@ -62,15 +68,19 @@ MultilocusGenotype::MultilocusGenotype(const MultilocusGenotype & genotype) {
 }
 
 //** Class destructor: *******************************************************/
-MultilocusGenotype::~MultilocusGenotype() {
-	for (unsigned int i=0 ; i<_loci.size() ; i++)
+
+MultilocusGenotype::~MultilocusGenotype()
+{
+	for(unsigned int i = 0; i < _loci.size(); i++)
 		delete _loci[i];
 	_loci.clear();
 }
 
 //** Other methodes: *********************************************************/
+
 void MultilocusGenotype::setMonolocusGenotype(unsigned int locus_position,
-		const MonolocusGenotype & monogen) throw (IndexOutOfBoundsException) {
+		const MonolocusGenotype & monogen) throw (IndexOutOfBoundsException)
+{
 	if (locus_position < _loci.size())
 		_loci[locus_position] = dynamic_cast<MonolocusGenotype *>(monogen.clone());
 	else
@@ -79,11 +89,13 @@ void MultilocusGenotype::setMonolocusGenotype(unsigned int locus_position,
 }
 
 void MultilocusGenotype::setMonolocusGenotypeByAlleleKey(unsigned int locus_position,
-		const vector<unsigned int> allele_keys) throw (Exception) {
+		const vector<unsigned int> allele_keys) throw (Exception)
+{
 	if (allele_keys.size() < 1)
 		throw Exception("MultilocusGenotype::setMonolocusGenotypeByAlleleKey: no key in allele_keys.");
 	
-	if (locus_position < _loci.size()) {
+	if (locus_position < _loci.size())
+  {
 		if (allele_keys.size() == 1)
 			setMonolocusGenotype(locus_position, MonoAlleleMonolocusGenotype(allele_keys));
 		if (allele_keys.size() > 1)
@@ -113,7 +125,8 @@ void MultilocusGenotype::setMonolocusGenotypeByAlleleId(unsigned int locus_posit
 	}
 }
 
-void MultilocusGenotype::setMonolocusGenotypeAsMissing(unsigned int locus_position) throw (IndexOutOfBoundsException) {
+void MultilocusGenotype::setMonolocusGenotypeAsMissing(unsigned int locus_position) throw (IndexOutOfBoundsException)
+{
 	if (locus_position >= _loci.size())
 		throw IndexOutOfBoundsException("MultilocusGenotype::setMonolocusGenotypeAsMissing: locus_position out of bounds.", locus_position, 0, _loci.size());
 	if (_loci[locus_position] != NULL)
@@ -121,30 +134,35 @@ void MultilocusGenotype::setMonolocusGenotypeAsMissing(unsigned int locus_positi
 	_loci[locus_position] = NULL;
 }
 
-bool MultilocusGenotype::isMonolocusGenotypeMissing(unsigned int locus_position) const throw (IndexOutOfBoundsException) {
+bool MultilocusGenotype::isMonolocusGenotypeMissing(unsigned int locus_position) const throw (IndexOutOfBoundsException)
+{
 	if (locus_position >= _loci.size())
 		throw IndexOutOfBoundsException("MultilocusGenotype::isMonolocusGenotypeMissing: locus_position out of bounds.", locus_position, 0, _loci.size());
 	return _loci[locus_position] == NULL;
 }
 
-const MonolocusGenotype * MultilocusGenotype::getMonolocusGenotype(unsigned int locus_position) const throw (IndexOutOfBoundsException) {
+const MonolocusGenotype * MultilocusGenotype::getMonolocusGenotype(unsigned int locus_position) const throw (IndexOutOfBoundsException)
+{
 	if (locus_position >= _loci.size())
 		throw IndexOutOfBoundsException("MultilocusGenotype::getMonolocusGenotype: locus_position out of bounds", locus_position, 0, _loci.size());
 	return _loci[locus_position];
 }
 
-unsigned int MultilocusGenotype::size() const {
+unsigned int MultilocusGenotype::size() const
+{
 	return _loci.size();
 }
 
-unsigned int MultilocusGenotype::countNonMissingLoci() const {
+unsigned int MultilocusGenotype::countNonMissingLoci() const
+{
 	unsigned int count = 0;
 	for (unsigned int i = 0 ; i < _loci.size() ; i++)
 		if (_loci[i] != NULL) count++;
 	return count;
 }
 
-unsigned int MultilocusGenotype::countHomozygousLoci() const {
+unsigned int MultilocusGenotype::countHomozygousLoci() const
+{
 	unsigned int count = 0;
 	for (unsigned int i = 0 ; i < _loci.size() ; i++) {
 		try {
@@ -155,9 +173,11 @@ unsigned int MultilocusGenotype::countHomozygousLoci() const {
 	return count;
 }
 
-unsigned int MultilocusGenotype::countHeterozygousLoci() const {
+unsigned int MultilocusGenotype::countHeterozygousLoci() const
+{
 	unsigned int count = 0;
-	for (unsigned int i = 0 ; i < _loci.size() ; i++) {
+	for(unsigned int i = 0; i < _loci.size(); i++)
+  {
 		try {
 			if (!(dynamic_cast<BiAlleleMonolocusGenotype *>(_loci[i])->isHomozygous())) count++;
 		}
@@ -165,3 +185,4 @@ unsigned int MultilocusGenotype::countHeterozygousLoci() const {
 	}
 	return count;
 }
+

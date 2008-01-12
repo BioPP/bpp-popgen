@@ -1,13 +1,12 @@
-/*
- * File Genetix.cpp
- * Authors : Sylvain Gaillard <yragael2001@yahoo.fr>
- *           Khalid Belkhir
- * Last modification : Monday August 02 2004
- *
-*/
+//
+// File Genetix.cpp
+// Authors : Sylvain Gaillard
+//           Khalid Belkhir
+// Last modification : Monday August 02 2004
+//
+
 /*
 Copyright or © or Copr. CNRS, (November 17, 2004)
-
 
 This software is a computer program whose purpose is to provide classes
 for population genetics analysis.
@@ -38,21 +37,27 @@ same conditions as regards security.
 The fact that you are presently reading this means that you have had
 knowledge of the CeCILL license and that you accept its terms.
 */
+
 #include "Genetix.h"
+
+using namespace bpp;
 
 Genetix::Genetix() {}
 
 Genetix::~Genetix() {}
 
-const string Genetix::getFormatName() {
+const string Genetix::getFormatName()
+{
 	return "Genetix ver 4.05";
 }
 
-const string Genetix::getFormatDescription() {
+const string Genetix::getFormatDescription()
+{
 	return "Genetix is a software for populations genetic for Windows(tm)";
 }
 
-void Genetix::read(istream & is, DataSet & data_set) throw (Exception) {
+void Genetix::read(istream & is, DataSet & data_set) throw (Exception)
+{
 	if (!is)
 		throw IOException("Genetix::read: fail to open stream.");
 	// Loci number
@@ -117,14 +122,18 @@ void Genetix::read(istream & is, DataSet & data_set) throw (Exception) {
 	}
 }
 
-void Genetix::read(const string & path, DataSet & data_set) throw (Exception) {
+void Genetix::read(const string & path, DataSet & data_set) throw (Exception)
+{
 	AbstractIDataSet::read(path, data_set);
 }
 	
-DataSet * Genetix::read(istream & is) throw (Exception) {
+DataSet * Genetix::read(istream & is) throw (Exception)
+{
 	return AbstractIDataSet::read(is);
 }
 
-DataSet * Genetix::read(const string & path) throw (Exception) {
+DataSet * Genetix::read(const string & path) throw (Exception) 
+{
 	return AbstractIDataSet::read(path);
 }
+

@@ -1,12 +1,11 @@
-/*
- * File AlleleInfo.h
- * Author : Sylvain Gaillard <yragael2001@yahoo.fr>
- * Last modification : Thursday July 29 2004
- *
-*/
+//
+// File AlleleInfo.h
+// Author : Sylvain Gaillard
+// Last modification : Thursday July 29 2004
+//
+
 /*
 Copyright or © or Copr. CNRS, (November 17, 2004)
-
 
 This software is a computer program whose purpose is to provide classes
 for population genetics analysis.
@@ -37,24 +36,30 @@ same conditions as regards security.
 The fact that you are presently reading this means that you have had
 knowledge of the CeCILL license and that you accept its terms.
 */
-// Secured inclusion of header's file
+
 #ifndef _ALLELEINFO_H_
 #define _ALLELEINFO_H_
 
 // From STL
 #include <string>
+
 using namespace std;
 
 // From Utils
 #include <Utils/Clonable.h>
 
+namespace bpp
+{
+
 /**
  * @brief The AlleleInfo interface.
  */
-class AlleleInfo : public Clonable {
+class AlleleInfo:
+  public virtual Clonable
+{
 	public: // Destructor
 
-		virtual ~AlleleInfo();
+		virtual ~AlleleInfo() {}
 
 	public: // Methodes
 		/**
@@ -68,4 +73,7 @@ class AlleleInfo : public Clonable {
 		virtual string getId() const = 0;
 };
 
+} //end of namespace bpp;
+
 #endif // _ALLELEINFO_H_
+

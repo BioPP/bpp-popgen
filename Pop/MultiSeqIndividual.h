@@ -1,12 +1,11 @@
-/*
- * File MultiSeqIndividual.h
- * Author : Sylvain Gaillard <yragael2001@yahoo.fr>
- * Last modification : Tuesday August 03 2004
- *
-*/
+//
+// File MultiSeqIndividual.h
+// Author : Sylvain Gaillard
+// Last modification : Tuesday August 03 2004
+//
+
 /*
 Copyright or © or Copr. CNRS, (November 17, 2004)
-
 
 This software is a computer program whose purpose is to provide classes
 for population genetics analysis.
@@ -37,13 +36,15 @@ same conditions as regards security.
 The fact that you are presently reading this means that you have had
 knowledge of the CeCILL license and that you accept its terms.
 */
-// Secured inclusion of header's file
+
 #ifndef _MULTISEQINDIVIDUAL_H_
 #define _MULTISEQINDIVIDUAL_H_
 
 // From STL
 #include <map>
 #include <vector>
+
+using namespace std;
 
 // From Utils
 #include <Utils/Clonable.h>
@@ -61,6 +62,9 @@ knowledge of the CeCILL license and that you accept its terms.
 #include "MultilocusGenotype.h"
 #include "GeneralExceptions.h"
 
+namespace bpp
+{
+
 /**
  * @brief <center><b>*** UNUSED CLASS ***</b></center>The MultiSeqIndividual class.
  *
@@ -71,7 +75,8 @@ knowledge of the CeCILL license and that you accept its terms.
  * We have replaced it with a simplest individual with only one sequence per
  * locus.
  */
-class MultiSeqIndividual {
+class MultiSeqIndividual
+{
 	public: // Constructors and destructor :
 		
 		/**
@@ -359,4 +364,8 @@ class MultiSeqIndividual {
 		map<string,VectorSequenceContainer *> _sequences;
 		MultilocusGenotype * _genotype;
 };
+
+} //end of namespace bpp;
+
 #endif // _MULTISEQINDIVIDUAL_H_
+

@@ -1,12 +1,12 @@
 //
-// File: PolymorphismSequenceContainerTools.h
+// File: PolymorphismSequenceContainerTools.cpp
 // Created by: Eric Bazin
 // 						 Sylvain Gaillard
 // Created on: Thursday July 29 2004
 //
+
 /*
 Copyright or © or Copr. CNRS, (November 17, 2004)
-
 
 This software is a computer program whose purpose is to provide classes
 for population genetics analysis.
@@ -38,17 +38,14 @@ The fact that you are presently reading this means that you have had
 knowledge of the CeCILL license and that you accept its terms.
 */
 
-
-// from PolyLib
 #include "PolymorphismSequenceContainerTools.h"
 
-
-using namespace std;
+using namespace bpp;
 
 PolymorphismSequenceContainerTools::~PolymorphismSequenceContainerTools() {}
 
-
-PolymorphismSequenceContainer * PolymorphismSequenceContainerTools::read(const string & path, const Alphabet * alpha) throw (Exception) {
+PolymorphismSequenceContainer * PolymorphismSequenceContainerTools::read(const string & path, const Alphabet * alpha) throw (Exception)
+{
 	Mase ms;
 	string key;
 	unsigned int n;
@@ -91,7 +88,8 @@ PolymorphismSequenceContainer * PolymorphismSequenceContainerTools::read(const s
 	return psc;
 }
 
-PolymorphismSequenceContainer * PolymorphismSequenceContainerTools::extractIngroup (const PolymorphismSequenceContainer & psc) throw (Exception) {
+PolymorphismSequenceContainer * PolymorphismSequenceContainerTools::extractIngroup (const PolymorphismSequenceContainer & psc) throw (Exception)
+{
 	SequenceSelection ss;
 	PolymorphismSequenceContainer * psci = dynamic_cast<PolymorphismSequenceContainer *>(psc.clone());
 	for(unsigned int i = 0; i < psc.getNumberOfSequences(); i++)
@@ -107,7 +105,8 @@ PolymorphismSequenceContainer * PolymorphismSequenceContainerTools::extractIngro
 	return psci;
 }
 
-PolymorphismSequenceContainer * PolymorphismSequenceContainerTools::extractOutgroup(const PolymorphismSequenceContainer & psc) throw (Exception) {
+PolymorphismSequenceContainer * PolymorphismSequenceContainerTools::extractOutgroup(const PolymorphismSequenceContainer & psc) throw (Exception)
+{
 	SequenceSelection ss;
 	PolymorphismSequenceContainer * psci = dynamic_cast<PolymorphismSequenceContainer *>(psc.clone());
 	for(unsigned int i = 0; i < psc.getNumberOfSequences(); i++)
@@ -123,7 +122,8 @@ PolymorphismSequenceContainer * PolymorphismSequenceContainerTools::extractOutgr
 	return psci;
 }
 
-PolymorphismSequenceContainer * PolymorphismSequenceContainerTools::extractGroup(const PolymorphismSequenceContainer & psc, unsigned int group_id) throw (Exception) {
+PolymorphismSequenceContainer * PolymorphismSequenceContainerTools::extractGroup(const PolymorphismSequenceContainer & psc, unsigned int group_id) throw (Exception)
+{
 	SequenceSelection ss;
 	PolymorphismSequenceContainer * psci = dynamic_cast<PolymorphismSequenceContainer *>(psc.clone());
 	for (unsigned int i = 0 ; i < psc.getNumberOfSequences() ; i++)
@@ -138,8 +138,8 @@ PolymorphismSequenceContainer * PolymorphismSequenceContainerTools::extractGroup
 	return psci;
 }
 
-
-PolymorphismSequenceContainer * PolymorphismSequenceContainerTools::getSelectedSequences(const PolymorphismSequenceContainer & psc, SequenceSelection & ss) {
+PolymorphismSequenceContainer * PolymorphismSequenceContainerTools::getSelectedSequences(const PolymorphismSequenceContainer & psc, SequenceSelection & ss)
+{
   PolymorphismSequenceContainer * newpsc = new PolymorphismSequenceContainer(psc.getAlphabet());
   for(unsigned int i = 0; i < ss.size(); i++) {
     newpsc -> addSequence(*psc.getSequence(ss[i]), false);
@@ -153,9 +153,8 @@ PolymorphismSequenceContainer * PolymorphismSequenceContainerTools::getSelectedS
   return newpsc;
 }
 
-
-
-PolymorphismSequenceContainer * PolymorphismSequenceContainerTools::getSitesWithoutGaps (const PolymorphismSequenceContainer & psc) {
+PolymorphismSequenceContainer * PolymorphismSequenceContainerTools::getSitesWithoutGaps (const PolymorphismSequenceContainer & psc)
+{
 	vector<string> seqNames = psc.getSequencesNames();
 	PolymorphismSequenceContainer * noGapCont = new PolymorphismSequenceContainer(psc.getNumberOfSequences(), psc.getAlphabet());
 	noGapCont->setSequencesNames(seqNames, false);
@@ -174,7 +173,8 @@ PolymorphismSequenceContainer * PolymorphismSequenceContainerTools::getSitesWith
 	return noGapCont;
 }
 
-unsigned int PolymorphismSequenceContainerTools::getNumberOfNonGapSites(const PolymorphismSequenceContainer & psc, bool ingroup) throw (Exception) {
+unsigned int PolymorphismSequenceContainerTools::getNumberOfNonGapSites(const PolymorphismSequenceContainer & psc, bool ingroup) throw (Exception)
+{
 	unsigned int count = psc.getNumberOfSites();
 	PolymorphismSequenceContainer * npsc = NULL;
 	SimpleSiteIterator * ssi;
@@ -198,7 +198,8 @@ unsigned int PolymorphismSequenceContainerTools::getNumberOfNonGapSites(const Po
 	return count;
 }
 
-unsigned int PolymorphismSequenceContainerTools::getNumberOfCompleteSites(const PolymorphismSequenceContainer & psc, bool ingroup) throw (Exception) {
+unsigned int PolymorphismSequenceContainerTools::getNumberOfCompleteSites(const PolymorphismSequenceContainer & psc, bool ingroup) throw (Exception)
+{
 	unsigned int count = psc.getNumberOfSites();
 	PolymorphismSequenceContainer * npsc = NULL;
 	SimpleSiteIterator * ssi;
@@ -222,11 +223,10 @@ unsigned int PolymorphismSequenceContainerTools::getNumberOfCompleteSites(const 
 	return count;
 }
 
-
 //*******************************************************************************************************************************
 
-
-PolymorphismSequenceContainer * PolymorphismSequenceContainerTools::getCompleteSites (const PolymorphismSequenceContainer & psc) {
+PolymorphismSequenceContainer * PolymorphismSequenceContainerTools::getCompleteSites (const PolymorphismSequenceContainer & psc)
+{
 	vector<string> seqNames = psc.getSequencesNames();
 	PolymorphismSequenceContainer * complete = new PolymorphismSequenceContainer(psc.getNumberOfSequences(), psc.getAlphabet());
 	complete->setSequencesNames(seqNames, false);
@@ -245,7 +245,8 @@ PolymorphismSequenceContainer * PolymorphismSequenceContainerTools::getCompleteS
 	return complete;
 }
 
-PolymorphismSequenceContainer * PolymorphismSequenceContainerTools::excludeFlankingGap(const PolymorphismSequenceContainer & psc) {
+PolymorphismSequenceContainer * PolymorphismSequenceContainerTools::excludeFlankingGap(const PolymorphismSequenceContainer & psc)
+{
 	PolymorphismSequenceContainer *psci = dynamic_cast<PolymorphismSequenceContainer *>(psc.clone());
 	while(SiteTools::hasGap(*psci->getSite(0))){
 		psci->deleteSite(0);
@@ -259,8 +260,8 @@ PolymorphismSequenceContainer * PolymorphismSequenceContainerTools::excludeFlank
 	return psci;
 }
 
-
-PolymorphismSequenceContainer * PolymorphismSequenceContainerTools::getSelectedSites(const PolymorphismSequenceContainer & psc, const string &setName, bool phase) {
+PolymorphismSequenceContainer * PolymorphismSequenceContainerTools::getSelectedSites(const PolymorphismSequenceContainer & psc, const string &setName, bool phase)
+{
 	SiteContainer *pscc = MaseTools::getSelectedSites(psc, setName);
 	Comments maseFileHeader = psc.getGeneralComments();
 	if (phase) {
@@ -281,7 +282,8 @@ PolymorphismSequenceContainer * PolymorphismSequenceContainerTools::getSelectedS
 	return psci;
 }
 
-PolymorphismSequenceContainer * PolymorphismSequenceContainerTools::getNonCodingSites(const PolymorphismSequenceContainer & psc, const string & setName) {
+PolymorphismSequenceContainer * PolymorphismSequenceContainerTools::getNonCodingSites(const PolymorphismSequenceContainer & psc, const string & setName)
+{
 	SiteSelection ss;
 	Comments maseFileHeader = psc.getGeneralComments();
 	SiteSelection codss = MaseTools::getSiteSet(maseFileHeader,setName);
@@ -301,8 +303,8 @@ PolymorphismSequenceContainer * PolymorphismSequenceContainerTools::getNonCoding
 	return psci;
 }
 
-
-PolymorphismSequenceContainer * PolymorphismSequenceContainerTools::getOnePosition(const PolymorphismSequenceContainer & psc, const string & setName, unsigned int pos) {
+PolymorphismSequenceContainer * PolymorphismSequenceContainerTools::getOnePosition(const PolymorphismSequenceContainer & psc, const string & setName, unsigned int pos)
+{
 	Comments maseFileHeader = psc.getGeneralComments();
 	unsigned int start;
 	try{
@@ -330,9 +332,8 @@ PolymorphismSequenceContainer * PolymorphismSequenceContainerTools::getOnePositi
 	return newpsc;
 }
 
-
-
-PolymorphismSequenceContainer * PolymorphismSequenceContainerTools::getIntrons(const PolymorphismSequenceContainer & psc, const string & setName, const CodonAlphabet *ca ) {
+PolymorphismSequenceContainer * PolymorphismSequenceContainerTools::getIntrons(const PolymorphismSequenceContainer & psc, const string & setName, const CodonAlphabet *ca )
+{
 	Comments maseFileHeader = psc.getGeneralComments();
 	SiteSelection ss;
 	SiteSelection codss = MaseTools::getSiteSet(maseFileHeader,setName);
@@ -372,7 +373,8 @@ PolymorphismSequenceContainer * PolymorphismSequenceContainerTools::getIntrons(c
 	return psci;
 }
 
-PolymorphismSequenceContainer * PolymorphismSequenceContainerTools::get5Prime(const PolymorphismSequenceContainer & psc, const string & setName) {
+PolymorphismSequenceContainer * PolymorphismSequenceContainerTools::get5Prime(const PolymorphismSequenceContainer & psc, const string & setName)
+{
 	Comments maseFileHeader = psc.getGeneralComments();
 	SiteSelection ss;
 	SiteSelection codss = MaseTools::getSiteSet(maseFileHeader,setName);
@@ -401,7 +403,8 @@ PolymorphismSequenceContainer * PolymorphismSequenceContainerTools::get5Prime(co
 	return psci;
 }
 
-PolymorphismSequenceContainer * PolymorphismSequenceContainerTools::get3Prime(const PolymorphismSequenceContainer & psc, const string & setName, const CodonAlphabet *ca ) {
+PolymorphismSequenceContainer * PolymorphismSequenceContainerTools::get3Prime(const PolymorphismSequenceContainer & psc, const string & setName, const CodonAlphabet *ca )
+{
 	Comments maseFileHeader = psc.getGeneralComments();
     SiteSelection ss;
     SiteSelection codss = MaseTools::getSiteSet(maseFileHeader,setName);
@@ -429,8 +432,8 @@ PolymorphismSequenceContainer * PolymorphismSequenceContainerTools::get3Prime(co
 	return psci;
 }
 
-
-string PolymorphismSequenceContainerTools::getIngroupSpeciesName(const PolymorphismSequenceContainer & psc) {
+string PolymorphismSequenceContainerTools::getIngroupSpeciesName(const PolymorphismSequenceContainer & psc)
+{
 	string key;
 	unsigned int n;
 	string speciesName;

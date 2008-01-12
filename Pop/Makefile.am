@@ -36,7 +36,6 @@ SequenceStatistics.h
 CPP_FILES = \
 AbstractIDataSet.cpp\
 AbstractODataSet.cpp\
-AlleleInfo.cpp\
 AnalyzedLoci.cpp\
 AnalyzedSequences.cpp\
 BasicAlleleInfo.cpp\
@@ -49,12 +48,8 @@ Genepop.cpp\
 Genetix.cpp\
 Group.cpp\
 Individual.cpp\
-IDataSet.cpp\
-IODataSet.cpp\
-ODataSet.cpp\
 LocusInfo.cpp\
 MonoAlleleMonolocusGenotype.cpp\
-MonolocusGenotype.cpp\
 MultilocusGenotype.cpp\
 MultilocusGenotypeStatistics.cpp\
 MultiSeqIndividual.cpp\

@@ -1,13 +1,12 @@
-/*
- * File MultilocusGenotypeStatistics.h
- * Authors : Sylvain Gaillard <yragael2001@yahoo.fr>
- *           khalid Belkhir
- * Last modification : Wednesday August 04 2004
- *
-*/
+//
+// File MultilocusGenotypeStatistics.h
+// Authors : Sylvain Gaillard
+//           Khalid Belkhir
+// Last modification : Wednesday August 04 2004
+//
+
 /*
 Copyright or © or Copr. CNRS, (November 17, 2004)
-
 
 This software is a computer program whose purpose is to provide classes
 for population genetics analysis.
@@ -38,18 +37,17 @@ same conditions as regards security.
 The fact that you are presently reading this means that you have had
 knowledge of the CeCILL license and that you accept its terms.
 */
-// Secured inclusion of header's file
+
 #ifndef _MULTILOCUSGENOTYPESTATISTICS_H_
 #define _MULTILOCUSGENOTYPESTATISTICS_H_
 
-// From C library
-#include <cmath>
-
 // From STL
+#include <cmath>
 #include <vector>
 #include <map>
 #include <set>
 #include <algorithm>
+
 using namespace std;
 
 // From Utils
@@ -64,20 +62,26 @@ using namespace std;
 #include "MultilocusGenotype.h"
 #include "GeneralExceptions.h"
 
+namespace bpp
+{
+
 /**
  * @brief The MultilocusGenotypeStatistics class
  *
  * This class is a set of static method for PolymorphismMultiGContainer.
  */
-class MultilocusGenotypeStatistics {
+class MultilocusGenotypeStatistics
+{
   public:
-    struct VarComp {
+    struct VarComp
+    {
       double a;
       double b;
       double c;
     };
 
-    struct Fstats {
+    struct Fstats
+    {
       double Fit;
       double Fst;
       double Fis;
@@ -287,6 +291,8 @@ class MultilocusGenotypeStatistics {
     static DistanceMatrix * getDistanceMatrix(const PolymorphismMultiGContainer & pmgc, vector<unsigned int> locus_positions, const set<unsigned int> & groups, string distance_methode) throw (Exception);
 
 };
+
+} //end of namespace bpp;
 
 #endif // _MULTILOCUSGENOTYPESTATISTICS_H_
 

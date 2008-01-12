@@ -1,12 +1,11 @@
-/*
- * File GeneralExceptions.cpp
- * Author : Sylvain Gaillard <yragael2001@yahoo.fr>
- * Last modification : Thursday July 29 2004
- *
-*/
+//
+// File GeneralExceptions.cpp
+// Author : Sylvain Gaillard
+// Last modification: Thursday July 29 2004
+//
+
 /*
 Copyright or © or Copr. CNRS, (November 17, 2004)
-
 
 This software is a computer program whose purpose is to provide classes
 for population genetics analysis.
@@ -37,12 +36,16 @@ same conditions as regards security.
 The fact that you are presently reading this means that you have had
 knowledge of the CeCILL license and that you accept its terms.
 */
+
 #include "GeneralExceptions.h"
 
 // From Utils
 #include <Utils/TextTools.h>
 
+using namespace bpp;
+
 //** BadIdentifierException **************************************************/
+
 BadIdentifierException::BadIdentifierException(const char *text,
 		const unsigned int id): Exception("BadIdentifierException: " +
 			string(text) + "(" + TextTools::toString(id) + ")"),
@@ -70,6 +73,7 @@ const string BadIdentifierException::getIdentifier() const {
 }
 
 //** LocusNotFoundException **************************************************/
+
 LocusNotFoundException::LocusNotFoundException(const char *text,
 		const unsigned int id): BadIdentifierException("LocusNotFoundException: " +
 			string(text) + "(" + TextTools::toString(id) + ")",
@@ -97,6 +101,7 @@ const string LocusNotFoundException::getIdentifier() const {
 }
 
 //** AlleleNotFoundException **************************************************/
+
 AlleleNotFoundException::AlleleNotFoundException(const char *text,
 		const unsigned int id): BadIdentifierException("AlleleNotFoundException: " +
 			string(text) + "(" + TextTools::toString(id) + ")",
@@ -124,6 +129,7 @@ const string AlleleNotFoundException::getIdentifier() const {
 }
 
 //** LocalityNotFoundException **************************************************/
+
 LocalityNotFoundException::LocalityNotFoundException(const char *text,
 		const unsigned int id): BadIdentifierException("LocalityNotFoundException: " +
 			string(text) + "(" + TextTools::toString(id) + ")",
@@ -151,6 +157,7 @@ const string LocalityNotFoundException::getIdentifier() const {
 }
 
 //** IndividualNotFoundException **************************************************/
+
 IndividualNotFoundException::IndividualNotFoundException(const char *text,
 		const unsigned int id): BadIdentifierException("IndividualNotFoundException: " +
 			string(text) + "(" + TextTools::toString(id) + ")",
@@ -178,6 +185,7 @@ const string IndividualNotFoundException::getIdentifier() const {
 }
 
 //** GroupNotFoundException **************************************************/
+
 GroupNotFoundException::GroupNotFoundException(const char *text,
 		const unsigned int id): BadIdentifierException("GroupNotFoundException: " +
 			string(text) + "(" + TextTools::toString(id) + ")",
@@ -203,3 +211,4 @@ GroupNotFoundException::~GroupNotFoundException() throw() {}
 const string GroupNotFoundException::getIdentifier() const {
 	return BadIdentifierException::getIdentifier();
 }
+

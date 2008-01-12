@@ -1,12 +1,11 @@
-/*
- * File Date.h
- * Author : Sylvain Gaillard <yragael2001@yahoo.fr>
- * Last modification : Thursday July 29 2004
- *
-*/
+//
+// File Date.h
+// Author : Sylvain Gaillard
+// Last modification : Thursday July 29 2004
+//
+
 /*
 Copyright or © or Copr. CNRS, (November 17, 2004)
-
 
 This software is a computer program whose purpose is to provide classes
 for population genetics analysis.
@@ -37,19 +36,23 @@ same conditions as regards security.
 The fact that you are presently reading this means that you have had
 knowledge of the CeCILL license and that you accept its terms.
 */
-// Secured inclusion of header's file
+
 #ifndef _DATE_H_
 #define _DATE_H_
 
 // From Utils
 #include <Utils/Exceptions.h>
 
+namespace bpp
+{
+
 /**
  * @brief The Date class
  *
  * This is a little class to deal with dates.
  */
-class Date {
+class Date
+{
 	public: // Constructors and destructor
 		/**
 		 * @brief Build a new Date from three values.
@@ -181,4 +184,7 @@ class Date {
 		int _year;
 };
 
+} //end of namespace bpp;
+
 #endif // _DATE_H_
+

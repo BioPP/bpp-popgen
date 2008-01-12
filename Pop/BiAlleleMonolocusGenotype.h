@@ -1,12 +1,11 @@
-/*
- * File BiAlleleMonolocusGenotype.h
- * Author : Sylvain Gaillard <yragael2001@yahoo.fr>
- * Last modification : Thursday July 29 2004
- *
-*/
+//
+// File BiAlleleMonolocusGenotype.h
+// Author : Sylvain Gaillard
+// Last modification : Thursday July 29 2004
+//
+
 /*
 Copyright or © or Copr. CNRS, (November 17, 2004)
-
 
 This software is a computer program whose purpose is to provide classes
 for population genetics analysis.
@@ -43,6 +42,7 @@ knowledge of the CeCILL license and that you accept its terms.
 
 // From STL
 #include <vector>
+
 using namespace std;
 
 // From Utils
@@ -51,10 +51,15 @@ using namespace std;
 //From local
 #include "MonolocusGenotype.h"
 
+namespace bpp
+{
+
 /**
  * @brief The BiAlleleMonolocusGenotype class.
  */
-class BiAlleleMonolocusGenotype : public MonolocusGenotype {
+class BiAlleleMonolocusGenotype:
+  public MonolocusGenotype
+{
 	public: // Constructors and destructor
 		/**
 		 * @brief Build a monolocus genotype containing two alleles.
@@ -121,4 +126,8 @@ class BiAlleleMonolocusGenotype : public MonolocusGenotype {
 	protected:
 		vector<unsigned int> _allele_index;
 };
+
+} //end of namespace bpp;
+
 #endif // _BIALLELEMONOLOCUSGENOTYPE_H_
+

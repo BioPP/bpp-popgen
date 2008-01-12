@@ -1,12 +1,11 @@
-/*
- * File MonoAlleleMonolocusGenotype.h
- * Author : Sylvain Gaillard <yragael2001@yahoo.fr>
- * Last modification : Thursday July 29 2004
- *
-*/
+//
+// File MonoAlleleMonolocusGenotype.h
+// Author : Sylvain Gaillard <yragael2001@yahoo.fr>
+// Last modification : Thursday July 29 2004
+//
+
 /*
 Copyright or © or Copr. CNRS, (November 17, 2004)
-
 
 This software is a computer program whose purpose is to provide classes
 for population genetics analysis.
@@ -37,7 +36,7 @@ same conditions as regards security.
 The fact that you are presently reading this means that you have had
 knowledge of the CeCILL license and that you accept its terms.
 */
-// Secured inclusion of header's file
+
 #ifndef _MONOALLELEMONOLOCUSGENOTYPE_H_
 #define _MONOALLELEMONOLOCUSGENOTYPE_H_
 
@@ -47,10 +46,15 @@ knowledge of the CeCILL license and that you accept its terms.
 // From local
 #include "MonolocusGenotype.h"
 
+namespace bpp
+{
+
 /**
  * @brief The MonoAlleleMonolocusGenotype class.
  */
-class MonoAlleleMonolocusGenotype : public MonolocusGenotype {
+class MonoAlleleMonolocusGenotype:
+  public MonolocusGenotype
+{
 	public: // Constructors and destructor
 		/**
 		 * @brief Build a monolocus genotype containing one allele.
@@ -102,4 +106,7 @@ class MonoAlleleMonolocusGenotype : public MonolocusGenotype {
 	protected:
 		unsigned int _allele_index;
 };
+
+} //end of namespace bpp;
+
 #endif // _MONOALLELEMONOLOCUSGENOTYPE_H_

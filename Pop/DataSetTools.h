@@ -1,12 +1,11 @@
-/*
- * File DataSetTools.h
- * Author : Sylvain Gaillard <yragael2001@yahoo.fr>
- * Last modification : Wednesday August 04 2004
- *
-*/
+//
+// File DataSetTools.h
+// Author : Sylvain Gaillard
+// Last modification : Wednesday August 04 2004
+//
+
 /*
 Copyright or © or Copr. CNRS, (November 17, 2004)
-
 
 This software is a computer program whose purpose is to provide classes
 for population genetics analysis.
@@ -37,12 +36,13 @@ same conditions as regards security.
 The fact that you are presently reading this means that you have had
 knowledge of the CeCILL license and that you accept its terms.
 */
-// Secured inclusion of header's file
+
 #ifndef _DATASETTOOLS_H_
 #define _DATASETTOOLS_H_
 
 // From STL
 #include <set>
+
 using namespace std;
 
 // From Utils
@@ -56,10 +56,14 @@ using namespace std;
 #include "DataSet.h"
 #include "PolymorphismSequenceContainer.h"
 
+namespace bpp
+{
+
 /**
  * @brief A set of tools for DataSet.
  */
-class DataSetTools {
+class DataSetTools
+{
 	public:
 		/**
 		 * @brief General method to build a DataSet from an OrderedSequenceContainer.
@@ -72,4 +76,7 @@ class DataSetTools {
 		static DataSet * buildDataSet(const PolymorphismSequenceContainer & psc) throw (Exception);
 };
 
+} //end of namespace bpp;
+
 #endif // _DATASETTOOLS_H_
+

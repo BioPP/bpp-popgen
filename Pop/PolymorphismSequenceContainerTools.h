@@ -62,6 +62,9 @@ knowledge of the CeCILL license and that you accept its terms.
 
 using namespace std;
 
+namespace bpp
+{
+
 /**
  * @brief Utilitary function to manipulate PolymorphismSequenceContainer
  */
@@ -240,6 +243,8 @@ class PolymorphismSequenceContainerTools
 		static string getIngroupSpeciesName(const PolymorphismSequenceContainer & psc);
 
 };
+
+} //end of namespace bpp;
 
 #endif // _POLYMORPHISMSEQUENCECONTAINERTOOL_H_
 

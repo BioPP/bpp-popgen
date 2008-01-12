@@ -1,12 +1,11 @@
-/*
- * File MultilocusGenotype.h
- * Author : Sylvain Gaillard <yragael2001@yahoo.fr>
- * Last modification : Thursday July 29 2004
- *
-*/
+//
+// File MultilocusGenotype.h
+// Author : Sylvain Gaillard
+// Last modification : Thursday July 29 2004
+//
+
 /*
 Copyright or © or Copr. CNRS, (November 17, 2004)
-
 
 This software is a computer program whose purpose is to provide classes
 for population genetics analysis.
@@ -37,12 +36,13 @@ same conditions as regards security.
 The fact that you are presently reading this means that you have had
 knowledge of the CeCILL license and that you accept its terms.
 */
-// Secured inclusion of header's file
+
 #ifndef _MULTILOCUSGENOTYPE_H_
 #define _MULTILOCUSGENOTYPE_H_
 
 // From STL
 #include <vector>
+
 using namespace std;
 
 // From Utils
@@ -54,12 +54,16 @@ using namespace std;
 #include "MonoAlleleMonolocusGenotype.h"
 #include "LocusInfo.h"
 
+namespace bpp
+{
+
 /**
  * @brief The MultilocusGenotype class.
  *
  * This is a MonolocusGenotype containor.
  */
-class MultilocusGenotype {
+class MultilocusGenotype
+{
 	public: // Constructors and Destructor
 		/**
 		 * @brief Build a MultilocusGenotype linked to an AnalyzedLoci object.
@@ -148,4 +152,8 @@ class MultilocusGenotype {
 	protected:
 		vector<MonolocusGenotype *> _loci;
 };
+
+} //end of namespace bpp;
+
 #endif // _MULTILOCUSGENOTYPE_H_
+

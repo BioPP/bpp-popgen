@@ -1,13 +1,12 @@
-/*
- * File Genetix.h
- * Author : Sylvain Gaillard <yragael2001@yahoo.fr>
- *           Khalid Belkhir
- * Last modification : Friday July 30 2004
- *
-*/
+//
+// File Genetix.h
+// Author : Sylvain Gaillard
+//          Khalid Belkhir
+// Last modification : Friday July 30 2004
+//
+
 /*
 Copyright or © or Copr. CNRS, (November 17, 2004)
-
 
 This software is a computer program whose purpose is to provide classes
 for population genetics analysis.
@@ -38,7 +37,7 @@ same conditions as regards security.
 The fact that you are presently reading this means that you have had
 knowledge of the CeCILL license and that you accept its terms.
 */
-// Secured inclusion of header's file
+
 #ifndef _GENETIX_H_
 #define _GENETIX_H_
 
@@ -52,10 +51,15 @@ knowledge of the CeCILL license and that you accept its terms.
 #include "AbstractIDataSet.h"
 #include "BasicAlleleInfo.h"
 
+namespace bpp
+{
+
 /**
  * @brief The Genetix input format for popgenlib.
  */
-class Genetix : public AbstractIDataSet {
+class Genetix:
+  public AbstractIDataSet
+{
 
 	public: // Constructor and destructor
 		Genetix();
@@ -85,4 +89,7 @@ class Genetix : public AbstractIDataSet {
 		 */
 };
 
+} //end of namespace bpp;
+
 #endif // _GENETIX_H_
+

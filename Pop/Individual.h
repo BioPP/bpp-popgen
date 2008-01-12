@@ -1,12 +1,11 @@
-/*
- * File Individual.h
- * Author : Sylvain Gaillard <yragael2001@yahoo.fr>
- * Last modification : Tuesday August 03 2004
- *
-*/
+//
+// File Individual.h
+// Author : Sylvain Gaillard
+// Last modification : Tuesday August 03 2004
+//
+
 /*
 Copyright or © or Copr. CNRS, (November 17, 2004)
-
 
 This software is a computer program whose purpose is to provide classes
 for population genetics analysis.
@@ -37,13 +36,15 @@ same conditions as regards security.
 The fact that you are presently reading this means that you have had
 knowledge of the CeCILL license and that you accept its terms.
 */
-// Secured inclusion of header's file
+
 #ifndef _INDIVIDUAL_H_
 #define _INDIVIDUAL_H_
 
 // From STL
 #include <map>
 #include <vector>
+
+using namespace std;
 
 // From Utils
 #include <Utils/Clonable.h>
@@ -63,6 +64,9 @@ knowledge of the CeCILL license and that you accept its terms.
 #include "MultilocusGenotype.h"
 #include "GeneralExceptions.h"
 
+namespace bpp
+{
+
 /**
  * @brief The Individual class.
  *
@@ -71,7 +75,8 @@ knowledge of the CeCILL license and that you accept its terms.
  * about diploid sequence data.
  * See the no more in use MultiSeqIndividual documentation for an alternative.
  */
-class Individual {
+class Individual
+{
 	public: // Constructors and destructor :
 		
 		/**
@@ -464,4 +469,8 @@ class Individual {
 		MapSequenceContainer * _sequences;
 		MultilocusGenotype * _genotype;
 };
+
+} //end of namespace bpp;
+
 #endif // _INDIVIDUAL_H_
+

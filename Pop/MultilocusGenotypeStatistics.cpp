@@ -40,6 +40,8 @@ knowledge of the CeCILL license and that you accept its terms.
 #include "MultilocusGenotypeStatistics.h"
 #include "PolymorphismMultiGContainerTools.h"
 
+using namespace bpp;
+
 #include <iostream>
 #include <math.h>
 
@@ -390,8 +392,6 @@ map<unsigned int, double> MultilocusGenotypeStatistics::getAllelesFst(const Poly
 	return Fst;
 }
 
-
-
 map<unsigned int, double> MultilocusGenotypeStatistics::getAllelesFis(const PolymorphismMultiGContainer & pmgc, unsigned int locus_position, const set<unsigned int> & groups) throw (Exception)
 {
 	map<unsigned int, MultilocusGenotypeStatistics::VarComp> values = getVarianceComponents(pmgc, locus_position, groups);
@@ -704,3 +704,4 @@ DistanceMatrix * MultilocusGenotypeStatistics::getDistanceMatrix(const Polymorph
 
   return _dist;
 }
+

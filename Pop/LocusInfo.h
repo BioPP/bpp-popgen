@@ -1,12 +1,11 @@
-/*
- * File LocusInfo.h
- * Author : Sylvain Gaillard <yragael2001@yahoo.fr>
- * Last modification : Thursday July 29 2004
- *
-*/
+//
+// File LocusInfo.h
+// Author : Sylvain Gaillard
+// Last modification : Thursday July 29 2004
+//
+
 /*
 Copyright or © or Copr. CNRS, (November 17, 2004)
-
 
 This software is a computer program whose purpose is to provide classes
 for population genetics analysis.
@@ -37,12 +36,13 @@ same conditions as regards security.
 The fact that you are presently reading this means that you have had
 knowledge of the CeCILL license and that you accept its terms.
 */
-// Secured inclusion of header's file
+
 #ifndef _LOCUSINFO_H_
 #define _LOCUSINFO_H_
 
 //From STL
 #include <vector>
+
 using namespace std;
 
 // From local Popgenlib
@@ -52,14 +52,18 @@ using namespace std;
 // From Utils
 #include <Utils/Exceptions.h>
 
+namespace bpp
+{
+
 /**
  * @brief The LocusInfo class.
  *
  * This is an AlleleInfo container with additionnal data like a name,
  * the ploidy and some comments.
  */
-class LocusInfo {
-	public: // Constantes
+class LocusInfo
+{
+	public:
 		static unsigned int HAPLODIPLOID;
 		static unsigned int HAPLOID;
 		static unsigned int DIPLOID;
@@ -144,4 +148,7 @@ class LocusInfo {
 		vector <AlleleInfo *> _alleles;
 };
 
+} //end of namespace bpp;
+
 #endif // _LOCUSINFO_H_
+

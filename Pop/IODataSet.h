@@ -1,12 +1,11 @@
-/*
- * File IODataSet.h
- * Author : Sylvain Gaillard <yragael2001@yahoo.fr>
- * Last modification : Thursday July 29 2004
- *
-*/
+//
+// File IODataSet.h
+// Author : Sylvain Gaillard
+// Last modification : Thursday July 29 2004
+//
+
 /*
 Copyright or © or Copr. CNRS, (November 17, 2004)
-
 
 This software is a computer program whose purpose is to provide classes
 for population genetics analysis.
@@ -46,7 +45,11 @@ knowledge of the CeCILL license and that you accept its terms.
 // From STL
 #include <iostream>
 #include <fstream>
+
 using namespace std;
+
+namespace bpp
+{
 
 /**
  * @brief Interface for input/ouput with DataSet.
@@ -54,9 +57,10 @@ using namespace std;
  * IODataSet is a virtual class.
  * This is an interface to declare commune methodes for in/out action on DataSet.
  */
-class IODataSet {
+class IODataSet
+{
 	public: // Class destructor
-		virtual ~IODataSet();
+		virtual ~IODataSet() {}
 
 	public:
 		/**
@@ -70,4 +74,7 @@ class IODataSet {
 		virtual const string getFormatDescription() = 0;
 };
 
+} //end of namespace bpp;
+
 #endif // _IODATASET_H_
+

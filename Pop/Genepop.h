@@ -1,12 +1,11 @@
-/*
- * File Genepop.h
- * Author : Sylvain Gaillard <yragael2001@yahoo.fr>
- * Last modification : Tuesday September 21 2004
- *
-*/
+//
+// File Genepop.h
+// Author : Sylvain Gaillard
+// Last modification : Tuesday September 21 2004
+//
+
 /*
 Copyright or © or Copr. CNRS, (November 17, 2004)
-
 
 This software is a computer program whose purpose is to provide classes
 for population genetics analysis.
@@ -37,7 +36,7 @@ same conditions as regards security.
 The fact that you are presently reading this means that you have had
 knowledge of the CeCILL license and that you accept its terms.
 */
-// Secured inclusion of header's file
+
 #ifndef _GENEPOP_H_
 #define _GENEPOP_H_
 
@@ -51,11 +50,15 @@ knowledge of the CeCILL license and that you accept its terms.
 #include "AbstractIDataSet.h"
 #include "BasicAlleleInfo.h"
 
+namespace bpp
+{
+
 /**
  * @brief The Genepop input format for popgenlib.
  */
-class Genepop : public AbstractIDataSet {
-
+class Genepop:
+  public AbstractIDataSet
+{
 	public: // Constructor and destructor
 		Genepop();
 		~Genepop();
@@ -83,5 +86,7 @@ class Genepop : public AbstractIDataSet {
 		 * @}
 		 */
 };
+
+} //end of namespace bpp;
 
 #endif // _GENEPOP_H_

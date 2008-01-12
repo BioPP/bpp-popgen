@@ -1,12 +1,11 @@
-/*
- * File BasicAlleleInfo.cpp
- * Author : Sylvain Gaillard <yragael2001@yahoo.fr>
- * Last modification : Thursday July 29 2004
- *
-*/
+//
+// File BasicAlleleInfo.cpp
+// Author : Sylvain Gaillard <yragael2001@yahoo.fr>
+// Last modification : Thursday July 29 2004
+//
+
 /*
 Copyright or © or Copr. CNRS, (November 17, 2004)
-
 
 This software is a computer program whose purpose is to provide classes
 for population genetics analysis.
@@ -37,41 +36,57 @@ same conditions as regards security.
 The fact that you are presently reading this means that you have had
 knowledge of the CeCILL license and that you accept its terms.
 */
+
 #include "BasicAlleleInfo.h"
 
+using namespace bpp;
+
 //** Class constructor: *******************************************************/
-BasicAlleleInfo::BasicAlleleInfo(const string & id) {
+
+BasicAlleleInfo::BasicAlleleInfo(const string & id)
+{
 	_id = id;
 }
 
-BasicAlleleInfo::BasicAlleleInfo(const BasicAlleleInfo &allele) {
+BasicAlleleInfo::BasicAlleleInfo(const BasicAlleleInfo &allele)
+{
 	_id = allele.getId();
 }
+
 //** Class destructor: *******************************************************/
+
 BasicAlleleInfo::~BasicAlleleInfo() {}
 
 //** Other methodes: *********************************************************/
-BasicAlleleInfo & BasicAlleleInfo::operator= (const BasicAlleleInfo & allele) {
+
+BasicAlleleInfo & BasicAlleleInfo::operator= (const BasicAlleleInfo & allele)
+{
 	_id = allele.getId();
 	return * this;
 }
 
-bool BasicAlleleInfo::operator== (const BasicAlleleInfo & allele) const {
+bool BasicAlleleInfo::operator== (const BasicAlleleInfo & allele) const
+{
 	return (_id == allele.getId());
 }
 
-bool BasicAlleleInfo::operator!= (const BasicAlleleInfo & allele) const {
+bool BasicAlleleInfo::operator!= (const BasicAlleleInfo & allele) const
+{
 	return !(_id == allele.getId());
 }
 
-Clonable * BasicAlleleInfo::clone() const {
+Clonable * BasicAlleleInfo::clone() const
+{
 	return new BasicAlleleInfo(* this);
 }
 
-void BasicAlleleInfo::setId(const string & allele_id) {
+void BasicAlleleInfo::setId(const string & allele_id)
+{
 	_id = allele_id;
 }
 
-string BasicAlleleInfo::getId() const {
+string BasicAlleleInfo::getId() const
+{
 	return _id;
 }
+

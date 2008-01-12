@@ -1,12 +1,11 @@
-/*
- * File DataSet.h
- * Author : Sylvain Gaillard <yragael2001@yahoo.fr>
- * Last modification : Thursday July 29 2004
- *
-*/
+//
+// File DataSet.h
+// Author : Sylvain Gaillard
+// Last modification : Thursday July 29 2004
+//
+
 /*
 Copyright or © or Copr. CNRS, (November 17, 2004)
-
 
 This software is a computer program whose purpose is to provide classes
 for population genetics analysis.
@@ -37,7 +36,7 @@ same conditions as regards security.
 The fact that you are presently reading this means that you have had
 knowledge of the CeCILL license and that you accept its terms.
 */
-// Secured inclusion of header's file
+
 #ifndef _DATASET_H_
 #define _DATASET_H_
 
@@ -45,6 +44,7 @@ knowledge of the CeCILL license and that you accept its terms.
 #include <algorithm>
 #include <vector>
 #include <map>
+
 using namespace std;
 
 // From Utils
@@ -61,13 +61,17 @@ using namespace std;
 #include "PolymorphismMultiGContainer.h"
 #include "PolymorphismSequenceContainer.h"
 
+namespace bpp
+{
+
 /**
  * @brief The DataSet class.
  *
  * A DataSet the object that manage every data on which one can compute
  * some statistics.
  */
-class DataSet {
+class DataSet
+{
 	public: // Constructor and destructor
 		/**
 		 * @brief Build a new void DataSet.
@@ -671,4 +675,7 @@ class DataSet {
 		vector<Group *> _groups;
 };
 
+} //end of namespace bpp;
+
 #endif // _DATASET_H_
+

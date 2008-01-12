@@ -1,12 +1,11 @@
-/*
- * File CoordsTools.h
- * Author : Sylvain Gaillard <yragael2001@yahoo.fr>
- * Last modification : Thursday July 29 2004
- *
-*/
+//
+// File CoordsTools.h
+// Author : Sylvain Gaillard
+// Last modification : Thursday July 29 2004
+//
+
 /*
 Copyright or © or Copr. CNRS, (November 17, 2004)
-
 
 This software is a computer program whose purpose is to provide classes
 for population genetics analysis.
@@ -37,7 +36,7 @@ same conditions as regards security.
 The fact that you are presently reading this means that you have had
 knowledge of the CeCILL license and that you accept its terms.
 */
-// Secured inclusion of header's file
+
 #ifndef _COORDS_TOOLS_H_
 #define _COORDS_TOOLS_H_
 
@@ -48,10 +47,11 @@ knowledge of the CeCILL license and that you accept its terms.
  * @brief Some functions to deal with coordinates.
  */
 
-template <class T> class CoordsTools {
+template <class T> class CoordsTools
+{
 	public:
 		CoordsTools();
-		~CoordsTools();
+		virtual ~CoordsTools();
 
 		/**
 		 * @brief Get the distance between two Coord objects.
@@ -66,7 +66,8 @@ template <class T> CoordsTools<T>::CoordsTools() {}
 
 template <class T> CoordsTools<T>::~CoordsTools() {}
 
-template <class T> double CoordsTools<T>::getDistanceBetween(const Coord<T> co1, const Coord<T> co2) const {
+template <class T> double CoordsTools<T>::getDistanceBetween(const Coord<T> co1, const Coord<T> co2) const
+{
 	T base, height;
 	base = co1.getX() - co2.getX();
 	height = co1.getY() - co2.getY();
@@ -75,4 +76,7 @@ template <class T> double CoordsTools<T>::getDistanceBetween(const Coord<T> co1,
 	return sqrt((double)base + (double)height);
 }
 
+} //end of namespace bpp;
+
 #endif // _COORDS_TOOLS_H_
+

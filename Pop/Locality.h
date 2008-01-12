@@ -1,12 +1,11 @@
-/*
- * File Locality.h
- * Author : Sylvain Gaillard <yragael2001@yahoo.fr>
- * Last modification : Thursday July 29 2004
- *
-*/
+//
+// File Locality.h
+// Author : Sylvain Gaillard
+// Last modification : Thursday July 29 2004
+//
+
 /*
 Copyright or © or Copr. CNRS, (November 17, 2004)
-
 
 This software is a computer program whose purpose is to provide classes
 for population genetics analysis.
@@ -37,13 +36,18 @@ same conditions as regards security.
 The fact that you are presently reading this means that you have had
 knowledge of the CeCILL license and that you accept its terms.
 */
-// Secured inclusion of header's file
+
 #ifndef _LOCALITY_H_
 #define _LOCALITY_H_
 
 #include "Coord.h"
 #include <string>
+
 using namespace std;
+
+namespace bpp
+{
+
 /**
  * @brief The Locality class.
  *
@@ -116,6 +120,8 @@ template <class T> class Locality:
     string getName() const { return _name; }
 
 };
+
+} //end of namespace bpp;
 
 #endif // _LOCALITY_H_
 
