@@ -46,292 +46,295 @@ PolymorphismMultiGContainerTools::~PolymorphismMultiGContainerTools() {}
 
 PolymorphismMultiGContainer PolymorphismMultiGContainerTools::permutMultiG(const PolymorphismMultiGContainer & pmgc)
 {
-	PolymorphismMultiGContainer permuted_pmgc(pmgc);
-	vector<unsigned int> groups;
-	for (unsigned int i = 0 ; i < permuted_pmgc.size() ; i++)
-		groups.push_back(permuted_pmgc.getGroupId(i));
-	groups = RandomTools::getSample(groups, groups.size());
-	for (unsigned int i = 0 ; i < permuted_pmgc.size() ; i++)
-		permuted_pmgc.setGroupId(i, groups[i]);
-	return permuted_pmgc;
+  PolymorphismMultiGContainer permuted_pmgc(pmgc);
+  vector<unsigned int> groups;
+  for (unsigned int i = 0 ; i < permuted_pmgc.size() ; i++)
+    groups.push_back(permuted_pmgc.getGroupId(i));
+  groups = RandomTools::getSample(groups, groups.size());
+  for (unsigned int i = 0 ; i < permuted_pmgc.size() ; i++)
+    permuted_pmgc.setGroupId(i, groups[i]);
+  return permuted_pmgc;
 }
 
 PolymorphismMultiGContainer PolymorphismMultiGContainerTools::permutMonoG(const PolymorphismMultiGContainer & pmgc, const set<unsigned int> & groups)
 {
-	PolymorphismMultiGContainer permuted_pmgc;
-	unsigned int loc_num = pmgc.getNumberOfLoci();
-	vector<vector<const MonolocusGenotype *> > mono_gens;
-	mono_gens.resize(loc_num);
-	// Get all the MonolocusGenotypes to permut
-	for (unsigned int i = 0 ; i < pmgc.size() ; i++) {
-		if (groups.find(pmgc.getGroupId(i)) != groups.end()) {
-			for (unsigned int j = 0 ; j < loc_num ; j++)
-				mono_gens[j].push_back(pmgc.getMultilocusGenotype(i)->getMonolocusGenotype(j));
-		}
-	}
-	// Permut the MonolocusGenotypes
-	for (unsigned int i = 0 ; i < loc_num ; i++)
-		mono_gens[i] = RandomTools::getSample(mono_gens[i], mono_gens[i].size());
-	// Build the new PolymorphismMultiGContainer
-	unsigned int k = 0;
-	for (unsigned int i = 0 ; i < pmgc.size() ; i++) {
-		if (groups.find(pmgc.getGroupId(i)) != groups.end()) {
-			MultilocusGenotype tmp_mg(loc_num);
-			for (unsigned int j = 0 ; j < loc_num ; j++) {
-				if (mono_gens[j][k] != NULL)
-					tmp_mg.setMonolocusGenotype(j, * (mono_gens[j][k]));
-			}
-			permuted_pmgc.addMultilocusGenotype(tmp_mg, pmgc.getGroupId(i));
-			k++;
-		}
-		else {
-			permuted_pmgc.addMultilocusGenotype(* (pmgc.getMultilocusGenotype(i)), pmgc.getGroupId(i));
-		}
-	}
+  PolymorphismMultiGContainer permuted_pmgc;
+  unsigned int loc_num = pmgc.getNumberOfLoci();
+  vector<vector<const MonolocusGenotype *> > mono_gens;
+  mono_gens.resize(loc_num);
+  // Get all the MonolocusGenotypes to permut
+  for (unsigned int i = 0 ; i < pmgc.size() ; i++) {
+    if (groups.find(pmgc.getGroupId(i)) != groups.end()) {
+      for (unsigned int j = 0 ; j < loc_num ; j++)
+        mono_gens[j].push_back(pmgc.getMultilocusGenotype(i)->getMonolocusGenotype(j));
+    }
+  }
+  // Permut the MonolocusGenotypes
+  for (unsigned int i = 0 ; i < loc_num ; i++)
+    mono_gens[i] = RandomTools::getSample(mono_gens[i], mono_gens[i].size());
+  // Build the new PolymorphismMultiGContainer
+  unsigned int k = 0;
+  for (unsigned int i = 0 ; i < pmgc.size() ; i++) {
+    if (groups.find(pmgc.getGroupId(i)) != groups.end()) {
+      MultilocusGenotype tmp_mg(loc_num);
+      for (unsigned int j = 0 ; j < loc_num ; j++) {
+        if (mono_gens[j][k] != NULL)
+          tmp_mg.setMonolocusGenotype(j, * (mono_gens[j][k]));
+      }
+      permuted_pmgc.addMultilocusGenotype(tmp_mg, pmgc.getGroupId(i));
+      k++;
+    }
+    else {
+      permuted_pmgc.addMultilocusGenotype(* (pmgc.getMultilocusGenotype(i)), pmgc.getGroupId(i));
+    }
+  }
 
-	//update groups names
-	set<unsigned int> grp_ids = pmgc.getAllGroupsIds();
-	for (set<unsigned int>::iterator it = grp_ids.begin(); it != grp_ids.end(); it++)
-	{
-	        unsigned int id = *it;
-	        string name = pmgc.getGroupName(id);
-	        permuted_pmgc.setGroupName(id, name);
+  //update groups names
+  set<unsigned int> grp_ids = pmgc.getAllGroupsIds();
+  for (set<unsigned int>::iterator it = grp_ids.begin(); it != grp_ids.end(); it++)
+  {
+          unsigned int id = *it;
+          string name = pmgc.getGroupName(id);
+          permuted_pmgc.setGroupName(id, name);
     }
 
-	return permuted_pmgc;
+  return permuted_pmgc;
 }
 
 PolymorphismMultiGContainer PolymorphismMultiGContainerTools::permutIntraGroupMonoG(const PolymorphismMultiGContainer & pmgc, const set<unsigned int> & groups)
 {
-	PolymorphismMultiGContainer permuted_pmgc;
-	unsigned int loc_num = pmgc.getNumberOfLoci();
-	vector<vector<const MonolocusGenotype *> > mono_gens;
-	mono_gens.resize(loc_num);
+  PolymorphismMultiGContainer permuted_pmgc;
+  unsigned int loc_num = pmgc.getNumberOfLoci();
+  vector<vector<const MonolocusGenotype *> > mono_gens;
+  mono_gens.resize(loc_num);
 
-
-    for (set<unsigned int>::const_iterator g = groups.begin(); g != groups.end() ; g++)//for each group
+  for(set<unsigned int>::const_iterator g = groups.begin(); g != groups.end(); g++)//for each group
+  {
+    unsigned int nb_ind_in_group = 0;
+    // Get all the MonolocusGenotypes of group g to permut
+    for (unsigned int i = 0 ; i < pmgc.size() ; i++)
     {
-		int nb_ind_in_group = 0;
-     // Get all the MonolocusGenotypes of group g to permut
-   	   for (unsigned int i = 0 ; i < pmgc.size() ; i++)
-   	   {
-        int indiv_grp = pmgc.getGroupId(i);
-        if (groups.find(indiv_grp) != groups.end() )
+      int indiv_grp = pmgc.getGroupId(i);
+      if (groups.find(indiv_grp) != groups.end())
+      {
+        if(indiv_grp == (int)(*g))
         {
-		 if ( indiv_grp== (*g))
-		 {
-			nb_ind_in_group ++;
+          nb_ind_in_group ++;
 
-			for (unsigned int j = 0 ; j < loc_num ; j++)
-				mono_gens[j].push_back(pmgc.getMultilocusGenotype(i)->getMonolocusGenotype(j));
-		 }
-	    }
-	    else //inserer tel quel
-	    {
-			permuted_pmgc.addMultilocusGenotype(* (pmgc.getMultilocusGenotype(i)),indiv_grp);
-		}
- 	   }//for i
+          for(unsigned int j = 0; j < loc_num ; j++)
+            mono_gens[j].push_back(pmgc.getMultilocusGenotype(i)->getMonolocusGenotype(j));
+        }
+      }
+      else //insert as is
+      {
+        permuted_pmgc.addMultilocusGenotype(* (pmgc.getMultilocusGenotype(i)),indiv_grp);
+      }
+     }//for i
 
- 	   // Permut the MonolocusGenotypes
- 	   if (nb_ind_in_group > 0)
- 	   {
-	    for (unsigned int j = 0 ; j < loc_num ; j++)
-	   	 mono_gens[j] = RandomTools::getSample(mono_gens[j], mono_gens[j].size());
+     // Permut the MonolocusGenotypes
+     if(nb_ind_in_group > 0)
+     {
+      for(unsigned int j = 0 ; j < loc_num ; j++)
+         mono_gens[j] = RandomTools::getSample(mono_gens[j], mono_gens[j].size());
 
-	    // Build the new multilocus genotypes
-	    MultilocusGenotype tmp_mg(loc_num);
-	    for (int k=0; k < nb_ind_in_group; k++)
-	    {
-	     for (unsigned int j = 0 ; j < loc_num ; j++)
-	     {
-	    	 if (mono_gens[j][k] != NULL) tmp_mg.setMonolocusGenotype(j, * (mono_gens[j][k]));
-	     }//for j
+      // Build the new multilocus genotypes
+      MultilocusGenotype tmp_mg(loc_num);
+      for(unsigned int k = 0; k < nb_ind_in_group; k++)
+      {
+        for (unsigned int j = 0 ; j < loc_num ; j++)
+        {
+          if (mono_gens[j][k] != NULL) tmp_mg.setMonolocusGenotype(j, * (mono_gens[j][k]));
+        }//for j
 
-	     permuted_pmgc.addMultilocusGenotype(tmp_mg, (*g));
-        }//for k
-       }//if nb_ind_in_group
+        permuted_pmgc.addMultilocusGenotype(tmp_mg, (*g));
+      }//for k
+    }//if nb_ind_in_group
 
-   }//for g
+  }//for g
 
-    //update groups names
-	set<unsigned int> grp_ids = pmgc.getAllGroupsIds();
-	for (set<unsigned int>::iterator it = grp_ids.begin(); it != grp_ids.end(); it++)
-	{
-		        unsigned int id = *it;
-		        string name = pmgc.getGroupName(id);
-		        permuted_pmgc.setGroupName(id, name);
-    }
+  //update groups names
+  set<unsigned int> grp_ids = pmgc.getAllGroupsIds();
+  for (set<unsigned int>::iterator it = grp_ids.begin(); it != grp_ids.end(); it++)
+  {
+    unsigned int id = *it;
+    string name = pmgc.getGroupName(id);
+    permuted_pmgc.setGroupName(id, name);
+  }
 
-	return permuted_pmgc;
+  return permuted_pmgc;
 }
 
 PolymorphismMultiGContainer PolymorphismMultiGContainerTools::permutAlleles(const PolymorphismMultiGContainer & pmgc, const set<unsigned int> & groups)
 {
-	PolymorphismMultiGContainer permuted_pmgc;
-	unsigned int loc_num = pmgc.getNumberOfLoci();
-	vector<vector<unsigned int> > alleles;
-	alleles.resize(loc_num);
-	// Get all the alleles to permut
-	for (unsigned int i = 0 ; i < pmgc.size() ; i++) {
-		if (groups.find(pmgc.getGroupId(i)) != groups.end()) {
-			for (unsigned int j = 0 ; j < loc_num ; j++)
-				if (pmgc.getMultilocusGenotype(i)->getMonolocusGenotype(j) != NULL)
-					for (unsigned int k = 0 ; k < pmgc.getMultilocusGenotype(i)->getMonolocusGenotype(j)->getAlleleIndex().size() ; k++)
-						alleles[j].push_back(pmgc.getMultilocusGenotype(i)->getMonolocusGenotype(j)->getAlleleIndex()[k]);
-		}
-	}
-	// Permut the alleles
-	for (unsigned int i = 0 ; i < loc_num ; i++)
-		alleles[i] = RandomTools::getSample(alleles[i], alleles[i].size());
-	// Build the new PolymorphismMultiGContainer
-	vector<unsigned int> k(loc_num,0);
-	for (unsigned int i = 0 ; i < pmgc.size() ; i++) {
-		if (groups.find(pmgc.getGroupId(i)) != groups.end()) {
-			MultilocusGenotype tmp_mg(loc_num);
-			for (unsigned int j = 0 ; j < loc_num ; j++) {
-				if (pmgc.getMultilocusGenotype(i)->getMonolocusGenotype(j) != NULL) {
-					if (pmgc.getMultilocusGenotype(i)->getMonolocusGenotype(j)->getAlleleIndex().size() == 1)
-						tmp_mg.setMonolocusGenotype(j, MonoAlleleMonolocusGenotype(alleles[j][k[j]++]));
-					if (pmgc.getMultilocusGenotype(i)->getMonolocusGenotype(j)->getAlleleIndex().size() == 2)
-						tmp_mg.setMonolocusGenotype(j, BiAlleleMonolocusGenotype(alleles[j][k[j]++], alleles[j][k[j]++]));
-				}
-			}
-			permuted_pmgc.addMultilocusGenotype(tmp_mg, pmgc.getGroupId(i));
-		}
-		else {
-			permuted_pmgc.addMultilocusGenotype(* (pmgc.getMultilocusGenotype(i)), pmgc.getGroupId(i));
-		}
-	}
-
-	//update groups names
-	set<unsigned int> grp_ids = pmgc.getAllGroupsIds();
-	for (set<unsigned int>::iterator it = grp_ids.begin(); it != grp_ids.end(); it++)
-	{
-		        unsigned int id = *it;
-		        string name = pmgc.getGroupName(id);
-		        permuted_pmgc.setGroupName(id, name);
+  PolymorphismMultiGContainer permuted_pmgc;
+  unsigned int loc_num = pmgc.getNumberOfLoci();
+  vector<vector<unsigned int> > alleles;
+  alleles.resize(loc_num);
+  // Get all the alleles to permut
+  for (unsigned int i = 0 ; i < pmgc.size() ; i++)
+  {
+    if (groups.find(pmgc.getGroupId(i)) != groups.end())
+    {
+      for (unsigned int j = 0 ; j < loc_num ; j++)
+        if (pmgc.getMultilocusGenotype(i)->getMonolocusGenotype(j) != NULL)
+          for (unsigned int k = 0 ; k < pmgc.getMultilocusGenotype(i)->getMonolocusGenotype(j)->getAlleleIndex().size() ; k++)
+            alleles[j].push_back(pmgc.getMultilocusGenotype(i)->getMonolocusGenotype(j)->getAlleleIndex()[k]);
     }
+  }
+  // Permut the alleles
+  for (unsigned int i = 0 ; i < loc_num ; i++)
+    alleles[i] = RandomTools::getSample(alleles[i], alleles[i].size());
+  // Build the new PolymorphismMultiGContainer
+  vector<unsigned int> k(loc_num,0);
+  for (unsigned int i = 0 ; i < pmgc.size() ; i++)
+  {
+    if (groups.find(pmgc.getGroupId(i)) != groups.end())
+    {
+      MultilocusGenotype tmp_mg(loc_num);
+      for (unsigned int j = 0 ; j < loc_num ; j++)
+      {
+        if (pmgc.getMultilocusGenotype(i)->getMonolocusGenotype(j) != NULL)
+        {
+          if (pmgc.getMultilocusGenotype(i)->getMonolocusGenotype(j)->getAlleleIndex().size() == 1)
+            tmp_mg.setMonolocusGenotype(j, MonoAlleleMonolocusGenotype(alleles[j][k[j]++]));
+          if (pmgc.getMultilocusGenotype(i)->getMonolocusGenotype(j)->getAlleleIndex().size() == 2)
+            tmp_mg.setMonolocusGenotype(j, BiAlleleMonolocusGenotype(alleles[j][k[j]++], alleles[j][k[j]++]));
+        }
+      }
+      permuted_pmgc.addMultilocusGenotype(tmp_mg, pmgc.getGroupId(i));
+    }
+    else
+    {
+      permuted_pmgc.addMultilocusGenotype(* (pmgc.getMultilocusGenotype(i)), pmgc.getGroupId(i));
+    }
+  }
 
-	return permuted_pmgc;
+  //update groups names
+  set<unsigned int> grp_ids = pmgc.getAllGroupsIds();
+  for (set<unsigned int>::iterator it = grp_ids.begin(); it != grp_ids.end(); it++)
+  {
+    unsigned int id = *it;
+    string name = pmgc.getGroupName(id);
+    permuted_pmgc.setGroupName(id, name);
+  }
+
+  return permuted_pmgc;
 }
 
 PolymorphismMultiGContainer PolymorphismMultiGContainerTools::permutIntraGroupAlleles(const PolymorphismMultiGContainer & pmgc, const set<unsigned int> & groups)
 {
-	PolymorphismMultiGContainer permuted_pmgc;
-	unsigned int loc_num = pmgc.getNumberOfLoci();
-	vector<vector<unsigned int> > alleles;
-	alleles.resize(loc_num);
+  PolymorphismMultiGContainer permuted_pmgc;
+  unsigned int loc_num = pmgc.getNumberOfLoci();
+  vector<vector<unsigned int> > alleles;
+  alleles.resize(loc_num);
 
-	int nb_groups = groups.size();
-	for (set<unsigned int>::const_iterator g = groups.begin(); g != groups.end() ; g++)//for each group
-    {
-		int nb_ind_in_group = 0;
+  for (set<unsigned int>::const_iterator g = groups.begin(); g != groups.end(); g++)//for each group
+  {
+    int nb_ind_in_group = 0;
 
-		vector< vector<unsigned int> > nb_alleles_for_inds;
-		nb_alleles_for_inds.resize(loc_num);
-	    // Get all the alleles to permut
-	 	for (unsigned int i = 0 ; i < pmgc.size() ; i++)
-	 	{
-		   int indiv_grp = pmgc.getGroupId(i);
-           if (groups.find(indiv_grp) != groups.end() )
+    vector< vector<unsigned int> > nb_alleles_for_inds;
+    nb_alleles_for_inds.resize(loc_num);
+    // Get all the alleles to permut
+     for (unsigned int i = 0; i < pmgc.size(); i++)
+     {
+      int indiv_grp = pmgc.getGroupId(i);
+      if (groups.find(indiv_grp) != groups.end() )
+      {
+         if (indiv_grp == (int)(*g) )
+         {
+          nb_ind_in_group++;
+           for (unsigned int j = 0 ; j < loc_num ; j++)
            {
-	 		if (indiv_grp == (*g) )
-	 		{
-				nb_ind_in_group++;
-	 			for (unsigned int j = 0 ; j < loc_num ; j++)
-	 			{
-	 			 if (pmgc.getMultilocusGenotype(i)->getMonolocusGenotype(j) != NULL) //? données manquantes
-	 			 {
-			      unsigned int nb_alls = pmgc.getMultilocusGenotype(i)->getMonolocusGenotype(j)->getAlleleIndex().size();
-			      nb_alleles_for_inds[j].push_back(nb_alls);
-	 			  for (unsigned int k = 0 ; k < nb_alls ; k++)
-	 				alleles[j].push_back(pmgc.getMultilocusGenotype(i)->getMonolocusGenotype(j)->getAlleleIndex()[k]);
-				 }//if
-                }//for j
-	 		}
-	       }
-	       else //inserer tel quel
-	       {
-			permuted_pmgc.addMultilocusGenotype(* (pmgc.getMultilocusGenotype(i)), indiv_grp);
-		   }
-	    }//for i
+             if (pmgc.getMultilocusGenotype(i)->getMonolocusGenotype(j) != NULL) //? données manquantes
+             {
+              unsigned int nb_alls = pmgc.getMultilocusGenotype(i)->getMonolocusGenotype(j)->getAlleleIndex().size();
+              nb_alleles_for_inds[j].push_back(nb_alls);
+               for (unsigned int k = 0 ; k < nb_alls ; k++)
+                 alleles[j].push_back(pmgc.getMultilocusGenotype(i)->getMonolocusGenotype(j)->getAlleleIndex()[k]);
+            }//if
+          }//for j
+         }
+      }
+      else //inserer tel quel
+      {
+        permuted_pmgc.addMultilocusGenotype(* (pmgc.getMultilocusGenotype(i)), indiv_grp);
+      }
+    }//for i
 
-	    // Permut the alleles
-	   if (nb_ind_in_group > 0)
- 	   {
-		  for (unsigned int i = 0 ; i < loc_num ; i++)
-		   alleles[i] = RandomTools::getSample(alleles[i], alleles[i].size());
+    // Permut the alleles
+    if (nb_ind_in_group > 0)
+    {
+      for (unsigned int i = 0 ; i < loc_num ; i++)
+        alleles[i] = RandomTools::getSample(alleles[i], alleles[i].size());
 
-		  // Build the new PolymorphismMultiGContainer
-	      vector<unsigned int> k(loc_num,0);
+      // Build the new PolymorphismMultiGContainer
+      vector<unsigned int> k(loc_num,0);
 
-		    for (int ind=0; ind < nb_ind_in_group; ind++)
-	        {
-		  	 MultilocusGenotype tmp_mg(loc_num);
-			 for (unsigned int j = 0 ; j < loc_num ; j++)
-		 	 {
+      for (int ind=0; ind < nb_ind_in_group; ind++)
+      {
+        MultilocusGenotype tmp_mg(loc_num);
+        for (unsigned int j = 0 ; j < loc_num ; j++)
+        {
 
-				if (nb_alleles_for_inds[j][ind] == 1)
-					tmp_mg.setMonolocusGenotype(j, MonoAlleleMonolocusGenotype(alleles[j][k[j]++]));
-				if (nb_alleles_for_inds[j][ind] == 2)
-					tmp_mg.setMonolocusGenotype(j, BiAlleleMonolocusGenotype(alleles[j][k[j]++], alleles[j][k[j]++]));
+          if (nb_alleles_for_inds[j][ind] == 1)
+            tmp_mg.setMonolocusGenotype(j, MonoAlleleMonolocusGenotype(alleles[j][k[j]++]));
+          if (nb_alleles_for_inds[j][ind] == 2)
+            tmp_mg.setMonolocusGenotype(j, BiAlleleMonolocusGenotype(alleles[j][k[j]++], alleles[j][k[j]++]));
 
-			 }//for j
+        }//for j
 
-			 permuted_pmgc.addMultilocusGenotype(tmp_mg, (*g));
+        permuted_pmgc.addMultilocusGenotype(tmp_mg, (*g));
 
-	       }//for ind
+      }//for ind
 
-       }//if nb_ind_in_group
+    }//if nb_ind_in_group
 
-    }//for g
+  }//for g
 
 
-    //update groups names
-	set<unsigned int> grp_ids = pmgc.getAllGroupsIds();
-	for (set<unsigned int>::iterator it = grp_ids.begin(); it != grp_ids.end(); it++)
-	{
-		        unsigned int id = *it;
-		        string name = pmgc.getGroupName(id);
-		        permuted_pmgc.setGroupName(id, name);
-    }
+  //update groups names
+  set<unsigned int> grp_ids = pmgc.getAllGroupsIds();
+  for (set<unsigned int>::iterator it = grp_ids.begin(); it != grp_ids.end(); it++)
+  {
+    unsigned int id = *it;
+    string name = pmgc.getGroupName(id);
+    permuted_pmgc.setGroupName(id, name);
+  }
 
-    return permuted_pmgc;
+  return permuted_pmgc;
 }
 
 PolymorphismMultiGContainer PolymorphismMultiGContainerTools::extractGroups(const PolymorphismMultiGContainer & pmgc, const set<unsigned int> & groups)
 {
-	PolymorphismMultiGContainer sub_pmgc;
-    for (set<unsigned int>::const_iterator g = groups.begin(); g != groups.end() ; g++)//for each group
+  PolymorphismMultiGContainer sub_pmgc;
+  for (set<unsigned int>::const_iterator g = groups.begin(); g != groups.end() ; g++)//for each group
+  {
+  
+    // Get all the MonolocusGenotypes of group g to extract
+    for(unsigned int i = 0 ; i < pmgc.size() ; i++)
     {
-	
-     // Get all the MonolocusGenotypes of group g to extract
-   	   for (unsigned int i = 0 ; i < pmgc.size() ; i++)
-   	   {
-        int indiv_grp = pmgc.getGroupId(i);
-        if (groups.find(indiv_grp) != groups.end() )
+      int indiv_grp = pmgc.getGroupId(i);
+      if (groups.find(indiv_grp) != groups.end() )
+      {
+        if(indiv_grp == (int)(*g))
         {
-		 if ( indiv_grp== (*g))
-		 {
-			sub_pmgc.addMultilocusGenotype(* (pmgc.getMultilocusGenotype(i)),indiv_grp);
-		 }
-	    }
-	    
- 	   }//for i
+          sub_pmgc.addMultilocusGenotype(* (pmgc.getMultilocusGenotype(i)),indiv_grp);
+        }
+      }
+      
+    }//for i  
 
- 	   
+  }//for g
 
-   }//for g
+  //update groups names
+  set<unsigned int> grp_ids = sub_pmgc.getAllGroupsIds();
+  for (set<unsigned int>::iterator it = grp_ids.begin(); it != grp_ids.end(); it++)
+  {
+    unsigned int id = *it;
+    string name = pmgc.getGroupName(id);
+    sub_pmgc.setGroupName(id, name);
+  }
 
-    //update groups names
-	set<unsigned int> grp_ids = sub_pmgc.getAllGroupsIds();
-	for (set<unsigned int>::iterator it = grp_ids.begin(); it != grp_ids.end(); it++)
-	{
-		        unsigned int id = *it;
-		        string name = pmgc.getGroupName(id);
-		        sub_pmgc.setGroupName(id, name);
-    }
-
-	return sub_pmgc;
+  return sub_pmgc;
 }
 

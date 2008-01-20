@@ -19,8 +19,9 @@ rm ./Makefile.in
 rm ./missing
 #rm ./NEWS
 #rm ./README
-rm ./Phyl/Makefile.in
+rm ./Pop/Makefile.in
 rm ./libtool
 rm ./Makefile
 rm ./Phyl/Makefile
-rm -rf ./Phyl/.deps
+rm -rf ./Pop/.deps
+

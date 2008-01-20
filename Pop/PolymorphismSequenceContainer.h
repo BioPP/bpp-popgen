@@ -4,7 +4,6 @@
 //          Sylvain Gaillard
 // Last modification : Wednesday August 04 2004
 //
-//
 
 /*
 Copyright or © or Copr. CNRS, (November 17, 2004)
@@ -52,6 +51,18 @@ using namespace std;
 
 #include <Seq/VectorSiteContainer.h>
 #include <Seq/SequenceContainerTools.h>
+
+/**
+ * @mainpage
+ *
+ * @par
+ * The PopGenLib library provides classes for population genetics analysis.
+ * It makes intensive use of the SeqLib library, and adds a dedicated container
+ * named bpp::PolymorphismSequenceContainer, which associates frequencies to the
+ * sequences in the set. The bpp::PolymorphismSequenceContainerTools and 
+ * bpp::SequenceStatistics static classes provide several tools for data analysis,
+ * including diversity indices and positive selection tests.
+ */
 
 namespace bpp
 {
