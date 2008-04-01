@@ -3,7 +3,7 @@
 // Author : Eric Bazin
 //          Sylvain Gailard
 //          khalid Belkhir
-// Last modification : Friday December 12 2005
+// Last modification : Wednesday February 27 2008
 //
 
 /*
@@ -347,12 +347,12 @@ double SequenceStatistics::DVH( const PolymorphismSequenceContainer & psc, bool 
     nbSeq += sc -> getSequenceCount(i);
     bool uniq = true;
     string query = sc -> toString(i);
-    for ( vector<string>::iterator it = pscvector.begin(); it != pscvector.end(); it++ ) {
-      if ( query.compare(*it) == 0 ) {
-        effvector[effvector.size() - 1] += sc -> getSequenceCount(i);
-        uniq = false;
-        break;
-      }
+    for (unsigned int j = 0; j < pscvector.size(); j++) {
+        if ( query.compare(pscvector[j]) == 0) {
+            effvector[j] += sc->getSequenceCount(i);
+            uniq = false;
+            break;
+        }
     }
     if (uniq) {
       pscvector.push_back(query);
