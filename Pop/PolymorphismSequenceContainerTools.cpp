@@ -1,42 +1,42 @@
 //
 // File: PolymorphismSequenceContainerTools.cpp
 // Created by: Eric Bazin
-//              Sylvain Gaillard
+//             Sylvain Gaillard
 // Created on: Thursday July 29 2004
 //
 
 /*
-Copyright or © or Copr. CNRS, (November 17, 2004)
+   Copyright or © or Copr. CNRS, (November 17, 2004)
 
-This software is a computer program whose purpose is to provide classes
-for population genetics analysis.
+   This software is a computer program whose purpose is to provide classes
+   for population genetics analysis.
 
-This software is governed by the CeCILL  license under French law and
-abiding by the rules of distribution of free software.  You can  use,
-modify and/ or redistribute the software under the terms of the CeCILL
-license as circulated by CEA, CNRS and INRIA at the following URL
-"http://www.cecill.info".
+   This software is governed by the CeCILL  license under French law and
+   abiding by the rules of distribution of free software.  You can  use,
+   modify and/ or redistribute the software under the terms of the CeCILL
+   license as circulated by CEA, CNRS and INRIA at the following URL
+   "http://www.cecill.info".
 
-As a counterpart to the access to the source code and  rights to copy,
-modify and redistribute granted by the license, users are provided only
-with a limited warranty  and the software's author,  the holder of the
-economic rights,  and the successive licensors  have only  limited
-liability.
+   As a counterpart to the access to the source code and  rights to copy,
+   modify and redistribute granted by the license, users are provided only
+   with a limited warranty  and the software's author,  the holder of the
+   economic rights,  and the successive licensors  have only  limited
+   liability.
 
-In this respect, the user's attention is drawn to the risks associated
-with loading,  using,  modifying and/or developing or reproducing the
-software by the user in light of its specific status of free software,
-that may mean  that it is complicated to manipulate,  and  that  also
-therefore means  that it is reserved for developers  and  experienced
-professionals having in-depth computer knowledge. Users are therefore
-encouraged to load and test the software's suitability as regards their
-requirements in conditions enabling the security of their systems and/or
-data to be ensured and,  more generally, to use and operate it in the
-same conditions as regards security.
+   In this respect, the user's attention is drawn to the risks associated
+   with loading,  using,  modifying and/or developing or reproducing the
+   software by the user in light of its specific status of free software,
+   that may mean  that it is complicated to manipulate,  and  that  also
+   therefore means  that it is reserved for developers  and  experienced
+   professionals having in-depth computer knowledge. Users are therefore
+   encouraged to load and test the software's suitability as regards their
+   requirements in conditions enabling the security of their systems and/or
+   data to be ensured and,  more generally, to use and operate it in the
+   same conditions as regards security.
 
-The fact that you are presently reading this means that you have had
-knowledge of the CeCILL license and that you accept its terms.
-*/
+   The fact that you are presently reading this means that you have had
+   knowledge of the CeCILL license and that you accept its terms.
+   */
 
 #include "PolymorphismSequenceContainerTools.h"
 
@@ -256,7 +256,7 @@ PolymorphismSequenceContainer * PolymorphismSequenceContainerTools::getCompleteS
   }
   CompleteSiteIterator csi(psc);
   while(csi.hasMoreSites())
-  complete->addSite(* csi.nextSite());
+    complete->addSite(* csi.nextSite());
   return complete;
 }
 
@@ -309,7 +309,7 @@ PolymorphismSequenceContainer * PolymorphismSequenceContainerTools::getNonCoding
   PolymorphismSequenceContainer *psci = new PolymorphismSequenceContainer(*sc);
   for (unsigned int i = 0 ; i < psc.getNumberOfSequences() ; i++) {
     if(psc.isIngroupMember(i)) psci->setAsIngroupMember(i);
-      else {
+    else {
       psci->setAsOutgroupMember(i);
       psci->setGroupId(i, psc.getGroupId(i));
     }
@@ -323,7 +323,7 @@ PolymorphismSequenceContainer * PolymorphismSequenceContainerTools::getOnePositi
   Comments maseFileHeader = psc.getGeneralComments();
   unsigned int start;
   try{
-  start = MaseTools::getPhase(maseFileHeader,setName);
+    start = MaseTools::getPhase(maseFileHeader,setName);
   }
   catch (Exception & e) {start = 1;}
   SiteSelection ss;
@@ -338,7 +338,7 @@ PolymorphismSequenceContainer * PolymorphismSequenceContainerTools::getOnePositi
   PolymorphismSequenceContainer *newpsc = new PolymorphismSequenceContainer(*sc);
   for (unsigned int i = 0 ; i < psc.getNumberOfSequences() ; i++) {
     if(psc.isIngroupMember(i)) newpsc->setAsIngroupMember(i);
-      else {
+    else {
       newpsc->setAsOutgroupMember(i);
       newpsc->setGroupId(i, psc.getGroupId(i));
     }
@@ -354,16 +354,16 @@ PolymorphismSequenceContainer * PolymorphismSequenceContainerTools::getIntrons(c
   SiteSelection codss = MaseTools::getSiteSet(maseFileHeader,setName);
   unsigned int start;
   try{
-  start = MaseTools::getPhase(maseFileHeader,setName);
+    start = MaseTools::getPhase(maseFileHeader,setName);
   }
   catch(Exception & e) {throw e;}
-  
+
   unsigned int first=0, last=psc.getNumberOfSites();
-    //Check if the first codon is AUG
+  //Check if the first codon is AUG
   if(start==1 &&
-  psc.getSite(codss[0])->getValue(0)==0 &&
-  psc.getSite(codss[1])->getValue(0)==3 &&
-  psc.getSite(codss[2])->getValue(0)==2) first = codss[0];
+      psc.getSite(codss[0])->getValue(0)==0 &&
+      psc.getSite(codss[1])->getValue(0)==3 &&
+      psc.getSite(codss[2])->getValue(0)==2) first = codss[0];
   //Check if the last codon is a STOP one
   int c1 = psc.getSite(codss[codss.size()-3])->getValue(0);
   int c2 = psc.getSite(codss[codss.size()-2])->getValue(0);
@@ -379,7 +379,7 @@ PolymorphismSequenceContainer * PolymorphismSequenceContainerTools::getIntrons(c
   PolymorphismSequenceContainer *psci = new PolymorphismSequenceContainer(*sc);
   for (unsigned int i = 0 ; i < psc.getNumberOfSequences() ; i++) {
     if(psc.isIngroupMember(i)) psci->setAsIngroupMember(i);
-      else {
+    else {
       psci->setAsOutgroupMember(i);
       psci->setGroupId(i, psc.getGroupId(i));
     }  
@@ -397,9 +397,9 @@ PolymorphismSequenceContainer * PolymorphismSequenceContainerTools::get5Prime(co
   unsigned int last=0;
   //Check if the first Codon is AUG
   if(start==1 &&
-  psc.getSite(codss[0])->getValue(0)==0 &&
-  psc.getSite(codss[1])->getValue(0)==3 &&
-  psc.getSite(codss[2])->getValue(0)==2) last = codss[0];
+      psc.getSite(codss[0])->getValue(0)==0 &&
+      psc.getSite(codss[1])->getValue(0)==3 &&
+      psc.getSite(codss[2])->getValue(0)==2) last = codss[0];
   for(unsigned int i=0; i<last; i++) {
     if(find(codss.begin(),codss.end(),i)==codss.end()) {
       ss.push_back(i);
@@ -409,7 +409,7 @@ PolymorphismSequenceContainer * PolymorphismSequenceContainerTools::get5Prime(co
   PolymorphismSequenceContainer *psci = new PolymorphismSequenceContainer(*sc);
   for (unsigned int i = 0 ; i < psc.getNumberOfSequences() ; i++) {
     if(psc.isIngroupMember(i)) psci->setAsIngroupMember(i);
-      else {
+    else {
       psci->setAsOutgroupMember(i);
       psci->setGroupId(i, psc.getGroupId(i));
     }
@@ -421,9 +421,9 @@ PolymorphismSequenceContainer * PolymorphismSequenceContainerTools::get5Prime(co
 PolymorphismSequenceContainer * PolymorphismSequenceContainerTools::get3Prime(const PolymorphismSequenceContainer & psc, const string & setName, const CodonAlphabet *ca )
 {
   Comments maseFileHeader = psc.getGeneralComments();
-    SiteSelection ss;
-    SiteSelection codss = MaseTools::getSiteSet(maseFileHeader,setName);
-    unsigned int first = psc.getNumberOfSites()-1;
+  SiteSelection ss;
+  SiteSelection codss = MaseTools::getSiteSet(maseFileHeader,setName);
+  unsigned int first = psc.getNumberOfSites()-1;
   //Check if the last codon is a STOP one
   int c1 = psc.getSite(codss[codss.size()-3])->getValue(0);
   int c2 = psc.getSite(codss[codss.size()-2])->getValue(0);
@@ -438,7 +438,7 @@ PolymorphismSequenceContainer * PolymorphismSequenceContainerTools::get3Prime(co
   PolymorphismSequenceContainer *psci = new PolymorphismSequenceContainer(*sc);
   for (unsigned int i = 0 ; i < psc.getNumberOfSequences() ; i++) {
     if(psc.isIngroupMember(i)) psci->setAsIngroupMember(i);
-      else {
+    else {
       psci->setAsOutgroupMember(i);
       psci->setGroupId(i, psc.getGroupId(i));
     }
