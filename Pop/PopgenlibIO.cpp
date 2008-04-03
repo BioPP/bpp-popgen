@@ -49,6 +49,7 @@ const string PopgenlibIO::SEMICOLON = string("SEMICOLON");
 const string PopgenlibIO::DIPLOID = string("DIPLOID");
 const string PopgenlibIO::HAPLOID = string("HAPLOID");
 const string PopgenlibIO::HAPLODIPLOID = string("HAPLODIPLOID");
+const string PopgenlibIO::UNKNOWN = string("UNKNOWN");
 
 PopgenlibIO::PopgenlibIO()
 {
@@ -343,6 +344,8 @@ void PopgenlibIO::_parseLoci(const vector<string> & in, vector<LocusInfo> & locu
         locinf_ploidy = LocusInfo::HAPLOID;
       else if (tmp_str_ploidy == HAPLODIPLOID)
         locinf_ploidy = LocusInfo::HAPLODIPLOID;
+      else if (tmp_str_ploidy == UNKNOWN)
+        locinf_ploidy = LocusInfo::UNKNOWN;
     }
     if (temp.find("NbAlleles", 0) != string::npos) {
       // not used ...
@@ -516,6 +519,8 @@ void PopgenlibIO::write(ostream & os, const DataSet & data_set) const throw (Exc
         os << DIPLOID;
       else if (tmp_locus_info->getPloidy() == LocusInfo::HAPLODIPLOID)
         os << HAPLODIPLOID;
+      else if (tmp_locus_info->getPloidy() == LocusInfo::UNKNOWN)
+        os << UNKNOWN;
       os << endl;
       os << "NbAlleles = " << tmp_locus_info->getNumberOfAlleles() << endl;
     }

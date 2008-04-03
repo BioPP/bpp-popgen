@@ -73,6 +73,7 @@ namespace bpp
       static const string DIPLOID;
       static const string HAPLOID;
       static const string HAPLODIPLOID;
+      static const string UNKNOWN;
 
     public: // Constructor and destructor
       PopgenlibIO();
