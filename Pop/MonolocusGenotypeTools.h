@@ -61,6 +61,7 @@ namespace bpp
    */
   class MonolocusGenotypeTools
   {
+    public:
     /**
      * @brief Build a proper MonolocusGenotype accordig to the number of alleles.
      *
