@@ -43,6 +43,7 @@ DataSet.h\
 DataSetTools.h\
 Date.h\
 GeneralExceptions.h\
+GeneMapperCsvExport.h\
 Genepop.h\
 Genetix.h\
 Group.h\
@@ -53,6 +54,8 @@ Locality.h\
 LocusInfo.h\
 MonoAlleleMonolocusGenotype.h\
 MonolocusGenotype.h\
+MonolocusGenotypeTools.h\
+MultiAlleleMonolocusGenotype.h\
 MultilocusGenotype.h\
 MultilocusGenotypeStatistics.h\
 MultiSeqIndividual.h\
@@ -75,12 +78,15 @@ DataSet.cpp\
 DataSetTools.cpp\
 Date.cpp\
 GeneralExceptions.cpp\
+GeneMapperCsvExport.cpp\
 Genepop.cpp\
 Genetix.cpp\
 Group.cpp\
 Individual.cpp\
 LocusInfo.cpp\
 MonoAlleleMonolocusGenotype.cpp\
+MonolocusGenotypeTools.cpp\
+MultiAlleleMonolocusGenotype.cpp\
 MultilocusGenotype.cpp\
 MultilocusGenotypeStatistics.cpp\
 MultiSeqIndividual.cpp\
