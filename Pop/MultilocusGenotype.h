@@ -1,7 +1,7 @@
 //
 // File MultilocusGenotype.h
 // Author : Sylvain Gaillard
-// Last modification : Thursday July 29 2004
+// Last modification : April 4, 2008
 //
 
 /*
@@ -48,8 +48,9 @@ using namespace std;
 // From Utils
 #include <Utils/Exceptions.h>
 
-// From local
+// From Pop
 #include "MonolocusGenotype.h"
+#include "MonolocusGenotypeTools.h"
 #include "BiAlleleMonolocusGenotype.h"
 #include "MonoAlleleMonolocusGenotype.h"
 #include "LocusInfo.h"

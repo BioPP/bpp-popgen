@@ -1,7 +1,7 @@
 //
 // File MultilocusGenotype.cpp
-// Author : Sylvain Gaillard <yragael2001@yahoo.fr>
-// Last modification : Thursday July 29 2004
+// Author : Sylvain Gaillard <sylvain.gaillard@angers.inra.fr>
+// Last modification : April 4, 2008
 //
 
 /*
@@ -96,10 +96,7 @@ void MultilocusGenotype::setMonolocusGenotypeByAlleleKey(unsigned int locus_posi
 
   if (locus_position < _loci.size())
   {
-    if (allele_keys.size() == 1)
-      setMonolocusGenotype(locus_position, MonoAlleleMonolocusGenotype(allele_keys));
-    if (allele_keys.size() > 1)
-      setMonolocusGenotype(locus_position, BiAlleleMonolocusGenotype(allele_keys));
+    setMonolocusGenotype(locus_position, * MonolocusGenotypeTools::buildMonolocusGenotypeByAlleleKey(allele_keys));
   }
   else
     throw IndexOutOfBoundsException("MultilocusGenotype::setMonolocusGenotype: locus_position out of bounds.",
