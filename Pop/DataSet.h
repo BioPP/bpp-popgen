@@ -1,7 +1,7 @@
 //
 // File DataSet.h
 // Author : Sylvain Gaillard
-// Last modification : Thursday July 29 2004
+// Last modification : April 4, 2008
 //
 
 /*
@@ -581,6 +581,13 @@ namespace bpp
        * @throw Exception if the AnalyzedLoci has already been initialyzed.
        */
       void initAnalyzedLoci(unsigned int number_of_loci) throw (Exception);
+
+      /**
+       * @brief Get the AnalyzedLoci if there is one.
+       *
+       * @throw NullPointerException if there is no AnalyzedLoci.
+       */
+      const AnalyzedLoci * getAnalyzedLoci() throw (NullPointerException);
 
       /**
        * @brief Delete the AnalyzedLoci.

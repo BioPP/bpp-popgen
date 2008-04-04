@@ -2,7 +2,7 @@
 // File DataSet.cpp
 // Author : Sylvain Gaillard
 //          Khalid Belkhir
-// Last modification : Thursday July 29 2004
+// Last modification : April 4, 2008
 //
 
 /*
@@ -787,6 +787,13 @@ void DataSet::initAnalyzedLoci(unsigned int number_of_loci) throw (Exception)
   if (_analyzedLoci != NULL)
     throw Exception("DataSet::initAnalyzedLoci: _analyzedLoci already initialyzed.");
   _analyzedLoci = new AnalyzedLoci(number_of_loci);
+}
+
+const AnalyzedLoci * DataSet::getAnalyzedLoci() throw (NullPointerException)
+{
+  if (_analyzedLoci != NULL)
+    return _analyzedLoci;
+  throw NullPointerException("DataSet::getAnalyzedLoci: no loci initialized.");
 }
 
 void DataSet::deleteAnalyzedLoci()
