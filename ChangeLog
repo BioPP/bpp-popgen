@@ -1,5 +1,6 @@
 04/04/08 Sylvain Gaillard
 * Added MultiAlleleMonolocusGenotype and MonolocusGenotypeTools class.
+* Added GeneMapperCsvExport input class.
 
 01/04/08 Sylvain Gaillard
 * Fixed bug in SequenceStatistics::DVH (thanks to Alicia).
