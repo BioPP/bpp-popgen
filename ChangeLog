@@ -1,3 +1,6 @@
+09/04/08 Sylvain Gaillard
+* Added DarwinDon and DarwinVarSingle output class.
+
 04/04/08 Sylvain Gaillard
 * Added MultiAlleleMonolocusGenotype and MonolocusGenotypeTools class.
 * Added GeneMapperCsvExport input class.

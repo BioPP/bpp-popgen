@@ -39,6 +39,8 @@ BasicAlleleInfo.h\
 BiAlleleMonolocusGenotype.h\
 Coord.h\
 CoordsTools.h\
+DarwinDon.h\
+DarwinVarSingle.h\
 DataSet.h\
 DataSetTools.h\
 Date.h\
@@ -74,6 +76,8 @@ AnalyzedLoci.cpp\
 AnalyzedSequences.cpp\
 BasicAlleleInfo.cpp\
 BiAlleleMonolocusGenotype.cpp\
+DarwinDon.cpp\
+DarwinVarSingle.cpp\
 DataSet.cpp\
 DataSetTools.cpp\
 Date.cpp\
