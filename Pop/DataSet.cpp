@@ -789,7 +789,7 @@ void DataSet::initAnalyzedLoci(unsigned int number_of_loci) throw (Exception)
   _analyzedLoci = new AnalyzedLoci(number_of_loci);
 }
 
-const AnalyzedLoci * DataSet::getAnalyzedLoci() throw (NullPointerException)
+const AnalyzedLoci * DataSet::getAnalyzedLoci() const throw (NullPointerException)
 {
   if (_analyzedLoci != NULL)
     return _analyzedLoci;

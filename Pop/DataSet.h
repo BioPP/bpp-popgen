@@ -587,7 +587,7 @@ namespace bpp
        *
        * @throw NullPointerException if there is no AnalyzedLoci.
        */
-      const AnalyzedLoci * getAnalyzedLoci() throw (NullPointerException);
+      const AnalyzedLoci * getAnalyzedLoci() const throw (NullPointerException);
 
       /**
        * @brief Delete the AnalyzedLoci.
