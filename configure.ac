@@ -1,4 +1,4 @@
-#Copyright or © or Copr. CNRS, (November 16, 2004)
+#Copyright or © or Copr. CNRS, (November 16, 2004-2008)
 #
 #This software is a computer program whose purpose is to provide classes
 #for population genetics analysis.
@@ -29,7 +29,7 @@
 #The fact that you are presently reading this means that you have had
 #knowledge of the CeCILL license and that you accept its terms.
 
-AC_INIT(Bio++ PopGenLib, 1.2.0, belkhir@univ-montp2.fr, Bpp-PopGen)
+AC_INIT(Bio++ PopGenLib, 1.3.0, belkhir@univ-montp2.fr, bpp-popgen)
 AC_CONFIG_SRCDIR(Pop/PolymorphismSequenceContainer.h)
 AM_INIT_AUTOMAKE()
 AC_LANG_CPLUSPLUS

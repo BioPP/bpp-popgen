@@ -1,4 +1,4 @@
-#Copyright or © or Copr. CNRS, (November 16, 2004)
+#Copyright or © or Copr. CNRS, (November 16, 2004-2008)
 #
 #This software is a computer program whose purpose is to provide classes
 #for population genetics analysis.
@@ -104,7 +104,7 @@ SequenceStatistics.cpp
 lib_LTLIBRARIES = libbpp-popgen.la
 libbpp_popgen_la_SOURCES = $(H_FILES) $(CPP_FILES)
 # CURRENT:REVISION:AGE => file.so.(C-A).A.R
-libbpp_popgen_la_LDFLAGS = -version-info 3:0:0
+libbpp_popgen_la_LDFLAGS = -version-info 4:0:1
 
 library_includedir=$(includedir)/Pop
 library_include_HEADERS = $(H_FILES)
