@@ -1,4 +1,4 @@
-#Copyright or © or Copr. CNRS, (November 16, 2004)
+#Copyright or © or Copr. CNRS, (November 16, 2004-2008)
 #
 #This software is a computer program whose purpose is to provide classes
 #for population genetics analysis.
@@ -30,4 +30,4 @@
 #knowledge of the CeCILL license and that you accept its terms.
 
 SUBDIRS = Pop
-EXTRA_DIST = PopGen.spec
+EXTRA_DIST = PopGen.spec debian
