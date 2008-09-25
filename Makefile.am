@@ -31,3 +31,7 @@
 
 SUBDIRS = Pop
 EXTRA_DIST = PopGen.spec debian
+
+dist-hook:
+	rm -rf `find $(distdir)/debian -name CVS`
+
