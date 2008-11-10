@@ -2,7 +2,7 @@
 // File DataSet.cpp
 // Author : Sylvain Gaillard
 //          Khalid Belkhir
-// Last modification : April 4, 2008
+// Last modification : November 10, 2008
 //
 
 /*
@@ -152,13 +152,10 @@ const Group * DataSet::getGroupById(unsigned int group_id) const
 
 string DataSet::getGroupName(unsigned int group_id) const throw (GroupNotFoundException)
 {
-  for (unsigned int i = 0 ; i < _groups.size() ; i++)
-  {   
-    string name;
-    if (group_id == _groups[i]->getGroupId()) name = _groups[i]->getGroupName();
-    if (!name.empty() ) return  name;
-    else return TextTools::toString(group_id);
-  }
+  string name;
+  name = this->getGroupById(group_id)->getGroupName();
+  if (!name.empty() ) return  name;
+  else return TextTools::toString(group_id);
   throw GroupNotFoundException("DataSet::getGroupName: group_id not found.", group_id);
 }
 
