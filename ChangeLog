@@ -1,3 +1,5 @@
+21/07/08 -*- Version 1.3.1 -*-
+
 10/11/08 Sylvain Gaillard
 * Fixed a bug in DataSet::getGroupName().
 

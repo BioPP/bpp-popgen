@@ -104,7 +104,11 @@ SequenceStatistics.cpp
 lib_LTLIBRARIES = libbpp-popgen.la
 libbpp_popgen_la_SOURCES = $(H_FILES) $(CPP_FILES)
 # CURRENT:REVISION:AGE => file.so.(C-A).A.R
-libbpp_popgen_la_LDFLAGS = -version-info 4:0:1
+# current: The most recent interface number that this library implements.
+# revision: The implementation number of the current interface.
+# age: The difference between the newest and oldest interfaces that this library implements.
+# In other words, the library implements all the interface numbers in the range from number current - age to current.
+libbpp_popgen_la_LDFLAGS = -version-info 4:1:1
 
 library_includedir=$(includedir)/Pop
 library_include_HEADERS = $(H_FILES)
