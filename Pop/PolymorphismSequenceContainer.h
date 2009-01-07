@@ -115,9 +115,13 @@ namespace bpp
       /**
        * @brief Clone a PolymorphismSequenceContainer.
        */
-      Clonable * clone() const;
+      PolymorphismSequenceContainer * clone() const
+      {
+        return new PolymorphismSequenceContainer(*this);
+      }
 
-    public: // Other methodes
+
+    public: // Other methods
       /**
        * @brief Remove a sequence by index and return a pointer to this removed sequence.
        *

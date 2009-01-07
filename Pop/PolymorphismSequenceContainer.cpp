@@ -130,13 +130,6 @@ PolymorphismSequenceContainer::~PolymorphismSequenceContainer()
   clear();
 }
 
-Clonable * PolymorphismSequenceContainer::clone() const
-{
-  return dynamic_cast<Clonable *>(dynamic_cast<OrderedSequenceContainer *>
-      (dynamic_cast<SiteContainer *>
-       (new PolymorphismSequenceContainer(*this))));
-}
-
 //** Other methodes: *********************************************************/
 
 Sequence * PolymorphismSequenceContainer::removeSequence(unsigned int index) throw (IndexOutOfBoundsException)
