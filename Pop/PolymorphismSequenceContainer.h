@@ -2,7 +2,7 @@
 // File: PolymorphismSequenceContainer.h
 // Authors: Eric Bazin
 //          Sylvain Gaillard
-// Last modification : Wednesday August 04 2004
+// Created on: Wednesday August 04 2004
 //
 
 /*
@@ -62,6 +62,32 @@ using namespace std;
  * sequences in the set. The bpp::PolymorphismSequenceContainerTools and 
  * bpp::SequenceStatistics static classes provide several tools for data analysis,
  * including diversity indices and positive selection tests.
+ *
+ * @section dataset Population and sample data storage and manipulation
+ *
+ * @par
+ * PopGenLib library provides data structure for handling sample and data sets
+ * for population genetics.
+ * These objects are embedded in the bpp::DataSet object which is a container of bpp::Group
+ * of bpp::Individual.
+ * Each bpp::Individual can store bpp::Sequence data or allelic data with the dedicated
+ * classes bpp::MultilocusGenotype.
+ *
+ * @section genetics Population genetics data and statistics
+ *
+ * @par
+ * To compute statistics on data, two containers families are provided, one for sequences
+ * (bpp::PolymorphismSequenceContainer) and the other for allelic data (bpp::PolymorphismMultiGContainer).
+ * Static tools class for both families are provided to compute several common or less
+ * common statistics.
+ *
+ * @sections statistics Statistics overview
+ *
+ * @par heterozygosity
+ * @par watterson75 Diversity estimator Theta of Watterson
+ * @par tajima83 Diversity estimator Theta of Tajima
+ * @par DVH Haplotype diversity of Depaulis and Veuille
+ * @par D Tajima's D test
  */
 
 namespace bpp

@@ -2,7 +2,7 @@
 // File: PolymorphismSequenceContainerTools.h
 // Authors: Eric Bazin
 //          Sylvain Gaillard
-// Last modification : Thursday July 29 2004
+// Created on: Thursday July 29 2004
 //
 
 /*
@@ -49,6 +49,9 @@
 #include <Seq/SiteIterator.h>
 #include <Seq/SiteTools.h>
 #include <Seq/VectorSiteContainer.h>
+
+// from NumCalc
+#include <NumCalc/RandomTools.h>
 
 // from Utils
 #include <Utils/StringTokenizer.h>
@@ -127,6 +130,14 @@ namespace bpp
       static PolymorphismSequenceContainer * getSelectedSequences(const PolymorphismSequenceContainer & psc, SequenceSelection & ss);
 
 
+      /**
+       * @brief Get a random set of sequences
+       *
+       * @param psc a PolymorphismSequenceContainer reference
+       * @param n the number of sequence to get
+       * @param replace a boolean flag true for sampling with replacement
+       */
+      static PolymorphismSequenceContainer * sample(const PolymorphismSequenceContainer & psc, unsigned int n, bool replace = true);
 
       /**
        * @brief Retrieves sites without gaps from PolymorphismSequenceContainer.

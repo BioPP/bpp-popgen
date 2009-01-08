@@ -1,3 +1,8 @@
+08/01/09 Sylvain Gaillard
+* New methode sample in PolymorphismSequenceContainerTools.
+* Extend main page doxygen documentation.
+* A bit of cleaning.
+
 07/01/09 Céline Scornavacca & Julien Dutheil
 * Bug fixed in clone method of PolymorphismSequenceContainer.
 

@@ -1,7 +1,7 @@
 //
 // File: PolymorphismSequenceContainer.h
 // Created by: Eric Bazin
-//              Sylvain Gaillard
+//             Sylvain Gaillard
 // Created on: Wednesday August 04 2004
 //
 
