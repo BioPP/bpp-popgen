@@ -137,9 +137,9 @@ PolymorphismSequenceContainer * PolymorphismSequenceContainerTools::extractGroup
   SequenceSelection ss;
   PolymorphismSequenceContainer * psci = dynamic_cast<PolymorphismSequenceContainer *>(psc.clone());
   for (unsigned int i = 0 ; i < psc.getNumberOfSequences() ; i++)
-    if (psc.getGroupId(i) == group_id)
+    if (psc.getGroupId(i) != group_id)
       ss.push_back(i);
-  if(ss.size() == 0)
+  if(ss.size() == psc.getNumberOfSequences())
   {
     delete psci;
     throw GroupNotFoundException("PolymorphismSequenceContainerTools::extractGroup: group_id not found.", group_id);

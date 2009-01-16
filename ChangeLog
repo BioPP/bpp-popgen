@@ -1,3 +1,7 @@
+16/01/09 Sylvain Gaillard
+* Fixed methode PolymorphismSequenceContainerTools::extractGroup which now
+  return the extracted group and not all groups but the extracted one.
+
 08/01/09 Sylvain Gaillard
 * New methode sample in PolymorphismSequenceContainerTools.
 * Extend main page doxygen documentation.
