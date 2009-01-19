@@ -1,3 +1,6 @@
+19/01/09 Sylvain Gaillard
+* Fixed bug in PolymorphismSequenceContainerTools::getSelectedSequences now
+  set the sequence count properly.
 16/01/09 Sylvain Gaillard
 * Fixed methode PolymorphismSequenceContainerTools::extractGroup which now
   return the extracted group and not all groups but the extracted one.
