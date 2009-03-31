@@ -60,6 +60,8 @@ namespace bpp
    * @brief Tools for PolymorphismMultiGContainer.
    *
    * Provides static methods for permutations.
+   *
+   * @author Sylvain Gaillard
    */
   class PolymorphismMultiGContainerTools
   {

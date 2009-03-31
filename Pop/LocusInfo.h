@@ -60,6 +60,8 @@ namespace bpp
    *
    * This is an AlleleInfo container with additionnal data like a name,
    * the ploidy and some comments.
+   *
+   * @author Sylvain Gaillard
    */
   class LocusInfo
   {

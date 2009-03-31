@@ -51,6 +51,8 @@ namespace bpp
    * @brief The BasicAlleleInfo class.
    *
    * This is the simplest allele class implementation which contains just an identitier.
+   *
+   * @author Sylvain Gaillard
    */
   class BasicAlleleInfo:
     public AlleleInfo

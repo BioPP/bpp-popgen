@@ -1,6 +1,12 @@
+31/03/09 Sylvain Gaillard
+* Fixed Doxygen documentation @author tags
+* Fixed warnings in bpp::DarwinDon::write bpp::DarwinVarSingle::write and
+  bpp::MonolocusGenotypeTools::buildMonolocusGenotypeByAlleleKey
+
 19/01/09 Sylvain Gaillard
 * Fixed bug in PolymorphismSequenceContainerTools::getSelectedSequences now
   set the sequence count properly.
+
 16/01/09 Sylvain Gaillard
 * Fixed methode PolymorphismSequenceContainerTools::extractGroup which now
   return the extracted group and not all groups but the extracted one.

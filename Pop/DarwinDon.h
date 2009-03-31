@@ -54,6 +54,8 @@ namespace bpp
 
   /**
    * @brief The Darwin .don output format for popgenlib.
+   *
+   * @author Sylvain Gaillard
    */
   class DarwinDon:
     public AbstractODataSet

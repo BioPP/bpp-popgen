@@ -53,6 +53,11 @@ namespace bpp
 
   /**
    * @brief The AlleleInfo interface.
+   *
+   * An AlleleInfo is a data structure designed to store informations about
+   * alleles in general like the size of the marker for example.
+   *
+   * @author Sylvain Gaillard
    */
   class AlleleInfo:
     public virtual Clonable

@@ -678,9 +678,9 @@ double SequenceStatistics::neutralityIndex(const PolymorphismSequenceContainer &
   else return -1;
 }
 
-//******************************************************************************************************************
+//******************************************************************************
 //Statistical tests
-//******************************************************************************************************************
+//******************************************************************************
 
 double SequenceStatistics::tajimaDSS(const PolymorphismSequenceContainer & psc, bool gapflag)
 {
@@ -689,6 +689,8 @@ double SequenceStatistics::tajimaDSS(const PolymorphismSequenceContainer & psc, 
   double watterson = watterson75(psc, gapflag);
   unsigned int n = psc.getNumberOfSequences();
   map<string, double> values = _getUsefullValues(n);
+  if (S == 0)
+    cout << "ARG S == 0" << endl;
   return (tajima - watterson) / sqrt((values["e1"] * S) + (values["e2"] * S * (S - 1)));
 }
 

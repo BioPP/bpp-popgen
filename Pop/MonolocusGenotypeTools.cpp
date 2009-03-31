@@ -54,6 +54,6 @@ MonolocusGenotype * MonolocusGenotypeTools::buildMonolocusGenotypeByAlleleKey(co
     return new MonoAlleleMonolocusGenotype(allele_keys);
   if (allele_keys.size() == 2)
     return new BiAlleleMonolocusGenotype(allele_keys);
-  if (allele_keys.size() > 2)
-    return new MultiAlleleMonolocusGenotype(allele_keys);
+  // for all other cases (allele_keys.size() > 2)
+  return new MultiAlleleMonolocusGenotype(allele_keys);
 }

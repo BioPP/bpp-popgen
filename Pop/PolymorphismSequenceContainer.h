@@ -98,6 +98,8 @@ namespace bpp
    *
    * This is a VectorSiteContainer with effectif for each sequence.
    * It also has flag for ingroup and outgroup.
+   *
+   * @author Sylvain Gaillard
    */
   class PolymorphismSequenceContainer:
     public VectorSiteContainer

@@ -61,6 +61,8 @@ namespace bpp
    * This is a LocusInfo container.
    * Its instanciation requires a number of locus wich is fixed
    * and can't be modified.
+   *
+   * @author Sylvain Gaillard
    */
   class AnalyzedLoci
   {

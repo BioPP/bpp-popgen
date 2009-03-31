@@ -69,6 +69,8 @@ namespace bpp
    *
    * A DataSet the object that manage every data on which one can compute
    * some statistics.
+   *
+   * @author Sylvain Gaillard
    */
   class DataSet
   {

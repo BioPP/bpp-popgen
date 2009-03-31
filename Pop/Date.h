@@ -51,6 +51,8 @@ namespace bpp
    * @brief The Date class
    *
    * This is a little class to deal with dates.
+   *
+   * @author Sylvain Gaillard
    */
   class Date
   {

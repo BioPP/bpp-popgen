@@ -56,6 +56,8 @@ namespace bpp
    *
    * IODataSet is a virtual class.
    * This is an interface to declare commune methodes for in/out action on DataSet.
+   *
+   * @author Sylvain Gaillard
    */
   class IODataSet
   {

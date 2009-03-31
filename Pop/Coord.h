@@ -51,6 +51,8 @@ namespace bpp
    *
    * This is a simple class designed to store the coordinates of a point.
    * The type of the two coordinates is defined as a template.
+   *
+   * @author Sylvain Gaillard
    */
   template <class T> class Coord:
     public virtual Clonable

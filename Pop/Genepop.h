@@ -55,6 +55,8 @@ namespace bpp
 
   /**
    * @brief The Genepop input format for popgenlib.
+   *
+   * @author Sylvain Gaillard
    */
   class Genepop:
     public AbstractIDataSet

@@ -48,7 +48,11 @@
 
 namespace bpp
 {
-
+  /**
+   * @brief Partial implementation of the DataSet Input interface
+   * 
+   * @author Sylvain Gaillard
+   */
   class AbstractIDataSet:
     public IDataSet
   {

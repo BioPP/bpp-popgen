@@ -69,6 +69,8 @@ namespace bpp
    * @brief The MultilocusGenotypeStatistics class
    *
    * This class is a set of static method for PolymorphismMultiGContainer.
+   *
+   * @author Sylvain Gaillard
    */
   class MultilocusGenotypeStatistics
   {

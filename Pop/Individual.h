@@ -74,6 +74,8 @@ namespace bpp
    * This individual has only one sequence for each locus ... no information
    * about diploid sequence data.
    * See the no more in use MultiSeqIndividual documentation for an alternative.
+   *
+   * @author Sylvain Gaillard
    */
   class Individual
   {

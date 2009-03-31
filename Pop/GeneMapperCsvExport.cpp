@@ -41,7 +41,10 @@
 
 using namespace bpp;
 
-GeneMapperCsvExport::GeneMapperCsvExport() {}
+GeneMapperCsvExport::GeneMapperCsvExport(bool ia)
+{
+  GeneMapperCsvExport::_IndependentAlleles = ia;
+}
 
 GeneMapperCsvExport::~GeneMapperCsvExport() {}
 
@@ -90,7 +93,7 @@ void GeneMapperCsvExport::read(istream & is, DataSet & data_set) throw (Exceptio
 
   map<string, unsigned int> ind_count = VectorTools::countValues(ind_names);
   ind_names = VectorTools::unique(ind_names);
-  markers= VectorTools::unique(markers);
+  markers = VectorTools::unique(markers);
   unsigned int loc_nbr = markers.size();
 
   /*

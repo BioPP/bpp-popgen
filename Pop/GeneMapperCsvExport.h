@@ -61,14 +61,25 @@ namespace bpp
    * @brief The GeneMapperCsvExport input format for popgenlib.
    *
    * This input format takes a csv file exported from GeneMapper® (Applied Biosystems).
+   *
+   * @author Sylvain Gaillard
    */
-  class GeneMapperCsvExport:
-    public AbstractIDataSet
+  class GeneMapperCsvExport: public AbstractIDataSet
   {
 
+    private:
+      bool _IndependentAlleles;
+
     public: // Constructor and destructor
-      GeneMapperCsvExport();
+      GeneMapperCsvExport(bool ia = false);
       ~GeneMapperCsvExport();
+
+    //public:
+      /**
+       * @brief Set if allels are concidered as independent markers.
+       *
+       */
+      //SetAllelsAsIndependent(bool flag);
 
     public:
       /**

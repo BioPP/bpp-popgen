@@ -74,6 +74,8 @@ namespace bpp
    * working implementation which manages sequences as a map of sequence container.
    * We have replaced it with a simplest individual with only one sequence per
    * locus.
+   *
+   * @author Sylvain Gaillard
    */
   class MultiSeqIndividual
   {

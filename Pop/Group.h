@@ -1,7 +1,7 @@
 //
 // File Group.h
-// Author : Sylvain Gaillard <yragael2001@yahoo.fr>
-//        : Khalid Belkhir
+// Author : Sylvain Gaillard
+//          Khalid Belkhir
 // Last modification : Thursday July 29 2004
 //
 
@@ -66,6 +66,8 @@ namespace bpp
    *
    * A Group is an ensemble of Individuals with some statistics like the average
    * allele number.
+   *
+   * @author Sylvain Gaillard
    */
   class Group
   {

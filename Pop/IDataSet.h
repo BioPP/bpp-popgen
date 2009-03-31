@@ -50,6 +50,8 @@ namespace bpp
 
   /**
    * @brief The IDataSet interface.
+   *
+   * @author Sylvain Gaillard
    */
   class IDataSet:
     public virtual IODataSet

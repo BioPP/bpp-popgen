@@ -45,6 +45,8 @@
 
 /**
  * @brief Some functions to deal with coordinates.
+ *
+ * @author Sylvain Gaillard
  */
 
 template <class T> class CoordsTools

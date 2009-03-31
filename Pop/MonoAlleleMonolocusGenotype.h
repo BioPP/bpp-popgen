@@ -51,6 +51,8 @@ namespace bpp
 
   /**
    * @brief The MonoAlleleMonolocusGenotype class.
+   *
+   * @author Sylvain Gaillard
    */
   class MonoAlleleMonolocusGenotype:
     public MonolocusGenotype

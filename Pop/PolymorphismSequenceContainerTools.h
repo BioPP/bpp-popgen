@@ -70,6 +70,8 @@ namespace bpp
 
   /**
    * @brief Utilitary function to manipulate PolymorphismSequenceContainer
+   *
+   * @author Sylvain Gaillard
    */
 
   class PolymorphismSequenceContainerTools

@@ -58,6 +58,8 @@ namespace bpp
    * @brief The MonolocusGenotypeTools static class.
    *
    * This class provides tools for MonolocusGenotype manipulation or creation.
+   *
+   * @author Sylvain Gaillard
    */
   class MonolocusGenotypeTools
   {

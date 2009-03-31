@@ -45,7 +45,11 @@
 
 namespace bpp
 {
-
+  /**
+   * @brief Partial implementation of the DataSet Output interface.
+   *
+   * @author Sylvain Gaillard
+   */
   class AbstractODataSet:
     public ODataSet
   {

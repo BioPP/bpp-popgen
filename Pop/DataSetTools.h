@@ -61,6 +61,8 @@ namespace bpp
 
   /**
    * @brief A set of tools for DataSet.
+   *
+   * @author Sylvain Gaillard
    */
   class DataSetTools
   {

@@ -68,7 +68,7 @@ void DarwinDon::write(ostream & os, const DataSet & data_set) const throw (Excep
   header.push_back("Name");
   os << ind_nbr << "\t" << header.size() - 1 << endl;
   VectorTools::print(header, os, "\t");
-  unsigned int ind_index = 0;
+  //unsigned int ind_index = 0;
   for (unsigned int i = 0 ; i < data_set.getNumberOfGroups() ; i++) {
     unsigned int ind_nbr_ig = data_set.getNumberOfIndividualsInGroup(i);
     for (unsigned int j = 0 ; j < ind_nbr_ig ; j++) {

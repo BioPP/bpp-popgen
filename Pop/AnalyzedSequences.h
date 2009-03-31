@@ -54,6 +54,8 @@ namespace bpp
    * @brief The AnalyzedSequences class.
    *
    * This is a class to store info about the sequences.
+   *
+   * @author Sylvain Gaillard
    */
   class AnalyzedSequences
   {

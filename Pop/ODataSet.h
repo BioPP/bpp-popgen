@@ -50,6 +50,8 @@ namespace bpp
 
   /**
    * @brief The ODataSet interface.
+   *
+   * @author Sylvain Gaillard
    */
   class ODataSet:
     public virtual IODataSet

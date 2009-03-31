@@ -58,7 +58,12 @@ using namespace std;
 
 namespace bpp
 {
-
+  /**
+   * @brief Static class providing methods to compute statistics on sequences
+   * data.
+   *
+   * @author Sylvain Gaillard
+   */
   class SequenceStatistics
   {
     public:
@@ -71,8 +76,11 @@ namespace bpp
       /**
        * @brief Compute the number of polymorphic site in an alignment
        *
+       * The number of polymorphic site is also known as the number of segregating
+       * site @f$S@f$.
+       *
        * Gaps are consider as mutations so if you want number of
-       * polymorphic site, you have to give a NonGapSiteIterator
+       * polymorphic site without gap, set the gapflag parameter to true.
        *
        * @param psc a PolymorphismSequenceContainer
        * @param gapflag a boolean set by default to true if you don't want to
@@ -163,7 +171,7 @@ namespace bpp
       static double gcContent(const PolymorphismSequenceContainer & psc);
 
 
-      /*
+      /**
        * @brief Return the number of GC alleles and the total number of alleles at polymorphic sites only
        *
        * G vs C and A vs T polymorphism are not taken into account

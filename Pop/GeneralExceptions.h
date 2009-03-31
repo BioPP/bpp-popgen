@@ -46,7 +46,7 @@
 namespace bpp
 {
 
-  //*****************************************************************************
+  //****************************************************************************
   //
   /**
    * @brief The BadIdentifierException class.
@@ -54,6 +54,8 @@ namespace bpp
    * This exception is used when an identifier is not found.
    * The identifier can be either a string or an integer but its
    * value is stored as a string.
+   *
+   * @author Sylvain Gaillard
    */
   class BadIdentifierException:
     public Exception

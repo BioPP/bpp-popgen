@@ -56,6 +56,8 @@ namespace bpp
 
   /**
    * @brief The Genetix input format for popgenlib.
+   *
+   * @author Sylvain Gaillard
    */
   class Genetix:
     public AbstractIDataSet

@@ -67,6 +67,8 @@ namespace bpp
    * @brief The PolymorphismMultiGContainer class
    *
    * This class is a container of MultilocusGenotype.
+   *
+   * @author Sylvain Gaillard
    */
   class PolymorphismMultiGContainer
   {

@@ -57,6 +57,8 @@ namespace bpp
    * A MonolocusGenotype containes the Alleles' keys defined in a Locus object.
    * This keys are returned as unsigned integers.
    * This class is an interface for all monolocus genotypes.
+   *
+   * @author Sylvain Gaillard
    */
   class MonolocusGenotype:
     public Clonable

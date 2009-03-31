@@ -60,6 +60,8 @@ namespace bpp
    * This class is intended to handle monolocus genotype with many alleles
    * like polyploid loci or loci obtained by trace file without cutoff on
    * peaks or other filter.
+   *
+   * @author Sylvain Gaillard
    */
   class MultiAlleleMonolocusGenotype:
     public MonolocusGenotype

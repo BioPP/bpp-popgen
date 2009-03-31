@@ -59,6 +59,8 @@ namespace bpp
 
   /**
    * @brief The natif I/O format for popgenlib.
+   *
+   * @author Sylvain Gaillard
    */
   class PopgenlibIO:
     public AbstractIDataSet,

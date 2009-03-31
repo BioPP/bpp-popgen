@@ -53,6 +53,8 @@ namespace bpp
    *
    * This is a class derivated from the Coord class.
    * It's a Coord with a name.
+   *
+   * @author Sylvain Gaillard
    */
   template <class T> class Locality:
     public Coord<T>

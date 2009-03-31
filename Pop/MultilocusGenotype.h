@@ -62,6 +62,8 @@ namespace bpp
    * @brief The MultilocusGenotype class.
    *
    * This is a MonolocusGenotype containor.
+   *
+   * @author Sylvain Gaillard
    */
   class MultilocusGenotype
   {
