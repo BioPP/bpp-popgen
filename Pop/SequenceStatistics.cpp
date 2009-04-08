@@ -3,7 +3,7 @@
 // Author : Eric Bazin
 //          Sylvain Gailard
 //          Khalid Belkhir
-// Last modification : Wednesday February 27 2008
+// Last modification : Wednesday April 08 2009
 //
 
 /*
@@ -68,9 +68,9 @@ using namespace bpp;
 
 SequenceStatistics::~SequenceStatistics() {}
 
-//******************************************************************************************************************
+//******************************************************************************
 //Basic statistics
-//******************************************************************************************************************
+//******************************************************************************
 
 unsigned int SequenceStatistics::polymorphicSiteNumber(const PolymorphismSequenceContainer & psc, bool gapflag)
 {
@@ -214,9 +214,9 @@ double SequenceStatistics::squaredHeterozygosity(const PolymorphismSequenceConta
   return S;
 }
 
-//******************************************************************************************************************
+//******************************************************************************
 //GC statistics
-//******************************************************************************************************************
+//******************************************************************************
 
 double SequenceStatistics::gcContent(const PolymorphismSequenceContainer & psc)
 {
@@ -253,9 +253,9 @@ vector<unsigned int> SequenceStatistics::gcPolymorphism(const PolymorphismSequen
   return vect;
 }
 
-//******************************************************************************************************************
+//******************************************************************************
 //Diversity statistics
-//******************************************************************************************************************
+//******************************************************************************
 
 double SequenceStatistics::watterson75(const PolymorphismSequenceContainer & psc, bool gapflag)
 {
@@ -281,7 +281,8 @@ double SequenceStatistics::tajima83(const PolymorphismSequenceContainer & psc, b
     site = si->nextSite();
     if (! SiteTools::isConstant(* site)) {
       double value = 0.;
-      map<int, unsigned int> count = SymbolListTools::getCounts(* site);
+      map<int, unsigned int> count;
+      SymbolListTools::getCounts(* site, count);
       map<int, unsigned int> tmp_k;
       unsigned int tmp_n = 0;
       for (map<int, unsigned int>::iterator it = count.begin() ; it != count.end() ; it++)
@@ -436,7 +437,7 @@ double SequenceStatistics::getTransitionsTransversionsRatio( const PolymorphismS
 
   while (si->hasMoreSites()) {
     site = si->nextSite();
-    count = SymbolListTools::getCounts(*site);
+    SymbolListTools::getCounts(*site, count);
     if (count.size() != 2) continue;
     int i = 0;
     for(map<int, unsigned int>::iterator it=count.begin(); it!=count.end(); it++)
@@ -464,9 +465,9 @@ double SequenceStatistics::getTransitionsTransversionsRatio( const PolymorphismS
 
 }
 
-//******************************************************************************************************************
+//******************************************************************************
 //Synonymous and non-synonymous polymorphism
-//******************************************************************************************************************
+//******************************************************************************
 
 unsigned int SequenceStatistics::stopCodonSiteNumber(const PolymorphismSequenceContainer & psc, bool gapflag)
 {
@@ -786,9 +787,9 @@ double SequenceStatistics::fuliFstar(const PolymorphismSequenceContainer & group
   return (pi - ((nn - 1.) / nn * etas)) / sqrt(uFs * eta + vFs * eta * eta);
 }
 
-//******************************************************************************************************************
+//******************************************************************************
 //Linkage disequilibrium statistics
-//******************************************************************************************************************
+//******************************************************************************
 
 /**********************/
 /* Preliminary method */
@@ -819,7 +820,8 @@ PolymorphismSequenceContainer * SequenceStatistics::generateLDContainer(const Po
     const Site* site = sc->getSite(i);
     Site* siteclone =  new Site(*site);
     bool deletesite = false;
-    map<int, double> freqs = SymbolListTools::getFrequencies(*siteclone);
+    map<int, double> freqs;
+    SymbolListTools::getFrequencies(*siteclone, freqs);
     int first = 0;
     for(map<int,double>::iterator it=freqs.begin(); it!=freqs.end(); it++){
       if(it->second>=0.5) first = it->first;
@@ -857,7 +859,8 @@ Vdouble SequenceStatistics::pairwiseDistances1(const PolymorphismSequenceContain
       if(SiteTools::isComplete(*psc.getSite(i)) && !SiteTools::isConstant(*psc.getSite(i)) && !SiteTools::isTriplet(*psc.getSite(i))){
         const Site* site = psc.getSite(i);
         bool deletesite = false;
-        map<int, double> freqs = SymbolListTools::getFrequencies(*site);
+        map<int, double> freqs;
+        SymbolListTools::getFrequencies(*site, freqs);
         for(unsigned int j=0; j<site->getAlphabet()->getSize(); j++){
           if(freqs[j]>=1-freqmin) deletesite = true;
         }
@@ -869,7 +872,8 @@ Vdouble SequenceStatistics::pairwiseDistances1(const PolymorphismSequenceContain
         ss.push_back(i);
         const Site* site = psc.getSite(i);
         bool deletesite = false;
-        map<int, double> freqs = SymbolListTools::getFrequencies(*site);
+        map<int, double> freqs;
+        SymbolListTools::getFrequencies(*site, freqs);
         for(unsigned int j=0; j<site->getAlphabet()->getSize(); j++){
           if(freqs[j]>=1-freqmin) deletesite = true;
         }
@@ -896,7 +900,8 @@ Vdouble SequenceStatistics::pairwiseDistances2(const PolymorphismSequenceContain
       if(SiteTools::isComplete(*psc.getSite(i)) && !SiteTools::isConstant(*psc.getSite(i)) && !SiteTools::isTriplet(*psc.getSite(i))){
         const Site* site = psc.getSite(i);
         bool deletesite = false;
-        map<int, double> freqs = SymbolListTools::getFrequencies(*site);
+        map<int, double> freqs;
+        SymbolListTools::getFrequencies(*site, freqs);
         for(unsigned int j=0; j<site->getAlphabet()->getSize(); j++){
           if(freqs[j]>=1-freqmin) deletesite = true;
         }
@@ -908,7 +913,8 @@ Vdouble SequenceStatistics::pairwiseDistances2(const PolymorphismSequenceContain
         ss.push_back(i);
         const Site* site = psc.getSite(i);
         bool deletesite = false;
-        map<int, double> freqs = SymbolListTools::getFrequencies(*site);
+        map<int, double> freqs;
+        SymbolListTools::getFrequencies(*site, freqs);
         for(unsigned int j=0; j<site->getAlphabet()->getSize(); j++){
           if(freqs[j]>=1-freqmin) deletesite = true;
         }
@@ -957,8 +963,10 @@ Vdouble SequenceStatistics::pairwiseD(const PolymorphismSequenceContainer & psc,
       double haplo=0;
       const Site* site1 = newpsc->getSite(i);
       const Site* site2 = newpsc->getSite(j);
-      map<int,double> freq1 = SymbolListTools::getFrequencies(*site1);
-      map<int,double> freq2 = SymbolListTools::getFrequencies(*site2);
+      map<int,double> freq1;
+      map<int,double> freq2;
+      SymbolListTools::getFrequencies(*site1, freq1);
+      SymbolListTools::getFrequencies(*site2, freq2);
       for(unsigned int k=0; k<nbseq; k++){
         if(site1->getValue(k) + site2->getValue(k)==2) haplo++;
       }
@@ -982,8 +990,10 @@ Vdouble SequenceStatistics::pairwiseDprime(const PolymorphismSequenceContainer &
       double haplo=0;
       const Site* site1 = newpsc->getSite(i);
       const Site* site2 = newpsc->getSite(j);
-      map<int,double> freq1 = SymbolListTools::getFrequencies(*site1);
-      map<int,double> freq2 = SymbolListTools::getFrequencies(*site2);
+      map<int,double> freq1;
+      map<int,double> freq2;
+      SymbolListTools::getFrequencies(*site1, freq1);
+      SymbolListTools::getFrequencies(*site2, freq2);
       for(unsigned int k=0; k<nbseq; k++){
         if(site1->getValue(k) + site2->getValue(k)==2) haplo++;
       }
@@ -1024,8 +1034,10 @@ Vdouble SequenceStatistics::pairwiseR2(const PolymorphismSequenceContainer & psc
       double haplo=0;
       const Site* site1 = newpsc->getSite(i);
       const Site* site2 = newpsc->getSite(j);
-      map<int,double> freq1 = SymbolListTools::getFrequencies(*site1);
-      map<int,double> freq2 = SymbolListTools::getFrequencies(*site2);
+      map<int,double> freq1;
+      map<int,double> freq2;
+      SymbolListTools::getFrequencies(*site1, freq1);
+      SymbolListTools::getFrequencies(*site2, freq2);
       for(unsigned int k=0; k<nbseq; k++){
         if(site1->getValue(k) + site2->getValue(k)==2) haplo++;
       }
@@ -1214,15 +1226,16 @@ double SequenceStatistics::hudson87(const PolymorphismSequenceContainer & psc, d
   return (c1+c2)/2;
 }
 
-//******************************************************************************************************************
+//******************************************************************************
 //Private methods
-//******************************************************************************************************************
+//******************************************************************************
 
 unsigned int SequenceStatistics::_getMutationNumber(const Site & site)
 {
   unsigned int tmp_count = 0;
 
-  map<int, unsigned int> states_count = SymbolListTools::getCounts(site);
+  map<int, unsigned int> states_count;
+  SymbolListTools::getCounts(site, states_count);
 
   for (map<int, unsigned int>::iterator it = states_count.begin() ; it != states_count.end() ; it++)
 
@@ -1240,7 +1253,8 @@ unsigned int SequenceStatistics::_getMutationNumber(const Site & site)
 unsigned int SequenceStatistics::_getSingletonNumber(const Site & site)
 {
   unsigned int nus = 0;
-  map<int, unsigned int> states_count = SymbolListTools::getCounts(site);
+  map<int, unsigned int> states_count;
+  SymbolListTools::getCounts(site, states_count);
   for (map<int, unsigned int>::iterator it = states_count.begin() ; it != states_count.end() ; it++)
     if (it->second == 1)
       nus++;
@@ -1250,8 +1264,10 @@ unsigned int SequenceStatistics::_getSingletonNumber(const Site & site)
 unsigned int SequenceStatistics::_getDerivedSingletonNumber(const Site & site_in,const Site & site_out )
 {
   unsigned int nus = 0;
-  map<int, unsigned int> states_count = SymbolListTools::getCounts(site_in);
-  map<int, unsigned int> outgroup_states_count = SymbolListTools::getCounts(site_out);
+  map<int, unsigned int> states_count;
+  map<int, unsigned int> outgroup_states_count;
+  SymbolListTools::getCounts(site_in, states_count);
+  SymbolListTools::getCounts(site_out, outgroup_states_count);
   //if there is more than one variant in the outgroup we will not be able to recover the ancestral state
   if (outgroup_states_count.size() == 1 )
   {

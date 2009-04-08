@@ -1,3 +1,6 @@
+08/04/09 Sylvain Gaillard
+* Fixed calls to Seq::SymbolListTools::getCounts
+
 31/03/09 Sylvain Gaillard
 * Fixed Doxygen documentation @author tags
 * Fixed warnings in bpp::DarwinDon::write bpp::DarwinVarSingle::write and
