@@ -5,7 +5,7 @@
 //
 
 /*
-   Copyright or © or Copr. CNRS, (April 7, 2008)
+   Copyright or Â© or Copr. CNRS, (April 7, 2008)
 
    This software is a computer program whose purpose is to provide classes
    for population genetics analysis.
@@ -64,7 +64,7 @@ void DarwinDon::write(ostream & os, const DataSet & data_set) const throw (Excep
   for (unsigned int i = 0 ; i < data_set.getNumberOfGroups() ; i++)
     ind_nbr += data_set.getNumberOfIndividualsInGroup(i);
   vector<string> header;
-  header.push_back("N°");
+  header.push_back("NÂ°");
   header.push_back("Name");
   os << ind_nbr << "\t" << header.size() - 1 << endl;
   VectorTools::print(header, os, "\t");

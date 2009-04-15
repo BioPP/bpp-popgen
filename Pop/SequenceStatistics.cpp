@@ -7,7 +7,7 @@
 //
 
 /*
-   Copyright or © or Copr. CNRS, (November 17, 2004)
+   Copyright or Â© or Copr. CNRS, (November 17, 2004)
 
    This software is a computer program whose purpose is to provide classes
    for population genetics analysis.
@@ -119,7 +119,7 @@ unsigned int SequenceStatistics::countSingleton(const PolymorphismSequenceContai
     si = new SimpleSiteIterator(psc);
   while (si->hasMoreSites()) {
     site = si->nextSite();
-    nus += _getSingletonNumber(* site);
+    nus += getSingletonNumber_(* site);
   }
   delete si;
   return nus;
@@ -154,7 +154,7 @@ unsigned int SequenceStatistics::totNumberMutations(const PolymorphismSequenceCo
     si = new SimpleSiteIterator(psc);
   while (si->hasMoreSites()) {
     site = si->nextSite();
-    tnm += _getMutationNumber(* site);
+    tnm += getMutationNumber_(* site);
   }
   delete si;
   return tnm;
@@ -176,7 +176,7 @@ unsigned int SequenceStatistics::totMutationsExternalBranchs(
     site_out= so->nextSite();
     //use fully resolved sites
     if ( SiteTools::isComplete(*site_in) &&  SiteTools::isComplete(*site_out) )
-      nmuts += _getDerivedSingletonNumber(* site_in, *site_out);//singletons that are not in outgroup
+      nmuts += getDerivedSingletonNumber_(* site_in, *site_out);//singletons that are not in outgroup
   }
   delete si;
   delete so;
@@ -262,7 +262,7 @@ double SequenceStatistics::watterson75(const PolymorphismSequenceContainer & psc
   double ThetaW;
   unsigned int n = psc.getNumberOfSequences();
   unsigned int S = polymorphicSiteNumber(psc, gapflag);
-  map<string, double> values = _getUsefullValues(n);
+  map<string, double> values = getUsefullValues_(n);
   ThetaW = (double) S / values["a1"];
   return ThetaW;
 }
@@ -520,7 +520,7 @@ double SequenceStatistics::watterson75Synonymous(const PolymorphismSequenceConta
   double ThetaW;
   unsigned int n = psc.getNumberOfSequences();
   unsigned int S = synonymousSubstitutionsNumber(psc,gc);
-  map<string, double> values = _getUsefullValues(n);
+  map<string, double> values = getUsefullValues_(n);
   ThetaW = (double) S / values["a1"];
   return ThetaW;
 }
@@ -530,7 +530,7 @@ double SequenceStatistics::watterson75NonSynonymous(const PolymorphismSequenceCo
   double ThetaW;
   unsigned int n = psc.getNumberOfSequences();
   unsigned int S = nonSynonymousSubstitutionsNumber(psc,gc);
-  map<string, double> values = _getUsefullValues(n);
+  map<string, double> values = getUsefullValues_(n);
   ThetaW = (double) S / values["a1"];
   return ThetaW;
 }
@@ -689,7 +689,7 @@ double SequenceStatistics::tajimaDSS(const PolymorphismSequenceContainer & psc, 
   double tajima = tajima83(psc, gapflag);
   double watterson = watterson75(psc, gapflag);
   unsigned int n = psc.getNumberOfSequences();
-  map<string, double> values = _getUsefullValues(n);
+  map<string, double> values = getUsefullValues_(n);
   if (S == 0)
     cout << "ARG S == 0" << endl;
   return (tajima - watterson) / sqrt((values["e1"] * S) + (values["e2"] * S * (S - 1)));
@@ -700,7 +700,7 @@ double SequenceStatistics::tajimaDTNM(const PolymorphismSequenceContainer & psc,
   unsigned int eta = totNumberMutations(psc, gapflag);
   double tajima = tajima83(psc, gapflag);
   unsigned int n = psc.getNumberOfSequences();
-  map<string, double> values = _getUsefullValues(n);
+  map<string, double> values = getUsefullValues_(n);
   double eta_a1 = (double) eta / values["a1"];
   return (tajima - eta_a1) / sqrt((values["e1"] * eta) + (values["e2"] * eta * (eta - 1)));
 }
@@ -708,57 +708,39 @@ double SequenceStatistics::tajimaDTNM(const PolymorphismSequenceContainer & psc,
 double SequenceStatistics::fuliD(const PolymorphismSequenceContainer & ingroup, const PolymorphismSequenceContainer & outgroup)
 {
   unsigned int n = ingroup.getNumberOfSequences();
-  double nn = (double) n;
-  map<string, double> values = _getUsefullValues(n);
-  double vD = 1. + (pow(values["a1"], 2) / (values["a2"] + pow(values["a1"], 2))) * (values["cn"] - ((nn + 1.) / (nn - 1.)));
-  double uD = values["a1"] - 1. - vD;
-  double eta = (double) totNumberMutations(ingroup);//using the number of mutations
-  //double eta = (double)polymorphicSiteNumber(ingroup);
-  double etae = (double) totMutationsExternalBranchs(ingroup,outgroup);
-  return (eta - values["a1"] * etae) / sqrt((uD * eta) + (vD * eta * eta));
+  map<string, double> values = getUsefullValues_(n);
+  double vD = getVD_(n, values["a1"], values["a2"], values["cn"]); 
+  double uD = getUD_(values["a1"], vD);
+  double eta = static_cast<double>(totNumberMutations(ingroup));
+  double etae = static_cast<double>(totMutationsExternalBranchs(ingroup,outgroup));
+  return (eta - (values["a1"] * etae)) / sqrt((uD * eta) + (vD * eta * eta));
 }
 
 double SequenceStatistics::fuliDstar(const PolymorphismSequenceContainer & group)
 {
   unsigned int n = group.getNumberOfSequences();
-  double nn = (double) n;
-  map<string, double> values = _getUsefullValues(n);
-  // Fu & Li 1993
+  double nn = static_cast<double>(n);
   double _n = nn / (nn - 1.);
-  double vDs = (
-      (_n * _n * values["a2"])
-      + (values["a1"] * values["a1"] * values["dn"])
-      - (2. * (nn * values["a1"] * (values["a1"] + 1.) / ((nn - 1.) * (nn - 1.))))
-      )
-    /
-    (pow(values["a1"], 2) + values["a2"]);
-  double uDs = _n * (values["a1"] - _n) - vDs;
-
-  // Simonsen et al. 1995
-  /*  double vDs = (
-      (values["a2"] / pow(values["a1"], 2))
-      - (2./nn) * (1. + 1./values["a1"] - values["a1"] + values["a1"]/nn)
-      - 1./(nn*nn)
-      )
-      /
-      (pow(values["a1"], 2) + values["a2"]);
-      double uDs = (((nn - 1.)/nn - 1./values["a1"]) / values["a1"]) - vDs;
-      */
-  double eta = (double) totNumberMutations(group);
-  double etas = (double) countSingleton(group);
+  map<string, double> values = getUsefullValues_(n);
+  double vDs = getVDstar_(n, values["a1"], values["a2"], values["dn"]);
+  double uDs = getUDstar_(n, values["a1"], vDs);
+  double eta = static_cast<double>(totNumberMutations(group));
+  double etas = static_cast<double>(countSingleton(group));
 
   // Fu & Li 1993
   return ((_n * eta) - (values["a1"] * etas)) / sqrt(uDs * eta + vDs * eta * eta);
 
   // Simonsen et al. 1995
-  //  return ((eta / values["a1"]) - (etas * ((n - 1) / n))) / sqrt(uDs * eta + vDs * eta * eta);
+  /*
+  return ((eta / values["a1"]) - (etas * ((n - 1) / n))) / sqrt(uDs * eta + vDs * eta * eta);
+  */
 }
 
 double SequenceStatistics::fuliF(const PolymorphismSequenceContainer & ingroup, const PolymorphismSequenceContainer & outgroup)
 {
   unsigned int n = ingroup.getNumberOfSequences();
   double nn = (double) n;
-  map<string, double> values = _getUsefullValues(n);
+  map<string, double> values = getUsefullValues_(n);
   double pi = tajima83(ingroup, true);
   double vF = (values["cn"] + values["b2"] - 2. / (nn - 1.)) / (pow(values["a1"], 2) + values["a2"]);
   double uF = ((1. + values["b1"] - (4. * ((nn + 1.) / ((nn - 1.) * (nn - 1.)))) * (values["a1n"] - (2. * nn) / (nn + 1.))) / values["a1"]) - vF;
@@ -770,7 +752,7 @@ double SequenceStatistics::fuliF(const PolymorphismSequenceContainer & ingroup, 
 double SequenceStatistics::fuliFstar(const PolymorphismSequenceContainer & group) {
   unsigned int n = group.getNumberOfSequences();
   double nn = (double) n;
-  map<string, double> values = _getUsefullValues(n);
+  map<string, double> values = getUsefullValues_(n);
   double pi = tajima83(group, true);
 
   // Fu & Li 1993
@@ -1210,27 +1192,56 @@ double SequenceStatistics::inverseRegressionR2(const PolymorphismSequenceContain
 /**********************/
 
 double SequenceStatistics::hudson87(const PolymorphismSequenceContainer & psc, double precision, double cinf, double csup){
-  double left = _leftHandHudson(psc);
+  double left = leftHandHudson_(psc);
   unsigned int n = psc.getNumberOfSequences();
   double dif = 1;
   double c1=cinf;
   double c2=csup;
   if(SequenceStatistics::polymorphicSiteNumber(psc) < 2) return -1;
-  if(_rightHandHudson(c1,n)<left) return cinf;
-  if(_rightHandHudson(c2,n)>left) return csup;
+  if(rightHandHudson_(c1,n)<left) return cinf;
+  if(rightHandHudson_(c2,n)>left) return csup;
   while(dif > precision){
-    if(_rightHandHudson((c1+c2)/2,n)>left) c1=(c1+c2)/2;
+    if(rightHandHudson_((c1+c2)/2,n)>left) c1=(c1+c2)/2;
     else c2=(c1+c2)/2;
     dif=std::abs(2*(c1-c2)/(c1+c2));
   }
   return (c1+c2)/2;
 }
 
+/*****************/
+/* Tests methods */
+/*****************/
+
+void SequenceStatistics::testUsefullvalues(ostream &s, unsigned int n) {
+  map<string, double> v = getUsefullValues_(n);
+  double vD = getVD_(n, v["a1"], v["a2"], v["cn"]);
+  double uD = getUD_(v["a1"], vD);
+  double vDs = getVDstar_(n, v["a1"], v["a2"], v["dn"]);
+  double uDs = getUDstar_(n, v["a1"], vDs);
+
+  s << n << "\t";
+  s << v["a1"] << "\t";
+  s << v["a2"] << "\t";
+  s << v["a1n"] << "\t";
+  s << v["b1"] << "\t";
+  s << v["b2"] << "\t";
+  s << v["c1"] << "\t";
+  s << v["c2"] << "\t";
+  s << v["cn"] << "\t";
+  s << v["dn"] << "\t";
+  s << v["e1"] << "\t";
+  s << v["e2"] << "\t";
+  s << uD << "\t";
+  s << vD << "\t";
+  s << uDs << "\t";
+  s << vDs << endl;
+}
+
 //******************************************************************************
 //Private methods
 //******************************************************************************
 
-unsigned int SequenceStatistics::_getMutationNumber(const Site & site)
+unsigned int SequenceStatistics::getMutationNumber_(const Site & site)
 {
   unsigned int tmp_count = 0;
 
@@ -1250,7 +1261,7 @@ unsigned int SequenceStatistics::_getMutationNumber(const Site & site)
   return tmp_count;
 }
 
-unsigned int SequenceStatistics::_getSingletonNumber(const Site & site)
+unsigned int SequenceStatistics::getSingletonNumber_(const Site & site)
 {
   unsigned int nus = 0;
   map<int, unsigned int> states_count;
@@ -1261,7 +1272,7 @@ unsigned int SequenceStatistics::_getSingletonNumber(const Site & site)
   return nus;
 }
 
-unsigned int SequenceStatistics::_getDerivedSingletonNumber(const Site & site_in,const Site & site_out )
+unsigned int SequenceStatistics::getDerivedSingletonNumber_(const Site & site_in,const Site & site_out )
 {
   unsigned int nus = 0;
   map<int, unsigned int> states_count;
@@ -1280,7 +1291,7 @@ unsigned int SequenceStatistics::_getDerivedSingletonNumber(const Site & site_in
   return nus;
 }
 
-map<string, double> SequenceStatistics::_getUsefullValues(unsigned int n)
+map<string, double> SequenceStatistics::getUsefullValues_(unsigned int n)
 {
   map<string, double> values;
   values["a1"] = 0.;
@@ -1299,21 +1310,83 @@ map<string, double> SequenceStatistics::_getUsefullValues(unsigned int n)
       values["a1"] += 1. / i;
       values["a2"] += 1. / (i * i);
     }
-    double nn = (double) n;
+    double nn = static_cast<double>(n);
     values["a1n"] = values["a1"] + (1. / nn);
     values["b1"] = (nn + 1.) / (3. * (nn - 1.));
     values["b2"] = 2. * ((nn * nn) + nn + 3.) / (9. * nn * (nn - 1.));
     values["c1"] = values["b1"] - (1. / values["a1"]);
     values["c2"] = values["b2"] - ((nn + 2.) / (values["a1"] * nn)) + (values["a2"] / (values["a1"] * values["a1"]));
-    values["cn"] = 2. * ((nn * values["a1"]) - (2. * (nn - 1.))) / ((nn - 1.) * (nn - 2.));
-    values["dn"] = values["cn"] + ((nn - 2.) / ((nn - 1.) * (nn - 1.))) + ((2. / (nn - 1.)) * ((3. / 2.) - (((2. * values["a1n"]) - 3.) / (nn - 2.)) - (1. / nn)));
+    if (n == 2) {
+      values["cn"] = 1.;
+      values["dn"] = 2.;
+    } else {
+      values["cn"] = 2. * ((nn * values["a1"]) - (2. * (nn - 1.))) / ((nn - 1.) * (nn - 2.));
+      values["dn"] =
+        values["cn"]
+        + ((nn - 2.) / ((nn - 1.) * (nn - 1.)))
+        + (2. / (nn - 1.))
+        * ((3. / 2.) - (((2. * values["a1n"]) - 3.) / (nn - 2.)) - (1. / nn));
+    }
     values["e1"] = values["c1"] / values["a1"];
     values["e2"] = values["c2"] / ((values["a1"] * values["a1"]) + values["a2"]);
   }
   return values;
 }
 
-double SequenceStatistics::_leftHandHudson(const PolymorphismSequenceContainer & psc)
+double SequenceStatistics::getVD_(unsigned int n, double a1, double a2, double cn) {
+  double nn = static_cast<double>(n);
+  if (n < 3)
+    return 0.;
+  double vD = 1. + ((a1 * a1) / (a2 + (a1 * a1))) * (cn - ((nn + 1.) / (nn - 1.)));
+  return vD;
+}
+
+double SequenceStatistics::getUD_(double a1, double vD) {
+  return a1 - 1. - vD;
+}
+
+double SequenceStatistics::getVDstar_(unsigned int n, double a1, double a2, double dn) {
+  double denom = (a1 * a1) + a2;
+  if (n < 3 || denom == 0.)
+    return 0.;
+  double nn = static_cast<double>(n);
+  double nnn = nn / (nn - 1.);
+  // Fu & Li 1993
+  double vDs = (
+      (nnn * nnn * a2)
+      + (a1 * a1 * dn)
+      - (2. * (nn * a1 * (a1 + 1)) / ((nn - 1.) * (nn - 1.)))
+      )
+      /
+      denom;
+  // Simonsen et al. 1995
+  /*
+  double vDs = (
+      (values["a2"] / pow(values["a1"], 2))
+      - (2./nn) * (1. + 1./values["a1"] - values["a1"] + values["a1"]/nn)
+      - 1./(nn*nn)
+      )
+      /
+      (pow(values["a1"], 2) + values["a2"]);
+  */
+  return vDs;
+}
+
+double SequenceStatistics::getUDstar_(unsigned int n, double a1, double vDs) {
+  if (n < 3)
+    return 0.;
+  double nn = static_cast<double>(n);
+  double nnn = nn / (nn - 1.);
+  // Fu & Li 1993
+  double uDs = (nnn * (a1 - nnn)) - vDs;
+  // Simonsen et al. 1995
+  /*
+  double uDs = (((nn - 1.)/nn - 1./values["a1"]) / values["a1"]) - vDs;
+  */
+  return uDs;
+}
+
+double SequenceStatistics::leftHandHudson_(const PolymorphismSequenceContainer & psc)
 {
   PolymorphismSequenceContainer *newpsc = PolymorphismSequenceContainerTools::getCompleteSites(psc);
   unsigned int nbseq = newpsc->getNumberOfSequences();
@@ -1336,7 +1409,7 @@ double SequenceStatistics::_leftHandHudson(const PolymorphismSequenceContainer &
   return (double)(Sk-H+H2)/pow(H*nbseq/(nbseq-1),2.);
 }
 
-double SequenceStatistics::_rightHandHudson(double c, unsigned int n)
+double SequenceStatistics::rightHandHudson_(double c, unsigned int n)
 {
   return (double) (1/(97*pow(c,2.)*pow(n,3.))) * ((n-1)*(97*(c*(4+(c-2*n)*n)+(-2*(7+c)+4*n+(c-1)*pow(n,2.))*log((18+c*(13+c))/18))+sqrt(97.)*(110+n*(49*n-52)+c*(2+n*(15*n-8)))*log(-1+(72+26*c)/(36+13*c-c*sqrt(97.)))));
 }

@@ -5,7 +5,7 @@
  *
  */
 /*
-   Copyright or © or Copr. CNRS, (November 17, 2004)
+   Copyright or Â© or Copr. CNRS, (November 17, 2004)
 
 
    This software is a computer program whose purpose is to provide classes
@@ -602,7 +602,7 @@ map<unsigned int, unsigned int> MultilocusGenotypeStatistics::getAllelesMapForGr
       if (ids.size() >= 2)
       {
         nb_alleles = 0;
-        //les frequences allèliques moyennes
+        //les frequences allÃ¨liques moyennes
         map < unsigned int , double > P = MultilocusGenotypeStatistics::getAllelesFrqForGroups (pmgc ,locus_positions[i] , groups);
         //les composantes de la variance selon W&C
         map<unsigned int, MultilocusGenotypeStatistics::VarComp> values = getVarianceComponents(pmgc, locus_positions[i], groups);
@@ -614,7 +614,7 @@ map<unsigned int, unsigned int> MultilocusGenotypeStatistics::getAllelesMapForGr
           Cu = it->second.c ;
           if ((Au + Bu + Cu) != 0 )
           {
-            double Pu = P[it->first]; //it->first contient le n° de l'allèle
+            double Pu = P[it->first]; //it->first contient le nÂ° de l'allÃ¨le
             RH += (1- Pu) * Au / (Au + Bu + Cu);
             nb_alleles ++;
           }
@@ -666,7 +666,7 @@ map<unsigned int, unsigned int> MultilocusGenotypeStatistics::getAllelesMapForGr
           distance = MultilocusGenotypeStatistics::getRHMultilocusFst( pmgc, locus_positions, pairwise_grp) ;
           pairwise_grp.clear();
         }
-        else if (distance_methode == "Nm" ) // Nm déduit des Fst multilocus selon W&C modèle en îles Fst = 1/(1+4Nm)
+        else if (distance_methode == "Nm" ) // Nm dÃ©duit des Fst multilocus selon W&C modÃ¨le en Ã®les Fst = 1/(1+4Nm)
         {
           pairwise_grp.insert(grp_ids_vect[j] );
           pairwise_grp.insert(grp_ids_vect[k] );

@@ -6,7 +6,7 @@
 //
 
 /*
-   Copyright or © or Copr. CNRS, (November 17, 2004)
+   Copyright or Â© or Copr. CNRS, (November 17, 2004)
 
    This software is a computer program whose purpose is to provide classes
    for population genetics analysis.
@@ -211,7 +211,7 @@ unsigned int PolymorphismMultiGContainer::getGroupSize(unsigned int group) const
 
 string PolymorphismMultiGContainer::getGroupName(unsigned int group_id) const  throw (GroupNotFoundException)
 {
-  string name = TextTools::toString(group_id); //par defaut on retourne le n° de groupe
+  string name = TextTools::toString(group_id); //par defaut on retourne le nÂ° de groupe
   map<unsigned int, string>::const_iterator it = _groups_names.find(group_id);
   if (it != _groups_names.end() ) name = it->second;
   else throw GroupNotFoundException("PolymorphismMultiGContainer::getGroupName: group not found.", group_id);

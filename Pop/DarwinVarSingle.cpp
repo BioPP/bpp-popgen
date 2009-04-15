@@ -5,7 +5,7 @@
 //
 
 /*
-   Copyright or © or Copr. CNRS, (April 7, 2008)
+   Copyright or Â© or Copr. CNRS, (April 7, 2008)
 
    This software is a computer program whose purpose is to provide classes
    for population genetics analysis.

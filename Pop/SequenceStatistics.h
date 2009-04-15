@@ -7,7 +7,7 @@
 //
 
 /*
-   Copyright or © or Copr. CNRS, (November 17, 2004)
+   Copyright or Â© or Copr. CNRS, (November 17, 2004)
 
    This software is a computer program whose purpose is to provide classes
    for population genetics analysis.
@@ -600,7 +600,7 @@ namespace bpp
 
 
       /**
-       * @brief give the vector of all mean pairwise R² value between two sites (Hill & Robertson 1968, Theor. Appl. Genet., 38 pp226-231)
+       * @brief give the vector of all mean pairwise RÂ² value between two sites (Hill & Robertson 1968, Theor. Appl. Genet., 38 pp226-231)
        *
        * @param psc a PolymorphismSequenceContainer
        * @param keepsingleton a boolean (true by default, false to exclude singleton)
@@ -633,7 +633,7 @@ namespace bpp
 
 
       /**
-       * @brief give mean R² over all pairwise comparisons
+       * @brief give mean RÂ² over all pairwise comparisons
        *
        * @param psc a PolymorphismSequenceContainer
        * @param keepsingleton a boolean (true by default, false to exclude singleton)
@@ -695,9 +695,9 @@ namespace bpp
 
 
       /**
-       * @brief give the slope of the regression R² = 1+a*distance
+       * @brief give the slope of the regression RÂ² = 1+a*distance
        *
-       * The slope is given in R² per kb
+       * The slope is given in RÂ² per kb
        *
        * @param psc a PolymorphismSequenceContainer
        * @param distance1 a boolean (true to use distance1, false to use distance2, false by default)
@@ -737,9 +737,9 @@ namespace bpp
 
 
       /**
-       * @brief give the slope and the origin of the regression R² = a*distance+b
+       * @brief give the slope and the origin of the regression RÂ² = a*distance+b
        *
-       * The slope is given in R² per kb
+       * The slope is given in RÂ² per kb
        *
        * @param psc a PolymorphismSequenceContainer
        * @param distance1 a boolean (true to use distance1, false to use distance2, false by default)
@@ -751,10 +751,10 @@ namespace bpp
 
 
       /**
-       * @brief give the slope of the regression R² = 1/(1+a*distance)
+       * @brief give the slope of the regression RÂ² = 1/(1+a*distance)
        *
-       * To fit the theoretical prediction R² = 1/(1+4Nr)
-       * The slope is given in R² per kb
+       * To fit the theoretical prediction RÂ² = 1/(1+4Nr)
+       * The slope is given in RÂ² per kb
        *
        * @param psc a PolymorphismSequenceContainer
        * @param distance1 a boolean (true to use distance1, false to use distance2, false by default)
@@ -775,19 +775,25 @@ namespace bpp
        */
       static double hudson87(const PolymorphismSequenceContainer & psc, double precision = 0.000001, double cinf=0.001, double csup=10000);
 
-
+      /**
+       * @brief Test usefull values
+       * @param s a ostream where write the values
+       * @param n then number of observed sequences
+       * @author Sylvain Gaillard
+       */
+      static void testUsefullvalues(ostream & s, unsigned int n);
 
 
     private:
       /**
        * @brief Count the number of mutation for a site.
        */
-      static unsigned int _getMutationNumber(const Site & site);
+      static unsigned int getMutationNumber_(const Site & site);
 
       /**
        * @brief Count the number of singleton for a site.
        */
-      static unsigned int _getSingletonNumber(const Site & site);
+      static unsigned int getSingletonNumber_(const Site & site);
 
       /**
        * @brief Count the number of singleton for a site.
@@ -795,11 +801,13 @@ namespace bpp
        * will count singletons that are not in site_out (a site in outgroup)
        * site_in is a site from an ingroup
        */
-      static unsigned int _getDerivedSingletonNumber(const Site & site_in,const Site & site_out );
+      static unsigned int getDerivedSingletonNumber_(const Site & site_in,const Site & site_out );
 
 
       /**
        * @brief Get usefull values for theta estimators.
+       *
+       * @param n the number of observed sequences
        *
        * @return A map with 11 values. Keys are a1, a2, a1n, b1, b2, c1, c2, cn, dn, e1 and e2.
        * The values are :
@@ -825,24 +833,78 @@ namespace bpp
        * e_1=\frac{c_1}{a_1} \qquad e_2=\frac{c_2}{a_1^2+a_2}
        * @f]
        * where @f$n@f$ is the number of observed sequences.
+       *
+       * @author Sylvain Gaillard
        */
-      static map<string, double> _getUsefullValues(unsigned int n);
+      static map<string, double> getUsefullValues_(unsigned int n);
 
+      /**
+       * @brief Get the vD value of equation (32) in Fu & Li 1993, Genetics, 133 pp693-709)
+       *
+       * @param n the number of observed sequences
+       * @param a1 as describe in getUsefullValues
+       * @param a2 as describe in getUsefullValues
+       * @param cn as describe in getUsefullValues
+       *
+       * @return the vD value as double
+       *
+       * @author Sylvain Gaillard
+       */
+      static double getVD_(unsigned int n, double a1, double a2, double cn);
+
+      /**
+       * @brief Get the uD value of equation (32) in Fu & Li 1993, Genetics, 133 pp693-709)
+       *
+       * @param a1 as describe in getUsefullValues
+       * @param vD as provided by getVD_
+       *
+       * @return the uD value as double
+       *
+       * @author Sylvain Gaillard
+       */
+      static double getUD_(double a1, double vD);
+
+      /**
+       * @brief Get the vD* value of D* equation in Fu & Li 1993, Genetics, 133 pp693-709)
+       *
+       * @param n the number of observed sequences
+       * @param a1 as describe in getUsefullValues
+       * @param a2 as describe in getUsefullValues
+       * @param dn as describe in getUsefullValues
+       *
+       * @return the vD* value as double
+       *
+       * @author Sylvain Gaillard
+       */
+      static double getVDstar_(unsigned int n, double a1, double a2, double dn);
+
+      /**
+       * @brief Get the uD* value of D* equation in Fu & Li 1993, Genetics, 133 pp693-709)
+       *
+       * @param n the number of observed sequences
+       * @param a1 as describe in getUsefullValues
+       * @param vDs as provided by getVDstar_
+       *
+       * @return the uD* value as double
+       *
+       * @author Sylvain Gaillard
+       */
+      static double getUDstar_(unsigned int n, double a1, double vDs);
 
       /**
        * @brief give the left hand term of equation (4) in Hudson (Hudson 1987, Genet. Res., 50 pp245-250)
        * This term is used in hudson87
        * @param psc a PolymorphismSequenceContainer
        */
-      static double _leftHandHudson(const PolymorphismSequenceContainer & psc);
+      static double leftHandHudson_(const PolymorphismSequenceContainer & psc);
 
       /**
        * @brief give the right hand term of equation (4) in Hudson (Hudson 1987, Genet. Res., 50 pp245-250)
        * This term is used in hudson87
        */
-      static double _rightHandHudson(double c, unsigned int n);
+      static double rightHandHudson_(double c, unsigned int n);
 
-      /*******************************************************************************/
+      /************************************************************************/
 
   };
 

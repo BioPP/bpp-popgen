@@ -6,7 +6,7 @@
 //
 
 /*
-   Copyright or © or Copr. CNRS, (November 17, 2004)
+   Copyright or Â© or Copr. CNRS, (November 17, 2004)
 
    This software is a computer program whose purpose is to provide classes
    for population genetics analysis.
@@ -245,7 +245,7 @@ PolymorphismMultiGContainer PolymorphismMultiGContainerTools::permutIntraGroupAl
           nb_ind_in_group++;
           for (unsigned int j = 0 ; j < loc_num ; j++)
           {
-            if (pmgc.getMultilocusGenotype(i)->getMonolocusGenotype(j) != NULL) //? données manquantes
+            if (pmgc.getMultilocusGenotype(i)->getMonolocusGenotype(j) != NULL) //? donnÃ©es manquantes
             {
               unsigned int nb_alls = pmgc.getMultilocusGenotype(i)->getMonolocusGenotype(j)->getAlleleIndex().size();
               nb_alleles_for_inds[j].push_back(nb_alls);

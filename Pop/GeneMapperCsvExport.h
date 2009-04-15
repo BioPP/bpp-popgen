@@ -5,7 +5,7 @@
 //
 
 /*
-   Copyright or © or Copr. CNRS, (April 2, 2008)
+   Copyright or Â© or Copr. CNRS, (April 2, 2008)
 
    This software is a computer program whose purpose is to provide classes
    for population genetics analysis.
@@ -60,7 +60,7 @@ namespace bpp
   /**
    * @brief The GeneMapperCsvExport input format for popgenlib.
    *
-   * This input format takes a csv file exported from GeneMapper® (Applied Biosystems).
+   * This input format takes a csv file exported from GeneMapperÂ® (Applied Biosystems).
    *
    * @author Sylvain Gaillard
    */

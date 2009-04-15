@@ -5,7 +5,7 @@
 //
 
 /*
-   Copyright or © or Copr. CNRS, (April 2, 2008)
+   Copyright or Â© or Copr. CNRS, (April 2, 2008)
 
    This software is a computer program whose purpose is to provide classes
    for population genetics analysis.
@@ -50,12 +50,12 @@ GeneMapperCsvExport::~GeneMapperCsvExport() {}
 
 const string GeneMapperCsvExport::getFormatName()
 {
-  return "GeneMapper® cvs export";
+  return "GeneMapperÂ® cvs export";
 }
 
 const string GeneMapperCsvExport::getFormatDescription()
 {
-  return "GeneMapper® is a flexible genotyping software package that provides DNA sizing and quality allele calls for all Applied Biosystems electrophoresis-based genotyping systems.";
+  return "GeneMapperÂ® is a flexible genotyping software package that provides DNA sizing and quality allele calls for all Applied Biosystems electrophoresis-based genotyping systems.";
 }
 
 void GeneMapperCsvExport::read(istream & is, DataSet & data_set) throw (Exception)

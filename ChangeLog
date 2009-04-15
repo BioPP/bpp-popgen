@@ -1,3 +1,7 @@
+15/04/09 Sylvain Gaillard
+* Moved to UTF8 encoding
+* Fixed computations in Fu & Li D statistics
+
 08/04/09 Sylvain Gaillard
 * Fixed calls to Seq::SymbolListTools::getCounts
 
