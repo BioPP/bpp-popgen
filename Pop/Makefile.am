@@ -67,7 +67,6 @@ PolymorphismMultiGContainerTools.h\
 PolymorphismSequenceContainer.h\
 PolymorphismSequenceContainerTools.h\
 PopgenlibIO.h\
-PSCFasta.h\
 SequenceStatistics.h
 
 CPP_FILES = \
@@ -100,7 +99,6 @@ PolymorphismMultiGContainerTools.cpp\
 PolymorphismSequenceContainer.cpp\
 PolymorphismSequenceContainerTools.cpp\
 PopgenlibIO.cpp\
-PSCFasta.cpp\
 SequenceStatistics.cpp
 
 lib_LTLIBRARIES = libbpp-popgen.la
