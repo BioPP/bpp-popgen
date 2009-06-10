@@ -81,7 +81,7 @@ using namespace std;
  * Static tools class for both families are provided to compute several common or less
  * common statistics.
  *
- * @sections statistics Statistics overview
+ * @section statistics Statistics overview
  *
  * @par heterozygosity
  * @par watterson75 Diversity estimator Theta of Watterson

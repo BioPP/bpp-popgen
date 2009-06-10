@@ -1,5 +1,5 @@
 %define name bpp-popgen
-%define version 1.3.1
+%define version 1.4.0
 %define release 1
 %define _prefix /usr/local
 
@@ -15,9 +15,9 @@ BuildRoot: %{_builddir}/%{name}-root
 Packager: Julien Dutheil
 AutoReqProv: no
 Requires: libstdc++6
-Requires: bpp-utils >= 1.3.0
-Requires: bpp-numcalc >= 1.6.0
-Requires: bpp-seq >= 1.5.0
+Requires: bpp-utils = 1.4.0
+Requires: bpp-numcalc = 1.7.0
+Requires: bpp-seq = 1.6.0
 
 %description
 This library contains utilitary and classes for population genetics analysis.
@@ -27,9 +27,9 @@ It is part of the Bio++ project.
 Summary: Libraries, includes to develop applications with %{name}.
 Group: Development/Libraries
 Requires: %{name} = %{version}
-Requires: bpp-utils-devel >= 1.3.0
-Requires: bpp-numcalc-devel = 1.6.0
-Requires: bpp-seq-devel = 1.5.0
+Requires: bpp-utils-devel = 1.4.0
+Requires: bpp-numcalc-devel = 1.7.0
+Requires: bpp-seq-devel = 1.6.0
 
 %description devel
 The %{name}-devel package contains the header files and static libraries for
@@ -67,9 +67,11 @@ rm -rf $RPM_BUILD_ROOT
 %{_prefix}/include/*
 
 %changelog
-* Thu Dec 11 2008 Julien Dutheil <jdutheil@daimi.au.dk>
+* Wed Jun 10 2009 Julien Dutheil <jdutheil@birc.au.dk>
+- Version 1.4.0.
+* Thu Dec 11 2008 Julien Dutheil <jdutheil@birc.au.dk>
 - Version 1.3.1.
-* Mon Jul 21 2008 Julien Dutheil <jdutheil@daimi.au.dk>
+* Mon Jul 21 2008 Julien Dutheil <jdutheil@birc.au.dk>
 - Version 1.3.0.
 * Fri Jan 18 2008 Julien Dutheil <Julien.Dutheil@univ-montp2.fr>
 - Version 1.2.0.

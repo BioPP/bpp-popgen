@@ -22,6 +22,6 @@ rm ./missing
 rm ./Pop/Makefile.in
 rm ./libtool
 rm ./Makefile
-rm ./Phyl/Makefile
+rm ./Pop/Makefile
 rm -rf ./Pop/.deps
 

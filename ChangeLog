@@ -1,3 +1,5 @@
+21/07/08 -*- Version 1.4.0 -*-
+
 15/04/09 Sylvain Gaillard
 * Moved to UTF8 encoding
 * Fixed computations in Fu & Li D statistics
@@ -15,11 +17,11 @@
   set the sequence count properly.
 
 16/01/09 Sylvain Gaillard
-* Fixed methode PolymorphismSequenceContainerTools::extractGroup which now
+* Fixed method PolymorphismSequenceContainerTools::extractGroup which now
   return the extracted group and not all groups but the extracted one.
 
 08/01/09 Sylvain Gaillard
-* New methode sample in PolymorphismSequenceContainerTools.
+* New method sample in PolymorphismSequenceContainerTools.
 * Extend main page doxygen documentation.
 * A bit of cleaning.
 

@@ -1,3 +1,9 @@
+libbpp-popgen (1.4.0) unstable; urgency=low
+
+  * Update for version 1.8 of Bio++.
+
+ -- Julien Dutheil <jdutheil@birc.au.dk>  Wed, 10 Jun 2009 11:28:58 +0100
+
 libbpp-popgen (1.3.1) unstable; urgency=low
 
   * Bug fix release.

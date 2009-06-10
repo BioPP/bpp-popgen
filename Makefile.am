@@ -31,6 +31,7 @@
 
 SUBDIRS = Pop
 EXTRA_DIST = PopGen.spec debian
+ACLOCAL_AMFLAGS=-I m4
 
 dist-hook:
 	rm -rf `find $(distdir)/debian -name CVS`

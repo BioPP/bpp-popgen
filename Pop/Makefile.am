@@ -1,4 +1,4 @@
-#Copyright or © or Copr. CNRS, (November 16, 2004-2008)
+#Copyright or © or Copr. CNRS, (November 16, 2004-2009)
 #
 #This software is a computer program whose purpose is to provide classes
 #for population genetics analysis.
@@ -108,7 +108,7 @@ libbpp_popgen_la_SOURCES = $(H_FILES) $(CPP_FILES)
 # revision: The implementation number of the current interface.
 # age: The difference between the newest and oldest interfaces that this library implements.
 # In other words, the library implements all the interface numbers in the range from number current - age to current.
-libbpp_popgen_la_LDFLAGS = -version-info 4:1:1
+libbpp_popgen_la_LDFLAGS = -version-info 5:0:2
 
 library_includedir=$(includedir)/Pop
 library_include_HEADERS = $(H_FILES)
