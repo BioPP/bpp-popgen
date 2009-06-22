@@ -43,8 +43,6 @@
 // From STL
 #include <vector>
 
-using namespace std;
-
 // From Utils
 #include <Utils/Exceptions.h>
 
@@ -71,7 +69,7 @@ namespace bpp
       /**
        * @brief Build a monolocus genotype containing many alleles.
        */
-      MultiAlleleMonolocusGenotype(vector<unsigned int> allele_index);
+      MultiAlleleMonolocusGenotype(std::vector<unsigned int> allele_index);
 
       /**
        * @brief Copy constructor.
@@ -104,7 +102,7 @@ namespace bpp
        *
        * @{
        */
-      vector<unsigned int> getAlleleIndex() const;
+      std::vector<unsigned int> getAlleleIndex() const;
       /** @} */
 
       /**
@@ -115,7 +113,7 @@ namespace bpp
       Clonable * clone() const;
       /** @} **/
     protected:
-      vector<unsigned int> _allele_index;
+      std::vector<unsigned int> _allele_index;
   };
 
 } //end of namespace bpp;

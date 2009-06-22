@@ -41,10 +41,7 @@
 #define _INDIVIDUAL_H_
 
 // From STL
-#include <map>
 #include <vector>
-
-using namespace std;
 
 // From Utils
 #include <Utils/Clonable.h>
@@ -89,7 +86,7 @@ namespace bpp
       /**
        * @brief Build a new Individual with an identifier.
        */
-      Individual(const string & id);
+      Individual(const std::string & id);
 
       /**
        * @brief Build a new Individual with parameters.
@@ -101,7 +98,7 @@ namespace bpp
        * object.
        * @param sex The sex of the Individual as an unsigned short.
        */
-      Individual(const string & id,
+      Individual(const std::string & id,
           const Date & date,
           const Coord<double> & coord,
           Locality<double> * locality,
@@ -132,14 +129,14 @@ namespace bpp
        *
        * @param id The id of the Individual as a string.
        */
-      void setId(const string id);
+      void setId(const std::string id);
 
       /**
        * @brief Get the id of the Individual.
        *
        * @return The id of the Individual as a string.
        */
-      string getId() const;
+      std::string getId() const;
 
       /**
        * @brief Set the sex of the Individual.
@@ -281,7 +278,7 @@ namespace bpp
        * @throw NullPointerException if there is no sequence container defined.
        * @throw SequenceNotFoundException if sequence_name is not found.
        */
-      const Sequence * getSequenceByName(const string & sequence_name)
+      const Sequence * getSequenceByName(const std::string & sequence_name)
         const throw(Exception);
 
       /**
@@ -302,7 +299,7 @@ namespace bpp
        * @throw NullPointerException if there is no sequence container defined.
        * @throw SequenceNotFoundException if sequence_name is not found.
        */
-      void deleteSequenceByName(const string & sequence_name) throw (Exception);
+      void deleteSequenceByName(const std::string & sequence_name) throw (Exception);
 
       /**
        * @brief Delete a sequence.
@@ -339,7 +336,7 @@ namespace bpp
        * @return All the sequences' names of the individual in a vector of string.
        * @throw NullPointerException if there is no sequence container defined.
        */
-      vector<string> getSequencesNames() const throw (NullPointerException);
+      std::vector<std::string> getSequencesNames() const throw (NullPointerException);
 
       /**
        * @brief Get the sequences' positions.
@@ -347,7 +344,7 @@ namespace bpp
        * @return All the positions where a sequence is found.
        * @throw NullPointerException if there is no sequence container defined.
        */
-      vector<unsigned int> getSequencesPositions() const throw (NullPointerException);
+      std::vector<unsigned int> getSequencesPositions() const throw (NullPointerException);
 
       /**
        * @brief Get the position of a sequence.
@@ -355,7 +352,7 @@ namespace bpp
        * @throw NullPointerException if there is no sequence container defined.
        * @throw SequenceNotFoundException if sequence_name is not found.
        */
-      unsigned int getSequencePosition(const string & sequence_name) const throw (Exception);
+      unsigned int getSequencePosition(const std::string & sequence_name) const throw (Exception);
 
       /**
        * @brief Get the number of sequences.
@@ -363,7 +360,7 @@ namespace bpp
       unsigned int getNumberOfSequences() const;
 
       /**
-       * @brief Set all the sequences with a map  sequence container.
+       * @brief Set all the sequences with a MapSequenceContainer.
        */
       void setSequences(const MapSequenceContainer & msc);
 
@@ -420,7 +417,7 @@ namespace bpp
        * @throw IndexOutOfBoundsException if locus_position excedes the number of loci.
        * @throw Exception if there is no key in allele_keys.
        */
-      void setMonolocusGenotypeByAlleleKey(unsigned int locus_position, const vector<unsigned int> allele_keys)
+      void setMonolocusGenotypeByAlleleKey(unsigned int locus_position, const std::vector<unsigned int> allele_keys)
         throw (Exception);
 
       /**
@@ -430,7 +427,7 @@ namespace bpp
        * @throw IndexOutOfBoundsException if locus_position excedes the number of loci.
        * @throw AlleleNotFoundException if at least one the id is not found in the LocusInfo.
        */
-      void setMonolocusGenotypeByAlleleId(unsigned int locus_position, const vector<string> allele_id, const LocusInfo & locus_info)
+      void setMonolocusGenotypeByAlleleId(unsigned int locus_position, const std::vector<std::string> allele_id, const LocusInfo & locus_info)
         throw (Exception);
 
       /**
@@ -463,7 +460,7 @@ namespace bpp
       unsigned int countHeterozygousLoci() const throw (NullPointerException);
 
     protected:
-      string _id;
+      std::string _id;
       unsigned short _sex;
       Date * _date;
       Coord<double> * _coord;

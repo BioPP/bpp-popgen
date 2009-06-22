@@ -54,7 +54,10 @@
 //From the PolyLib library
 #include "PolymorphismSequenceContainer.h"
 
-using namespace std;
+// From the STL
+#include <string>
+#include <map>
+#include <vector>
 
 namespace bpp
 {
@@ -70,7 +73,7 @@ namespace bpp
       // Class destructor:
       ~SequenceStatistics();
 
-      /*******************************************************************************/
+      /************************************************************************/
     public:
 
       /**
@@ -180,7 +183,7 @@ namespace bpp
        * @param stopflag a boolean set by default to true if you don't want
        * to take stop codons into account
        */
-      static vector<unsigned int> gcPolymorphism(const PolymorphismSequenceContainer & psc, bool stopflag = true);
+      static std::vector<unsigned int> gcPolymorphism(const PolymorphismSequenceContainer & psc, bool stopflag = true);
 
 
 
@@ -428,7 +431,7 @@ namespace bpp
        * @param psccons a PolymorphismSequenceContainer
        * @param gc a GeneticCode
        */
-      static vector<unsigned int> fixedDifferences(const PolymorphismSequenceContainer & pscin, const PolymorphismSequenceContainer & pscout, PolymorphismSequenceContainer & psccons, const GeneticCode & gc);
+      static std::vector<unsigned int> fixedDifferences(const PolymorphismSequenceContainer & pscin, const PolymorphismSequenceContainer & pscout, PolymorphismSequenceContainer & psccons, const GeneticCode & gc);
 
       /**
        * @brief return a vector containing Pa, Ps, Da, Ds
@@ -439,7 +442,7 @@ namespace bpp
        * @param gc a GeneticCode
        * @param freqmin a double, to exclude snp in frequency strictly lower than freqmin
        */
-      static vector<unsigned int> MKtable(const PolymorphismSequenceContainer & ingroup, const PolymorphismSequenceContainer & outgroup , const GeneticCode & gc, double freqmin = 0);
+      static std::vector<unsigned int> MKtable(const PolymorphismSequenceContainer & ingroup, const PolymorphismSequenceContainer & outgroup , const GeneticCode & gc, double freqmin = 0);
 
 
       /**
@@ -836,7 +839,7 @@ namespace bpp
        *
        * @author Sylvain Gaillard
        */
-      static map<string, double> getUsefullValues_(unsigned int n);
+      static std::map<std::string, double> getUsefullValues_(unsigned int n);
 
       /**
        * @brief Get the vD value of equation (32) in Fu & Li 1993, Genetics, 133 pp693-709)

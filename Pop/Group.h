@@ -44,8 +44,6 @@
 // From STL
 #include <vector>
 
-using namespace std;
-
 // From Utils
 #include <Utils/Exceptions.h>
 
@@ -114,14 +112,14 @@ namespace bpp
        *
        * @return The name of the Group as a string.
        */
-      string getGroupName() const;
+      std::string getGroupName() const;
 
       /**
        * @brief Set the name of the Group.
        *
        * @param group_name Name of the Group as string.
        */
-      void setGroupName(string group_name);
+      void setGroupName(std::string group_name);
 
       /**
        * @brief Get the id of the Group.
@@ -145,7 +143,7 @@ namespace bpp
        *
        * @throw BadIdentifierException if individual_id is already in use.
        */
-      void addEmptyIndividual(const string & individual_id) throw (BadIdentifierException);
+      void addEmptyIndividual(const std::string & individual_id) throw (BadIdentifierException);
 
       /**
        * @brief Get the number of Individual in the Group.
@@ -167,7 +165,7 @@ namespace bpp
        *
        * @throw IndividualNotFoundException if individual_id is not found.
        */
-      unsigned int getIndividualPosition(const string individual_id) const
+      unsigned int getIndividualPosition(const std::string individual_id) const
         throw (IndividualNotFoundException);
 
       /**
@@ -177,7 +175,7 @@ namespace bpp
        *
        * @return A pointer to the Individual or NULL if the Individual is not found.
        */
-      const Individual * getIndividualById(const string individual_id) const;
+      const Individual * getIndividualById(const std::string individual_id) const;
 
       /**
        * @brief Get a pointer to an Individual by its position.
@@ -201,7 +199,7 @@ namespace bpp
        * Search an Individual in the Group by cheking the id and remove it
        * if it is found then return a pointer to this Individual.
        */
-      Individual * removeIndividualById(const string individual_id) throw (IndividualNotFoundException);
+      Individual * removeIndividualById(const std::string individual_id) throw (IndividualNotFoundException);
 
       /**
        * @brief Remove an Individual from the Group.
@@ -225,7 +223,7 @@ namespace bpp
        * if it is foundi and free the memory by calling the destructor of the
        * Individual.
        */
-      void deleteIndividualById(const string individual_id) throw (IndividualNotFoundException);
+      void deleteIndividualById(const std::string individual_id) throw (IndividualNotFoundException);
 
       /**
        * @brief Delete an Individual from the Group.
@@ -330,7 +328,7 @@ namespace bpp
        * @throw NullPointerException if there is no sequence container defined in the individual.
        * @throw SequenceNotFoundException if sequence_name is not found.
        */
-      const Sequence * getIndividualSequenceByName(unsigned int individual_position, const string & sequence_name) const
+      const Sequence * getIndividualSequenceByName(unsigned int individual_position, const std::string & sequence_name) const
         throw (Exception);
 
       /**
@@ -350,7 +348,7 @@ namespace bpp
        * @throw NullPointerException if there is no sequence container defined in the individual.
        * @throw SequenceNotFoundException if sequence_name is not found.
        */
-      void deleteIndividualSequenceByName(unsigned int individual_position, const string & sequence_name)
+      void deleteIndividualSequenceByName(unsigned int individual_position, const std::string & sequence_name)
         throw (Exception);
 
       /**
@@ -376,7 +374,7 @@ namespace bpp
        * @throw IndexOutOfBoundsException if individual_position excedes the number of individuals.
        * @throw NullPointerException if there is no sequence container defined in the individual.
        */
-      vector<string> getIndividualSequencesNames(unsigned int individual_position) const throw (Exception);
+      std::vector<std::string> getIndividualSequencesNames(unsigned int individual_position) const throw (Exception);
 
       /**
        * @brief Get the position of a sequence in an Individual.
@@ -385,7 +383,7 @@ namespace bpp
        * @throw NullPointerException if there is no sequence container defined in the individual.
        * @throw SequenceNotFoundException if sequence_name is not found.
        */
-      unsigned int getIndividualSequencePosition(unsigned int individual_position, const string & sequence_name) const
+      unsigned int getIndividualSequencePosition(unsigned int individual_position, const std::string & sequence_name) const
         throw (Exception);
 
       /**
@@ -454,7 +452,7 @@ namespace bpp
        * @throw Exception if there is no key in allele_keys.
        */
       void setIndividualMonolocusGenotypeByAlleleKey(unsigned int individual_position, unsigned int locus_position,
-          const vector<unsigned int> allele_keys) throw (Exception);
+          const std::vector<unsigned int> allele_keys) throw (Exception);
 
       /**
        * @brief Set a MonolocusGenotype of an Individual.
@@ -465,7 +463,7 @@ namespace bpp
        * @throw AlleleNotFoundException if at least one id is not found in locus_info.
        */
       void setIndividualMonolocusGenotypeByAlleleId(unsigned int individual_position, unsigned int locus_position,
-          const vector<string> allele_id, const LocusInfo & locus_info) throw (Exception);
+          const std::vector<std::string> allele_id, const LocusInfo & locus_info) throw (Exception);
 
       /**
        * @brief Get a MonolocusGenotype of an Individual.
@@ -499,8 +497,8 @@ namespace bpp
 
     protected:
       unsigned int _id;
-      string _name;
-      vector <Individual *> _individuals;
+      std::string _name;
+      std::vector <Individual *> _individuals;
   };
 
 } //end of namespace bpp;

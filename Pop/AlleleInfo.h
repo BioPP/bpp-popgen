@@ -43,8 +43,6 @@
 // From STL
 #include <string>
 
-using namespace std;
-
 // From Utils
 #include <Utils/Clonable.h>
 
@@ -70,12 +68,12 @@ namespace bpp
       /**
        * @brief Set the identifier of the allele.
        */
-      virtual void setId(const string & allele_id) = 0;
+      virtual void setId(const std::string & allele_id) = 0;
 
       /**
        * @brief Get the identitier of the allele.
        */
-      virtual string getId() const = 0;
+      virtual std::string getId() const = 0;
   };
 
 } //end of namespace bpp;

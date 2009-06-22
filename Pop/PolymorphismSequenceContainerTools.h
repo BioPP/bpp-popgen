@@ -57,13 +57,11 @@
 #include <Utils/StringTokenizer.h>
 
 // from STL
-#include <map>
+#include <string>
 
 // From Local
 #include "PolymorphismSequenceContainer.h"
 #include "GeneralExceptions.h"
-
-using namespace std;
 
 namespace bpp
 {
@@ -92,7 +90,7 @@ namespace bpp
        *
        * @throw Exception if the file is not in the specified format
        */
-      static PolymorphismSequenceContainer * read(const string & path, const Alphabet * alpha) throw (Exception);
+      static PolymorphismSequenceContainer * read(const std::string & path, const Alphabet * alpha) throw (Exception);
 
       /**
        * @brief Extract ingroup sequences from a PolymorphismSequenceContainer and create a new one.
@@ -195,7 +193,7 @@ namespace bpp
        * @param setName The name of the set to retrieve.
        * @param phase a boolean set to true if you want to take the phase into account during the extraction. It removes the useless sites.
        */
-      static PolymorphismSequenceContainer * getSelectedSites(const PolymorphismSequenceContainer & psc, const string & setName, bool phase);
+      static PolymorphismSequenceContainer * getSelectedSites(const PolymorphismSequenceContainer & psc, const std::string & setName, bool phase);
 
       /**
        * @brief Retrieve non-coding sites defined in the mase file header
@@ -205,7 +203,7 @@ namespace bpp
        * @param psc a PolymorphismSequenceContainer reference
        * @param setName name of the CDS site selection
        */
-      static PolymorphismSequenceContainer * getNonCodingSites(const PolymorphismSequenceContainer & psc, const string & setName);
+      static PolymorphismSequenceContainer * getNonCodingSites(const PolymorphismSequenceContainer & psc, const std::string & setName);
 
       /**
        * @brief Retrieve sites at one codon position (1,2,3)
@@ -218,7 +216,7 @@ namespace bpp
        * @param setName name of the CDS site selection
        * @param pos position index.
        */
-      static PolymorphismSequenceContainer * getOnePosition(const PolymorphismSequenceContainer & psc, const string & setName, unsigned int pos);
+      static PolymorphismSequenceContainer * getOnePosition(const PolymorphismSequenceContainer & psc, const std::string & setName, unsigned int pos);
 
       /**
        * @brief Retrieve intron sites
@@ -229,7 +227,7 @@ namespace bpp
        * @param setName name of the CDS site selection
        * @param ca a codon alphabet
        */
-      static PolymorphismSequenceContainer * getIntrons(const PolymorphismSequenceContainer & psc, const string &setName, const CodonAlphabet *ca );
+      static PolymorphismSequenceContainer * getIntrons(const PolymorphismSequenceContainer & psc, const std::string &setName, const CodonAlphabet *ca );
 
       /**
        * @brief Retrieve 5' sites
@@ -237,7 +235,7 @@ namespace bpp
        * @param psc a PolymorphismSequenceContainer
        * @param setName name of the CDS site selection
        */
-      static PolymorphismSequenceContainer * get5Prime(const PolymorphismSequenceContainer & psc, const string &setName);
+      static PolymorphismSequenceContainer * get5Prime(const PolymorphismSequenceContainer & psc, const std::string &setName);
 
       /**
        * @brief Retrieve 3' sites
@@ -246,14 +244,14 @@ namespace bpp
        * @param setName name of the CDS site selection
        * @param ca a codon alphabet
        */
-      static PolymorphismSequenceContainer * get3Prime(const PolymorphismSequenceContainer & psc, const string &setName, const CodonAlphabet *ca );
+      static PolymorphismSequenceContainer * get3Prime(const PolymorphismSequenceContainer & psc, const std::string &setName, const CodonAlphabet *ca );
 
       /**
        * @brief Get the species name of the ingroup
        *
        * @param psc a PolymorphismSequenceContainer.
        */
-      static string getIngroupSpeciesName(const PolymorphismSequenceContainer & psc);
+      static std::string getIngroupSpeciesName(const PolymorphismSequenceContainer & psc);
 
   };
 

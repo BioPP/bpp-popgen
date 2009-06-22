@@ -42,13 +42,12 @@
 #define _MULTILOCUSGENOTYPESTATISTICS_H_
 
 // From STL
+#include <string>
 #include <cmath>
 #include <vector>
 #include <map>
 #include <set>
 #include <algorithm>
-
-using namespace std;
 
 // From Utils
 #include <Utils/Exceptions.h>
@@ -100,21 +99,21 @@ namespace bpp
        *
        * @throw IndexOutOfBoundsException if locus_position excedes the number of loci of one MultilocusGenotype.
        */
-      static vector<unsigned int> getAllelesIdsForGroups(const PolymorphismMultiGContainer & pmgc, unsigned int locus_position, const set<unsigned int> & groups) throw (IndexOutOfBoundsException);
+      static std::vector<unsigned int> getAllelesIdsForGroups(const PolymorphismMultiGContainer & pmgc, unsigned int locus_position, const std::set<unsigned int> & groups) throw (IndexOutOfBoundsException);
 
       /**
        * @brief Count the number of allele (gametes) at a locus for a set of groups.
        *
        * @throw IndexOutOfBoundsException if locus_position excedes the number of loci of one MultilocusGenotype.
        */
-      static unsigned int countGametesForGroups(const PolymorphismMultiGContainer & pmgc, unsigned int locus_position, const set<unsigned int> & groups) throw (IndexOutOfBoundsException);
+      static unsigned int countGametesForGroups(const PolymorphismMultiGContainer & pmgc, unsigned int locus_position, const std::set<unsigned int> & groups) throw (IndexOutOfBoundsException);
 
       /**
        * @brief Get a map of allele count for a set of groups.
        *
        * @throw IndexOutOfBoundsException if locus_position excedes the number of loci of one MultilocusGenotype.
        */
-      static map<unsigned int, unsigned int> getAllelesMapForGroups(const PolymorphismMultiGContainer & pmgc, unsigned int locus_position, const set<unsigned int> & groups) throw (IndexOutOfBoundsException);
+      static std::map<unsigned int, unsigned int> getAllelesMapForGroups(const PolymorphismMultiGContainer & pmgc, unsigned int locus_position, const std::set<unsigned int> & groups) throw (IndexOutOfBoundsException);
 
       /**
        * @brief Get the alleles frequencies at one locus for a set of groups.
@@ -122,28 +121,28 @@ namespace bpp
        * @throw IndexOutOfBoundsException if locus_position excedes the number of loci of one MultilocusGenotype.
        * @throw ZeroDivisionException if the number of considered alleles = 0.
        */
-      static map<unsigned int, double> getAllelesFrqForGroups(const PolymorphismMultiGContainer & pmgc, unsigned int locus_position, const set<unsigned int> & groups) throw (Exception);
+      static std::map<unsigned int, double> getAllelesFrqForGroups(const PolymorphismMultiGContainer & pmgc, unsigned int locus_position, const std::set<unsigned int> & groups) throw (Exception);
 
       /**
        * @brief Count the number of non-missing data at a given locus for a set of groups.
        *
        * @throw IndexOutOfBoundsException if locus_position excedes the number of loci of one MultilocusGenotype.
        */
-      static unsigned int countNonMissingForGroups(const PolymorphismMultiGContainer & pmgc, unsigned int locus_position, const set<unsigned int> & groups) throw (IndexOutOfBoundsException);
+      static unsigned int countNonMissingForGroups(const PolymorphismMultiGContainer & pmgc, unsigned int locus_position, const std::set<unsigned int> & groups) throw (IndexOutOfBoundsException);
 
       /**
        * @brief Counr the number of bi-allelic MonolocusGenotype at a given locus for a set of groups.
        *
        * @throw IndexOutOfBoundsException if locus_position excedes the number of loci of one MultilocusGenotype.
        */
-      static unsigned int countBiAllelicForGroups(const PolymorphismMultiGContainer & pmgc, unsigned int locus_position, const set<unsigned int> & groups) throw (IndexOutOfBoundsException);
+      static unsigned int countBiAllelicForGroups(const PolymorphismMultiGContainer & pmgc, unsigned int locus_position, const std::set<unsigned int> & groups) throw (IndexOutOfBoundsException);
 
       /**
        * @brief Count how many times each allele is found in an heterozygous MonolocusGenotype in a set of groups.
        *
        * @throw IndexOutOfBoundsException if locus_position excedes the number of loci of one MultilocusGenotype.
        */
-      static map<unsigned int, unsigned int> countHeterozygousForGroups(const PolymorphismMultiGContainer & pmgc, unsigned int locus_position, const set<unsigned int> & groups) throw (IndexOutOfBoundsException);
+      static std::map<unsigned int, unsigned int> countHeterozygousForGroups(const PolymorphismMultiGContainer & pmgc, unsigned int locus_position, const std::set<unsigned int> & groups) throw (IndexOutOfBoundsException);
 
       /**
        * @brief Get the heterozygous frequencies for each allele at a locus in a set of groups.
@@ -151,7 +150,7 @@ namespace bpp
        * @throw IndexOutOfBoundsException if locus_position excedes the number of loci of one MultilocusGenotype.
        * @throw ZeroDivisionException if the number of considered alleles = 0.
        */
-      static map<unsigned int, double> getHeterozygousFrqForGroups(const PolymorphismMultiGContainer & pmgc, unsigned int locus_position, const set<unsigned int> & groups) throw (Exception);
+      static std::map<unsigned int, double> getHeterozygousFrqForGroups(const PolymorphismMultiGContainer & pmgc, unsigned int locus_position, const std::set<unsigned int> & groups) throw (Exception);
 
       /**
        * @brief Compute the observed heterozygosity for one locus.
@@ -160,7 +159,7 @@ namespace bpp
        * @throw IndexOutOfBoundsException if locus_position excedes the number of loci of one MultilocusGenotype.
        * @throw ZeroDivisionException if the number of considered alleles = 0.
        */
-      static double getHobsForGroups(const PolymorphismMultiGContainer & pmgc, unsigned int locus_position, const set<unsigned int> & groups) throw (Exception);
+      static double getHobsForGroups(const PolymorphismMultiGContainer & pmgc, unsigned int locus_position, const std::set<unsigned int> & groups) throw (Exception);
 
       /**
        * @brief Compute the expected heterozygosity for one locus.
@@ -173,7 +172,7 @@ namespace bpp
        * @throw IndexOutOfBoundsException if locus_position excedes the number of loci of one MultilocusGenotype.
        * @throw ZeroDivisionException if the number of considered alleles = 0.
        */
-      static double getHexpForGroups(const PolymorphismMultiGContainer & pmgc, unsigned int locus_position, const set<unsigned int> & groups) throw (Exception);
+      static double getHexpForGroups(const PolymorphismMultiGContainer & pmgc, unsigned int locus_position, const std::set<unsigned int> & groups) throw (Exception);
 
       /**
        * @brief Compute the expected non biased heterozygosity for one locus.
@@ -186,7 +185,7 @@ namespace bpp
        * @throw IndexOutOfBoundsException if locus_position excedes the number of loci of one MultilocusGenotype.
        * @throw ZeroDivisionException if the number of considered alleles = 0.
        */
-      static double getHnbForGroups(const PolymorphismMultiGContainer & pmgc, unsigned int locus_position, const set<unsigned int> & groups) throw (Exception);
+      static double getHnbForGroups(const PolymorphismMultiGContainer & pmgc, unsigned int locus_position, const std::set<unsigned int> & groups) throw (Exception);
 
       /**
        * @brief Compute the Nei distance between two groups at one locus.
@@ -201,7 +200,7 @@ namespace bpp
        * @throw IndexOutOfBoundsException if locus_position excedes the number of loci of one MultilocusGenotype.
        * @throw ZeroDivisionException if the number of considered alleles = 0.
        */
-      static double getDnei72(const PolymorphismMultiGContainer & pmgc, vector<unsigned int> locus_positions, unsigned int grp1, unsigned int grp2) throw (Exception);
+      static double getDnei72(const PolymorphismMultiGContainer & pmgc, std::vector<unsigned int> locus_positions, unsigned int grp1, unsigned int grp2) throw (Exception);
 
       /**
        * @brief Compute the Nei unbiased distance between two groups at a given number of loci.
@@ -223,44 +222,44 @@ namespace bpp
        * @throw IndexOutOfBoundsException if locus_position excedes the number of loci of one MultilocusGenotype.
        * @throw ZeroDivisionException if the number of considered alleles = 0.
        */
-      static double getDnei78(const PolymorphismMultiGContainer & pmgc, vector<unsigned int> locus_positions, unsigned int grp1, unsigned int grp2) throw (Exception);
+      static double getDnei78(const PolymorphismMultiGContainer & pmgc, std::vector<unsigned int> locus_positions, unsigned int grp1, unsigned int grp2) throw (Exception);
 
       /**
        * @brief Compute the three F statistics of Weir and Cockerham for each allele of a given locus.
        */
-      static map<unsigned int, Fstats>  getAllelesFstats(const PolymorphismMultiGContainer & pmgc, unsigned int locus_position, const set<unsigned int> & groups) throw (Exception);
+      static std::map<unsigned int, Fstats>  getAllelesFstats(const PolymorphismMultiGContainer & pmgc, unsigned int locus_position, const std::set<unsigned int> & groups) throw (Exception);
 
       /**
        * @brief Compute the Weir and Cockerham Fit on a set of groups for each allele of a given locus.
        */
-      static map<unsigned int, double> getAllelesFit(const PolymorphismMultiGContainer & pmgc, unsigned int locus_position, const set<unsigned int> & groups) throw (Exception);
+      static std::map<unsigned int, double> getAllelesFit(const PolymorphismMultiGContainer & pmgc, unsigned int locus_position, const std::set<unsigned int> & groups) throw (Exception);
 
       /**
        * @brief Compute the Weir and Cockerham @f$\theta@f$ on a set of groups for each allele of a given locus.
        */
-      static map<unsigned int, double> getAllelesFst(const PolymorphismMultiGContainer & pmgc, unsigned int locus_position, const set<unsigned int> & groups) throw (Exception);
+      static std::map<unsigned int, double> getAllelesFst(const PolymorphismMultiGContainer & pmgc, unsigned int locus_position, const std::set<unsigned int> & groups) throw (Exception);
 
       /**
        * @brief Compute the Weir and Cockerham Fis on a set of groups for each allele of a given locus.
        */
-      static map<unsigned int, double> getAllelesFis(const PolymorphismMultiGContainer & pmgc, unsigned int locus_position, const set<unsigned int> & groups) throw (Exception);
+      static std::map<unsigned int, double> getAllelesFis(const PolymorphismMultiGContainer & pmgc, unsigned int locus_position, const std::set<unsigned int> & groups) throw (Exception);
 
       /**
        * @brief Get the variance components a, b and c (Weir and Cockerham, 1983).
        */
-      static map<unsigned int, VarComp> getVarianceComponents(const PolymorphismMultiGContainer & pmgc, unsigned int locus_position, const set<unsigned int> & groups) throw (ZeroDivisionException);
+      static std::map<unsigned int, VarComp> getVarianceComponents(const PolymorphismMultiGContainer & pmgc, unsigned int locus_position, const std::set<unsigned int> & groups) throw (ZeroDivisionException);
 
       /**
        * @brief Compute the Weir and Cockerham @f$\theta{wc}@f$ on a set of groups for a given set of loci.
        * The variance componenets for each allele are calculated and then combined over loci using Weir and Cockerham weighting.
        */
-      static double getWCMultilocusFst(const PolymorphismMultiGContainer & pmgc, vector<unsigned int> locus_positions, const set<unsigned int> & groups) throw (Exception);
+      static double getWCMultilocusFst(const PolymorphismMultiGContainer & pmgc, std::vector<unsigned int> locus_positions, const std::set<unsigned int> & groups) throw (Exception);
 
       /**
        * @brief Compute the Weir and Cockerham Fis on a set of groups for a given set of loci.
        * The variance componenets for each allele are calculated and then combined over loci using Weir and Cockerham weighting.
        */
-      static double getWCMultilocusFis(const PolymorphismMultiGContainer & pmgc, vector<unsigned int> locus_positions, const set<unsigned int> & groups) throw (Exception);
+      static double getWCMultilocusFis(const PolymorphismMultiGContainer & pmgc, std::vector<unsigned int> locus_positions, const std::set<unsigned int> & groups) throw (Exception);
 
       /**
        * @brief Compute the Weir and Cockerham @f$\theta_{wc}@f$ on a set of groups for a given set of loci and make a permutation test.
@@ -268,7 +267,7 @@ namespace bpp
        * a permutation of individuals between the different groups.
        * Return values are theta, % of values > theta and % of values < theta.
        */
-      static PermResults getWCMultilocusFstAndPerm(const PolymorphismMultiGContainer & pmgc, vector<unsigned int> locus_positions,set<unsigned int> groups, int nb_perm) throw (Exception);
+      static PermResults getWCMultilocusFstAndPerm(const PolymorphismMultiGContainer & pmgc, std::vector<unsigned int> locus_positions,std::set<unsigned int> groups, int nb_perm) throw (Exception);
 
       /**
        * @brief Compute the Weir and Cockerham Fis on a set of groups for a given set of loci and make a permutation test.
@@ -276,21 +275,21 @@ namespace bpp
        * a permutation of alleles between individual of each group.
        * Return values are Fis, % of values > Fis and % of values < Fis.
        */
-      static PermResults getWCMultilocusFisAndPerm(const PolymorphismMultiGContainer & pmgc, vector<unsigned int> locus_positions,set<unsigned int> groups, int nb_perm) throw (Exception);
+      static PermResults getWCMultilocusFisAndPerm(const PolymorphismMultiGContainer & pmgc, std::vector<unsigned int> locus_positions,std::set<unsigned int> groups, int nb_perm) throw (Exception);
 
 
       /**
        * @brief Compute the @f$\theta_{RH}@f$ on a set of groups for a given set of loci.
        * The variance componenets for each allele are calculated and then combined over loci using RH weighting with alleles frequency.
        */
-      static double getRHMultilocusFst(const PolymorphismMultiGContainer & pmgc, vector<unsigned int> locus_positions, const set<unsigned int> & groups) throw (Exception);
+      static double getRHMultilocusFst(const PolymorphismMultiGContainer & pmgc, std::vector<unsigned int> locus_positions, const std::set<unsigned int> & groups) throw (Exception);
 
       /**
        * @brief Compute pairwise distances on a set of groups for a given set of loci.
        * distance is either Nei72, Nei78, Fst W&C or Fst Robertson & Hill, Nm,
        * D=-ln(1-Fst) of Reynolds et al. 1983, Rousset 1997 Fst/(1-Fst)
        */
-      static DistanceMatrix * getDistanceMatrix(const PolymorphismMultiGContainer & pmgc, vector<unsigned int> locus_positions, const set<unsigned int> & groups, string distance_methode) throw (Exception);
+      static DistanceMatrix * getDistanceMatrix(const PolymorphismMultiGContainer & pmgc, std::vector<unsigned int> locus_positions, const std::set<unsigned int> & groups, std::string distance_methode) throw (Exception);
 
   };
 

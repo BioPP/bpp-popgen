@@ -42,8 +42,7 @@
 
 // From STL
 #include <vector>
-
-using namespace std;
+#include <string>
 
 //From Utils
 #include <Utils/Exceptions.h>
@@ -96,7 +95,7 @@ namespace bpp
        *
        * @throw BadIdentifierException if locus_name is not found.
        */
-      unsigned int getLocusInfoPosition(const string & locus_name) const
+      unsigned int getLocusInfoPosition(const std::string & locus_name) const
         throw (BadIdentifierException);
 
       /**
@@ -104,7 +103,7 @@ namespace bpp
        *
        * @throw BadIdentifierException if locus_name is not found.
        */
-      const LocusInfo * getLocusInfoByName(const string & locus_name) const
+      const LocusInfo * getLocusInfoByName(const std::string & locus_name) const
         throw (BadIdentifierException);
 
       /**
@@ -122,7 +121,7 @@ namespace bpp
        * @throw BadIdentifierException if the allele's id is already in use.
        * @throw LocusNotFoundException if locus_name is not found.
        */
-      void addAlleleInfoByLocusName(const string & locus_name,
+      void addAlleleInfoByLocusName(const std::string & locus_name,
           const AlleleInfo & allele)
         throw (Exception);
 
@@ -144,14 +143,14 @@ namespace bpp
       /**
        * @brief Get the number of alleles at each locus.
        */
-      vector<unsigned int> getNumberOfAlleles() const;
+      std::vector<unsigned int> getNumberOfAlleles() const;
 
       /**
        * @brief Get the ploidy of a locus by name.
        *
        * @throw LocusNotFoundException if locus_name is not found.
        */
-      unsigned int getPloidyByLocusName(const string & locus_name) const
+      unsigned int getPloidyByLocusName(const std::string & locus_name) const
         throw (LocusNotFoundException);
 
       /**
@@ -163,7 +162,7 @@ namespace bpp
         throw (IndexOutOfBoundsException);
 
     protected:
-      vector<LocusInfo *> _loci;
+      std::vector<LocusInfo *> _loci;
   };
 
 } //end of namespace bpp;

@@ -221,7 +221,8 @@ double SequenceStatistics::squaredHeterozygosity(const PolymorphismSequenceConta
 double SequenceStatistics::gcContent(const PolymorphismSequenceContainer & psc)
 {
   SiteContainer* sc = new VectorSiteContainer(psc);
-  map<int, double> freqs = SequenceContainerTools::getFrequencies(*sc);
+  map<int, double> freqs;
+  SequenceContainerTools::getFrequencies(*sc, freqs);
   delete sc;
   return (freqs[1] + freqs[2]) / (freqs[0] + freqs[1] + freqs[2] + freqs[3]);
 }
@@ -432,10 +433,10 @@ double SequenceStatistics::getTransitionsTransversionsRatio( const PolymorphismS
   unsigned int nbT = 0;
   unsigned int nbTv = 0;
   si = new CompleteSiteIterator(psc);
-  map<int,unsigned int> count ;
   vector < int > state(2);
 
   while (si->hasMoreSites()) {
+    map<int,unsigned int> count ;
     site = si->nextSite();
     SymbolListTools::getCounts(*site, count);
     if (count.size() != 2) continue;

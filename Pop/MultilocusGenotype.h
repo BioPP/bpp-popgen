@@ -42,8 +42,7 @@
 
 // From STL
 #include <vector>
-
-using namespace std;
+#include <string>
 
 // From Utils
 #include <Utils/Exceptions.h>
@@ -99,7 +98,7 @@ namespace bpp
        * @throw Exception if there is no key in allele_keys.
        */
       void setMonolocusGenotypeByAlleleKey(unsigned int locus_position,
-          const vector<unsigned int> allele_keys) throw (Exception);
+          const std::vector<unsigned int> allele_keys) throw (Exception);
 
       /**
        * @brief Set a MonolocusGenotype by allele id.
@@ -108,7 +107,7 @@ namespace bpp
        * @throw AlleleNotFoundException if at least one of the id is not found in the LocusInfo.
        */
       void setMonolocusGenotypeByAlleleId(unsigned int locus_position,
-          const vector<string> allele_id, const LocusInfo & locus_info) throw (Exception);
+          const std::vector<std::string> allele_id, const LocusInfo & locus_info) throw (Exception);
 
       /**
        * @brief Set a MonolocusGenotype as missing data.
@@ -153,7 +152,7 @@ namespace bpp
       unsigned int countHeterozygousLoci() const;
 
     protected:
-      vector<MonolocusGenotype *> _loci;
+      std::vector<MonolocusGenotype *> _loci;
   };
 
 } //end of namespace bpp;

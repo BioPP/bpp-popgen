@@ -43,8 +43,7 @@
 // From STL
 #include <map>
 #include <vector>
-
-using namespace std;
+#include <string>
 
 // From Utils
 #include <Utils/Clonable.h>
@@ -89,7 +88,7 @@ namespace bpp
       /**
        * @brief Build a new MultiSeqIndividual with an identifier.
        */
-      MultiSeqIndividual(const string & id);
+      MultiSeqIndividual(const std::string & id);
 
       /**
        * @brief Build a new MultiSeqIndividual with parameters.
@@ -101,7 +100,7 @@ namespace bpp
        * object.
        * @param sex The sex of the MultiSeqIndividual as an unsigned short.
        */
-      MultiSeqIndividual(const string & id,
+      MultiSeqIndividual(const std::string & id,
           const Date & date,
           const Coord<double> & coord,
           Locality<double> * locality,
@@ -132,14 +131,14 @@ namespace bpp
        *
        * @param id The id of the MultiSeqIndividual as a string.
        */
-      void setId(const string id);
+      void setId(const std::string id);
 
       /**
        * @brief Get the id of the MultiSeqIndividual.
        *
        * @return The id of the MultiSeqIndividual as a string.
        */
-      string getId() const;
+      std::string getId() const;
 
       /**
        * @brief Set the sex of the MultiSeqIndividual.
@@ -263,7 +262,7 @@ namespace bpp
        *
        * @param id The id of the sequence set (i.e. locus).
        */
-      const VectorSequenceContainer * getVectorSequenceContainer(const string & id) const
+      const VectorSequenceContainer * getVectorSequenceContainer(const std::string & id) const
         throw (Exception);
 
       /**
@@ -274,7 +273,7 @@ namespace bpp
        * @throw AlphabetMismatchException if the sequence's alphabet doesn't match the container's alphabet.
        * @throw BadIdentifierException if sequence's name is already in use.
        */
-      void addSequence(const string & id, const Sequence & sequence)
+      void addSequence(const std::string & id, const Sequence & sequence)
         throw (Exception);
 
       /**
@@ -285,7 +284,7 @@ namespace bpp
        *
        * @return A pointer to the sequence.
        */
-      const Sequence * getSequence(const string & id, const string & name)
+      const Sequence * getSequence(const std::string & id, const std::string & name)
         const throw(Exception);
 
       /**
@@ -296,7 +295,7 @@ namespace bpp
        *
        * @return A pointer tothe sequence.
        */
-      const Sequence * getSequence(const string & id, const unsigned int i)
+      const Sequence * getSequence(const std::string & id, const unsigned int i)
         const throw(Exception);
 
       /**
@@ -304,7 +303,7 @@ namespace bpp
        *
        * @return All the keys of the sequence sets in a vector.
        */
-      vector<string> getSequencesKeys() const;
+      std::vector<std::string> getSequencesKeys() const;
 
       /**
        * @brief Remove a named sequence from a named sequence set.
@@ -314,7 +313,7 @@ namespace bpp
        *
        * @return A pointer to a copy of the removed sequence.
        */
-      Sequence * removeSequence(const string & id, const string & name);
+      Sequence * removeSequence(const std::string & id, const std::string & name);
 
       /**
        * @brief Delete a named sequence from a named sequence set.
@@ -322,7 +321,7 @@ namespace bpp
        * @param id The id of the sequence set.
        * @param name The name of the sequence.
        */
-      void deleteSequence(const string & id, const string & name);
+      void deleteSequence(const std::string & id, const std::string & name);
 
       /**
        * @brief Tell if the MultiSeqIndividual has some sequences.
@@ -337,7 +336,7 @@ namespace bpp
       /**
        * @brief Get the number of sequences in a sequence set.
        */
-      unsigned int getNumberOfSequences(const string & id) const
+      unsigned int getNumberOfSequences(const std::string & id) const
         throw (Exception);
 
       /**
@@ -358,12 +357,12 @@ namespace bpp
       bool hasGenotype() const;
 
     protected:
-      string _id;
+      std::string _id;
       unsigned short _sex;
       Date * _date;
       Coord<double> * _coord;
       const Locality<double> * _locality;
-      map<string,VectorSequenceContainer *> _sequences;
+      std::map<std::string,VectorSequenceContainer *> _sequences;
       MultilocusGenotype * _genotype;
   };
 

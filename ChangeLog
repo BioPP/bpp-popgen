@@ -1,3 +1,10 @@
+19/06/09 Sylvain Gaillard
+* Removed all 'using namespace' statement from header files
+
+18/06/09 Sylvain Gaillard
+* Fix SequenceTools::getFrequencies call in SequenceStatistics
+* Fix SequenceStatistics::getTransitionsTransversionsRatio
+
 21/07/08 -*- Version 1.4.0 -*-
 
 15/04/09 Sylvain Gaillard

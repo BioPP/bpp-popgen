@@ -44,8 +44,7 @@
 #include <algorithm>
 #include <vector>
 #include <map>
-
-using namespace std;
+#include <string>
 
 // From Utils
 #include <Utils/Exceptions.h>
@@ -103,7 +102,7 @@ namespace bpp
        * @param name The locality's name to find.
        * @throw LocalityNotFoundException if the locality's name doesn't match any name in the DataSet.
        */
-      unsigned int getLocalityPosition(const string & name) const throw (LocalityNotFoundException);
+      unsigned int getLocalityPosition(const std::string & name) const throw (LocalityNotFoundException);
 
       /**
        * @brief Get a Locality by locality_position.
@@ -119,7 +118,7 @@ namespace bpp
        *
        * @throw LocalityNotFoundException if the locality's name is not found.
        */
-      const Locality<double> * getLocalityByName(const string & name) const throw (LocalityNotFoundException);
+      const Locality<double> * getLocalityByName(const std::string & name) const throw (LocalityNotFoundException);
 
       /**
        * @brief Delete a Locality from the DataSet.
@@ -133,7 +132,7 @@ namespace bpp
        *
        * @throw LocalityNotFoundException if the locality's name is not found.
        */
-      void deleteLocalityByName(const string & name) throw (LocalityNotFoundException);
+      void deleteLocalityByName(const std::string & name) throw (LocalityNotFoundException);
 
       /**
        * @brief Get the number of Localities.
@@ -177,13 +176,13 @@ namespace bpp
        *
        * @throw GroupNotFoundException if the group_id is not found.
        */
-      string getGroupName(unsigned int group_id) const throw (GroupNotFoundException);
+      std::string getGroupName(unsigned int group_id) const throw (GroupNotFoundException);
       /**
        * @brief set the name of a Group.
        *
        * @throw GroupNotFoundException if the group_id is not found.
        */
-      void setGroupName(unsigned int group_id, string group_name) const throw (GroupNotFoundException);
+      void setGroupName(unsigned int group_id, std::string group_name) const throw (GroupNotFoundException);
 
       /**
        * @brief Get a group by position.
@@ -222,7 +221,7 @@ namespace bpp
        * @param group_ids A vector unsigned int listing the id of groups to merge.
        * @throw IndexOutOfBoundsException if one of the int in groups excedes the number of groups.
        */
-      void mergeGroups(vector<unsigned int> & group_ids) throw (GroupNotFoundException);
+      void mergeGroups(std::vector<unsigned int> & group_ids) throw (GroupNotFoundException);
 
       /**
        * @brief Split a group in two.
@@ -232,7 +231,7 @@ namespace bpp
        * @throw GroupNotFoundException if the group_id is not found.
        * @throw IndexOutOfBoundsException if one position of the selection excedes the number of individuals of the group.
        */
-      void splitGroup(unsigned int group_id, vector<unsigned int> individuals_selection) throw (Exception);
+      void splitGroup(unsigned int group_id, std::vector<unsigned int> individuals_selection) throw (Exception);
 
       //** Individuals manipulation ************************************************/
       /**
@@ -249,7 +248,7 @@ namespace bpp
        * @throw IndexOutOfBoundsException if group_position excedes the number of groups.
        * @throw BadIdentifierException if the individual's id is already in use.
        */
-      void addEmptyIndividualToGroup(unsigned int group_position, const string & individual_id) throw (Exception);
+      void addEmptyIndividualToGroup(unsigned int group_position, const std::string & individual_id) throw (Exception);
 
       /**
        * @brief Get the number of Individuals in a Group.
@@ -265,7 +264,7 @@ namespace bpp
        * @throw IndexOutOfBoundsException if group_position excedes the number of groups.
        * @throw IndividualNotFoundException if individual_id is not found.
        */
-      unsigned int getIndividualPositionInGroup(unsigned int group_position, const string & individual_id) const
+      unsigned int getIndividualPositionInGroup(unsigned int group_position, const std::string & individual_id) const
         throw (Exception);
       /**
        * @brief Get an Individual from a Group.
@@ -282,7 +281,7 @@ namespace bpp
        * @throw IndexOutOfBoundsException if group_position excedes the number of groups.
        * @throw IndividualNotFoundException if individual_id is not found.
        */
-      const Individual * getIndividualByIdFromGroup(unsigned int group_position, const string & individual_id) const
+      const Individual * getIndividualByIdFromGroup(unsigned int group_position, const std::string & individual_id) const
         throw (Exception);
 
       /**
@@ -300,7 +299,7 @@ namespace bpp
        * @throw IndexOutOfBoundsException if group_position excedes the number of groups.
        * @throw IndividualNotFoundException if individual_id is not found.
        */
-      void deleteIndividualByIdFromGroup(unsigned int group_position, const string & individual_id)
+      void deleteIndividualByIdFromGroup(unsigned int group_position, const std::string & individual_id)
         throw (Exception);
 
       /**
@@ -366,7 +365,7 @@ namespace bpp
        * @throw IndexOutOfBoundsException if individual_position excedes the number of individual in the group.
        * @throw LocalityNotFoundException if locality_name is not found.
        */
-      void setIndividualLocalityInGroupByName(unsigned int group_position, unsigned int individual_position, const string & locality_name)
+      void setIndividualLocalityInGroupByName(unsigned int group_position, unsigned int individual_position, const std::string & locality_name)
         throw (Exception);
 
       /**
@@ -400,7 +399,7 @@ namespace bpp
        * @throw SequenceNotFoundException if sequence_name is not found.
        * @throw BadIntegerException if sequence_position is already in use.
        */
-      const Sequence * getIndividualSequenceByNameInGroup(unsigned int group_position, unsigned int individual_position, const string & sequence_name) const
+      const Sequence * getIndividualSequenceByNameInGroup(unsigned int group_position, unsigned int individual_position, const std::string & sequence_name) const
         throw (Exception);
 
       /**
@@ -422,7 +421,7 @@ namespace bpp
        * @throw NullPointerException if the individual has no sequences.
        * @throw SequenceNotFoundException if sequence_name is not found.
        */
-      void deleteIndividualSequenceByNameInGroup(unsigned int group_position, unsigned int individual_position, const string & sequence_name)
+      void deleteIndividualSequenceByNameInGroup(unsigned int group_position, unsigned int individual_position, const std::string & sequence_name)
         throw (Exception);
 
       /**
@@ -443,7 +442,7 @@ namespace bpp
        * @throw IndexOutOfBoundsException if individual_position excedes the number of individual in the group.
        * @throw NullPointerException if the individual has no sequences.
        */
-      vector<string> getIndividualSequencesNamesInGroup(unsigned int group_position, unsigned int individual_position) const
+      std::vector<std::string> getIndividualSequencesNamesInGroup(unsigned int group_position, unsigned int individual_position) const
         throw (Exception);
 
       /**
@@ -454,7 +453,7 @@ namespace bpp
        * @throw NullPointerException if the individual has no sequences.
        * @throw SequenceNotFoundException if sequence_name is not found.
        */
-      unsigned int getIndividualSequencePositionInGroup(unsigned int group_position, unsigned int individual_position, const string & sequence_name) const
+      unsigned int getIndividualSequencePositionInGroup(unsigned int group_position, unsigned int individual_position, const std::string & sequence_name) const
         throw (Exception);
 
       /**
@@ -517,7 +516,7 @@ namespace bpp
        * @throw IndexOutOfBoundsException if locus_position excedes the number of locus.
        * @throw Exception if the ploidy doesn't match.
        */
-      void setIndividualMonolocusGenotypeByAlleleKeyInGroup(unsigned int group_position, unsigned int individual_position, unsigned int locus_position, const vector<unsigned int> allele_keys)
+      void setIndividualMonolocusGenotypeByAlleleKeyInGroup(unsigned int group_position, unsigned int individual_position, unsigned int locus_position, const std::vector<unsigned int> allele_keys)
         throw (Exception);
 
       /**
@@ -529,7 +528,7 @@ namespace bpp
        * @throw IndexOutOfBoundsException if locus_position excedes the number of locus.
        * @throw Exception if there is no key in allele_keys.
        */
-      void setIndividualMonolocusGenotypeByAlleleIdInGroup(unsigned int group_position, unsigned int individual_position, unsigned int locus_position, const vector<string> allele_id)
+      void setIndividualMonolocusGenotypeByAlleleIdInGroup(unsigned int group_position, unsigned int individual_position, unsigned int locus_position, const std::vector<std::string> allele_id)
         throw (Exception);
 
       /**
@@ -553,7 +552,7 @@ namespace bpp
       /**
        * @brief Set the alphabet of the AnalyzedSequences by its type..
        */
-      void setAlphabet(const string & alpha_type);
+      void setAlphabet(const std::string & alpha_type);
 
       /**
        * @brief Get the alphabet if there is sequence data.
@@ -567,7 +566,7 @@ namespace bpp
        *
        * @throw NullPointerException if there is no sequence data.
        */
-      string getAlphabetType() const throw (NullPointerException);
+      std::string getAlphabetType() const throw (NullPointerException);
 
       //** AnalyzedLoci manipulation ***********************************************/
       /**
@@ -608,7 +607,7 @@ namespace bpp
       /**
        * @brief Get a LocusInfo by its name.
        */
-      const LocusInfo * getLocusInfoByName(const string & locus_name) const
+      const LocusInfo * getLocusInfoByName(const std::string & locus_name) const
         throw (Exception);
 
       /**
@@ -620,7 +619,7 @@ namespace bpp
       /**
        * @brief Add an AlleleInfo to a LocusInfo.
        */
-      void addAlleleInfoByLocusName(const string & locus_name, const AlleleInfo & allele)
+      void addAlleleInfoByLocusName(const std::string & locus_name, const AlleleInfo & allele)
         throw (Exception);
 
       /**
@@ -637,7 +636,7 @@ namespace bpp
       /**
        * @brief Get the ploidy of a locus.
        */
-      unsigned int getPloidyByLocusName(const string & locus_name) const throw (Exception);
+      unsigned int getPloidyByLocusName(const std::string & locus_name) const throw (Exception);
 
       /**
        * @brief Get the ploidy of a locus.
@@ -655,7 +654,7 @@ namespace bpp
        *
        * @param selection A map with groups id as keys and vector of individuals position in each group as values.
        */
-      PolymorphismMultiGContainer * getPolymorphismMultiGContainer(const map<unsigned int, vector<unsigned int> > & selection) const throw (Exception);
+      PolymorphismMultiGContainer * getPolymorphismMultiGContainer(const std::map<unsigned int, std::vector<unsigned int> > & selection) const throw (Exception);
 
       /**
        * @brief Get a PolymorphismSequenceContainer from a selection of groups and individuals.
@@ -664,7 +663,7 @@ namespace bpp
        * @param selection A map with groups id as keys and vector of individuals position in each group as values.
        * @param sequence_position The position of the sequence in the individuals;
        */
-      PolymorphismSequenceContainer * getPolymorphismSequenceContainer(const map<unsigned int, vector<unsigned int> > & selection, unsigned int sequence_position) const throw (Exception);
+      PolymorphismSequenceContainer * getPolymorphismSequenceContainer(const std::map<unsigned int, std::vector<unsigned int> > & selection, unsigned int sequence_position) const throw (Exception);
 
       //** General tests **********************************************************/
       /**
@@ -680,8 +679,8 @@ namespace bpp
     protected:
       AnalyzedLoci * _analyzedLoci;
       AnalyzedSequences * _analyzedSequences;
-      vector<Locality<double> *> _localities;
-      vector<Group *> _groups;
+      std::vector<Locality<double> *> _localities;
+      std::vector<Group *> _groups;
   };
 
 } //end of namespace bpp;

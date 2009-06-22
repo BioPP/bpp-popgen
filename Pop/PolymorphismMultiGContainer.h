@@ -58,8 +58,6 @@
 #include <set>
 #include <algorithm>
 
-using namespace std;
-
 namespace bpp
 {
 
@@ -150,12 +148,12 @@ namespace bpp
       /**
        * @brief Get the groups' ids.
        */
-      set<unsigned int> getAllGroupsIds() const;
+      std::set<unsigned int> getAllGroupsIds() const;
 
       /**
        * @brief Get the groups names or ids if not available
        */
-      vector<string> getAllGroupsNames() const;
+      std::vector<std::string> getAllGroupsNames() const;
 
       /**
        * @brief Tell if a group exists.
@@ -175,17 +173,17 @@ namespace bpp
       /**
        * @brief Get the group name for a given group id or just the id if not available juste return it's id
        */
-      string getGroupName(unsigned int group_id) const throw (GroupNotFoundException);
+      std::string getGroupName(unsigned int group_id) const throw (GroupNotFoundException);
 
       /**
        * @brief Set the name for the given group id.
        */
-      void setGroupName(unsigned int group_id, string name)  throw (GroupNotFoundException);
+      void setGroupName(unsigned int group_id, std::string name)  throw (GroupNotFoundException);
 
       /**
        * @brief Inserts a name for the given group id.
        */
-      void addGroupName(unsigned int group_id, string name)  ;
+      void addGroupName(unsigned int group_id, std::string name)  ;
 
       /**
        * @brief Get the size of a group for a given locus.
@@ -203,9 +201,9 @@ namespace bpp
       void clear();
 
     protected:
-      vector<MultilocusGenotype *> _multilocusGenotypes;
-      vector<unsigned int> _groups;//group id for each multilocusgenotype
-      map<unsigned int, string> _groups_names;
+      std::vector<MultilocusGenotype *> _multilocusGenotypes;
+      std::vector<unsigned int> _groups;//group id for each multilocusgenotype
+      std::map<unsigned int, std::string> _groups_names;
 
   };
 

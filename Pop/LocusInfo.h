@@ -41,9 +41,8 @@
 #define _LOCUSINFO_H_
 
 //From STL
+#include <string>
 #include <vector>
-
-using namespace std;
 
 // From local Popgenlib
 #include "AlleleInfo.h"
@@ -78,7 +77,7 @@ namespace bpp
        * @param name The name of the locus.
        * @param ploidy The ploidy of the locus.
        */
-      LocusInfo(const string &name, const unsigned int ploidy = DIPLOID);
+      LocusInfo(const std::string &name, const unsigned int ploidy = DIPLOID);
 
       /**
        * @brief Copy constructor.
@@ -94,7 +93,7 @@ namespace bpp
       /**
        * @brief Get the name of the locus.
        */
-      string getName() const;
+      std::string getName() const;
 
       /**
        * @brief Get the ploidy of the locus.
@@ -116,7 +115,7 @@ namespace bpp
        *
        * @throw AlleleNotFoundException if the id is not found.
        */
-      AlleleInfo * getAlleleInfoById(const string & id) const
+      AlleleInfo * getAlleleInfoById(const std::string & id) const
         throw (AlleleNotFoundException);
 
       /**
@@ -132,7 +131,7 @@ namespace bpp
        *
        * @throw AlleleNotFoundException if the AlleleInfo's id is not found.
        */
-      unsigned int getAlleleInfoKey(const string & id) const
+      unsigned int getAlleleInfoKey(const std::string & id) const
         throw (AlleleNotFoundException);
 
       /**
@@ -146,9 +145,9 @@ namespace bpp
       void clear();
 
     protected:
-      string _name;
+      std::string _name;
       unsigned int _ploidy;
-      vector <AlleleInfo *> _alleles;
+      std::vector <AlleleInfo *> _alleles;
   };
 
 } //end of namespace bpp;

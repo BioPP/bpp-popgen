@@ -43,8 +43,6 @@
 // From STL
 #include <set>
 
-using namespace std;
-
 // From Utils
 #include <Utils/TextTools.h>
 #include <Utils/Exceptions.h>

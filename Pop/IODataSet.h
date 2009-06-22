@@ -46,8 +46,6 @@
 #include <iostream>
 #include <fstream>
 
-using namespace std;
-
 namespace bpp
 {
 
@@ -68,12 +66,12 @@ namespace bpp
       /**
        * @brief Get the format's name.
        */
-      virtual const string getFormatName() = 0;
+      virtual const std::string getFormatName() = 0;
 
       /**
        * @brief Get a description of the format.
        */
-      virtual const string getFormatDescription() = 0;
+      virtual const std::string getFormatDescription() = 0;
   };
 
 } //end of namespace bpp;

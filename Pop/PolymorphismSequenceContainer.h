@@ -42,8 +42,7 @@
 #define _POLYMORPHISMSEQUENCECONTAINER_H_
 
 #include <set>
-
-using namespace std;
+#include <string>
 
 #include <Utils/Clonable.h>
 #include <Utils/StringTokenizer.h>
@@ -81,7 +80,7 @@ using namespace std;
  * Static tools class for both families are provided to compute several common or less
  * common statistics.
  *
- * @section statistics Statistics overview
+ * @sections statistics Statistics overview
  *
  * @par heterozygosity
  * @par watterson75 Diversity estimator Theta of Watterson
@@ -162,7 +161,7 @@ namespace bpp
        *
        * @throw SequenceNotFoundException if name is not found among the sequences' names.
        */
-      Sequence * removeSequence(const string &name) throw (SequenceNotFoundException);
+      Sequence * removeSequence(const std::string &name) throw (SequenceNotFoundException);
 
       /**
        * @brief Delete a sequence by index.
@@ -176,7 +175,7 @@ namespace bpp
        *
        * @throw SequenceNotFoundException if name is not found among the sequences' names.
        */
-      void deleteSequence(const string &name) throw (SequenceNotFoundException);
+      void deleteSequence(const std::string &name) throw (SequenceNotFoundException);
 
       /**
        * @brief Add a sequence to the container.
@@ -204,12 +203,12 @@ namespace bpp
        *
        * @throw SequenceNotFoundException if name is not found among the sequences' names.
        */
-      unsigned int getGroupId(const string & name) const throw (SequenceNotFoundException);
+      unsigned int getGroupId(const std::string & name) const throw (SequenceNotFoundException);
 
       /**
        * @brief Get all the groups identifiers.
        */
-      set<unsigned int> getAllGroupsIds() const;
+      std::set<unsigned int> getAllGroupsIds() const;
 
       /**
        * @brief Set the group identifier of a sequence.
@@ -223,7 +222,7 @@ namespace bpp
        *
        * @throw SequenceNotFoundException if name is not found among the sequences' names.
        */
-      void setGroupId(const string & name, unsigned int group_id) throw (SequenceNotFoundException);
+      void setGroupId(const std::string & name, unsigned int group_id) throw (SequenceNotFoundException);
 
       /**
        * @brief Get the number of groups.
@@ -242,7 +241,7 @@ namespace bpp
        *
        * @throw SequenceNotFoundException if name is not found among the sequences' names.
        */
-      bool isIngroupMember(const string &name) const throw (SequenceNotFoundException);
+      bool isIngroupMember(const std::string &name) const throw (SequenceNotFoundException);
 
       /**
        * @brief Set a sequence as ingroup member by index.
@@ -256,7 +255,7 @@ namespace bpp
        *
        * @throw SequenceNotFoundException if name is not found among the sequences' names.
        */
-      void setAsIngroupMember(const string &name) throw (SequenceNotFoundException);
+      void setAsIngroupMember(const std::string &name) throw (SequenceNotFoundException);
 
       /**
        * @brief Set a sequence as outgroup member by index.
@@ -270,7 +269,7 @@ namespace bpp
        *
        * @throw SequenceNotFoundException if name is not found among the sequences' names.
        */
-      void setAsOutgroupMember(const string &name) throw (SequenceNotFoundException);
+      void setAsOutgroupMember(const std::string &name) throw (SequenceNotFoundException);
 
       /**
        * @brief Set the count of a sequence by index.
@@ -286,7 +285,7 @@ namespace bpp
        * @throw throw SequenceNotFoundException if name is not found among the sequences' names.
        * @throw BadIntegerException if count < 1 ... use deleteSequence instead of setting the count to 0.
        */
-      void setSequenceCount(const string &name, unsigned int count) throw (Exception);
+      void setSequenceCount(const std::string &name, unsigned int count) throw (Exception);
 
       /**
        * @brief Add 1 to the sequence count.
@@ -300,7 +299,7 @@ namespace bpp
        *
        * @throw throw SequenceNotFoundException if name is not found among the sequences' names.
        */
-      void incrementSequenceCount(const string &name) throw (SequenceNotFoundException);
+      void incrementSequenceCount(const std::string &name) throw (SequenceNotFoundException);
 
       /**
        * @brief Remove 1 to the sequence count.
@@ -316,7 +315,7 @@ namespace bpp
        * @throw throw SequenceNotFoundException if name is not found among the sequences' names.
        * @throw BadIntegerException if count < 1 ... use deleteSequence instead of setting the count to 0.
        */
-      void decrementSequenceCount(const string & name) throw (Exception);
+      void decrementSequenceCount(const std::string & name) throw (Exception);
 
       /**
        * @brief Get the count of a sequence by index.
@@ -330,7 +329,7 @@ namespace bpp
        *
        * @throw SequenceNotFoundException if name is not found among the sequences' names.
        */
-      unsigned int getSequenceCount(const string &name) const throw (SequenceNotFoundException);
+      unsigned int getSequenceCount(const std::string &name) const throw (SequenceNotFoundException);
 
 
     protected:

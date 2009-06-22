@@ -42,10 +42,7 @@
 #define _POLYMORPHISMMULTIGCONTAINERTOOLS_H_
 
 // From the STL
-#include <vector>
 #include <set>
-
-using namespace std;
 
 //From the PolGenLib library
 #include "PolymorphismMultiGContainer.h"
@@ -87,7 +84,7 @@ namespace bpp
        * @param groups The groups ids between which the MonolocusGenotypes will be permuted.
        * @return A permuted PolymorphismMultiGContainer.
        */
-      static PolymorphismMultiGContainer permutMonoG(const PolymorphismMultiGContainer & pmgc, const set<unsigned int> & groups);
+      static PolymorphismMultiGContainer permutMonoG(const PolymorphismMultiGContainer & pmgc, const std::set<unsigned int> & groups);
 
       /**
        * @brief Permut the MonolocusGenotype between individuals in the same group.
@@ -99,7 +96,7 @@ namespace bpp
        * @param groups The groups ids for which the MonolocusGenotypes will be permuted.
        * @return A permuted PolymorphismMultiGContainer.
        */
-      static PolymorphismMultiGContainer permutIntraGroupMonoG(const PolymorphismMultiGContainer & pmgc, const set<unsigned int> & groups); 
+      static PolymorphismMultiGContainer permutIntraGroupMonoG(const PolymorphismMultiGContainer & pmgc, const std::set<unsigned int> & groups); 
 
       /**
        * @brief Permut the Alleles.
@@ -111,7 +108,7 @@ namespace bpp
        * @param groups The groups ids between which the MonolocusGenotypes will be permuted.
        * @return A permuted PolymorphismMultiGContainer.
        */
-      static PolymorphismMultiGContainer permutAlleles(const PolymorphismMultiGContainer & pmgc, const set<unsigned int> & groups);
+      static PolymorphismMultiGContainer permutAlleles(const PolymorphismMultiGContainer & pmgc, const std::set<unsigned int> & groups);
 
       /**
        * @brief Permut the Alleles between individuals in the same group.
@@ -122,8 +119,8 @@ namespace bpp
        * @param groups The groups ids between which the MonolocusGenotypes will be permuted.
        * @return A permuted PolymorphismMultiGContainer.
        */
-      static PolymorphismMultiGContainer permutIntraGroupAlleles(const PolymorphismMultiGContainer & pmgc, const set<unsigned int> & groups) ;
-      static PolymorphismMultiGContainer extractGroups(const PolymorphismMultiGContainer & pmgc, const set<unsigned int> & groups) ;
+      static PolymorphismMultiGContainer permutIntraGroupAlleles(const PolymorphismMultiGContainer & pmgc, const std::set<unsigned int> & groups) ;
+      static PolymorphismMultiGContainer extractGroups(const PolymorphismMultiGContainer & pmgc, const std::set<unsigned int> & groups) ;
   };
 
 } //end of namespace bpp;

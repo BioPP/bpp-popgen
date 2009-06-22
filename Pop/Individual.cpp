@@ -41,6 +41,8 @@
 
 using namespace bpp;
 
+using namespace std;
+
 //** Class constructor: *******************************************************/
 Individual::Individual()
 {

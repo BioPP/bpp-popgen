@@ -43,8 +43,6 @@
 #include "Coord.h"
 #include <string>
 
-using namespace std;
-
 namespace bpp
 {
 
@@ -60,7 +58,7 @@ namespace bpp
     public Coord<T>
   {
     protected:
-      string _name;
+      std::string _name;
 
     public: // Constructors and destructor
       /**
@@ -70,7 +68,7 @@ namespace bpp
        * @param x The longitude.
        * @param y The latitude.
        */
-      Locality<T>(const string name, const T x=0, const T y=0):
+      Locality<T>(const std::string name, const T x=0, const T y=0):
         Coord<T>(x, y), _name(name) {}
 
       /**
@@ -79,7 +77,7 @@ namespace bpp
        * @param name The name of the locality.
        * @param coord The coordinates of the locality.
        */
-      Locality<T>(const string name, const Coord<T> & coord):
+      Locality<T>(const std::string name, const Coord<T> & coord):
         Coord<T>(coord), _name(name) {}
 
       /**
@@ -114,12 +112,12 @@ namespace bpp
       /**
        * @brief Set the name of the locality.
        */
-      void setName(const string & name) { _name = name; }
+      void setName(const std::string & name) { _name = name; }
 
       /**
        * @brief Get the name of the locality.
        */
-      string getName() const { return _name; }
+      std::string getName() const { return _name; }
 
   };
 

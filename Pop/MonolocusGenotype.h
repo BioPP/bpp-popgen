@@ -43,8 +43,6 @@
 // From STL
 #include <vector>
 
-using namespace std;
-
 // From Utils
 #include <Utils/Clonable.h>
 
@@ -80,7 +78,7 @@ namespace bpp
        *
        * The size of the vector corresponds to the number of alleles at this locus.
        */
-      virtual vector<unsigned int> getAlleleIndex() const = 0;
+      virtual std::vector<unsigned int> getAlleleIndex() const = 0;
   };
 
 } //end of namespace bpp;
