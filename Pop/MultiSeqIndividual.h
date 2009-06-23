@@ -282,9 +282,9 @@ namespace bpp
        * @param id The id of the sequence set.
        * @param name The name of the sequence.
        *
-       * @return A pointer to the sequence.
+       * @return A reference to the sequence.
        */
-      const Sequence * getSequence(const std::string & id, const std::string & name)
+      const Sequence& getSequence(const std::string & id, const std::string & name)
         const throw(Exception);
 
       /**
@@ -293,9 +293,9 @@ namespace bpp
        * @param id The id of the sequence set.
        * @param i The index of the sequence in the sequence set.
        *
-       * @return A pointer tothe sequence.
+       * @return A reference to the sequence.
        */
-      const Sequence * getSequence(const std::string & id, const unsigned int i)
+      const Sequence& getSequence(const std::string & id, const unsigned int i)
         const throw(Exception);
 
       /**

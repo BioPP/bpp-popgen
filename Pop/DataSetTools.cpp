@@ -48,7 +48,7 @@ DataSet * DataSetTools::buildDataSet(const OrderedSequenceContainer & osc) throw
   for (unsigned int i = 0 ; i < osc.getNumberOfSequences() ; i++) {
     d_s->addEmptyIndividualToGroup(0, string("Individual_") + TextTools::toString(i + 1));
     try {
-      d_s->addIndividualSequenceInGroup(0, i, 0, * osc.getSequence(i));
+      d_s->addIndividualSequenceInGroup(0, i, 0, osc.getSequence(i));
     }
     catch (Exception & e) {
       throw e;
@@ -68,7 +68,7 @@ DataSet * DataSetTools::buildDataSet(const PolymorphismSequenceContainer & psc) 
     for (unsigned int j = 0 ; j < psc.getSequenceCount(i) ; j++) {
       d_s->addEmptyIndividualToGroup(psc.getGroupId(i), string("Individual_") + TextTools::toString(ind_count++));
       try {
-        d_s->addIndividualSequenceInGroup(psc.getGroupId(i), i, 0, * psc.getSequence(i));
+        d_s->addIndividualSequenceInGroup(psc.getGroupId(i), i, 0, psc.getSequence(i));
       }
       catch (Exception & e) {
         throw e;

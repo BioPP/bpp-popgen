@@ -114,7 +114,7 @@ namespace bpp
        */
       virtual ~Individual();
 
-    public: // Methodes
+    public: // Methods
 
       /**
        * @brief The Individual copy operator.
@@ -274,22 +274,22 @@ namespace bpp
        * @brief Get a sequence by its name.
        *
        * @param sequence_name The name of the sequence.
-       * @return A pointer to the sequence.
+       * @return A reference to the sequence.
        * @throw NullPointerException if there is no sequence container defined.
        * @throw SequenceNotFoundException if sequence_name is not found.
        */
-      const Sequence * getSequenceByName(const std::string & sequence_name)
+      const Sequence& getSequenceByName(const std::string & sequence_name)
         const throw(Exception);
 
       /**
        * @brief Get a sequence by its position.
        *
        * @param sequence_position The position of the sequence in the sequence set.
-       * @return A pointer to the sequence.
+       * @return A reference to the sequence.
        * @throw NullPointerException if there is no sequence container defined.
        * @throw SequenceNotFoundException if sequence_position is not found (i.e. missing data or not used).
        */
-      const Sequence * getSequenceAtPosition(const unsigned int sequence_position)
+      const Sequence& getSequenceAtPosition(const unsigned int sequence_position)
         const throw(Exception);
 
       /**

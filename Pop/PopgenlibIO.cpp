@@ -407,13 +407,14 @@ void PopgenlibIO::_parseIndividual(const vector<string> & in, DataSet & data_set
       for (unsigned int j = 0 ; j < seq_pos_str.size() ; j++) {
         try {
           if (seq_pos_str[j] != getMissingDataSymbol())
-            tmp_indiv.addSequence(j, *vsc.getSequence(TextTools::toInt(seq_pos_str[j])-1));
+            tmp_indiv.addSequence(j, vsc.getSequence(TextTools::toInt(seq_pos_str[j])-1));
         }
         catch (...) {}
       }
     }
     // Finally the loci
-    if (in[i].find("AllelicData", 0) != string::npos) {
+    if (in[i].find("AllelicData", 0) != string::npos)
+    {
       string temp1 = in[++i];
       string temp2 = in[++i];
       vector<string> allele_pos_str1 = _getValues(temp1, "");
@@ -453,7 +454,8 @@ void PopgenlibIO::_parseIndividual(const vector<string> & in, DataSet & data_set
       }
     }
   }
-  if (tmp_indiv.getId() != "") {
+  if (tmp_indiv.getId() != "")
+  {
     try {
       data_set.addIndividualToGroup(data_set.getGroupPosition(tmp_group_pos), tmp_indiv);
     }

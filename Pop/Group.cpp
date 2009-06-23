@@ -297,7 +297,7 @@ void Group::addIndividualSequenceAtPosition(unsigned int individual_position, un
   }
 }
 
-const Sequence * Group::getIndividualSequenceByName(unsigned int individual_position, const string & sequence_name) const throw (Exception)
+const Sequence& Group::getIndividualSequenceByName(unsigned int individual_position, const string & sequence_name) const throw (Exception)
 {
   if (individual_position >= getNumberOfIndividuals())
     throw IndexOutOfBoundsException("Group::getIndividualSequenceByName: individual_position out of bounds.", individual_position, 0, getNumberOfIndividuals());
@@ -312,7 +312,7 @@ const Sequence * Group::getIndividualSequenceByName(unsigned int individual_posi
   }
 }
 
-const Sequence * Group::getIndividualSequenceAtPosition(unsigned int individual_position, unsigned int sequence_position) const throw (Exception)
+const Sequence& Group::getIndividualSequenceAtPosition(unsigned int individual_position, unsigned int sequence_position) const throw (Exception)
 {
   if (individual_position >= getNumberOfIndividuals())
     throw IndexOutOfBoundsException("Group::getIndividualAtPosition: individual_position out of bounds.", individual_position, 0, getNumberOfIndividuals());

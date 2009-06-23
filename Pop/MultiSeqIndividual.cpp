@@ -318,7 +318,7 @@ throw (Exception)
   }
 }
 
-  const Sequence * MultiSeqIndividual::getSequence(const string & id, const string & name)
+const Sequence& MultiSeqIndividual::getSequence(const string & id, const string & name)
 const throw(Exception)
 {
   map<string, VectorSequenceContainer *>::const_iterator it;
@@ -329,7 +329,8 @@ const throw(Exception)
       + ").";
     throw(Exception(mes));
   }
-  try {
+  try
+  {
     return const_cast<const VectorSequenceContainer *>(it->second)->getSequence(name);
   }
   catch (SequenceNotFoundException & snfe) {
@@ -337,7 +338,7 @@ const throw(Exception)
   }
 }
 
-  const Sequence * MultiSeqIndividual::getSequence(const string & id, unsigned int i)
+const Sequence& MultiSeqIndividual::getSequence(const string & id, unsigned int i)
 const throw(Exception)
 {
   map<string, VectorSequenceContainer *>::const_iterator it;

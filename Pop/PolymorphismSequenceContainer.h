@@ -107,32 +107,32 @@ namespace bpp
       /**
        * @brief Build a new empty PolymorphismSequenceContainer.
        */
-      PolymorphismSequenceContainer(const Alphabet *alpha);
+      PolymorphismSequenceContainer(const Alphabet* alpha);
 
       /**
        * @brief Build a new empty PolymorphismSequenceContainer of given size.
        */
-      PolymorphismSequenceContainer(unsigned int size, const Alphabet *alpha);
+      PolymorphismSequenceContainer(unsigned int size, const Alphabet* alpha);
 
       /**
        * @brief Build a PolymorphismSequenceContainer by copying data from an OrderedSequenceContainer.
        */
-      PolymorphismSequenceContainer(const OrderedSequenceContainer & sc);
+      PolymorphismSequenceContainer(const OrderedSequenceContainer& sc);
 
       /**
        * @brief Build a PolymorphismSequenceContainer by copying data from a SiteContainer.
        */
-      PolymorphismSequenceContainer(const SiteContainer & sc);
+      PolymorphismSequenceContainer(const SiteContainer& sc);
 
       /**
        * @brief Copy constructor.
        */
-      PolymorphismSequenceContainer(const PolymorphismSequenceContainer & psc);
+      PolymorphismSequenceContainer(const PolymorphismSequenceContainer& psc);
 
       /**
        * @brief Operator= : copy operator.
        */
-      PolymorphismSequenceContainer & operator= (const PolymorphismSequenceContainer & psc);
+      PolymorphismSequenceContainer& operator=(const PolymorphismSequenceContainer& psc);
 
       /**
        * @brief Destroy a PolymorphismSequenceContainer.
@@ -142,7 +142,7 @@ namespace bpp
       /**
        * @brief Clone a PolymorphismSequenceContainer.
        */
-      PolymorphismSequenceContainer * clone() const
+      PolymorphismSequenceContainer* clone() const
       {
         return new PolymorphismSequenceContainer(*this);
       }
@@ -332,10 +332,10 @@ namespace bpp
       unsigned int getSequenceCount(const std::string &name) const throw (SequenceNotFoundException);
 
 
-    protected:
-      vector<bool> _ingroup;
-      vector<unsigned int> _count;
-      vector<unsigned int> _group;
+    private:
+      vector<bool> ingroup_;
+      vector<unsigned int> count_;
+      vector<unsigned int> group_;
   };
 
 } //end of namespace bpp;

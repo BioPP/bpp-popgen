@@ -80,7 +80,7 @@ namespace bpp
       /**
        * @brief The copy constructor.
        */
-      PolymorphismMultiGContainer(const PolymorphismMultiGContainer & pmgc);
+      PolymorphismMultiGContainer(const PolymorphismMultiGContainer& pmgc);
 
       /**
        * @brief Destroy a PolymorphismMultilocusGenotypeContainer.
@@ -91,26 +91,26 @@ namespace bpp
       /**
        * @brief The assignation operator=.
        */
-      PolymorphismMultiGContainer & operator= (const PolymorphismMultiGContainer & pmgc);
+      PolymorphismMultiGContainer& operator= (const PolymorphismMultiGContainer& pmgc);
 
       /**
        * @brief Add a MultilocusGenotype to the container.
        */
-      void addMultilocusGenotype(const MultilocusGenotype & mg, unsigned int group);
+      void addMultilocusGenotype(const MultilocusGenotype& mg, unsigned int group);
 
       /**
        * @brief Get a MultilocusGenotype at a position.
        *
        * @throw IndexOutOfBoundsException if position excedes the size of the container.
        */
-      const MultilocusGenotype * getMultilocusGenotype(unsigned int position) const throw (IndexOutOfBoundsException);
+      const MultilocusGenotype* getMultilocusGenotype(unsigned int position) const throw (IndexOutOfBoundsException);
 
       /**
        * @brief Remove a MultilocusGenotype.
        *
        * @throw IndexOutOfBoundsException if position excedes the size of the container.
        */
-      MultilocusGenotype * removeMultilocusGenotype(unsigned int position) throw (IndexOutOfBoundsException);
+      MultilocusGenotype* removeMultilocusGenotype(unsigned int position) throw (IndexOutOfBoundsException);
 
       /**
        * @brief Delete a MultilocusGenotype.

@@ -399,7 +399,7 @@ namespace bpp
        * @throw SequenceNotFoundException if sequence_name is not found.
        * @throw BadIntegerException if sequence_position is already in use.
        */
-      const Sequence * getIndividualSequenceByNameInGroup(unsigned int group_position, unsigned int individual_position, const std::string & sequence_name) const
+      const Sequence& getIndividualSequenceByNameInGroup(unsigned int group_position, unsigned int individual_position, const std::string & sequence_name) const
         throw (Exception);
 
       /**
@@ -410,7 +410,7 @@ namespace bpp
        * @throw NullPointerException if the individual has no sequences.
        * @throw SequenceNotFoundException if sequence_position is not found.
        */
-      const Sequence * getIndividualSequenceAtPositionInGroup(unsigned int group_position, unsigned int individual_position, unsigned int sequence_position) const
+      const Sequence& getIndividualSequenceAtPositionInGroup(unsigned int group_position, unsigned int individual_position, unsigned int sequence_position) const
         throw (Exception);
 
       /**

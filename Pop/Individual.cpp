@@ -332,7 +332,7 @@ throw (Exception)
   }
 }
 
-  const Sequence * Individual::getSequenceByName(const string & sequence_name)
+const Sequence& Individual::getSequenceByName(const string & sequence_name)
 const throw (Exception)
 {
   if (_sequences == NULL)
@@ -345,7 +345,7 @@ const throw (Exception)
   }
 }
 
-  const Sequence * Individual::getSequenceAtPosition(unsigned int sequence_position)
+const Sequence& Individual::getSequenceAtPosition(unsigned int sequence_position)
 const throw (Exception)
 {
   if (_sequences == NULL)

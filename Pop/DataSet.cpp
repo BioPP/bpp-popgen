@@ -484,7 +484,7 @@ void DataSet::addIndividualSequenceInGroup(unsigned int group_position, unsigned
   }
 }
 
-const Sequence * DataSet::getIndividualSequenceByNameInGroup(unsigned int group_position, unsigned int individual_position, const string & sequence_name) const throw (Exception)
+const Sequence& DataSet::getIndividualSequenceByNameInGroup(unsigned int group_position, unsigned int individual_position, const string & sequence_name) const throw (Exception)
 {
   if (group_position >= getNumberOfGroups())
     throw IndexOutOfBoundsException("DataSet::getIndividualSequenceByNameInGroup: group_position out of bounds.", group_position, 0, getNumberOfGroups());
@@ -502,7 +502,7 @@ const Sequence * DataSet::getIndividualSequenceByNameInGroup(unsigned int group_
   }
 }
 
-const Sequence * DataSet::getIndividualSequenceAtPositionInGroup(unsigned int group_position, unsigned int individual_position, unsigned int sequence_position) const throw (Exception)
+const Sequence& DataSet::getIndividualSequenceAtPositionInGroup(unsigned int group_position, unsigned int individual_position, unsigned int sequence_position) const throw (Exception)
 {
   if (group_position >= getNumberOfGroups())
     throw IndexOutOfBoundsException("DataSet::getIndividualSequenceAtPositionInGroup: group_position out of bounds.", group_position, 0, getNumberOfGroups());
@@ -971,7 +971,7 @@ PolymorphismSequenceContainer * DataSet::getPolymorphismSequenceContainer(const 
         throw ioobe;
       }
       if (tmp_ind->hasSequenceAtPosition(sequence_position)) {
-        const Sequence * tmp_seq = tmp_ind->getSequenceAtPosition(sequence_position);
+        const Sequence* tmp_seq = &tmp_ind->getSequenceAtPosition(sequence_position);
         psc->addSequence(* tmp_seq, 1, false);
         psc->setGroupId((const string) (tmp_seq->getName()), it->first);
       }

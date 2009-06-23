@@ -156,7 +156,7 @@ PolymorphismSequenceContainer * PolymorphismSequenceContainerTools::getSelectedS
   PolymorphismSequenceContainer * newpsc = new PolymorphismSequenceContainer(psc.getAlphabet());
   for(unsigned int i = 0; i < ss.size(); i++)
   {
-    newpsc->addSequence(*psc.getSequence(ss[i]), psc.getSequenceCount(i), false);
+    newpsc->addSequence(psc.getSequence(ss[i]), psc.getSequenceCount(i), false);
     if(psc.isIngroupMember(i)) newpsc->setAsIngroupMember(i);
     else
     {
@@ -293,13 +293,13 @@ PolymorphismSequenceContainer * PolymorphismSequenceContainerTools::getCompleteS
 PolymorphismSequenceContainer * PolymorphismSequenceContainerTools::excludeFlankingGap(const PolymorphismSequenceContainer & psc)
 {
   PolymorphismSequenceContainer *psci = dynamic_cast<PolymorphismSequenceContainer *>(psc.clone());
-  while(SiteTools::hasGap(*psci->getSite(0))){
+  while (SiteTools::hasGap(psci->getSite(0)))
     psci->deleteSite(0);
-  }
-  int i=0;
-  int n = psci->getNumberOfSites();
-  while(SiteTools::hasGap(*psci->getSite(n-i-1))){
-    psci->deleteSite(n-i-1);
+  unsigned int i = 0;
+  unsigned int n = psci->getNumberOfSites();
+  while(SiteTools::hasGap(psci->getSite(n-i-1)))
+  {
+    psci->deleteSite(n - i - 1);
     i++;
   }
   return psci;
@@ -399,16 +399,17 @@ PolymorphismSequenceContainer * PolymorphismSequenceContainerTools::getIntrons(c
   unsigned int first=0, last=psc.getNumberOfSites();
   //Check if the first codon is AUG
   if(start==1 &&
-      psc.getSite(codss[0])->getValue(0)==0 &&
-      psc.getSite(codss[1])->getValue(0)==3 &&
-      psc.getSite(codss[2])->getValue(0)==2) first = codss[0];
+      psc.getSite(codss[0]).getValue(0)==0 &&
+      psc.getSite(codss[1]).getValue(0)==3 &&
+      psc.getSite(codss[2]).getValue(0)==2) first = codss[0];
   //Check if the last codon is a STOP one
-  int c1 = psc.getSite(codss[codss.size()-3])->getValue(0);
-  int c2 = psc.getSite(codss[codss.size()-2])->getValue(0);
-  int c3 = psc.getSite(codss[codss.size()-1])->getValue(0);
+  int c1 = psc.getSite(codss[codss.size()-3]).getValue(0);
+  int c2 = psc.getSite(codss[codss.size()-2]).getValue(0);
+  int c3 = psc.getSite(codss[codss.size()-1]).getValue(0);
   if(ca->isStop(ca->getCodon(c1,c2,c3))) last = codss[codss.size()-1];
   //Keep sites between AUG and STOP
-  for(unsigned int i=first; i<last; i++) {
+  for(unsigned int i = first; i < last; i++)
+  {
     if(find(codss.begin(),codss.end(),i)==codss.end()) {
       ss.push_back(i);
     }
@@ -437,17 +438,20 @@ PolymorphismSequenceContainer * PolymorphismSequenceContainerTools::get5Prime(co
   unsigned int last=0;
   //Check if the first Codon is AUG
   if(start==1 &&
-      psc.getSite(codss[0])->getValue(0)==0 &&
-      psc.getSite(codss[1])->getValue(0)==3 &&
-      psc.getSite(codss[2])->getValue(0)==2) last = codss[0];
-  for(unsigned int i=0; i<last; i++) {
-    if(find(codss.begin(),codss.end(),i)==codss.end()) {
+      psc.getSite(codss[0]).getValue(0)==0 &&
+      psc.getSite(codss[1]).getValue(0)==3 &&
+      psc.getSite(codss[2]).getValue(0)==2) last = codss[0];
+  for(unsigned int i = 0; i < last; i++)
+  {
+    if (find(codss.begin(), codss.end(), i) == codss.end())
+    {
       ss.push_back(i);
     }
   }
   const SiteContainer *sc = SiteContainerTools::getSelectedSites(psc,ss);
   PolymorphismSequenceContainer *psci = new PolymorphismSequenceContainer(*sc);
-  for (unsigned int i = 0 ; i < psc.getNumberOfSequences() ; i++) {
+  for (unsigned int i = 0; i < psc.getNumberOfSequences(); i++)
+  {
     if(psc.isIngroupMember(i)) psci->setAsIngroupMember(i);
     else {
       psci->setAsOutgroupMember(i);
@@ -467,11 +471,12 @@ PolymorphismSequenceContainer * PolymorphismSequenceContainerTools::get3Prime(co
   SiteSelection codss = MaseTools::getSiteSet(maseFileHeader,setName);
   unsigned int first = psc.getNumberOfSites()-1;
   //Check if the last codon is a STOP one
-  int c1 = psc.getSite(codss[codss.size()-3])->getValue(0);
-  int c2 = psc.getSite(codss[codss.size()-2])->getValue(0);
-  int c3 = psc.getSite(codss[codss.size()-1])->getValue(0);
+  int c1 = psc.getSite(codss[codss.size()-3]).getValue(0);
+  int c2 = psc.getSite(codss[codss.size()-2]).getValue(0);
+  int c3 = psc.getSite(codss[codss.size()-1]).getValue(0);
   if(ca->isStop(ca->getCodon(c1,c2,c3))) first = codss[codss.size()-1];
-  for(unsigned int i=first; i<psc.getNumberOfSites(); i++) {
+  for(unsigned int i = first; i < psc.getNumberOfSites(); i++)
+  {
     if(find(codss.begin(),codss.end(),i)==codss.end()) {
       ss.push_back(i);
     }

@@ -1,3 +1,7 @@
+23/06/09 Julien Dutheil
+* Code update for compatibility with seqlib. Changed pointers to refs when
+retrieving sequences.
+
 19/06/09 Sylvain Gaillard
 * Removed all 'using namespace' statement from header files
 

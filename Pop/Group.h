@@ -328,7 +328,7 @@ namespace bpp
        * @throw NullPointerException if there is no sequence container defined in the individual.
        * @throw SequenceNotFoundException if sequence_name is not found.
        */
-      const Sequence * getIndividualSequenceByName(unsigned int individual_position, const std::string & sequence_name) const
+      const Sequence& getIndividualSequenceByName(unsigned int individual_position, const std::string & sequence_name) const
         throw (Exception);
 
       /**
@@ -338,7 +338,7 @@ namespace bpp
        * @throw NullPointerException if there is no sequence container defined in the individual.
        * @throw SequenceNotFoundException if sequence_position is not found.
        */
-      const Sequence * getIndividualSequenceAtPosition(unsigned int individual_position, unsigned int sequence_position) const
+      const Sequence& getIndividualSequenceAtPosition(unsigned int individual_position, unsigned int sequence_position) const
         throw (Exception);
 
       /**
