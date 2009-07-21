@@ -1,7 +1,6 @@
 //
 // File PolymorphismMultiGContainer.h
-// Author : Sylvain Gaillard <yragael2001@yahoo.fr>
-// Last modification : Tuesday September 28 2004
+// Author : Sylvain Gaillard
 //
 
 /*
@@ -51,12 +50,10 @@
 #include "GeneralExceptions.h"
 
 // From STL
-#include <cmath>
 #include <string>
 #include <vector>
 #include <map>
 #include <set>
-#include <algorithm>
 
 namespace bpp
 {

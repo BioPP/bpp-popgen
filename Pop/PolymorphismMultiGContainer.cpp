@@ -2,7 +2,6 @@
 // File PolymorphismMultiGContainer.cpp
 // Author : Sylvain Gaillard
 //          Khalid Belkhir
-// Last modification : june 14 2006
 //
 
 /*
