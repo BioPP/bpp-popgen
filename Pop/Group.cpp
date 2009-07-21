@@ -241,14 +241,14 @@ const Date * Group::getIndividualDateAtPosition(unsigned int individual_position
   }
 }
 
-void Group::setIndividualCoordAtPosition(unsigned int individual_position, const Coord<double> & coord) throw (IndexOutOfBoundsException)
+void Group::setIndividualCoordAtPosition(unsigned int individual_position, const Point2D<double> & coord) throw (IndexOutOfBoundsException)
 {
   if (individual_position >= getNumberOfIndividuals())
     throw IndexOutOfBoundsException("Group::setIndividualCoordAtPosition: individual_position out of bounds.", individual_position, 0, getNumberOfIndividuals());
   _individuals[individual_position]->setCoord(coord);
 }
 
-const Coord<double> * Group::getIndividualCoordAtPosition(unsigned int individual_position) const throw (Exception)
+const Point2D<double> * Group::getIndividualCoordAtPosition(unsigned int individual_position) const throw (Exception)
 {
   if (individual_position >= getNumberOfIndividuals())
     throw IndexOutOfBoundsException("Group::getIndividualCoordAtPosition: individual_position out of bounds.", individual_position, 0, getNumberOfIndividuals());

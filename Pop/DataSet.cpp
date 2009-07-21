@@ -405,7 +405,7 @@ const Date * DataSet::getIndividualDateInGroup(unsigned int group_position, unsi
   }
 }
 
-void DataSet::setIndividualCoordInGroup(unsigned int group_position, unsigned int individual_position, const Coord<double> & coord) throw (IndexOutOfBoundsException)
+void DataSet::setIndividualCoordInGroup(unsigned int group_position, unsigned int individual_position, const Point2D<double> & coord) throw (IndexOutOfBoundsException)
 {
   if (group_position >= getNumberOfGroups())
     throw IndexOutOfBoundsException("DataSet::setIndividualCoordInGroup: group_position out of bounds.", group_position, 0, getNumberOfGroups());
@@ -417,7 +417,7 @@ void DataSet::setIndividualCoordInGroup(unsigned int group_position, unsigned in
   }
 }
 
-const Coord<double> * DataSet::getIndividualCoordInGroup(unsigned int group_position, unsigned int individual_position) const throw (Exception)
+const Point2D<double> * DataSet::getIndividualCoordInGroup(unsigned int group_position, unsigned int individual_position) const throw (Exception)
 {
   if (group_position >= getNumberOfGroups())
     throw IndexOutOfBoundsException("DataSet::getIndividualCoordInGroup: group_position out of bounds.", group_position, 0, getNumberOfGroups());

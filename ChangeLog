@@ -1,3 +1,8 @@
+21/07/09 Sylvain Gaillard
+* Removed Coord and CoordsTools classes (move to Utils/Point2D and
+Utils/Point2DTools)
+* Code update to use Point2D class instead of Coord class
+
 23/06/09 Julien Dutheil
 * Code update for compatibility with seqlib. Changed pointers to refs when
 retrieving sequences.

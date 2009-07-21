@@ -68,14 +68,14 @@ Individual::Individual(const string & id)
 
 Individual::Individual(const string & id,
     const Date & date,
-    const Coord<double> & coord,
+    const Point2D<double> & coord,
     Locality<double> * locality,
     const unsigned short sex)
 {
   _id = id;
   _sex = sex;
   _date = new Date(date);
-  _coord = new Coord<double>(coord);
+  _coord = new Point2D<double>(coord);
   _locality = locality;
   _sequences = NULL;
   _genotype = NULL;
@@ -219,16 +219,16 @@ bool Individual::hasDate() const
 }
 
 // Coord
-void Individual::setCoord(const Coord<double> & coord)
+void Individual::setCoord(const Point2D<double> & coord)
 {
   if (!hasCoord())
   {
-    _coord = new Coord<double>(coord);
+    _coord = new Point2D<double>(coord);
   }
   else if	(* _coord != coord)
   {
     delete _coord;
-    _coord = new Coord<double>(coord);
+    _coord = new Point2D<double>(coord);
   }
 }
 
@@ -236,19 +236,19 @@ void Individual::setCoord(const double x, const double y)
 {
   if (!hasCoord())
   {
-    _coord = new Coord<double>(x, y);
+    _coord = new Point2D<double>(x, y);
   }
   else if (this->getX() != x || this->getY() != y)
   {
     delete _coord;
-    _coord = new Coord<double>(x, y);
+    _coord = new Point2D<double>(x, y);
   }
 }
 
-const Coord<double> * Individual::getCoord() const throw(NullPointerException)
+const Point2D<double> * Individual::getCoord() const throw(NullPointerException)
 {
   if (hasCoord())
-    return new Coord<double>(* _coord);
+    return new Point2D<double>(* _coord);
   else
     throw(NullPointerException("Individual::getCoord: no coord associated to this individual."));
 }

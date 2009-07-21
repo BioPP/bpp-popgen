@@ -48,6 +48,7 @@
 
 // From Utils
 #include <Utils/Exceptions.h>
+#include <Utils/Point2D.h>
 #include <Utils/MapTools.h>
 
 // From PopGenLib (local)
@@ -345,7 +346,7 @@ namespace bpp
        * @throw IndexOutOfBoundsException if group_position excedes the number of groups.
        * @throw IndexOutOfBoundsException if individual_position excedes the number of individual in the group.
        */
-      void setIndividualCoordInGroup(unsigned int group_position, unsigned int individual_position, const Coord<double> & coord)
+      void setIndividualCoordInGroup(unsigned int group_position, unsigned int individual_position, const Point2D<double> & coord)
         throw (IndexOutOfBoundsException);
 
       /**
@@ -355,7 +356,7 @@ namespace bpp
        * @throw IndexOutOfBoundsException if individual_position excedes the number of individual in the group.
        * @throw NullPointerException if the individual has no coordinate.
        */
-      const Coord<double> * getIndividualCoordInGroup(unsigned int group_position, unsigned int individual_position) const
+      const Point2D<double> * getIndividualCoordInGroup(unsigned int group_position, unsigned int individual_position) const
         throw (Exception);
 
       /**

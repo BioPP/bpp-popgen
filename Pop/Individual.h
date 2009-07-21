@@ -45,6 +45,7 @@
 
 // From Utils
 #include <Utils/Clonable.h>
+#include <Utils/Point2D.h>
 #include <Utils/Exceptions.h>
 #include <Utils/TextTools.h>
 
@@ -56,7 +57,6 @@
 
 // From PopGenLib
 #include "Locality.h"
-#include "Coord.h"
 #include "Date.h"
 #include "MultilocusGenotype.h"
 #include "GeneralExceptions.h"
@@ -93,14 +93,14 @@ namespace bpp
        *
        * @param id The id of the Individual as a string.
        * @param date The date of the Individual as a Date object.
-       * @param coord The coordinates of the Individual as a Coord object.
+       * @param coord The coordinates of the Individual as a Point2D object.
        * @param locality The locality of the Individual as a pointer to a Locality
        * object.
        * @param sex The sex of the Individual as an unsigned short.
        */
       Individual(const std::string & id,
           const Date & date,
-          const Coord<double> & coord,
+          const Point2D<double> & coord,
           Locality<double> * locality,
           const unsigned short sex);
 
@@ -175,9 +175,9 @@ namespace bpp
       /**
        * @brief Set the coodinates of the Individual.
        *
-       * @param coord A Coord object.
+       * @param coord A Point2D object.
        */
-      void setCoord(const Coord<double> & coord);
+      void setCoord(const Point2D<double> & coord);
 
       /**
        * @brief Set the coordinates of the Individual.
@@ -190,10 +190,10 @@ namespace bpp
       /**
        * @brief Get the coordinates of the Induvidual.
        *
-       * @return A pointer toward a Coord object if the Individual has
+       * @return A pointer toward a Point2D object if the Individual has
        * coordinates. Otherwise throw a NullPointerException.
        */
-      const Coord<double> * getCoord() const throw(NullPointerException);
+      const Point2D<double> * getCoord() const throw(NullPointerException);
 
       /**
        * @brief Tell if this Individual has coordinates.
@@ -463,7 +463,7 @@ namespace bpp
       std::string _id;
       unsigned short _sex;
       Date * _date;
-      Coord<double> * _coord;
+      Point2D<double> * _coord;
       const Locality<double> * _locality;
       MapSequenceContainer * _sequences;
       MultilocusGenotype * _genotype;

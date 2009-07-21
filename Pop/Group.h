@@ -46,6 +46,7 @@
 
 // From Utils
 #include <Utils/Exceptions.h>
+#include <Utils/Point2D.h>
 
 // From SeqLib
 #include <Seq/VectorSequenceContainer.h>
@@ -280,7 +281,7 @@ namespace bpp
        *
        * @throw IndexOutOfBoundsException if individual_position excedes the number of individuals.
        */
-      void setIndividualCoordAtPosition(unsigned int individual_position, const Coord<double> & coord)
+      void setIndividualCoordAtPosition(unsigned int individual_position, const Point2D<double> & coord)
         throw (IndexOutOfBoundsException);
 
       /**
@@ -289,7 +290,7 @@ namespace bpp
        * @throw IndexOutOfBoundsException if individual_position excedes the number of individuals.
        * @throw NullPointerException if the individual has no coordinate.
        */
-      const Coord<double> * getIndividualCoordAtPosition(unsigned int individual_position) const
+      const Point2D<double> * getIndividualCoordAtPosition(unsigned int individual_position) const
         throw (Exception);
 
       /**

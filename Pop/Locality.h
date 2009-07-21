@@ -40,8 +40,11 @@
 #ifndef _LOCALITY_H_
 #define _LOCALITY_H_
 
-#include "Coord.h"
+// From std lib
 #include <string>
+
+// From Urils
+#include <Utils/Point2D.h>
 
 namespace bpp
 {
@@ -49,13 +52,13 @@ namespace bpp
   /**
    * @brief The Locality class.
    *
-   * This is a class derivated from the Coord class.
-   * It's a Coord with a name.
+   * This is a class derivated from the Point2D class.
+   * It's a Point2D with a name.
    *
    * @author Sylvain Gaillard
    */
   template <class T> class Locality:
-    public Coord<T>
+    public bpp::Point2D<T>
   {
     protected:
       std::string _name;
@@ -69,7 +72,7 @@ namespace bpp
        * @param y The latitude.
        */
       Locality<T>(const std::string name, const T x=0, const T y=0):
-        Coord<T>(x, y), _name(name) {}
+        bpp::Point2D<T>(x, y), _name(name) {}
 
       /**
        * @brief Build a new locality with name and coordinates.
@@ -77,8 +80,8 @@ namespace bpp
        * @param name The name of the locality.
        * @param coord The coordinates of the locality.
        */
-      Locality<T>(const std::string name, const Coord<T> & coord):
-        Coord<T>(coord), _name(name) {}
+      Locality<T>(const std::string name, const bpp::Point2D<T> & coord):
+        bpp::Point2D<T>(coord), _name(name) {}
 
       /**
        * @brief Destroy a locality.
@@ -98,7 +101,7 @@ namespace bpp
        */
       virtual bool operator== (const Locality<T> & locality) const
       {
-        return this->_x == locality.getX() && this->_y == locality.getY() && _name == locality._name;
+        return this->getX() == locality.getX() && this->getY() == locality.getY() && _name == locality._name;
       }
 
       /**

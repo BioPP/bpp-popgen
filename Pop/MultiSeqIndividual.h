@@ -48,6 +48,7 @@
 // From Utils
 #include <Utils/Clonable.h>
 #include <Utils/Exceptions.h>
+#include <Utils/Point2D.h>
 
 // From SeqLib
 #include <Seq/Sequence.h>
@@ -56,7 +57,6 @@
 
 // From PopGenLib
 #include "Locality.h"
-#include "Coord.h"
 #include "Date.h"
 #include "MultilocusGenotype.h"
 #include "GeneralExceptions.h"
@@ -69,7 +69,7 @@ namespace bpp
    *
    * <center><b>*** UNUSED CLASS ***</b></center>
    * This class is designed to store data on a single individual.
-   * This individual can store numerous sequence for each place. It was the first
+   * This individual can store numerous sequences for each place. It was the first
    * working implementation which manages sequences as a map of sequence container.
    * We have replaced it with a simplest individual with only one sequence per
    * locus.
@@ -102,7 +102,7 @@ namespace bpp
        */
       MultiSeqIndividual(const std::string & id,
           const Date & date,
-          const Coord<double> & coord,
+          const Point2D<double> & coord,
           Locality<double> * locality,
           const unsigned short sex);
 
@@ -177,9 +177,9 @@ namespace bpp
       /**
        * @brief Set the coodinates of the MultiSeqIndividual.
        *
-       * @param coord A Coord object.
+       * @param coord A Point2D object.
        */
-      void setCoord(const Coord<double> & coord);
+      void setCoord(const Point2D<double> & coord);
 
       /**
        * @brief Set the coordinates of the MultiSeqIndividual.
@@ -192,10 +192,10 @@ namespace bpp
       /**
        * @brief Get the coordinates of the Induvidual.
        *
-       * @return A pointer toward a Coord object if the MultiSeqIndividual has
+       * @return A pointer toward a Point2D object if the MultiSeqIndividual has
        * coordinates. Otherwise throw a NullPointerException.
        */
-      const Coord<double> * getCoord() const throw(NullPointerException);
+      const Point2D<double> * getCoord() const throw(NullPointerException);
 
       /**
        * @brief Tell if this MultiSeqIndividual has coordinates.
@@ -360,7 +360,7 @@ namespace bpp
       std::string _id;
       unsigned short _sex;
       Date * _date;
-      Coord<double> * _coord;
+      Point2D<double> * _coord;
       const Locality<double> * _locality;
       std::map<std::string,VectorSequenceContainer *> _sequences;
       MultilocusGenotype * _genotype;

@@ -37,8 +37,6 @@ AnalyzedLoci.h\
 AnalyzedSequences.h\
 BasicAlleleInfo.h\
 BiAlleleMonolocusGenotype.h\
-Coord.h\
-CoordsTools.h\
 DarwinDon.h\
 DarwinVarSingle.h\
 DataSet.h\
