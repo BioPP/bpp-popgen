@@ -92,7 +92,7 @@ namespace bpp
        * @name The Clonable interface
        * @{
        */
-      Clonable * clone() const;
+      BasicAlleleInfo* clone() const { return new BasicAlleleInfo(*this); }
       /** @} */
 
       /**

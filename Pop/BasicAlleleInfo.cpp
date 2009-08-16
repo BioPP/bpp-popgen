@@ -75,11 +75,6 @@ bool BasicAlleleInfo::operator!= (const BasicAlleleInfo & allele) const
   return !(_id == allele.getId());
 }
 
-Clonable * BasicAlleleInfo::clone() const
-{
-  return new BasicAlleleInfo(* this);
-}
-
 void BasicAlleleInfo::setId(const string & allele_id)
 {
   _id = allele_id;
