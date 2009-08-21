@@ -41,7 +41,7 @@ retrieving sequences.
 * Extend main page doxygen documentation.
 * A bit of cleaning.
 
-07/01/09 Céline Scornavacca & Julien Dutheil
+07/01/09 CÃ©line Scornavacca & Julien Dutheil
 * Bug fixed in clone method of PolymorphismSequenceContainer.
 
 21/07/08 -*- Version 1.3.1 -*-
@@ -76,7 +76,7 @@ retrieving sequences.
 28/08/06 -*- Version 1.1.0 -*-
 
 21/06/06 Khalid Belkhir
-* Nouvelles fonctionnalités pour les permutations.
+* Nouvelles fonctionnalitÃ©s pour les permutations.
 * Ajout Fstat multilocus.
 * Construction de matrices de distances.
 * Correction de bugs
