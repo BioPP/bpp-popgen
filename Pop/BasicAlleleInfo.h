@@ -63,12 +63,12 @@ namespace bpp
        *
        * @param id The identity number of the allele.
        */
-      BasicAlleleInfo(const string & id);
+      BasicAlleleInfo(const std::string& id);
 
       /**
        * @brief The BasicAlleleInfo copy constructor.
        */
-      BasicAlleleInfo(const BasicAlleleInfo &allele);
+      BasicAlleleInfo(const BasicAlleleInfo& allele);
 
       virtual ~BasicAlleleInfo();
 
@@ -76,17 +76,17 @@ namespace bpp
       /**
        * @brief The assignation operator.
        */
-      virtual BasicAlleleInfo & operator= (const BasicAlleleInfo & allele);
+      virtual BasicAlleleInfo& operator= (const BasicAlleleInfo& allele);
 
       /**
        * @brief The == operator.
        */
-      virtual bool operator== (const BasicAlleleInfo & allele) const;
+      virtual bool operator== (const BasicAlleleInfo& allele) const;
 
       /**
        * @brief The != operator.
        */
-      virtual bool operator!= (const BasicAlleleInfo & allele) const;
+      virtual bool operator!= (const BasicAlleleInfo& allele) const;
 
       /**
        * @name The Clonable interface
@@ -98,12 +98,12 @@ namespace bpp
       /**
        * @name The AlleleInfo interface
        */
-      void setId(const string & allele_id);
-      string getId() const;
+      void setId(const std::string& allele_id);
+      std::string getId() const;
       /** @} */
 
   private:
-      string _id;
+      std::string id_;
 };
 
 } //end of namespace bpp;

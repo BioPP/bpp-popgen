@@ -43,14 +43,14 @@ using namespace bpp;
 
 //** Class constructor: *******************************************************/
 
-BasicAlleleInfo::BasicAlleleInfo(const string & id)
+BasicAlleleInfo::BasicAlleleInfo(const std::string& id)
 {
-  _id = id;
+  id_ = id;
 }
 
-BasicAlleleInfo::BasicAlleleInfo(const BasicAlleleInfo &allele)
+BasicAlleleInfo::BasicAlleleInfo(const BasicAlleleInfo& allele)
 {
-  _id = allele.getId();
+  id_ = allele.getId();
 }
 
 //** Class destructor: *******************************************************/
@@ -59,29 +59,29 @@ BasicAlleleInfo::~BasicAlleleInfo() {}
 
 //** Other methodes: *********************************************************/
 
-BasicAlleleInfo & BasicAlleleInfo::operator= (const BasicAlleleInfo & allele)
+BasicAlleleInfo& BasicAlleleInfo::operator= (const BasicAlleleInfo& allele)
 {
-  _id = allele.getId();
+  id_ = allele.getId();
   return * this;
 }
 
-bool BasicAlleleInfo::operator== (const BasicAlleleInfo & allele) const
+bool BasicAlleleInfo::operator== (const BasicAlleleInfo& allele) const
 {
-  return (_id == allele.getId());
+  return (id_ == allele.getId());
 }
 
-bool BasicAlleleInfo::operator!= (const BasicAlleleInfo & allele) const
+bool BasicAlleleInfo::operator!= (const BasicAlleleInfo& allele) const
 {
-  return !(_id == allele.getId());
+  return !(id_ == allele.getId());
 }
 
-void BasicAlleleInfo::setId(const string & allele_id)
+void BasicAlleleInfo::setId(const std::string& allele_id)
 {
-  _id = allele_id;
+  id_ = allele_id;
 }
 
-string BasicAlleleInfo::getId() const
+std::string BasicAlleleInfo::getId() const
 {
-  return _id;
+  return id_;
 }
 
