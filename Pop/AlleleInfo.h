@@ -74,6 +74,14 @@ namespace bpp
        * @brief Get the identitier of the allele.
        */
       virtual std::string getId() const = 0;
+
+      /**
+       * @name The Clonable interface
+       *
+       * @{
+       */
+      AlleleInfo* clone() const  = 0;
+      /** @} */
   };
 
 } //end of namespace bpp;
