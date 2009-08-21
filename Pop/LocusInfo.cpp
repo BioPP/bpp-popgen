@@ -44,6 +44,7 @@
 #include "GeneralExceptions.h"
 
 using namespace bpp;
+using namespace std;
 
 unsigned int LocusInfo::HAPLODIPLOID = 0;
 unsigned int LocusInfo::HAPLOID = 1;
@@ -52,19 +53,19 @@ unsigned int LocusInfo::UNKNOWN = 9999;
 
 //** Class constructor: *******************************************************/
 
-LocusInfo::LocusInfo(const string &name, const unsigned int ploidy)
+LocusInfo::LocusInfo(const std::string& name, const unsigned int ploidy)
 {
-  _name = name;
-  _ploidy = ploidy;
+  name_ = name;
+  ploidy_ = ploidy;
 }
 
-LocusInfo::LocusInfo(const LocusInfo & locus_info)
+LocusInfo::LocusInfo(const LocusInfo& locus_info)
 {
-  _name = locus_info.getName();
-  _ploidy = locus_info.getPloidy();
+  name_ = locus_info.getName();
+  ploidy_ = locus_info.getPloidy();
   for (unsigned int i = 0 ; i < locus_info.getNumberOfAlleles() ; i++) {
-    Clonable * tmp_allele = locus_info.getAlleleInfoByKey(i)->clone();
-    _alleles.push_back(dynamic_cast<AlleleInfo *>(tmp_allele));
+    AlleleInfo* tmp_allele = locus_info.getAlleleInfoByKey(i)->clone();
+    alleles_.push_back(tmp_allele);
   }
 }
 
@@ -72,68 +73,68 @@ LocusInfo::LocusInfo(const LocusInfo & locus_info)
 
 LocusInfo::~LocusInfo()
 {
-  for(unsigned int i = 0; i < _alleles.size(); i++)
-    delete _alleles[i];
-  _alleles.clear();
+  for(unsigned int i = 0; i < alleles_.size(); i++)
+    delete alleles_[i];
+  alleles_.clear();
 }
 
 //** Other methodes: *********************************************************/
 // Name
-string LocusInfo::getName() const
+std::string LocusInfo::getName() const
 {
-  return _name;
+  return name_;
 }
 
 // Ploidie
 unsigned int LocusInfo::getPloidy() const
 {
-  return _ploidy;
+  return ploidy_;
 }
 
 // AlleleInfos
-void LocusInfo::addAlleleInfo(const AlleleInfo &allele) throw (BadIdentifierException)
+void LocusInfo::addAlleleInfo(const AlleleInfo& allele) throw (BadIdentifierException)
 {
   // Check if the allele id is not already in use
-  for (unsigned int i = 0 ; i < _alleles.size() ; i++)
-    if (_alleles[i]->getId() == allele.getId())
+  for (unsigned int i = 0 ; i < alleles_.size() ; i++)
+    if (alleles_[i]->getId() == allele.getId())
       throw BadIdentifierException("LocusInfo::addAlleleInfo: Id already in use.",allele.getId());
-  _alleles.push_back(dynamic_cast<AlleleInfo *>(allele.clone()));
+  alleles_.push_back(allele.clone());
 }
 
-  AlleleInfo * LocusInfo::getAlleleInfoById(const string & id) const
+  AlleleInfo* LocusInfo::getAlleleInfoById(const std::string& id) const
 throw (AlleleNotFoundException)
 {
-  for (unsigned int i = 0; i < _alleles.size(); i++)
-    if (_alleles[i]->getId() == id)
-      return _alleles[i];
+  for (unsigned int i = 0; i < alleles_.size(); i++)
+    if (alleles_[i]->getId() == id)
+      return alleles_[i];
   throw AlleleNotFoundException("LocusInfo::getAlleleInfoById: AlleleInfo id unknown.", id);
 }
 
-AlleleInfo * LocusInfo::getAlleleInfoByKey(unsigned int key) const throw (IndexOutOfBoundsException)
+AlleleInfo* LocusInfo::getAlleleInfoByKey(unsigned int key) const throw (IndexOutOfBoundsException)
 {
-  if (key >= _alleles.size())
-    throw IndexOutOfBoundsException("LocusInfo::getAlleleInfoByKey: key out of bounds.", key, 0, _alleles.size());
-  return _alleles[key];
+  if (key >= alleles_.size())
+    throw IndexOutOfBoundsException("LocusInfo::getAlleleInfoByKey: key out of bounds.", key, 0, alleles_.size());
+  return alleles_[key];
 }
 
-  unsigned int LocusInfo::getAlleleInfoKey(const string & id) const
+  unsigned int LocusInfo::getAlleleInfoKey(const std::string& id) const
 throw (AlleleNotFoundException)
 {
-  for(unsigned int i = 0; i < _alleles.size(); i++)
-    if (_alleles[i]->getId() == id)
+  for(unsigned int i = 0; i < alleles_.size(); i++)
+    if (alleles_[i]->getId() == id)
       return i;
   throw AlleleNotFoundException("LocusInfo::getAlleleInfoKey: AlleleInfo id not found.", id);
 }
 
 unsigned int LocusInfo::getNumberOfAlleles() const
 {
-  return _alleles.size();
+  return alleles_.size();
 }
 
 void LocusInfo::clear()
 {
-  for(unsigned int i = 0; i < _alleles.size(); i++)
-    delete _alleles[i];
-  _alleles.clear();
+  for(unsigned int i = 0; i < alleles_.size(); i++)
+    delete alleles_[i];
+  alleles_.clear();
 }
 

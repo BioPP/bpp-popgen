@@ -82,7 +82,7 @@ namespace bpp
       /**
        * @brief Copy constructor.
        */
-      LocusInfo(const LocusInfo & locus_info);
+      LocusInfo(const LocusInfo& locus_info);
 
       /**
        * @brief Destroy the LocusInfo.
@@ -107,7 +107,7 @@ namespace bpp
        *
        * @throw BadIdentifierException if the AlleleInfo's id already exists.
        */
-      void addAlleleInfo(const AlleleInfo &allele)
+      void addAlleleInfo(const AlleleInfo& allele)
         throw (BadIdentifierException);
 
       /**
@@ -115,7 +115,7 @@ namespace bpp
        *
        * @throw AlleleNotFoundException if the id is not found.
        */
-      AlleleInfo * getAlleleInfoById(const std::string & id) const
+      AlleleInfo* getAlleleInfoById(const std::string& id) const
         throw (AlleleNotFoundException);
 
       /**
@@ -123,7 +123,7 @@ namespace bpp
        *
        * @throw IndexOutOfBoundsException if key excedes the number of alleles.
        */
-      AlleleInfo * getAlleleInfoByKey(unsigned int key) const
+      AlleleInfo* getAlleleInfoByKey(unsigned int key) const
         throw (IndexOutOfBoundsException);
 
       /**
@@ -131,7 +131,7 @@ namespace bpp
        *
        * @throw AlleleNotFoundException if the AlleleInfo's id is not found.
        */
-      unsigned int getAlleleInfoKey(const std::string & id) const
+      unsigned int getAlleleInfoKey(const std::string& id) const
         throw (AlleleNotFoundException);
 
       /**
@@ -145,9 +145,9 @@ namespace bpp
       void clear();
 
     protected:
-      std::string _name;
-      unsigned int _ploidy;
-      std::vector <AlleleInfo *> _alleles;
+      std::string name_;
+      unsigned int ploidy_;
+      std::vector<AlleleInfo*> alleles_;
   };
 
 } //end of namespace bpp;
