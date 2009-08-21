@@ -94,6 +94,7 @@ set_target_properties(bpppopgen-shared
 target_link_libraries(bpppopgen-shared ${LIBS})
 
 # Install libs
+install(TARGETS bpppopgen-static DESTINATION lib)
 install(TARGETS bpppopgen-shared DESTINATION lib)
 
 # Install headers
