@@ -75,7 +75,7 @@ namespace bpp
       /**
        * @brief Copy constructor.
        */
-      BiAlleleMonolocusGenotype(const BiAlleleMonolocusGenotype & bmg);
+      BiAlleleMonolocusGenotype(const BiAlleleMonolocusGenotype& bmg);
 
       /**
        * @brief Destroy the BiAlleleMonolocusGenotype.
@@ -86,12 +86,12 @@ namespace bpp
       /**
        * @brief The affectation operator.
        */
-      BiAlleleMonolocusGenotype & operator= (const BiAlleleMonolocusGenotype & bmg);
+      BiAlleleMonolocusGenotype& operator= (const BiAlleleMonolocusGenotype& bmg);
 
       /**
        * @brief The == operator.
        */
-      bool operator== (const BiAlleleMonolocusGenotype & bmg) const;
+      bool operator== (const BiAlleleMonolocusGenotype& bmg) const;
 
       /**
        * @brief Get the first allele index.
@@ -121,10 +121,10 @@ namespace bpp
        *
        * @{
        */
-      Clonable * clone() const;
-      /** @} **/
+      BiAlleleMonolocusGenotype* clone() const;
+      /** @} */
     protected:
-      std::vector<unsigned int> _allele_index;
+      std::vector<unsigned int> allele_index_;
   };
 
 } //end of namespace bpp;

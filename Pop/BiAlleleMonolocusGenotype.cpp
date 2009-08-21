@@ -40,6 +40,7 @@
 #include "BiAlleleMonolocusGenotype.h"
 
 using namespace bpp;
+using namespace std;
 
 //** Class constructor: *******************************************************/
 
@@ -47,67 +48,67 @@ BiAlleleMonolocusGenotype::BiAlleleMonolocusGenotype(
     unsigned int first_allele_index,
     unsigned int second_allele_index)
 {
-  _allele_index.push_back(first_allele_index);
-  _allele_index.push_back(second_allele_index);
+  allele_index_.push_back(first_allele_index);
+  allele_index_.push_back(second_allele_index);
 }
 
-BiAlleleMonolocusGenotype::BiAlleleMonolocusGenotype(vector<unsigned int> allele_index) throw (BadIntegerException)
+BiAlleleMonolocusGenotype::BiAlleleMonolocusGenotype(std::vector<unsigned int> allele_index) throw (BadIntegerException)
 {
   if (allele_index.size() != 2)
     throw BadIntegerException("BiAlleleMonolocusGenotype::BiAlleleMonolocusGenotype: allele_index must containes two values.", allele_index.size());
-  _allele_index.push_back(allele_index[0]);
-  _allele_index.push_back(allele_index[1]);
+  allele_index_.push_back(allele_index[0]);
+  allele_index_.push_back(allele_index[1]);
 }
 
-BiAlleleMonolocusGenotype::BiAlleleMonolocusGenotype(const BiAlleleMonolocusGenotype & bmg)
+BiAlleleMonolocusGenotype::BiAlleleMonolocusGenotype(const BiAlleleMonolocusGenotype& bmg)
 {
   for (unsigned int i=0 ; i<2 ; i++)
-    _allele_index.push_back(bmg.getAlleleIndex()[i]);
+    allele_index_.push_back(bmg.getAlleleIndex()[i]);
 }
 
 //** Class destructor: ********************************************************/
 
 BiAlleleMonolocusGenotype::~BiAlleleMonolocusGenotype()
 {
-  _allele_index.clear();
+  allele_index_.clear();
 }
 
 //** Other methodes: **********************************************************/
 
-BiAlleleMonolocusGenotype & BiAlleleMonolocusGenotype::operator= (const BiAlleleMonolocusGenotype & bmg)
+BiAlleleMonolocusGenotype& BiAlleleMonolocusGenotype::operator= (const BiAlleleMonolocusGenotype& bmg)
 {
   for(unsigned int i = 0; i < 2; i++)
-    _allele_index.push_back(bmg.getAlleleIndex()[i]);
+    allele_index_.push_back(bmg.getAlleleIndex()[i]);
   return * this;
 }
 
-bool BiAlleleMonolocusGenotype::operator== (const BiAlleleMonolocusGenotype & bmg) const
+bool BiAlleleMonolocusGenotype::operator== (const BiAlleleMonolocusGenotype& bmg) const
 {
-  return ((_allele_index[0] == bmg.getAlleleIndex()[0] && _allele_index[1] == bmg.getAlleleIndex()[1])
-      || (_allele_index[0] == bmg.getAlleleIndex()[1] && _allele_index[1] == bmg.getAlleleIndex()[0]));
+  return ((allele_index_[0] == bmg.getAlleleIndex()[0] && allele_index_[1] == bmg.getAlleleIndex()[1])
+      || (allele_index_[0] == bmg.getAlleleIndex()[1] && allele_index_[1] == bmg.getAlleleIndex()[0]));
 }
 
 unsigned int BiAlleleMonolocusGenotype::getFirstAlleleIndex() const
 {
-  return _allele_index[0];
+  return allele_index_[0];
 }
 
 unsigned int BiAlleleMonolocusGenotype::getSecondAlleleIndex() const
 {
-  return _allele_index[1];
+  return allele_index_[1];
 }
 
 bool BiAlleleMonolocusGenotype::isHomozygous() const
 {
-  return (_allele_index[0] == _allele_index[1]);
+  return (allele_index_[0] == allele_index_[1]);
 }
 
-vector<unsigned int> BiAlleleMonolocusGenotype::getAlleleIndex() const
+std::vector<unsigned int> BiAlleleMonolocusGenotype::getAlleleIndex() const
 {
-  return _allele_index;
+  return allele_index_;
 }
 
-Clonable * BiAlleleMonolocusGenotype::clone() const
+BiAlleleMonolocusGenotype* BiAlleleMonolocusGenotype::clone() const
 {
   return new BiAlleleMonolocusGenotype(* this);
 }
