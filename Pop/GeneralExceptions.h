@@ -40,6 +40,9 @@
 #ifndef _GENERALEXCEPTIONS_H_
 #define _GENERALEXCEPTIONS_H_
 
+// From STL
+#include <string>
+
 // From Utils
 #include <Utils/Exceptions.h>
 
@@ -65,20 +68,20 @@ namespace bpp
       /**
        * @brief Build the exception with a numerical identifier.
        */
-      BadIdentifierException(const char *text, const unsigned int id);
+      BadIdentifierException(const char* text, const unsigned int id);
       /**
        * @brief Build the exception with a numerical identifier.
        */
-      BadIdentifierException(const string &text, const unsigned int id);
+      BadIdentifierException(const std::string& text, const unsigned int id);
 
       /**
        * @brief Build the exception with a textual identifier.
        */
-      BadIdentifierException(const char *text, const string &id);
+      BadIdentifierException(const char* text, const std::string& id);
       /**
        * @brief Build the exception with a textual identifier.
        */
-      BadIdentifierException(const string &text, const string &id);
+      BadIdentifierException(const std::string& text, const std::string& id);
 
       // Class destructor
       ~BadIdentifierException() throw();
@@ -87,10 +90,10 @@ namespace bpp
       /**
        * @brief Return the value of the identifier as a string.
        */
-      virtual const string getIdentifier() const;
+      virtual const std::string getIdentifier() const;
 
     protected:
-      const string _id;
+      const std::string id_;
   };
 
   //*****************************************************************************
@@ -106,22 +109,22 @@ namespace bpp
       /**
        * @brief Build the exception with a numerical identifier.
        */
-      LocusNotFoundException(const char *text, const unsigned int id);
+      LocusNotFoundException(const char* text, const unsigned int id);
 
       /**
        * @brief Build the exception with a numerical identifier.
        */
-      LocusNotFoundException(const string &text, const unsigned int id);
+      LocusNotFoundException(const std::string& text, const unsigned int id);
 
       /**
        * @brief Build the exception with a textual identifier.
        */
-      LocusNotFoundException(const char *text, const string &id);
+      LocusNotFoundException(const char* text, const std::string& id);
 
       /**
        * @brief Build the exception with a textual identifier.
        */
-      LocusNotFoundException(const string &text, const string &id);
+      LocusNotFoundException(const std::string& text, const std::string& id);
 
       // Class destructor
       ~LocusNotFoundException() throw();
@@ -130,7 +133,7 @@ namespace bpp
       /**
        * @brief Return the value of the identifier as a string.
        */
-      virtual const string getIdentifier() const;
+      virtual const std::string getIdentifier() const;
   };
 
   //*****************************************************************************
@@ -146,22 +149,22 @@ namespace bpp
       /**
        * @brief Build the exception with a numerical identifier.
        */
-      AlleleNotFoundException(const char *text, const unsigned int id);
+      AlleleNotFoundException(const char* text, const unsigned int id);
 
       /**
        * @brief Build the exception with a numerical identifier.
        */
-      AlleleNotFoundException(const string &text, const unsigned int id);
+      AlleleNotFoundException(const std::string& text, const unsigned int id);
 
       /**
        * @brief Build the exception with a textual identifier.
        */
-      AlleleNotFoundException(const char *text, const string &id);
+      AlleleNotFoundException(const char* text, const std::string& id);
 
       /**
        * @brief Build the exception with a textual identifier.
        */
-      AlleleNotFoundException(const string &text, const string &id);
+      AlleleNotFoundException(const std::string& text, const std::string& id);
 
       // Class destructor
       ~AlleleNotFoundException() throw();
@@ -170,7 +173,7 @@ namespace bpp
       /**
        * @brief Return the value of the identifier as a string.
        */
-      virtual const string getIdentifier() const;
+      virtual const std::string getIdentifier() const;
   };
 
   //*****************************************************************************
@@ -186,22 +189,22 @@ namespace bpp
       /**
        * @brief Build the exception with a numerical identifier.
        */
-      LocalityNotFoundException(const char *text, const unsigned int id);
+      LocalityNotFoundException(const char* text, const unsigned int id);
 
       /**
        * @brief Build the exception with a numerical identifier.
        */
-      LocalityNotFoundException(const string &text, const unsigned int id);
+      LocalityNotFoundException(const std::string& text, const unsigned int id);
 
       /**
        * @brief Build the exception with a textual identifier.
        */
-      LocalityNotFoundException(const char *text, const string &id);
+      LocalityNotFoundException(const char* text, const std::string& id);
 
       /**
        * @brief Build the exception with a textual identifier.
        */
-      LocalityNotFoundException(const string &text, const string &id);
+      LocalityNotFoundException(const std::string& text, const std::string& id);
 
       // Class destructor
       ~LocalityNotFoundException() throw();
@@ -226,22 +229,22 @@ namespace bpp
       /**
        * @brief Build the exception with a numerical identifier.
        */
-      IndividualNotFoundException(const char *text, const unsigned int id);
+      IndividualNotFoundException(const char* text, const unsigned int id);
 
       /**
        * @brief Build the exception with a numerical identifier.
        */
-      IndividualNotFoundException(const string &text, const unsigned int id);
+      IndividualNotFoundException(const std::string& text, const unsigned int id);
 
       /**
        * @brief Build the exception with a textual identifier.
        */
-      IndividualNotFoundException(const char *text, const string &id);
+      IndividualNotFoundException(const char* text, const std::string& id);
 
       /**
        * @brief Build the exception with a textual identifier.
        */
-      IndividualNotFoundException(const string &text, const string &id);
+      IndividualNotFoundException(const std::string& text, const std::string& id);
 
       // Class destructor
       ~IndividualNotFoundException() throw();
@@ -250,7 +253,7 @@ namespace bpp
       /**
        * @brief Return the value of the identifier as a string.
        */
-      virtual const string getIdentifier() const;
+      virtual const std::string getIdentifier() const;
   };
 
   //*****************************************************************************
@@ -266,22 +269,22 @@ namespace bpp
       /**
        * @brief Build the exception with a numerical identifier.
        */
-      GroupNotFoundException(const char *text, const unsigned int id);
+      GroupNotFoundException(const char* text, const unsigned int id);
 
       /**
        * @brief Build the exception with a numerical identifier.
        */
-      GroupNotFoundException(const string &text, const unsigned int id);
+      GroupNotFoundException(const std::string& text, const unsigned int id);
 
       /**
        * @brief Build the exception with a textual identifier.
        */
-      GroupNotFoundException(const char *text, const string &id);
+      GroupNotFoundException(const char* text, const std::string& id);
 
       /**
        * @brief Build the exception with a textual identifier.
        */
-      GroupNotFoundException(const string &text, const string &id);
+      GroupNotFoundException(const std::string& text, const std::string& id);
 
       // Class destructor
       ~GroupNotFoundException() throw();
@@ -290,7 +293,7 @@ namespace bpp
       /**
        * @brief Return the value of the identifier as a string.
        */
-      virtual const string getIdentifier() const;
+      virtual const std::string getIdentifier() const;
   };
 
 } //end of namespace bpp;

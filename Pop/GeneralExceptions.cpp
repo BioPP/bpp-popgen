@@ -43,172 +43,173 @@
 #include <Utils/TextTools.h>
 
 using namespace bpp;
+using namespace std;
 
 //** BadIdentifierException **************************************************/
 
-BadIdentifierException::BadIdentifierException(const char *text,
+BadIdentifierException::BadIdentifierException(const char* text,
 		const unsigned int id): Exception("BadIdentifierException: " +
 			string(text) + "(" + TextTools::toString(id) + ")"),
-			_id(TextTools::toString(id)) {}
+			id_(TextTools::toString(id)) {}
 			
-BadIdentifierException::BadIdentifierException(const string &text,
+BadIdentifierException::BadIdentifierException(const std::string& text,
 		const unsigned int id): Exception("BadIdentifierException: " +
 			text + "(" + TextTools::toString(id) + ")"),
-			_id(TextTools::toString(id)) {}
+			id_(TextTools::toString(id)) {}
 
-BadIdentifierException::BadIdentifierException(const char *text,
-		const string &id): Exception("BadIdentifierException: " + string(text) +
+BadIdentifierException::BadIdentifierException(const char* text,
+		const std::string& id): Exception("BadIdentifierException: " + string(text) +
 			"(" + id + ")"),
-			_id(id) {}
+			id_(id) {}
 
-BadIdentifierException::BadIdentifierException(const string &text,
-		const string &id): Exception("BadIdentifierException: " + text +
+BadIdentifierException::BadIdentifierException(const std::string& text,
+		const std::string& id): Exception("BadIdentifierException: " + text +
 			"(" + id + ")"),
-			_id(id) {}
+			id_(id) {}
 			
 BadIdentifierException::~BadIdentifierException() throw() {}
 
-const string BadIdentifierException::getIdentifier() const {
-	return _id;
+const std::string BadIdentifierException::getIdentifier() const {
+	return id_;
 }
 
 //** LocusNotFoundException **************************************************/
 
-LocusNotFoundException::LocusNotFoundException(const char *text,
+LocusNotFoundException::LocusNotFoundException(const char* text,
 		const unsigned int id): BadIdentifierException("LocusNotFoundException: " +
 			string(text) + "(" + TextTools::toString(id) + ")",
 			id) {} 
 			
-LocusNotFoundException::LocusNotFoundException(const string &text,
+LocusNotFoundException::LocusNotFoundException(const std::string& text,
 		const unsigned int id): BadIdentifierException("LocusNotFoundException: " +
 			text + "(" + TextTools::toString(id) + ")",
 			id) {}
 
-LocusNotFoundException::LocusNotFoundException(const char *text,
-		const string &id): BadIdentifierException("LocusNotFoundException: " + string(text) +
+LocusNotFoundException::LocusNotFoundException(const char* text,
+		const std::string& id): BadIdentifierException("LocusNotFoundException: " + string(text) +
 			"(" + id + ")",
 			id) {}
 
-LocusNotFoundException::LocusNotFoundException(const string &text,
-		const string &id): BadIdentifierException("LocusNotFoundException: " + text +
+LocusNotFoundException::LocusNotFoundException(const std::string& text,
+		const std::string& id): BadIdentifierException("LocusNotFoundException: " + text +
 			"(" + id + ")",
 			id) {}
 			
 LocusNotFoundException::~LocusNotFoundException() throw() {}
 
-const string LocusNotFoundException::getIdentifier() const {
+const std::string LocusNotFoundException::getIdentifier() const {
 	return BadIdentifierException::getIdentifier();
 }
 
 //** AlleleNotFoundException **************************************************/
 
-AlleleNotFoundException::AlleleNotFoundException(const char *text,
+AlleleNotFoundException::AlleleNotFoundException(const char* text,
 		const unsigned int id): BadIdentifierException("AlleleNotFoundException: " +
 			string(text) + "(" + TextTools::toString(id) + ")",
 			id) {}
 			
-AlleleNotFoundException::AlleleNotFoundException(const string &text,
+AlleleNotFoundException::AlleleNotFoundException(const std::string& text,
 		const unsigned int id): BadIdentifierException("AlleleNotFoundException: " +
 			text + "(" + TextTools::toString(id) + ")",
 			id) {}
 
-AlleleNotFoundException::AlleleNotFoundException(const char *text,
-		const string &id): BadIdentifierException("AlleleNotFoundException: " + string(text) +
+AlleleNotFoundException::AlleleNotFoundException(const char* text,
+		const std::string& id): BadIdentifierException("AlleleNotFoundException: " + string(text) +
 			"(" + id + ")",
 			id) {}
 
-AlleleNotFoundException::AlleleNotFoundException(const string &text,
-		const string &id): BadIdentifierException("AlleleNotFoundException: " + text +
+AlleleNotFoundException::AlleleNotFoundException(const std::string& text,
+		const std::string& id): BadIdentifierException("AlleleNotFoundException: " + text +
 			"(" + id + ")",
 			id) {}
 			
 AlleleNotFoundException::~AlleleNotFoundException() throw() {}
 
-const string AlleleNotFoundException::getIdentifier() const {
+const std::string AlleleNotFoundException::getIdentifier() const {
 	return BadIdentifierException::getIdentifier();
 }
 
 //** LocalityNotFoundException **************************************************/
 
-LocalityNotFoundException::LocalityNotFoundException(const char *text,
+LocalityNotFoundException::LocalityNotFoundException(const char* text,
 		const unsigned int id): BadIdentifierException("LocalityNotFoundException: " +
 			string(text) + "(" + TextTools::toString(id) + ")",
 			id) {}
 			
-LocalityNotFoundException::LocalityNotFoundException(const string &text,
+LocalityNotFoundException::LocalityNotFoundException(const std::string& text,
 		const unsigned int id): BadIdentifierException("LocalityNotFoundException: " +
 			text + "(" + TextTools::toString(id) + ")",
 			id) {}
 
-LocalityNotFoundException::LocalityNotFoundException(const char *text,
-		const string &id): BadIdentifierException("LocalityNotFoundException: " + string(text) +
+LocalityNotFoundException::LocalityNotFoundException(const char* text,
+		const std::string& id): BadIdentifierException("LocalityNotFoundException: " + string(text) +
 			"(" + id + ")",
 			id) {}
 
-LocalityNotFoundException::LocalityNotFoundException(const string &text,
-		const string &id): BadIdentifierException("LocalityNotFoundException: " + text +
+LocalityNotFoundException::LocalityNotFoundException(const std::string& text,
+		const std::string& id): BadIdentifierException("LocalityNotFoundException: " + text +
 			"(" + id + ")",
 			id) {}
 			
 LocalityNotFoundException::~LocalityNotFoundException() throw() {}
 
-const string LocalityNotFoundException::getIdentifier() const {
+const std::string LocalityNotFoundException::getIdentifier() const {
 	return BadIdentifierException::getIdentifier();
 }
 
 //** IndividualNotFoundException **************************************************/
 
-IndividualNotFoundException::IndividualNotFoundException(const char *text,
+IndividualNotFoundException::IndividualNotFoundException(const char* text,
 		const unsigned int id): BadIdentifierException("IndividualNotFoundException: " +
 			string(text) + "(" + TextTools::toString(id) + ")",
 			id) {}
 			
-IndividualNotFoundException::IndividualNotFoundException(const string &text,
+IndividualNotFoundException::IndividualNotFoundException(const std::string& text,
 		const unsigned int id): BadIdentifierException("IndividualNotFoundException: " +
 			text + "(" + TextTools::toString(id) + ")",
 			id) {}
 
-IndividualNotFoundException::IndividualNotFoundException(const char *text,
-		const string &id): BadIdentifierException("IndividualNotFoundException: " + string(text) +
+IndividualNotFoundException::IndividualNotFoundException(const char* text,
+		const std::string& id): BadIdentifierException("IndividualNotFoundException: " + string(text) +
 			"(" + id + ")",
 			id) {}
 
-IndividualNotFoundException::IndividualNotFoundException(const string &text,
-		const string &id): BadIdentifierException("IndividualNotFoundException: " + text +
+IndividualNotFoundException::IndividualNotFoundException(const std::string& text,
+		const std::string& id): BadIdentifierException("IndividualNotFoundException: " + text +
 			"(" + id + ")",
 			id) {}
 			
 IndividualNotFoundException::~IndividualNotFoundException() throw() {}
 
-const string IndividualNotFoundException::getIdentifier() const {
+const std::string IndividualNotFoundException::getIdentifier() const {
 	return BadIdentifierException::getIdentifier();
 }
 
 //** GroupNotFoundException **************************************************/
 
-GroupNotFoundException::GroupNotFoundException(const char *text,
+GroupNotFoundException::GroupNotFoundException(const char* text,
 		const unsigned int id): BadIdentifierException("GroupNotFoundException: " +
 			string(text) + "(" + TextTools::toString(id) + ")",
 			id) {}
 			
-GroupNotFoundException::GroupNotFoundException(const string &text,
+GroupNotFoundException::GroupNotFoundException(const std::string& text,
 		const unsigned int id): BadIdentifierException("GroupNotFoundException: " +
 			text + "(" + TextTools::toString(id) + ")",
 			id) {}
 
-GroupNotFoundException::GroupNotFoundException(const char *text,
-		const string &id): BadIdentifierException("GroupNotFoundException: " + string(text) +
+GroupNotFoundException::GroupNotFoundException(const char* text,
+		const std::string& id): BadIdentifierException("GroupNotFoundException: " + string(text) +
 			"(" + id + ")",
 			id) {}
 
-GroupNotFoundException::GroupNotFoundException(const string &text,
-		const string &id): BadIdentifierException("GroupNotFoundException: " + text +
+GroupNotFoundException::GroupNotFoundException(const std::string& text,
+		const std::string& id): BadIdentifierException("GroupNotFoundException: " + text +
 			"(" + id + ")",
 			id) {}
 			
 GroupNotFoundException::~GroupNotFoundException() throw() {}
 
-const string GroupNotFoundException::getIdentifier() const {
+const std::string GroupNotFoundException::getIdentifier() const {
 	return BadIdentifierException::getIdentifier();
 }
 
