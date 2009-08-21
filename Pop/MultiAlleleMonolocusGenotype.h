@@ -74,7 +74,7 @@ namespace bpp
       /**
        * @brief Copy constructor.
        */
-      MultiAlleleMonolocusGenotype(const MultiAlleleMonolocusGenotype & mmg);
+      MultiAlleleMonolocusGenotype(const MultiAlleleMonolocusGenotype& mmg);
 
       /**
        * @brief Destroy the MultiAlleleMonolocusGenotype.
@@ -85,12 +85,12 @@ namespace bpp
       /**
        * @brief The affectation operator.
        */
-      MultiAlleleMonolocusGenotype & operator= (const MultiAlleleMonolocusGenotype & mmg);
+      MultiAlleleMonolocusGenotype& operator= (const MultiAlleleMonolocusGenotype& mmg);
 
       /**
        * @brief The == operator.
        */
-      bool operator== (const MultiAlleleMonolocusGenotype & mmg) const;
+      bool operator== (const MultiAlleleMonolocusGenotype& mmg) const;
 
       /**
        * @brief Test the homozygozity of the locus (i.e. all allele are identical).
@@ -110,10 +110,10 @@ namespace bpp
        *
        * @{
        */
-      Clonable * clone() const;
-      /** @} **/
+      MultiAlleleMonolocusGenotype* clone() const;
+      /** @} */
     protected:
-      std::vector<unsigned int> _allele_index;
+      std::vector<unsigned int> allele_index_;
   };
 
 } //end of namespace bpp;
