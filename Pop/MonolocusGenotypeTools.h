@@ -73,7 +73,7 @@ namespace bpp
      * @param allele_keys A vector containing thes allele keys to put in the MonolocusGenotype.
      * @return A MonolocusGenotype according to the number of alleles
      */
-    static MonolocusGenotype * buildMonolocusGenotypeByAlleleKey(const std::vector<unsigned int> allele_keys) throw (Exception);
+    static MonolocusGenotype* buildMonolocusGenotypeByAlleleKey(const std::vector<unsigned int> allele_keys) throw (Exception);
   };
 
 } //end of namespace bpp;
