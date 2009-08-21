@@ -77,7 +77,7 @@ Date::~Date() {}
 Date& Date::operator= (const Date& date)
 {
   this->day_ = date.getDay();
-  this->month _= date.getMonth();
+  this->month_ = date.getMonth();
   this->year_ = date.getYear();
   return * this;
 }
