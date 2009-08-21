@@ -44,27 +44,28 @@
 #include "Date.h"
 
 using namespace bpp;
+using namespace std;
 
 //** Class constructor: *******************************************************/
 
 Date::Date(const int day, const int month, const int year) throw(BadIntegerException)
 {
   if (day >= 1 && day <= 31)
-    _day = day;
+    day_ = day;
   else
     throw(BadIntegerException("Date::Date: day must be in [1;31].", day));
   if (month >= 1 && month <= 12)
-    _month = month;
+    month_ = month;
   else
     throw(BadIntegerException("Date::Date: month must be in [1;12].", month));
-  _year = year;
+  year_ = year;
 }
 
-Date::Date(const Date & date)
+Date::Date(const Date& date)
 {
-  this->_day = date.getDay();
-  this->_month = date.getMonth();
-  this->_year = date.getYear();
+  this->day_ = date.getDay();
+  this->month_ = date.getMonth();
+  this->year_ = date.getYear();
 }
 
 //** Class destructor: ********************************************************/
@@ -73,36 +74,36 @@ Date::~Date() {}
 
 //** Other methodes: **********************************************************/
 
-Date & Date::operator= (const Date & date)
+Date& Date::operator= (const Date& date)
 {
-  this->_day = date.getDay();
-  this->_month = date.getMonth();
-  this->_year = date.getYear();
+  this->day_ = date.getDay();
+  this->month _= date.getMonth();
+  this->year_ = date.getYear();
   return * this;
 }
 
 void Date::setDate(const int day, const int month, const int year) throw(BadIntegerException)
 {
   if (day >= 1 && day <= 31)
-    _day = day;
+    day_ = day;
   else
     throw(BadIntegerException("Date::Date: day must be in [1;31].", day));
   if (month >= 1 && month <= 12)
-    _month = month;
+    month_ = month;
   else
     throw(BadIntegerException("Date::Date: month must be in [1;12].", month));
-  _year = year;
+  year_ = year;
 }
 
 void Date::setYear(const int year)
 {
-  _year = year;
+  year_ = year;
 }
 
 void Date::setMonth(const int month) throw(BadIntegerException)
 {
   if (month >= 1 && month <= 12)
-    _month = month;
+    month_ = month;
   else
     throw(BadIntegerException("Date::Date: month must be in [1;12].", month));
 }
@@ -110,12 +111,12 @@ void Date::setMonth(const int month) throw(BadIntegerException)
 void Date::setDay(const int day) throw(BadIntegerException)
 {
   if (day >= 1 && day <= 31)
-    _day = day;
+    day_ = day;
   else
     throw(BadIntegerException("Date::Date: day must be in [1;31].", day));
 }
 
-Date * Date::getDate() const
+Date* Date::getDate() const
 {
   return new Date(* this);
 }
@@ -123,38 +124,38 @@ Date * Date::getDate() const
 string Date::getDateStr() const
 {
   string date, uDay="", uMonth="";
-  if (_day < 10) uDay="0";
-  if (_month < 10) uMonth="0";
-  date = uDay + TextTools::toString(_day) + uMonth + TextTools::toString(_month) + TextTools::toString(_year);
+  if (day_ < 10) uDay="0";
+  if (month_ < 10) uMonth="0";
+  date = uDay + TextTools::toString(day_) + uMonth + TextTools::toString(month_) + TextTools::toString(year_);
   return date;
 }
 
 int Date::getYear() const
 {
-  return _year;
+  return year_;
 }
 
 int Date::getMonth() const
 {
-  return _month;
+  return month_;
 }
 
 int Date::getDay() const
 {
-  return _day;
+  return day_;
 }
 
-bool Date::operator==(const Date & date) const
+bool Date::operator==(const Date& date) const
 {
-  if (_day == date.getDay() && _month == date.getMonth() && _year == date.getYear())
+  if (day_ == date.getDay() && month_ == date.getMonth() && year_ == date.getYear())
     return true;
   else
     return false;
 }
 
-bool Date::operator<(const Date & date) const
+bool Date::operator<(const Date& date) const
 {
-  if (_year < date.getYear() || (_month < date.getMonth() && _year == date.getYear()) || (_day < date.getDay() && _month == date.getMonth() && _year == date.getYear()))
+  if (year_ < date.getYear() || (month_ < date.getMonth() && year_ == date.getYear()) || (day_ < date.getDay() && month_ == date.getMonth() && year_ == date.getYear()))
     return true;
   else
     return false;

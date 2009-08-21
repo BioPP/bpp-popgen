@@ -72,7 +72,7 @@ namespace bpp
       /**
        * @brief The Date copy constructor.
        */
-      Date(const Date & date);
+      Date(const Date& date);
 
       /**
        * @brief Destroy the Date object.
@@ -86,7 +86,7 @@ namespace bpp
        *
        * @return A ref toward the assigned Date.
        */
-      Date & operator= (const Date & date);
+      Date& operator= (const Date& date);
 
       /**
        * @brief Set the Date.
@@ -123,14 +123,14 @@ namespace bpp
        *
        * @return A pointer to a Date object.
        */
-      Date * getDate() const;
+      Date* getDate() const;
 
       /**
        * @brief Get the Date as a string.
        *
        * @return The date as a string DDMMYYYY (i.e. January 1 2000 : 01012000).
        */
-      string getDateStr() const;
+      std::string getDateStr() const;
 
       /**
        * @brief Get the Year as an int.
@@ -152,39 +152,39 @@ namespace bpp
        *
        * Test the numerical equality between to dates.
        */
-      bool operator== (const Date & date) const;
+      bool operator== (const Date& date) const;
 
       /**
        * @brief The < operator.
        *
        * Return true if the left Date is minor than the right Date.
        */
-      bool operator< (const Date & date) const;
+      bool operator< (const Date& date) const;
 
       /**
        * @brief The != operator.
        */
-      bool operator!= (const Date & date) const { return !(*this == date); }
+      bool operator!= (const Date& date) const { return !(*this == date); }
 
       /**
        * @brief The > operator.
        */
-      bool operator> (const Date & date) const { return date < *this; }
+      bool operator> (const Date& date) const { return date < *this; }
 
       /**
        * @brief The <= operator.
        */
-      bool operator<= (const Date & date) const { return !(date < *this); }
+      bool operator<= (const Date& date) const { return !(date < *this); }
 
       /**
        * @brief The >= operator.
        */
-      bool operator>= (const Date & date) const { return !(*this < date); }
+      bool operator>= (const Date& date) const { return !(*this < date); }
 
     protected:
-      int _day;
-      int _month;
-      int _year;
+      int day_;
+      int month_;
+      int year_;
   };
 
 } //end of namespace bpp;
