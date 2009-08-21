@@ -77,7 +77,7 @@ namespace bpp
       /**
        * @brief Copy constructor.
        */
-      MultilocusGenotype(const MultilocusGenotype & genotype);
+      MultilocusGenotype(const MultilocusGenotype& genotype);
 
       /**
        * @brief Destroy a MultilocusGenotype.
@@ -89,7 +89,7 @@ namespace bpp
        * @brief Set a MonolocusGenotype.
        */
       void setMonolocusGenotype(unsigned int locus_position,
-          const MonolocusGenotype & monogen) throw (IndexOutOfBoundsException);
+          const MonolocusGenotype& monogen) throw (IndexOutOfBoundsException);
 
       /**
        * @brief Set a MonolocusGenotype by allele keys.
@@ -98,7 +98,7 @@ namespace bpp
        * @throw Exception if there is no key in allele_keys.
        */
       void setMonolocusGenotypeByAlleleKey(unsigned int locus_position,
-          const std::vector<unsigned int> allele_keys) throw (Exception);
+          const std::vector<unsigned int>& allele_keys) throw (Exception);
 
       /**
        * @brief Set a MonolocusGenotype by allele id.
@@ -107,7 +107,7 @@ namespace bpp
        * @throw AlleleNotFoundException if at least one of the id is not found in the LocusInfo.
        */
       void setMonolocusGenotypeByAlleleId(unsigned int locus_position,
-          const std::vector<std::string> allele_id, const LocusInfo & locus_info) throw (Exception);
+          const std::vector<std::string>& allele_id, const LocusInfo& locus_info) throw (Exception);
 
       /**
        * @brief Set a MonolocusGenotype as missing data.
@@ -126,7 +126,7 @@ namespace bpp
       /**
        * @brief Get a MonolocusGenotype.
        */
-      const MonolocusGenotype * getMonolocusGenotype(unsigned int locus_position) const
+      const MonolocusGenotype* getMonolocusGenotype(unsigned int locus_position) const
         throw (IndexOutOfBoundsException);
 
       /**
@@ -151,8 +151,8 @@ namespace bpp
        */
       unsigned int countHeterozygousLoci() const;
 
-    protected:
-      std::vector<MonolocusGenotype *> _loci;
+    private:
+      std::vector<MonolocusGenotype*> loci_;
   };
 
 } //end of namespace bpp;
