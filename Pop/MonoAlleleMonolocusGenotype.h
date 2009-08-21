@@ -66,12 +66,12 @@ namespace bpp
       /**
        * @brief Build a monolocus genotype containing one allele.
        */
-      MonoAlleleMonolocusGenotype(vector<unsigned int> allele_index) throw (BadIntegerException);
+      MonoAlleleMonolocusGenotype(std::vector<unsigned int> allele_index) throw (BadIntegerException);
 
       /**
        * @brief Copy constructor.
        */
-      MonoAlleleMonolocusGenotype(const MonoAlleleMonolocusGenotype & mmg);
+      MonoAlleleMonolocusGenotype(const MonoAlleleMonolocusGenotype& mmg);
 
       /**
        * @brief Destroy the MonoAlleleMonolocusGenotype.
@@ -82,19 +82,19 @@ namespace bpp
       /**
        * @brief The affectation operator.
        */
-      MonoAlleleMonolocusGenotype & operator= (const MonoAlleleMonolocusGenotype & mmg);
+      MonoAlleleMonolocusGenotype& operator= (const MonoAlleleMonolocusGenotype& mmg);
 
       /**
        * @brief The == operator.
        */
-      virtual bool operator== (const MonoAlleleMonolocusGenotype & mmg) const;
+      virtual bool operator== (const MonoAlleleMonolocusGenotype& mmg) const;
 
       /**
        * @name The MonolocusGenotype interface:
        *
        * @{
        */
-      vector<unsigned int> getAlleleIndex() const;
+      std::vector<unsigned int> getAlleleIndex() const;
       /** @} */
 
       /**
@@ -102,11 +102,11 @@ namespace bpp
        *
        * @{
        */
-      Clonable * clone() const;
+      MonoAlleleMonolocusGenotype* clone() const;
       /** @} */
 
     protected:
-      unsigned int _allele_index;
+      unsigned int allele_index_;
   };
 
 } //end of namespace bpp;

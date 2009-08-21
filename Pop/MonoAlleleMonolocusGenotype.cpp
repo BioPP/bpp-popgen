@@ -40,24 +40,25 @@
 #include "MonoAlleleMonolocusGenotype.h"
 
 using namespace bpp;
+using namespace std;
 
 //** Class constructor: *******************************************************/
 
 MonoAlleleMonolocusGenotype::MonoAlleleMonolocusGenotype(unsigned int allele_index)
 {
-  _allele_index = allele_index;
+  allele_index_ = allele_index;
 }
 
-MonoAlleleMonolocusGenotype::MonoAlleleMonolocusGenotype(vector<unsigned int> allele_index) throw (BadIntegerException)
+MonoAlleleMonolocusGenotype::MonoAlleleMonolocusGenotype(std::vector<unsigned int> allele_index) throw (BadIntegerException)
 {
   if (allele_index.size() != 1)
     throw BadIntegerException("MonoAlleleMonolocusGenotype::MonoAlleleMonolocusGenotype: allele_index must conaines one value.", allele_index.size());
-  _allele_index = allele_index[0];
+  allele_index_ = allele_index[0];
 }
 
-MonoAlleleMonolocusGenotype::MonoAlleleMonolocusGenotype(const MonoAlleleMonolocusGenotype & mmg)
+MonoAlleleMonolocusGenotype::MonoAlleleMonolocusGenotype(const MonoAlleleMonolocusGenotype& mmg)
 {
-  _allele_index = mmg.getAlleleIndex()[0];
+  allele_index_ = mmg.getAlleleIndex()[0];
 }
 
 //** Class destructor: ********************************************************/
@@ -66,25 +67,25 @@ MonoAlleleMonolocusGenotype::~MonoAlleleMonolocusGenotype() {}
 
 //** Other methodes: **********************************************************/
 
-MonoAlleleMonolocusGenotype & MonoAlleleMonolocusGenotype::operator= (const MonoAlleleMonolocusGenotype & mmg)
+MonoAlleleMonolocusGenotype& MonoAlleleMonolocusGenotype::operator= (const MonoAlleleMonolocusGenotype& mmg)
 {
-  _allele_index = mmg.getAlleleIndex()[0];
+  allele_index_ = mmg.getAlleleIndex()[0];
   return * this;
 }
 
-bool MonoAlleleMonolocusGenotype::operator== (const MonoAlleleMonolocusGenotype & mmg) const
+bool MonoAlleleMonolocusGenotype::operator== (const MonoAlleleMonolocusGenotype& mmg) const
 {
-  return (_allele_index == mmg.getAlleleIndex()[0]);
+  return (allele_index_ == mmg.getAlleleIndex()[0]);
 }
 
-vector<unsigned int> MonoAlleleMonolocusGenotype::getAlleleIndex() const
+std::vector<unsigned int> MonoAlleleMonolocusGenotype::getAlleleIndex() const
 {
   vector<unsigned int> index;
-  index.push_back(_allele_index);
+  index.push_back(allele_index_);
   return index;
 }
 
-Clonable * MonoAlleleMonolocusGenotype::clone() const
+MonoAlleleMonolocusGenotype* MonoAlleleMonolocusGenotype::clone() const
 {
   return new MonoAlleleMonolocusGenotype(* this);
 }
