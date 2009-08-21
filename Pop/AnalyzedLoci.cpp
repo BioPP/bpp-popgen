@@ -40,79 +40,80 @@
 #include "AnalyzedLoci.h"
 
 using namespace bpp;
+using namespace std;
 
 //** Constructors: ***********************************************************/
 
 AnalyzedLoci::AnalyzedLoci(unsigned int number_of_loci)
 {
-  _loci.resize(number_of_loci);
-  for(unsigned int i = 0 ; i < _loci.size() ; i++)
-    _loci[i] = NULL;
+  loci_.resize(number_of_loci);
+  for(unsigned int i = 0 ; i < loci_.size() ; i++)
+    loci_[i] = NULL;
 }
 
-AnalyzedLoci::AnalyzedLoci(const AnalyzedLoci & analyzed_loci)
+AnalyzedLoci::AnalyzedLoci(const AnalyzedLoci& analyzed_loci)
 {
   for(unsigned int i = 0; i < analyzed_loci.getNumberOfLoci(); i++)
-    _loci.push_back(new LocusInfo(* analyzed_loci.getLocusInfoAtPosition(i)));
+    loci_.push_back(new LocusInfo(* analyzed_loci.getLocusInfoAtPosition(i)));
 }
 
 //** Destructor: *************************************************************/
 
 AnalyzedLoci::~AnalyzedLoci()
 {
-  for(unsigned int i = 0; i < _loci.size(); i++)
-    delete _loci[i];
+  for(unsigned int i = 0; i < loci_.size(); i++)
+    delete loci_[i];
 }
 
 //** Other methodes: *********************************************************/
 // LocusInfo
-  void AnalyzedLoci::setLocusInfo(unsigned int locus_position, const LocusInfo & locus)
+  void AnalyzedLoci::setLocusInfo(unsigned int locus_position, const LocusInfo& locus)
 throw (IndexOutOfBoundsException)
 {
-  if (locus_position >= 0 && locus_position < _loci.size())
-    _loci[locus_position] = new LocusInfo(locus);
+  if (locus_position >= 0 && locus_position < loci_.size())
+    loci_[locus_position] = new LocusInfo(locus);
   else
     throw IndexOutOfBoundsException("AnalyzedLoci::setLocusInfo: locus_position out of bounds",
-        locus_position, 0, _loci.size());
+        locus_position, 0, loci_.size());
 }
 
-  unsigned int AnalyzedLoci::getLocusInfoPosition(const string & locus_name) const
+  unsigned int AnalyzedLoci::getLocusInfoPosition(const std::string & locus_name) const
 throw (BadIdentifierException)
 {
-  for(unsigned int i = 0; i < _loci.size(); i++)
-    if (_loci[i] != NULL && _loci[i]->getName() == locus_name)
+  for(unsigned int i = 0; i < loci_.size(); i++)
+    if (loci_[i] != NULL && loci_[i]->getName() == locus_name)
       return i;
   throw BadIdentifierException("AnalyzedLoci::getLocusInfoPosition: locus not found.", locus_name);
 }
 
-  const LocusInfo * AnalyzedLoci::getLocusInfoByName(const string & locus_name) const
+  const LocusInfo * AnalyzedLoci::getLocusInfoByName(const std::string& locus_name) const
 throw (BadIdentifierException)
 {
-  for(unsigned int i = 0; i < _loci.size(); i++)
-    if (_loci[i] != NULL && _loci[i]->getName() == locus_name)
-      return _loci[i];
+  for(unsigned int i = 0; i < loci_.size(); i++)
+    if (loci_[i] != NULL && loci_[i]->getName() == locus_name)
+      return loci_[i];
   throw BadIdentifierException("AnalyzedLoci::getLocusInfo: locus not found.",
       locus_name);
 }
 
-  const LocusInfo * AnalyzedLoci::getLocusInfoAtPosition(unsigned int locus_position) const
+  const LocusInfo* AnalyzedLoci::getLocusInfoAtPosition(unsigned int locus_position) const
 throw (Exception)
 {
-  if(locus_position >= _loci.size())
-    throw IndexOutOfBoundsException("AnalyzedLoci::getLocusInfoAtPosition: locus_position out of bounds.", locus_position, 0, _loci.size());
-  if(_loci[locus_position] != NULL)
-    return _loci[locus_position];
+  if(locus_position >= loci_.size())
+    throw IndexOutOfBoundsException("AnalyzedLoci::getLocusInfoAtPosition: locus_position out of bounds.", locus_position, 0, loci_.size());
+  if(loci_[locus_position] != NULL)
+    return loci_[locus_position];
   else
     throw NullPointerException("AnalyzedLoci::getLocusInfo: no locus defined here.");
 }
 
 // AlleleInfo
-void AnalyzedLoci::addAlleleInfoByLocusName(const string & locus_name,
+void AnalyzedLoci::addAlleleInfoByLocusName(const std::string& locus_name,
     const AlleleInfo& allele)
 throw (Exception)
 {
   bool locus_found = false;
-  for (vector<LocusInfo *>::iterator it = _loci.begin(); it != _loci.end() ; it++)
+  for (vector<LocusInfo *>::iterator it = loci_.begin(); it != loci_.end() ; it++)
   {
     if((*it)->getName() == locus_name)
     {
@@ -133,14 +134,14 @@ throw (Exception)
 }
 
 void AnalyzedLoci::addAlleleInfoByLocusPosition(unsigned int locus_position,
-    const AlleleInfo & allele)
+    const AlleleInfo& allele)
 throw (Exception)
 {
-  if(locus_position >= 0 && locus_position < _loci.size())
+  if(locus_position >= 0 && locus_position < loci_.size())
   {
     try
     {
-      _loci[locus_position]->addAlleleInfo(allele);
+      loci_[locus_position]->addAlleleInfo(allele);
     }
     catch (BadIdentifierException & bie)
     {
@@ -149,28 +150,28 @@ throw (Exception)
   }
   else
     throw IndexOutOfBoundsException("AnalyzedLoci::addAlleleInfoByLocusPosition: locus_position out of bounds.",
-        locus_position, 0, _loci.size());
+        locus_position, 0, loci_.size());
 }
 
 // General
 unsigned int AnalyzedLoci::getNumberOfLoci() const {
-  return _loci.size();
+  return loci_.size();
 }
 
-vector<unsigned int> AnalyzedLoci::getNumberOfAlleles() const
+std::vector<unsigned int> AnalyzedLoci::getNumberOfAlleles() const
 {
   vector<unsigned int> allele_count;
-  for (unsigned int i = 0; i < _loci.size(); i++)
-    allele_count.push_back(_loci[i]->getNumberOfAlleles());
+  for (unsigned int i = 0; i < loci_.size(); i++)
+    allele_count.push_back(loci_[i]->getNumberOfAlleles());
   return allele_count;
 }
 
-  unsigned int AnalyzedLoci::getPloidyByLocusName(const string & locus_name) const
+  unsigned int AnalyzedLoci::getPloidyByLocusName(const std::string& locus_name) const
 throw (LocusNotFoundException)
 {
-  for (unsigned int i = 0; i < _loci.size(); i++)
-    if(_loci[i] != NULL && _loci[i]->getName() == locus_name)
-      return _loci[i]->getPloidy();
+  for (unsigned int i = 0; i < loci_.size(); i++)
+    if(loci_[i] != NULL && loci_[i]->getName() == locus_name)
+      return loci_[i]->getPloidy();
   throw LocusNotFoundException("AnalyzedLoci::getLocusInfo: locus_name not found.",
       locus_name);
 }
@@ -178,8 +179,8 @@ throw (LocusNotFoundException)
   unsigned int AnalyzedLoci::getPloidyByLocusPosition(unsigned int locus_position) const
 throw (IndexOutOfBoundsException)
 {
-  if(locus_position >= _loci.size())
-    throw IndexOutOfBoundsException("AnalyzedLoci::getPloidyByLocusPosition: locus_position out of bounds.", locus_position, 0, _loci.size());
-  return _loci[locus_position]->getPloidy();
+  if(locus_position >= loci_.size())
+    throw IndexOutOfBoundsException("AnalyzedLoci::getPloidyByLocusPosition: locus_position out of bounds.", locus_position, 0, loci_.size());
+  return loci_[locus_position]->getPloidy();
 }
 

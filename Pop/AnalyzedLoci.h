@@ -162,7 +162,7 @@ namespace bpp
         throw (IndexOutOfBoundsException);
 
     protected:
-      std::vector<LocusInfo *> _loci;
+      std::vector<LocusInfo *> loci_;
   };
 
 } //end of namespace bpp;
