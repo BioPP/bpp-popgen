@@ -213,7 +213,7 @@ namespace bpp
       /**
        * @brief Return the value of the identifier as a string.
        */
-      virtual const string getIdentifier() const;
+      virtual const std::string getIdentifier() const;
   };
 
   //*****************************************************************************
