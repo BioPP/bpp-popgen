@@ -245,6 +245,12 @@ DOT_MULTI_TARGETS      = YES
 GENERATE_LEGEND        = YES
 DOT_CLEANUP            = YES
 #---------------------------------------------------------------------------
+# Configuration options related to docset (Mac)   
+#---------------------------------------------------------------------------
+GENERATE_DOCSET        = YES
+DOCSET_FEEDNAME        = "Bio++ PopGen"
+DOCSET_BUNDLE_ID       = bpp.PopGen
+#---------------------------------------------------------------------------
 # Configuration::additions related to the search engine   
 #---------------------------------------------------------------------------
 SEARCHENGINE           = YES
