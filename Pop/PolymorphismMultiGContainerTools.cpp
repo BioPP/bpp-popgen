@@ -39,6 +39,7 @@
    */
 
 #include "PolymorphismMultiGContainerTools.h"
+#include <algorithm>
 
 using namespace bpp;
 
@@ -50,7 +51,9 @@ PolymorphismMultiGContainer PolymorphismMultiGContainerTools::permutMultiG(const
   vector<unsigned int> groups;
   for (unsigned int i = 0 ; i < permuted_pmgc.size() ; i++)
     groups.push_back(permuted_pmgc.getGroupId(i));
-  groups = RandomTools::getSample(groups, groups.size());
+  // use std::random_shuffle instead of RandomTools::getSampl
+  //groups = RandomTools::getSample(groups, groups.size());
+  std::random_shuffle(groups.begin(), groups.end());
   for (unsigned int i = 0 ; i < permuted_pmgc.size() ; i++)
     permuted_pmgc.setGroupId(i, groups[i]);
   return permuted_pmgc;
@@ -71,7 +74,8 @@ PolymorphismMultiGContainer PolymorphismMultiGContainerTools::permutMonoG(const 
   }
   // Permut the MonolocusGenotypes
   for (unsigned int i = 0 ; i < loc_num ; i++)
-    mono_gens[i] = RandomTools::getSample(mono_gens[i], mono_gens[i].size());
+    //mono_gens[i] = RandomTools::getSample(mono_gens[i], mono_gens[i].size());
+    std::random_shuffle(mono_gens[i].begin(), mono_gens[i].end());
   // Build the new PolymorphismMultiGContainer
   unsigned int k = 0;
   for (unsigned int i = 0 ; i < pmgc.size() ; i++) {
@@ -135,7 +139,8 @@ PolymorphismMultiGContainer PolymorphismMultiGContainerTools::permutIntraGroupMo
     if(nb_ind_in_group > 0)
     {
       for(unsigned int j = 0 ; j < loc_num ; j++)
-        mono_gens[j] = RandomTools::getSample(mono_gens[j], mono_gens[j].size());
+        //mono_gens[j] = RandomTools::getSample(mono_gens[j], mono_gens[j].size());
+        std::random_shuffle(mono_gens[j].begin(), mono_gens[j].end());
 
       // Build the new multilocus genotypes
       MultilocusGenotype tmp_mg(loc_num);
@@ -183,7 +188,8 @@ PolymorphismMultiGContainer PolymorphismMultiGContainerTools::permutAlleles(cons
   }
   // Permut the alleles
   for (unsigned int i = 0 ; i < loc_num ; i++)
-    alleles[i] = RandomTools::getSample(alleles[i], alleles[i].size());
+    //alleles[i] = RandomTools::getSample(alleles[i], alleles[i].size());
+    std::random_shuffle(alleles[i].begin(), alleles[i].end());
   // Build the new PolymorphismMultiGContainer
   vector<unsigned int> k(loc_num,0);
   for (unsigned int i = 0 ; i < pmgc.size() ; i++)
@@ -265,7 +271,8 @@ PolymorphismMultiGContainer PolymorphismMultiGContainerTools::permutIntraGroupAl
     if (nb_ind_in_group > 0)
     {
       for (unsigned int i = 0 ; i < loc_num ; i++)
-        alleles[i] = RandomTools::getSample(alleles[i], alleles[i].size());
+        //alleles[i] = RandomTools::getSample(alleles[i], alleles[i].size());
+        std::random_shuffle(alleles[i].begin(), alleles[i].end());
 
       // Build the new PolymorphismMultiGContainer
       vector<unsigned int> k(loc_num,0);

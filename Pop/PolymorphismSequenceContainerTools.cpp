@@ -175,8 +175,9 @@ PolymorphismSequenceContainer * PolymorphismSequenceContainerTools::sample(const
   vector<unsigned int> v;
   for (unsigned int i = 0 ; i < nbSeq ; ++i)
     v.push_back(i);
-  v = RandomTools::getSample(v, n, replace);
-  PolymorphismSequenceContainer * newpsc = PolymorphismSequenceContainerTools::getSelectedSequences(psc, v);
+  vector<unsigned int> vv(n);
+  RandomTools::getSample(v, vv, replace);
+  PolymorphismSequenceContainer * newpsc = PolymorphismSequenceContainerTools::getSelectedSequences(psc, vv);
   return newpsc;
 }
 
@@ -372,11 +373,11 @@ PolymorphismSequenceContainer * PolymorphismSequenceContainerTools::getOnePositi
   }
   const SiteContainer *sc = SiteContainerTools::getSelectedSites(psc,ss);
   PolymorphismSequenceContainer *newpsc = new PolymorphismSequenceContainer(*sc);
-  for (unsigned int i = 0 ; i < psc.getNumberOfSequences() ; i++) {
-    if(psc.isIngroupMember(i)) newpsc->setAsIngroupMember(i);
+  for (unsigned int j = 0 ; j < psc.getNumberOfSequences() ; j++) {
+    if(psc.isIngroupMember(j)) newpsc->setAsIngroupMember(j);
     else {
-      newpsc->setAsOutgroupMember(i);
-      newpsc->setGroupId(i, psc.getGroupId(i));
+      newpsc->setAsOutgroupMember(j);
+      newpsc->setGroupId(i, psc.getGroupId(j));
     }
   }    
   delete sc;

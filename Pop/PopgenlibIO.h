@@ -1,7 +1,7 @@
 //
 // File PopgenlibIO.h
-// Author : Sylvain Gaillard
-// Last modification : Thursday July 29 2004
+// Created by: Sylvain Gaillard
+// Created on: Thursday July 29 2004
 //
 
 /*
@@ -67,31 +67,42 @@ namespace bpp
     public AbstractODataSet
   {
     public: // Constantes
-      static const string WHITESPACE;
-      static const string TAB;
-      static const string COMA;
-      static const string SEMICOLON;
+      static const std::string WHITESPACE;
+      static const std::string TAB;
+      static const std::string COMA;
+      static const std::string SEMICOLON;
 
-      static const string DIPLOID;
-      static const string HAPLOID;
-      static const string HAPLODIPLOID;
-      static const string UNKNOWN;
+      static const std::string DIPLOID;
+      static const std::string HAPLOID;
+      static const std::string HAPLODIPLOID;
+      static const std::string UNKNOWN;
+
+    private:
+      char data_separator_;
+      char missing_data_symbol_;
+
+      std::vector<std::string> getValues_(std::string& param_line, const std::string& delim);
+      void parseGeneral_(const std::vector<std::string>& in, DataSet& data_set);
+      void parseLocality_(const std::vector<std::string>& in, DataSet& data_set);
+      void parseSequence_(const std::vector<std::string>& in, VectorSequenceContainer& vsc);
+      void parseLoci_(const std::vector<std::string>& in, std::vector<LocusInfo>& locus_info);
+      void parseIndividual_(const std::vector<std::string>& in, DataSet& data_set, const VectorSequenceContainer& vsc);
 
     public: // Constructor and destructor
       PopgenlibIO();
-      PopgenlibIO(const string & missing_data_symbol, const string & data_separator) throw (Exception);
+      PopgenlibIO(const std::string& missing_data_symbol, const std::string& data_separator) throw (Exception);
       ~PopgenlibIO();
 
     public:
       /**
        * @brief Get the code for missing data.
        */
-      string getMissingDataSymbol() const;
+      std::string getMissingDataSymbol() const;
 
       /**
        * @brief Get the code for data separator.
        */
-      string getDataSeparator() const;
+      std::string getDataSeparator() const;
 
       /**
        * @brief Get the character for missing data.
@@ -114,7 +125,7 @@ namespace bpp
        * @throw Excpetion if missing_data_symbol is a not allowed character.
        * @throw Exception if missing_data_symbol contains more than one character.
        */
-      void setMissingDataSymbol(const string & missing_data_symbol)
+      void setMissingDataSymbol(const std::string& missing_data_symbol)
         throw (Exception);
 
       /**
@@ -132,17 +143,17 @@ namespace bpp
        * @throw Exception if data_separator is a not allowed character.
        * @throw Exception if data_separator containes more than one character other than the two codes defined upper.
        */
-      void setDataSeparator(const string & data_separator)
+      void setDataSeparator(const std::string& data_separator)
         throw (Exception);
 
       /**
        * @name The IDataSet interface.
        * @{
        */
-      void read(istream & is, DataSet & data_set) throw (Exception);
-      void read(const string & path, DataSet & data_set) throw (Exception);
-      DataSet * read(istream & is) throw (Exception);
-      DataSet * read(const string & path) throw (Exception);
+      void read(std::istream& is, DataSet& data_set) throw (Exception);
+      void read(const std::string& path, DataSet& data_set) throw (Exception);
+      DataSet* read(std::istream& is) throw (Exception);
+      DataSet* read(const std::string& path) throw (Exception);
       /**
        * @}
        */
@@ -151,9 +162,9 @@ namespace bpp
        * @name The ODataSet interface.
        * @{
        */
-      void write(ostream & os, const DataSet & data_set) const throw (Exception);
+      void write(std::ostream& os, const DataSet& data_set) const throw (Exception);
 
-      void write(const string & path, const DataSet & data_set, bool overwrite) const throw (Exception);
+      void write(const std::string& path, const DataSet& data_set, bool overwrite) const throw (Exception);
       /**
        * @}
        */
@@ -162,25 +173,13 @@ namespace bpp
        * @name The IODataSet interface
        * @{
        */
-      virtual const string getFormatName();
-      virtual const string getFormatDescription();
+      const std::string getFormatName();
+      const std::string getFormatDescription();
       /**
        * @}
        */
-
-    protected:
-      char _missing_data_symbol;
-      char _data_separator;
-
-      vector<string> _getValues(string & param_line, const string & delim);
-      void _parseGeneral(const vector<string> & in, DataSet & data_set);
-      void _parseLocality(const vector<string> & in, DataSet & data_set);
-      void _parseSequence(const vector<string> & in, VectorSequenceContainer & vsc);
-      void _parseLoci(const vector<string> & in, vector<LocusInfo> & locus_info);
-      void _parseIndividual(const vector<string> & in, DataSet & data_set, const VectorSequenceContainer & vsc);
   };
 
 } //end of namespace bpp;
 
 #endif // _POPULIBIO_H_
-

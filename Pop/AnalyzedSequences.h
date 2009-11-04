@@ -1,7 +1,7 @@
 //
 // File AnalyzedSequences.h
-// Author : Sylvain Gaillard
-// Last modification : Thursday July 29 2004
+// Created by: Sylvain Gaillard
+// Created on: Thursday July 29 2004
 //
 
 /*
@@ -43,9 +43,6 @@
 
 // From Seq
 #include <Seq/Alphabet.h>
-#include <Seq/DNA.h>
-#include <Seq/RNA.h>
-#include <Seq/ProteicAlphabet.h>
 
 namespace bpp
 {
@@ -59,6 +56,9 @@ namespace bpp
    */
   class AnalyzedSequences
   {
+    private:
+      const Alphabet* alphabet_;
+
     public: // Constructor and destructor
       AnalyzedSequences();
       ~AnalyzedSequences();
@@ -67,25 +67,24 @@ namespace bpp
       /**
        * @brief Set the alphabet used for the sequences.
        */
-      void setAlphabet(const Alphabet * alpha);
+      void setAlphabet(const Alphabet* alpha);
 
       /**
        * @brief Set the alphabet used for the sequences by alphabet type.
        */
-      void setAlphabet(const string & alpha_type) throw (Exception);
+      void setAlphabet(const std::string& alpha_type) throw (Exception);
 
       /**
        * @brief Get the alphabet.
        */
-      const Alphabet * getAlphabet() const;
+      const Alphabet* getAlphabet() const {
+        return alphabet_;
+      }
 
       /**
        * @brief Get the alphabet type as a string.
        */
-      string getAlphabetType() const;
-
-    protected:
-      const Alphabet * _alphabet;
+      std::string getAlphabetType() const;
   };
 
 } //end of namespace bpp;

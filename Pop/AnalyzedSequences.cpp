@@ -1,7 +1,7 @@
 //
 // File AnalyzedSequences.cpp
-// Author : Sylvain Gaillard
-// Last modification : Thursday July 29 2004
+// Created by: Sylvain Gaillard
+// Created on: Thursday July 29 2004
 //
 
 /*
@@ -38,30 +38,28 @@
    */
 
 #include "AnalyzedSequences.h"
+#include <Seq/DNA.h>
+#include <Seq/RNA.h>
+#include <Seq/ProteicAlphabet.h>
 
 using namespace bpp;
 
-AnalyzedSequences::AnalyzedSequences()
-{
-  _alphabet = NULL;
+AnalyzedSequences::AnalyzedSequences(): alphabet_(0) {}
+
+AnalyzedSequences::~AnalyzedSequences() {
+  if (alphabet_ != 0)
+    delete alphabet_;
 }
 
-AnalyzedSequences::~AnalyzedSequences()
-{
-  if (_alphabet != NULL)
-    delete _alphabet;
+void AnalyzedSequences::setAlphabet(const Alphabet* alpha) {
+  alphabet_ = alpha;
 }
 
-void AnalyzedSequences::setAlphabet(const Alphabet * alpha)
-{
-  _alphabet = alpha;
-}
-
-void AnalyzedSequences::setAlphabet(const string & alpha_type) throw (Exception)
+void AnalyzedSequences::setAlphabet(const std::string& alpha_type) throw (Exception)
 {
   if (alpha_type != string("DNA") && alpha_type != string("RNA") && alpha_type != string("PROTEIN"))
     throw Exception(string("AnalyzedSequences::setAlphabet: bad alphabet type. (") + alpha_type + string(")."));
-  Alphabet * alpha = NULL;
+  Alphabet* alpha = 0;
   if (alpha_type == string("DNA"))
     alpha = new DNA();
   if (alpha_type == string("RNA"))
@@ -71,16 +69,11 @@ void AnalyzedSequences::setAlphabet(const string & alpha_type) throw (Exception)
   setAlphabet(alpha);
 }
 
-const Alphabet * AnalyzedSequences::getAlphabet() const
+std::string AnalyzedSequences::getAlphabetType() const
 {
-  return _alphabet;
-}
-
-string AnalyzedSequences::getAlphabetType() const
-{
-  if (_alphabet == NULL)
+  if (alphabet_ == 0)
     return string("---");
-  string alpha_type = _alphabet->getAlphabetType();
+  string alpha_type = alphabet_->getAlphabetType();
   int bs = alpha_type.find(" ",0);
   alpha_type = string(alpha_type.begin(), alpha_type.begin() + bs);
   if (alpha_type == "Proteic")
