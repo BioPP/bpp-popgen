@@ -52,16 +52,39 @@ namespace bpp
    *
    * This is a class to store info about the sequences.
    *
+   * The object stores a pointer toward a const Alphabet.
+   * The way the pointer is managed depend on the method used to set it.
+   *
+   * If one use a method using a const Alphabet* to set the Alphabet, then he
+   * has to take care of the memory management (i.e. freeing the Alphabet
+   * object).
+   *
+   * If one use a method that create an Alphabet object like those using a
+   * string description of the Alphabet then the AnalyzedSequences object will
+   * delete himself the Alphabet object on destruction.
+   *
+   * Be carefull when copying an AnalyzedSequences object, the way that the
+   * Alphabet object is managed is also copyed then if the initial
+   * AnalyzedSequences takes care of its Alphabet member then the copy will hold
+   * copy af the Alphabet an manage it else the new AnalyzedSequences will just
+   * copy the pointer and it's up to the user to take care of its deletion.
+   *
    * @author Sylvain Gaillard
    */
   class AnalyzedSequences
   {
     private:
       const Alphabet* alphabet_;
+      bool autoset_;
 
     public: // Constructor and destructor
       AnalyzedSequences();
+      AnalyzedSequences(const Alphabet* alpha);
       ~AnalyzedSequences();
+
+      // Copie constructor
+      AnalyzedSequences(const AnalyzedSequences& as);
+      AnalyzedSequences& operator=(const AnalyzedSequences& as);
 
     public:
       /**
@@ -85,6 +108,9 @@ namespace bpp
        * @brief Get the alphabet type as a string.
        */
       std::string getAlphabetType() const;
+
+    private:
+      void clear_();
   };
 
 } //end of namespace bpp;

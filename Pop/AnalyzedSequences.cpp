@@ -44,15 +44,36 @@
 
 using namespace bpp;
 
-AnalyzedSequences::AnalyzedSequences(): alphabet_(0) {}
+AnalyzedSequences::AnalyzedSequences(): alphabet_(0), autoset_(false) {}
+
+AnalyzedSequences::AnalyzedSequences(const Alphabet* alpha): alphabet_(alpha), autoset_(false) {}
 
 AnalyzedSequences::~AnalyzedSequences() {
-  if (alphabet_ != 0)
-    delete alphabet_;
+  clear_();
+}
+
+AnalyzedSequences::AnalyzedSequences(const AnalyzedSequences& as): alphabet_(0), autoset_(false) {
+  if (as.autoset_) {
+    setAlphabet(as.getAlphabetType());
+  } else {
+    alphabet_ = as.alphabet_;
+  }
+  autoset_ = as.autoset_;
+}
+
+AnalyzedSequences& AnalyzedSequences::operator=(const AnalyzedSequences& as) {
+  if (as.autoset_) {
+    setAlphabet(as.getAlphabetType());
+  } else {
+    alphabet_ = as.alphabet_;
+  }
+  autoset_ = as.autoset_;
+  return *this;
 }
 
 void AnalyzedSequences::setAlphabet(const Alphabet* alpha) {
   alphabet_ = alpha;
+  autoset_ = false;
 }
 
 void AnalyzedSequences::setAlphabet(const std::string& alpha_type) throw (Exception)
@@ -66,7 +87,8 @@ void AnalyzedSequences::setAlphabet(const std::string& alpha_type) throw (Except
     alpha = new RNA();
   if (alpha_type == string("PROTEIN"))
     alpha = new ProteicAlphabet();
-  setAlphabet(alpha);
+  alphabet_ = alpha;
+  autoset_ = true;
 }
 
 std::string AnalyzedSequences::getAlphabetType() const
@@ -81,3 +103,10 @@ std::string AnalyzedSequences::getAlphabetType() const
   return alpha_type;
 }
 
+void AnalyzedSequences::clear_() {
+  if (alphabet_ != 0 && autoset_) {
+    delete alphabet_;
+    alphabet_ = 0;
+    autoset_ = false;
+  }
+}
