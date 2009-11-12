@@ -64,13 +64,13 @@ namespace bpp
        * @name The IDataSet interface.
        * @{
        */
-      virtual void read(istream & is, DataSet & data_set) throw (Exception) = 0;
+      virtual void read(std::istream& is, DataSet& data_set) throw (Exception) = 0;
 
-      virtual void read(const string & path, DataSet & data_set) throw (Exception);
+      virtual void read(const std::string& path, DataSet& data_set) throw (Exception);
 
-      virtual DataSet * read(istream & is) throw (Exception);
+      virtual DataSet* read(std::istream& is) throw (Exception);
 
-      virtual DataSet * read(const string & path) throw (Exception);
+      virtual DataSet* read(const std::string& path) throw (Exception);
       /**
        * @}
        */

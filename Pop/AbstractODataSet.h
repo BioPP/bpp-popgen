@@ -61,8 +61,8 @@ namespace bpp
        * @name The ODataSet interface.
        * @{
        */
-      virtual void write(ostream & os, const DataSet & data_set) const throw (Exception) = 0;
-      virtual void write(const string & path, const DataSet & data_set, bool overwrite) const throw (Exception);
+      virtual void write(std::ostream& os, const DataSet& data_set) const throw (Exception) = 0;
+      virtual void write(const std::string& path, const DataSet& data_set, bool overwrite) const throw (Exception);
       /**
        * @}
        */

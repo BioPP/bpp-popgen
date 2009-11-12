@@ -74,6 +74,12 @@ namespace bpp
    */
   class DataSet
   {
+    private:
+      AnalyzedLoci* analyzedLoci_;
+      AnalyzedSequences* analyzedSequences_;
+      std::vector<Locality<double> *> localities_;
+      std::vector<Group*> groups_;
+
     public: // Constructor and destructor
       /**
        * @brief Build a new void DataSet.
@@ -84,6 +90,13 @@ namespace bpp
        * @brief Destroy a DataSet.
        */
       ~DataSet();
+
+      /**
+       * @brief Copy constructor.
+       */
+      DataSet(const DataSet& ds);
+
+      DataSet& operator=(const DataSet& ds);
 
     public: // Methodes
 
@@ -103,7 +116,7 @@ namespace bpp
        * @param name The locality's name to find.
        * @throw LocalityNotFoundException if the locality's name doesn't match any name in the DataSet.
        */
-      unsigned int getLocalityPosition(const std::string & name) const throw (LocalityNotFoundException);
+      unsigned int getLocalityPosition(const std::string& name) const throw (LocalityNotFoundException);
 
       /**
        * @brief Get a Locality by locality_position.
@@ -119,7 +132,7 @@ namespace bpp
        *
        * @throw LocalityNotFoundException if the locality's name is not found.
        */
-      const Locality<double> * getLocalityByName(const std::string & name) const throw (LocalityNotFoundException);
+      const Locality<double> * getLocalityByName(const std::string& name) const throw (LocalityNotFoundException);
 
       /**
        * @brief Delete a Locality from the DataSet.
@@ -133,7 +146,7 @@ namespace bpp
        *
        * @throw LocalityNotFoundException if the locality's name is not found.
        */
-      void deleteLocalityByName(const std::string & name) throw (LocalityNotFoundException);
+      void deleteLocalityByName(const std::string& name) throw (LocalityNotFoundException);
 
       /**
        * @brief Get the number of Localities.
@@ -153,7 +166,7 @@ namespace bpp
        *
        * @param group A pointer to the Group to add.
        */
-      void addGroup(const Group & group) throw (BadIdentifierException);
+      void addGroup(const Group& group) throw (BadIdentifierException);
 
       /**
        * @brief Add an empty Group to the DataSet.
@@ -163,7 +176,7 @@ namespace bpp
       /**
        * @brief Get a group by identifier.
        */
-      const Group * getGroupById(unsigned int group_id) const;
+      const Group* getGroupById(unsigned int group_id) const;
 
       /**
        * @brief Get the position of a Group.
@@ -183,14 +196,14 @@ namespace bpp
        *
        * @throw GroupNotFoundException if the group_id is not found.
        */
-      void setGroupName(unsigned int group_id, std::string group_name) const throw (GroupNotFoundException);
+      void setGroupName(unsigned int group_id, const std::string& group_name) const throw (GroupNotFoundException);
 
       /**
        * @brief Get a group by position.
        *
        * @throw IndexOutOfBoundsException if group_position excedes the number of groups.
        */
-      const Group * getGroupAtPosition(unsigned int group_position) const throw (IndexOutOfBoundsException);
+      const Group* getGroupAtPosition(unsigned int group_position) const throw (IndexOutOfBoundsException);
 
       /**
        * @brief Delete a Group from the DataSet.
@@ -249,7 +262,7 @@ namespace bpp
        * @throw IndexOutOfBoundsException if group_position excedes the number of groups.
        * @throw BadIdentifierException if the individual's id is already in use.
        */
-      void addEmptyIndividualToGroup(unsigned int group_position, const std::string & individual_id) throw (Exception);
+      void addEmptyIndividualToGroup(unsigned int group_position, const std::string& individual_id) throw (Exception);
 
       /**
        * @brief Get the number of Individuals in a Group.
@@ -265,7 +278,7 @@ namespace bpp
        * @throw IndexOutOfBoundsException if group_position excedes the number of groups.
        * @throw IndividualNotFoundException if individual_id is not found.
        */
-      unsigned int getIndividualPositionInGroup(unsigned int group_position, const std::string & individual_id) const
+      unsigned int getIndividualPositionInGroup(unsigned int group_position, const std::string& individual_id) const
         throw (Exception);
       /**
        * @brief Get an Individual from a Group.
@@ -273,7 +286,7 @@ namespace bpp
        * @throw IndexOutOfBoundsException if group_position excedes the number of groups.
        * @throw IndexOutOfBoundsException if individual_position excedes the number of individual in the group.
        */
-      const Individual * getIndividualAtPositionFromGroup(unsigned int group_position, unsigned int individual_position) const
+      const Individual* getIndividualAtPositionFromGroup(unsigned int group_position, unsigned int individual_position) const
         throw (IndexOutOfBoundsException);
 
       /**
@@ -282,7 +295,7 @@ namespace bpp
        * @throw IndexOutOfBoundsException if group_position excedes the number of groups.
        * @throw IndividualNotFoundException if individual_id is not found.
        */
-      const Individual * getIndividualByIdFromGroup(unsigned int group_position, const std::string & individual_id) const
+      const Individual* getIndividualByIdFromGroup(unsigned int group_position, const std::string& individual_id) const
         throw (Exception);
 
       /**
@@ -300,7 +313,7 @@ namespace bpp
        * @throw IndexOutOfBoundsException if group_position excedes the number of groups.
        * @throw IndividualNotFoundException if individual_id is not found.
        */
-      void deleteIndividualByIdFromGroup(unsigned int group_position, const std::string & individual_id)
+      void deleteIndividualByIdFromGroup(unsigned int group_position, const std::string& individual_id)
         throw (Exception);
 
       /**
@@ -327,7 +340,7 @@ namespace bpp
        * @throw IndexOutOfBoundsException if group_position excedes the number of groups.
        * @throw IndexOutOfBoundsException if individual_position excedes the number of individual in the group.
        */
-      void setIndividualDateInGroup(unsigned int group_position, unsigned int individual_position, const Date & date)
+      void setIndividualDateInGroup(unsigned int group_position, unsigned int individual_position, const Date& date)
         throw (IndexOutOfBoundsException);
 
       /**
@@ -337,7 +350,7 @@ namespace bpp
        * @throw IndexOutOfBoundsException if individual_position excedes the number of individual in the group.
        * @throw NullPointerException if the individual has no date.
        */
-      const Date * getIndividualDateInGroup(unsigned int group_position, unsigned int individual_position) const
+      const Date* getIndividualDateInGroup(unsigned int group_position, unsigned int individual_position) const
         throw (Exception);
 
       /**
@@ -388,7 +401,7 @@ namespace bpp
        * @throw BadIdentifierException if the sequence's name is already in use.
        */
       void addIndividualSequenceInGroup(unsigned int group_position, unsigned int individual_position,
-          unsigned int sequence_position, const Sequence & sequence)
+          unsigned int sequence_position, const Sequence& sequence)
         throw (Exception);
 
       /**
@@ -400,7 +413,7 @@ namespace bpp
        * @throw SequenceNotFoundException if sequence_name is not found.
        * @throw BadIntegerException if sequence_position is already in use.
        */
-      const Sequence& getIndividualSequenceByNameInGroup(unsigned int group_position, unsigned int individual_position, const std::string & sequence_name) const
+      const Sequence& getIndividualSequenceByNameInGroup(unsigned int group_position, unsigned int individual_position, const std::string& sequence_name) const
         throw (Exception);
 
       /**
@@ -422,7 +435,7 @@ namespace bpp
        * @throw NullPointerException if the individual has no sequences.
        * @throw SequenceNotFoundException if sequence_name is not found.
        */
-      void deleteIndividualSequenceByNameInGroup(unsigned int group_position, unsigned int individual_position, const std::string & sequence_name)
+      void deleteIndividualSequenceByNameInGroup(unsigned int group_position, unsigned int individual_position, const std::string& sequence_name)
         throw (Exception);
 
       /**
@@ -676,12 +689,6 @@ namespace bpp
        * @brief Tell if there is alelelic data.
        */
       bool hasAlleleicData() const;
-
-    protected:
-      AnalyzedLoci * _analyzedLoci;
-      AnalyzedSequences * _analyzedSequences;
-      std::vector<Locality<double> *> _localities;
-      std::vector<Group *> _groups;
   };
 
 } //end of namespace bpp;
