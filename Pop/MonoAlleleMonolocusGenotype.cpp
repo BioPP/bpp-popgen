@@ -44,22 +44,16 @@ using namespace std;
 
 //** Class constructor: *******************************************************/
 
-MonoAlleleMonolocusGenotype::MonoAlleleMonolocusGenotype(unsigned int allele_index)
-{
-  allele_index_ = allele_index;
-}
+MonoAlleleMonolocusGenotype::MonoAlleleMonolocusGenotype(unsigned int allele_index): allele_index_(allele_index) {}
 
-MonoAlleleMonolocusGenotype::MonoAlleleMonolocusGenotype(std::vector<unsigned int> allele_index) throw (BadIntegerException)
+MonoAlleleMonolocusGenotype::MonoAlleleMonolocusGenotype(std::vector<unsigned int> allele_index) throw (BadIntegerException): allele_index_(0)
 {
   if (allele_index.size() != 1)
     throw BadIntegerException("MonoAlleleMonolocusGenotype::MonoAlleleMonolocusGenotype: allele_index must conaines one value.", allele_index.size());
   allele_index_ = allele_index[0];
 }
 
-MonoAlleleMonolocusGenotype::MonoAlleleMonolocusGenotype(const MonoAlleleMonolocusGenotype& mmg)
-{
-  allele_index_ = mmg.getAlleleIndex()[0];
-}
+MonoAlleleMonolocusGenotype::MonoAlleleMonolocusGenotype(const MonoAlleleMonolocusGenotype& mmg): allele_index_(mmg.getAlleleIndex()[0]) {}
 
 //** Class destructor: ********************************************************/
 

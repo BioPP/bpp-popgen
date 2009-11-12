@@ -64,6 +64,11 @@ namespace bpp
    */
   class LocusInfo
   {
+    private:
+      std::string name_;
+      unsigned int ploidy_;
+      std::vector<AlleleInfo*> alleles_;
+
     public:
       static unsigned int HAPLODIPLOID;
       static unsigned int HAPLOID;
@@ -77,7 +82,7 @@ namespace bpp
        * @param name The name of the locus.
        * @param ploidy The ploidy of the locus.
        */
-      LocusInfo(const std::string &name, const unsigned int ploidy = DIPLOID);
+      LocusInfo(const std::string& name, const unsigned int ploidy = DIPLOID);
 
       /**
        * @brief Copy constructor.
@@ -143,11 +148,6 @@ namespace bpp
        * @brief Delete all alleles from the locus.
        */
       void clear();
-
-    protected:
-      std::string name_;
-      unsigned int ploidy_;
-      std::vector<AlleleInfo*> alleles_;
   };
 
 } //end of namespace bpp;

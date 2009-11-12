@@ -76,6 +76,15 @@ namespace bpp
    */
   class Individual
   {
+    protected:
+      std::string id_;
+      unsigned short sex_;
+      Date* date_;
+      Point2D<double>* coord_;
+      const Locality<double>* locality_;
+      MapSequenceContainer* sequences_;
+      MultilocusGenotype* genotype_;
+
     public: // Constructors and destructor :
 
       /**
@@ -86,7 +95,7 @@ namespace bpp
       /**
        * @brief Build a new Individual with an identifier.
        */
-      Individual(const std::string & id);
+      Individual(const std::string& id);
 
       /**
        * @brief Build a new Individual with parameters.
@@ -98,10 +107,10 @@ namespace bpp
        * object.
        * @param sex The sex of the Individual as an unsigned short.
        */
-      Individual(const std::string & id,
-          const Date & date,
-          const Point2D<double> & coord,
-          Locality<double> * locality,
+      Individual(const std::string& id,
+          const Date& date,
+          const Point2D<double>& coord,
+          Locality<double>* locality,
           const unsigned short sex);
 
       /**
@@ -129,7 +138,7 @@ namespace bpp
        *
        * @param id The id of the Individual as a string.
        */
-      void setId(const std::string id);
+      void setId(const std::string& id);
 
       /**
        * @brief Get the id of the Individual.
@@ -458,15 +467,6 @@ namespace bpp
        * @throw NullPointerException if there is no genotype defined.
        */
       unsigned int countHeterozygousLoci() const throw (NullPointerException);
-
-    protected:
-      std::string _id;
-      unsigned short _sex;
-      Date * _date;
-      Point2D<double> * _coord;
-      const Locality<double> * _locality;
-      MapSequenceContainer * _sequences;
-      MultilocusGenotype * _genotype;
   };
 
 } //end of namespace bpp;

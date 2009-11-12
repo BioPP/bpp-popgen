@@ -53,19 +53,12 @@ unsigned int LocusInfo::UNKNOWN = 9999;
 
 //** Class constructor: *******************************************************/
 
-LocusInfo::LocusInfo(const std::string& name, const unsigned int ploidy)
-{
-  name_ = name;
-  ploidy_ = ploidy;
-}
+LocusInfo::LocusInfo(const std::string& name, const unsigned int ploidy): name_(name), ploidy_(ploidy), alleles_(vector<AlleleInfo*>()) {}
 
-LocusInfo::LocusInfo(const LocusInfo& locus_info)
+LocusInfo::LocusInfo(const LocusInfo& locus_info): name_(locus_info.getName()), ploidy_(locus_info.getPloidy()), alleles_(vector<AlleleInfo*>(locus_info.getNumberOfAlleles()))
 {
-  name_ = locus_info.getName();
-  ploidy_ = locus_info.getPloidy();
   for (unsigned int i = 0 ; i < locus_info.getNumberOfAlleles() ; i++) {
-    AlleleInfo* tmp_allele = locus_info.getAlleleInfoByKey(i)->clone();
-    alleles_.push_back(tmp_allele);
+    alleles_[i] = dynamic_cast<AlleleInfo*>(locus_info.getAlleleInfoByKey(i)->clone());
   }
 }
 

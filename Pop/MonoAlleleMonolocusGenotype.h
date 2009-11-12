@@ -57,6 +57,9 @@ namespace bpp
   class MonoAlleleMonolocusGenotype:
     public MonolocusGenotype
   {
+    private:
+      unsigned int allele_index_;
+
     public: // Constructors and destructor
       /**
        * @brief Build a monolocus genotype containing one allele.
@@ -104,9 +107,6 @@ namespace bpp
        */
       MonoAlleleMonolocusGenotype* clone() const;
       /** @} */
-
-    protected:
-      unsigned int allele_index_;
   };
 
 } //end of namespace bpp;

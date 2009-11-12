@@ -44,27 +44,24 @@ using namespace std;
 
 //** Class constructor: *******************************************************/
 
-MultilocusGenotype::MultilocusGenotype(unsigned int loci_number) throw (BadIntegerException)
+MultilocusGenotype::MultilocusGenotype(unsigned int loci_number) throw (BadIntegerException): loci_(vector<MonolocusGenotype*>(loci_number))
 {
   if (loci_number < 1)
     throw BadIntegerException("MultilocusGenotype::MultilocusGenotype: loci_number must be > 0.", loci_number);
 
-  // Set the loci _size to the right number of loci
-  loci_.resize(loci_number);
-
-  // Set all the loci _pointers to NULL
+  // Set all the loci_ pointers to nullptr
   for (unsigned int i=0 ; i<loci_number ; i++)
-    loci_[i] = NULL;
+    loci_[i] = 0;
 }
 
-MultilocusGenotype::MultilocusGenotype(const MultilocusGenotype& genotype)
+MultilocusGenotype::MultilocusGenotype(const MultilocusGenotype& genotype): loci_(vector<MonolocusGenotype*>(genotype.size()))
 {
   for(unsigned int i = 0; i < genotype.size(); i++)
   {
     if (! genotype.isMonolocusGenotypeMissing(i))
-      loci_.push_back(dynamic_cast<MonolocusGenotype *>((genotype.getMonolocusGenotype(i))->clone()));
+      loci_[i] = dynamic_cast<MonolocusGenotype *>((genotype.getMonolocusGenotype(i))->clone());
     else
-      loci_.push_back(NULL);
+      loci_[i] = 0;
   }
 }
 

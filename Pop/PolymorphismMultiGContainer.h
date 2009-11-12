@@ -67,6 +67,11 @@ namespace bpp
    */
   class PolymorphismMultiGContainer
   {
+    private:
+      std::vector<MultilocusGenotype *> _multilocusGenotypes;
+      std::vector<unsigned int> _groups;//group id for each multilocusgenotype
+      std::map<unsigned int, std::string> _groups_names;
+
     public: // Constructors and destructor
 
       /**
@@ -196,11 +201,6 @@ namespace bpp
        * @brief Clear the container.
        */
       void clear();
-
-    protected:
-      std::vector<MultilocusGenotype *> _multilocusGenotypes;
-      std::vector<unsigned int> _groups;//group id for each multilocusgenotype
-      std::map<unsigned int, std::string> _groups_names;
 
   };
 

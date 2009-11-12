@@ -64,6 +64,9 @@ namespace bpp
   class MultiAlleleMonolocusGenotype:
     public MonolocusGenotype
   {
+    private:
+      std::vector<unsigned int> allele_index_;
+
     public: // Constructors and destructor
 
       /**
@@ -112,8 +115,6 @@ namespace bpp
        */
       MultiAlleleMonolocusGenotype* clone() const;
       /** @} */
-    protected:
-      std::vector<unsigned int> allele_index_;
   };
 
 } //end of namespace bpp;

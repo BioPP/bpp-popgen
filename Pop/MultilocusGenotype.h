@@ -66,6 +66,9 @@ namespace bpp
    */
   class MultilocusGenotype
   {
+    private:
+      std::vector<MonolocusGenotype*> loci_;
+
     public: // Constructors and Destructor
       /**
        * @brief Build a MultilocusGenotype linked to an AnalyzedLoci object.
@@ -150,9 +153,6 @@ namespace bpp
        * @brief Count the number of heterozygous MonolocusGenotype.
        */
       unsigned int countHeterozygousLoci() const;
-
-    private:
-      std::vector<MonolocusGenotype*> loci_;
   };
 
 } //end of namespace bpp;

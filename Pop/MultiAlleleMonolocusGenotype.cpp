@@ -40,19 +40,20 @@
 #include "MultiAlleleMonolocusGenotype.h"
 
 using namespace bpp;
+using namespace std;
 
 //** Class constructor: *******************************************************/
 
-MultiAlleleMonolocusGenotype::MultiAlleleMonolocusGenotype(std::vector<unsigned int> allele_index)
+MultiAlleleMonolocusGenotype::MultiAlleleMonolocusGenotype(std::vector<unsigned int> allele_index): allele_index_(vector<unsigned int>(allele_index.size()))
 {
-  for (unsigned int i=0 ; i<allele_index.size() ; ++i)
-    allele_index_.push_back(allele_index[i]);
+  for (unsigned int i=0 ; i < allele_index.size() ; ++i)
+    allele_index_[i] = allele_index[i];
 }
 
-MultiAlleleMonolocusGenotype::MultiAlleleMonolocusGenotype(const MultiAlleleMonolocusGenotype& mmg)
+MultiAlleleMonolocusGenotype::MultiAlleleMonolocusGenotype(const MultiAlleleMonolocusGenotype& mmg): allele_index_(vector<unsigned int>(mmg.allele_index_.size()))
 {
-  for (unsigned int i=0 ; i<mmg.getAlleleIndex().size() ; ++i)
-    allele_index_.push_back(mmg.getAlleleIndex()[i]);
+  for (unsigned int i=0 ; i < mmg.getAlleleIndex().size() ; ++i)
+    allele_index_[i] = mmg.getAlleleIndex()[i];
 }
 
 //** Class destructor: ********************************************************/
