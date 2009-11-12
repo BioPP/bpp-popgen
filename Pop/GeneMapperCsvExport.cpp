@@ -40,25 +40,23 @@
 #include "GeneMapperCsvExport.h"
 
 using namespace bpp;
+using namespace std;
 
-GeneMapperCsvExport::GeneMapperCsvExport(bool ia)
-{
-  GeneMapperCsvExport::_IndependentAlleles = ia;
-}
+GeneMapperCsvExport::GeneMapperCsvExport(bool ia): IndependentAlleles_(ia) {}
 
 GeneMapperCsvExport::~GeneMapperCsvExport() {}
 
-const string GeneMapperCsvExport::getFormatName()
+const std::string GeneMapperCsvExport::getFormatName()
 {
   return "GeneMapper® cvs export";
 }
 
-const string GeneMapperCsvExport::getFormatDescription()
+const std::string GeneMapperCsvExport::getFormatDescription()
 {
   return "GeneMapper® is a flexible genotyping software package that provides DNA sizing and quality allele calls for all Applied Biosystems electrophoresis-based genotyping systems.";
 }
 
-void GeneMapperCsvExport::read(istream & is, DataSet & data_set) throw (Exception)
+void GeneMapperCsvExport::read(std::istream& is, DataSet& data_set) throw (Exception)
 {
   if (!is)
     throw IOException("GeneMapperCsvExport::read: fail to open stream.");
@@ -161,17 +159,17 @@ void GeneMapperCsvExport::read(istream & is, DataSet & data_set) throw (Exceptio
   }
 }
 
-void GeneMapperCsvExport::read(const string & path, DataSet & data_set) throw (Exception)
+void GeneMapperCsvExport::read(const std::string& path, DataSet& data_set) throw (Exception)
 {
   AbstractIDataSet::read(path, data_set);
 }
 
-DataSet * GeneMapperCsvExport::read(istream & is) throw (Exception)
+DataSet* GeneMapperCsvExport::read(std::istream& is) throw (Exception)
 {
   return AbstractIDataSet::read(is);
 }
 
-DataSet * GeneMapperCsvExport::read(const string & path) throw (Exception) 
+DataSet* GeneMapperCsvExport::read(const std::string& path) throw (Exception) 
 {
   return AbstractIDataSet::read(path);
 }

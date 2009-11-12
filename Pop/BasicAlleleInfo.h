@@ -57,6 +57,9 @@ namespace bpp
   class BasicAlleleInfo:
     public AlleleInfo
   {
+    private:
+      std::string id_;
+
     public: // Constructors and destructor
       /**
        * @brief Build a new allele.
@@ -101,9 +104,6 @@ namespace bpp
       void setId(const std::string& allele_id);
       std::string getId() const;
       /** @} */
-
-  private:
-      std::string id_;
 };
 
 } //end of namespace bpp;

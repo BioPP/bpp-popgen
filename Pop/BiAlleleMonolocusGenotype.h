@@ -60,6 +60,9 @@ namespace bpp
   class BiAlleleMonolocusGenotype:
     public MonolocusGenotype
   {
+    private:
+      std::vector<unsigned int> allele_index_;
+
     public: // Constructors and destructor
       /**
        * @brief Build a monolocus genotype containing two alleles.
@@ -123,8 +126,6 @@ namespace bpp
        */
       BiAlleleMonolocusGenotype* clone() const;
       /** @} */
-    protected:
-      std::vector<unsigned int> allele_index_;
   };
 
 } //end of namespace bpp;

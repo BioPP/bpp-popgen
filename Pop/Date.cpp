@@ -48,25 +48,15 @@ using namespace std;
 
 //** Class constructor: *******************************************************/
 
-Date::Date(const int day, const int month, const int year) throw(BadIntegerException)
+Date::Date(const int day, const int month, const int year) throw(BadIntegerException): day_(day), month_(month), year_(year)
 {
-  if (day >= 1 && day <= 31)
-    day_ = day;
-  else
+  if (day < 1 || day > 31)
     throw(BadIntegerException("Date::Date: day must be in [1;31].", day));
-  if (month >= 1 && month <= 12)
-    month_ = month;
-  else
+  if (month < 1 || month > 12)
     throw(BadIntegerException("Date::Date: month must be in [1;12].", month));
-  year_ = year;
 }
 
-Date::Date(const Date& date)
-{
-  this->day_ = date.getDay();
-  this->month_ = date.getMonth();
-  this->year_ = date.getYear();
-}
+Date::Date(const Date& date): day_(date.getDay()), month_(date.getMonth()), year_(date.getYear()) {}
 
 //** Class destructor: ********************************************************/
 
@@ -76,9 +66,9 @@ Date::~Date() {}
 
 Date& Date::operator= (const Date& date)
 {
-  this->day_ = date.getDay();
-  this->month_ = date.getMonth();
-  this->year_ = date.getYear();
+  day_ = date.getDay();
+  month_ = date.getMonth();
+  year_ = date.getYear();
   return * this;
 }
 

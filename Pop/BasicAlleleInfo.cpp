@@ -43,15 +43,9 @@ using namespace bpp;
 
 //** Class constructor: *******************************************************/
 
-BasicAlleleInfo::BasicAlleleInfo(const std::string& id)
-{
-  id_ = id;
-}
+BasicAlleleInfo::BasicAlleleInfo(const std::string& id): id_(id) {}
 
-BasicAlleleInfo::BasicAlleleInfo(const BasicAlleleInfo& allele)
-{
-  id_ = allele.getId();
-}
+BasicAlleleInfo::BasicAlleleInfo(const BasicAlleleInfo& allele): id_(allele.getId()) {}
 
 //** Class destructor: *******************************************************/
 

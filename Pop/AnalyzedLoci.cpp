@@ -44,17 +44,16 @@ using namespace std;
 
 //** Constructors: ***********************************************************/
 
-AnalyzedLoci::AnalyzedLoci(unsigned int number_of_loci)
+AnalyzedLoci::AnalyzedLoci(unsigned int number_of_loci): loci_(vector<LocusInfo*>(number_of_loci))
 {
-  loci_.resize(number_of_loci);
   for(unsigned int i = 0 ; i < loci_.size() ; i++)
-    loci_[i] = NULL;
+    loci_[i] = 0;
 }
 
-AnalyzedLoci::AnalyzedLoci(const AnalyzedLoci& analyzed_loci)
+AnalyzedLoci::AnalyzedLoci(const AnalyzedLoci& analyzed_loci): loci_(vector<LocusInfo*>(analyzed_loci.loci_.size()))
 {
   for(unsigned int i = 0; i < analyzed_loci.getNumberOfLoci(); i++)
-    loci_.push_back(new LocusInfo(* analyzed_loci.getLocusInfoAtPosition(i)));
+    loci_[i] = new LocusInfo(* analyzed_loci.getLocusInfoAtPosition(i));
 }
 
 //** Destructor: *************************************************************/

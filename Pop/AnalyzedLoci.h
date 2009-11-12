@@ -65,6 +65,9 @@ namespace bpp
    */
   class AnalyzedLoci
   {
+    private:
+      std::vector<LocusInfo *> loci_;
+
     public: // Constructors and Destructor
       /**
        * @brief Build a void AnalyzedLoci with a specific number of loci.
@@ -160,9 +163,6 @@ namespace bpp
        */
       unsigned int getPloidyByLocusPosition(unsigned int locus_position) const
         throw (IndexOutOfBoundsException);
-
-    protected:
-      std::vector<LocusInfo *> loci_;
   };
 
 } //end of namespace bpp;

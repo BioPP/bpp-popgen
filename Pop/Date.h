@@ -56,6 +56,11 @@ namespace bpp
    */
   class Date
   {
+    private:
+      int day_;
+      int month_;
+      int year_;
+
     public: // Constructors and destructor
       /**
        * @brief Build a new Date from three values.
@@ -180,11 +185,6 @@ namespace bpp
        * @brief The >= operator.
        */
       bool operator>= (const Date& date) const { return !(*this < date); }
-
-    protected:
-      int day_;
-      int month_;
-      int year_;
   };
 
 } //end of namespace bpp;

@@ -68,7 +68,7 @@ namespace bpp
   {
 
     private:
-      bool _IndependentAlleles;
+      bool IndependentAlleles_;
 
     public: // Constructor and destructor
       GeneMapperCsvExport(bool ia = false);
@@ -86,10 +86,10 @@ namespace bpp
        * @name The IDataSet interface.
        * @{
        */
-      void read(istream & is, DataSet & data_set) throw (Exception);
-      void read(const string & path, DataSet & data_set) throw (Exception);
-      DataSet * read(istream & is) throw (Exception);
-      DataSet * read(const string & path) throw (Exception);
+      void read(std::istream& is, DataSet& data_set) throw (Exception);
+      void read(const std::string& path, DataSet& data_set) throw (Exception);
+      DataSet* read(std::istream& is) throw (Exception);
+      DataSet* read(const std::string& path) throw (Exception);
       /**
        * @}
        */
@@ -98,8 +98,8 @@ namespace bpp
        * @name The IODataSet interface
        * @{
        */
-      virtual const string getFormatName();
-      virtual const string getFormatDescription();
+      virtual const std::string getFormatName();
+      virtual const std::string getFormatDescription();
       /**
        * @}
        */
