@@ -41,9 +41,10 @@
 #include "PolymorphismMultiGContainerTools.h"
 #include <algorithm>
 
+using namespace std;
 using namespace bpp;
 
-PolymorphismMultiGContainerTools::~PolymorphismMultiGContainerTools() {}
+/******************************************************************************/
 
 PolymorphismMultiGContainer PolymorphismMultiGContainerTools::permutMultiG(const PolymorphismMultiGContainer & pmgc)
 {
@@ -59,7 +60,9 @@ PolymorphismMultiGContainer PolymorphismMultiGContainerTools::permutMultiG(const
   return permuted_pmgc;
 }
 
-PolymorphismMultiGContainer PolymorphismMultiGContainerTools::permutMonoG(const PolymorphismMultiGContainer & pmgc, const set<unsigned int> & groups)
+/******************************************************************************/
+
+PolymorphismMultiGContainer PolymorphismMultiGContainerTools::permutMonoG(const PolymorphismMultiGContainer & pmgc, const std::set<unsigned int> & groups)
 {
   PolymorphismMultiGContainer permuted_pmgc;
   unsigned int loc_num = pmgc.getNumberOfLoci();
@@ -105,7 +108,9 @@ PolymorphismMultiGContainer PolymorphismMultiGContainerTools::permutMonoG(const 
   return permuted_pmgc;
 }
 
-PolymorphismMultiGContainer PolymorphismMultiGContainerTools::permutIntraGroupMonoG(const PolymorphismMultiGContainer & pmgc, const set<unsigned int> & groups)
+/******************************************************************************/
+
+PolymorphismMultiGContainer PolymorphismMultiGContainerTools::permutIntraGroupMonoG(const PolymorphismMultiGContainer & pmgc, const std::set<unsigned int> & groups)
 {
   PolymorphismMultiGContainer permuted_pmgc;
   unsigned int loc_num = pmgc.getNumberOfLoci();
@@ -169,7 +174,9 @@ PolymorphismMultiGContainer PolymorphismMultiGContainerTools::permutIntraGroupMo
   return permuted_pmgc;
 }
 
-PolymorphismMultiGContainer PolymorphismMultiGContainerTools::permutAlleles(const PolymorphismMultiGContainer & pmgc, const set<unsigned int> & groups)
+/******************************************************************************/
+
+PolymorphismMultiGContainer PolymorphismMultiGContainerTools::permutAlleles(const PolymorphismMultiGContainer & pmgc, const std::set<unsigned int> & groups)
 {
   PolymorphismMultiGContainer permuted_pmgc;
   unsigned int loc_num = pmgc.getNumberOfLoci();
@@ -227,7 +234,9 @@ PolymorphismMultiGContainer PolymorphismMultiGContainerTools::permutAlleles(cons
   return permuted_pmgc;
 }
 
-PolymorphismMultiGContainer PolymorphismMultiGContainerTools::permutIntraGroupAlleles(const PolymorphismMultiGContainer & pmgc, const set<unsigned int> & groups)
+/******************************************************************************/
+
+PolymorphismMultiGContainer PolymorphismMultiGContainerTools::permutIntraGroupAlleles(const PolymorphismMultiGContainer & pmgc, const std::set<unsigned int> & groups)
 {
   PolymorphismMultiGContainer permuted_pmgc;
   unsigned int loc_num = pmgc.getNumberOfLoci();
@@ -311,7 +320,9 @@ PolymorphismMultiGContainer PolymorphismMultiGContainerTools::permutIntraGroupAl
   return permuted_pmgc;
 }
 
-PolymorphismMultiGContainer PolymorphismMultiGContainerTools::extractGroups(const PolymorphismMultiGContainer & pmgc, const set<unsigned int> & groups)
+/******************************************************************************/
+
+PolymorphismMultiGContainer PolymorphismMultiGContainerTools::extractGroups(const PolymorphismMultiGContainer & pmgc, const std::set<unsigned int> & groups)
 {
   PolymorphismMultiGContainer sub_pmgc;
   for (set<unsigned int>::const_iterator g = groups.begin(); g != groups.end() ; g++)//for each group
@@ -344,4 +355,6 @@ PolymorphismMultiGContainer PolymorphismMultiGContainerTools::extractGroups(cons
 
   return sub_pmgc;
 }
+
+/******************************************************************************/
 

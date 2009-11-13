@@ -784,7 +784,7 @@ namespace bpp
        * @param n then number of observed sequences
        * @author Sylvain Gaillard
        */
-      static void testUsefullvalues(ostream & s, unsigned int n);
+      static void testUsefullvalues(std::ostream & s, unsigned int n);
 
 
     private:

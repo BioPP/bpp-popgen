@@ -80,7 +80,7 @@
  * Static tools class for both families are provided to compute several common or less
  * common statistics.
  *
- * @sections statistics Statistics overview
+ * @section statistics Statistics overview
  *
  * @par heterozygosity
  * @par watterson75 Diversity estimator Theta of Watterson
@@ -103,6 +103,11 @@ namespace bpp
   class PolymorphismSequenceContainer:
     public VectorSiteContainer
   {
+    private:
+      vector<bool> ingroup_;
+      vector<unsigned int> count_;
+      vector<unsigned int> group_;
+
     public: // Constructors and destructor
       /**
        * @brief Build a new empty PolymorphismSequenceContainer.
@@ -331,11 +336,6 @@ namespace bpp
        */
       unsigned int getSequenceCount(const std::string &name) const throw (SequenceNotFoundException);
 
-
-    private:
-      vector<bool> ingroup_;
-      vector<unsigned int> count_;
-      vector<unsigned int> group_;
   };
 
 } //end of namespace bpp;

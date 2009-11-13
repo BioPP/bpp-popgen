@@ -1230,7 +1230,7 @@ double SequenceStatistics::hudson87(const PolymorphismSequenceContainer & psc, d
 /* Tests methods */
 /*****************/
 
-void SequenceStatistics::testUsefullvalues(ostream &s, unsigned int n) {
+void SequenceStatistics::testUsefullvalues(std::ostream &s, unsigned int n) {
   map<string, double> v = getUsefullValues_(n);
   double vD = getVD_(n, v["a1"], v["a2"], v["cn"]);
   double uD = getUD_(v["a1"], vD);

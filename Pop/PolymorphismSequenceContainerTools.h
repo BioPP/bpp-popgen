@@ -127,7 +127,7 @@ namespace bpp
        * @param ss a sequence selection.
        *
        */
-      static PolymorphismSequenceContainer * getSelectedSequences(const PolymorphismSequenceContainer & psc, SequenceSelection & ss);
+      static PolymorphismSequenceContainer * getSelectedSequences(const PolymorphismSequenceContainer & psc, const SequenceSelection & ss);
 
 
       /**

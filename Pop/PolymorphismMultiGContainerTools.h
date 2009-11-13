@@ -63,9 +63,6 @@ namespace bpp
   class PolymorphismMultiGContainerTools
   {
     public:
-      virtual ~PolymorphismMultiGContainerTools();
-
-    public:
       /**
        * @brief Permut the MultilocusGenotype in the whole PolymorphismMultiGContainer.
        *

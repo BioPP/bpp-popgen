@@ -41,22 +41,23 @@
 #include "PolymorphismSequenceContainerTools.h"
 
 using namespace bpp;
+using namespace std;
 
 PolymorphismSequenceContainerTools::~PolymorphismSequenceContainerTools() {}
 
 /******************************************************************************/
 
-PolymorphismSequenceContainer * PolymorphismSequenceContainerTools::read(const string & path, const Alphabet * alpha) throw (Exception)
+PolymorphismSequenceContainer * PolymorphismSequenceContainerTools::read(const std::string & path, const Alphabet * alpha) throw (Exception)
 {
   Mase ms;
   string key;
   unsigned int n;
-  const OrderedSequenceContainer *seqc = NULL;
+  const OrderedSequenceContainer *seqc = 0;
   try {
     seqc = dynamic_cast<OrderedSequenceContainer *>(ms.read( path, alpha ));
   }
   catch (Exception & e) {
-    if (seqc != NULL)
+    if (seqc != 0)
       delete seqc;
     throw e;
   }
@@ -151,7 +152,7 @@ PolymorphismSequenceContainer * PolymorphismSequenceContainerTools::extractGroup
 
 /******************************************************************************/
 
-PolymorphismSequenceContainer * PolymorphismSequenceContainerTools::getSelectedSequences(const PolymorphismSequenceContainer & psc, SequenceSelection & ss)
+PolymorphismSequenceContainer * PolymorphismSequenceContainerTools::getSelectedSequences(const PolymorphismSequenceContainer & psc, const SequenceSelection & ss)
 {
   PolymorphismSequenceContainer * newpsc = new PolymorphismSequenceContainer(psc.getAlphabet());
   for(unsigned int i = 0; i < ss.size(); i++)
@@ -308,7 +309,7 @@ PolymorphismSequenceContainer * PolymorphismSequenceContainerTools::excludeFlank
 
 /******************************************************************************/
 
-PolymorphismSequenceContainer * PolymorphismSequenceContainerTools::getSelectedSites(const PolymorphismSequenceContainer & psc, const string &setName, bool phase)
+PolymorphismSequenceContainer * PolymorphismSequenceContainerTools::getSelectedSites(const PolymorphismSequenceContainer & psc, const std::string &setName, bool phase)
 {
   SiteContainer *pscc = MaseTools::getSelectedSites(psc, setName);
   Comments maseFileHeader = psc.getGeneralComments();
@@ -332,7 +333,7 @@ PolymorphismSequenceContainer * PolymorphismSequenceContainerTools::getSelectedS
 
 /******************************************************************************/
 
-PolymorphismSequenceContainer * PolymorphismSequenceContainerTools::getNonCodingSites(const PolymorphismSequenceContainer & psc, const string & setName)
+PolymorphismSequenceContainer * PolymorphismSequenceContainerTools::getNonCodingSites(const PolymorphismSequenceContainer & psc, const std::string & setName)
 {
   SiteSelection ss;
   Comments maseFileHeader = psc.getGeneralComments();
@@ -355,7 +356,7 @@ PolymorphismSequenceContainer * PolymorphismSequenceContainerTools::getNonCoding
 
 /******************************************************************************/
 
-PolymorphismSequenceContainer * PolymorphismSequenceContainerTools::getOnePosition(const PolymorphismSequenceContainer & psc, const string & setName, unsigned int pos)
+PolymorphismSequenceContainer * PolymorphismSequenceContainerTools::getOnePosition(const PolymorphismSequenceContainer & psc, const std::string & setName, unsigned int pos)
 {
   Comments maseFileHeader = psc.getGeneralComments();
   unsigned int start;
@@ -386,7 +387,7 @@ PolymorphismSequenceContainer * PolymorphismSequenceContainerTools::getOnePositi
 
 /******************************************************************************/
 
-PolymorphismSequenceContainer * PolymorphismSequenceContainerTools::getIntrons(const PolymorphismSequenceContainer & psc, const string & setName, const CodonAlphabet *ca )
+PolymorphismSequenceContainer * PolymorphismSequenceContainerTools::getIntrons(const PolymorphismSequenceContainer & psc, const std::string & setName, const CodonAlphabet *ca )
 {
   Comments maseFileHeader = psc.getGeneralComments();
   SiteSelection ss;
@@ -430,7 +431,7 @@ PolymorphismSequenceContainer * PolymorphismSequenceContainerTools::getIntrons(c
 
 /******************************************************************************/
 
-PolymorphismSequenceContainer * PolymorphismSequenceContainerTools::get5Prime(const PolymorphismSequenceContainer & psc, const string & setName)
+PolymorphismSequenceContainer * PolymorphismSequenceContainerTools::get5Prime(const PolymorphismSequenceContainer & psc, const std::string & setName)
 {
   Comments maseFileHeader = psc.getGeneralComments();
   SiteSelection ss;
@@ -465,7 +466,7 @@ PolymorphismSequenceContainer * PolymorphismSequenceContainerTools::get5Prime(co
 
 /******************************************************************************/
 
-PolymorphismSequenceContainer * PolymorphismSequenceContainerTools::get3Prime(const PolymorphismSequenceContainer & psc, const string & setName, const CodonAlphabet *ca )
+PolymorphismSequenceContainer * PolymorphismSequenceContainerTools::get3Prime(const PolymorphismSequenceContainer & psc, const std::string & setName, const CodonAlphabet *ca )
 {
   Comments maseFileHeader = psc.getGeneralComments();
   SiteSelection ss;

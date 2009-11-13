@@ -43,21 +43,21 @@ using namespace bpp;
 
 //** Constructors : **********************************************************/
 
-PolymorphismMultiGContainer::PolymorphismMultiGContainer() {}
+PolymorphismMultiGContainer::PolymorphismMultiGContainer(): multilocusGenotypes_(vector<MultilocusGenotype*>()), groups_(vector<unsigned int>()), groups_names_(map<unsigned int, string>()) {}
 
-PolymorphismMultiGContainer::PolymorphismMultiGContainer(const PolymorphismMultiGContainer & pmgc)
+PolymorphismMultiGContainer::PolymorphismMultiGContainer(const PolymorphismMultiGContainer & pmgc): multilocusGenotypes_(vector<MultilocusGenotype*>(pmgc.getNumberOfLoci())), groups_(vector<unsigned int>(pmgc.getNumberOfLoci())), groups_names_(map<unsigned int, string>())
 {
   for(unsigned int i = 0; i < pmgc.size(); i++)
   {
-    _multilocusGenotypes.push_back(new MultilocusGenotype(* pmgc.getMultilocusGenotype(i)));
-    _groups.push_back(pmgc.getGroupId(i));
+    multilocusGenotypes_[i] = new MultilocusGenotype(* pmgc.getMultilocusGenotype(i));
+    groups_[i] = pmgc.getGroupId(i);
   }
   set<unsigned int> grp_ids = pmgc.getAllGroupsIds();
   for (set<unsigned int>::iterator it = grp_ids.begin(); it != grp_ids.end(); it++)
   {
     unsigned int id = *it;
     string name = pmgc.getGroupName(id);
-    _groups_names[id] = name;
+    groups_names_[id] = name;
   }
 }
 
@@ -74,70 +74,82 @@ PolymorphismMultiGContainer & PolymorphismMultiGContainer::operator= (const Poly
 {
   for(unsigned int i = 0; i < pmgc.size(); i++)
   {
-    _multilocusGenotypes.push_back(new MultilocusGenotype(* pmgc.getMultilocusGenotype(i)));
-    _groups.push_back(pmgc.getGroupId(i));
+    multilocusGenotypes_.push_back(new MultilocusGenotype(* pmgc.getMultilocusGenotype(i)));
+    groups_.push_back(pmgc.getGroupId(i));
   }
   set<unsigned int> grp_ids = pmgc.getAllGroupsIds();
   for (set<unsigned int>::iterator it = grp_ids.begin(); it != grp_ids.end(); it++)
   {
     unsigned int id = *it;
     string name = pmgc.getGroupName(id);
-    _groups_names[id] = name;
+    groups_names_[id] = name;
   }
 
   return * this;
 }
 
+/******************************************************************************/
+
 void PolymorphismMultiGContainer::addMultilocusGenotype(const MultilocusGenotype & mg, unsigned int group)
 {
-  _multilocusGenotypes.push_back(new MultilocusGenotype(mg));
-  _groups.push_back(group);
-  map<unsigned int, string>::const_iterator it = _groups_names.find(group);
-  if ( ! (it != _groups_names.end()) )
+  multilocusGenotypes_.push_back(new MultilocusGenotype(mg));
+  groups_.push_back(group);
+  map<unsigned int, string>::const_iterator it = groups_names_.find(group);
+  if ( ! (it != groups_names_.end()) )
   {
     //ajouter ce groupe avec un nom vide
-    _groups_names[group] = "";
+    groups_names_[group] = "";
   }
 }
+
+/******************************************************************************/
 
 const MultilocusGenotype * PolymorphismMultiGContainer::getMultilocusGenotype(unsigned int position) const throw (IndexOutOfBoundsException)
 {
   if (position >= size())
     throw IndexOutOfBoundsException("PolymorphismMultiGContainer::getMultilocusGenotype: position out of bounds.", position, 0, size() - 1);
-  return _multilocusGenotypes[position];
+  return multilocusGenotypes_[position];
 }
+
+/******************************************************************************/
 
 MultilocusGenotype * PolymorphismMultiGContainer::removeMultilocusGenotype(unsigned int position) throw (IndexOutOfBoundsException)
 {
   if (position >= size())
     throw IndexOutOfBoundsException("PolymorphismMultiGContainer::removeMultilocusGenotype: position out of bounds.", position, 0, size() - 1);
-  MultilocusGenotype * tmp_mg = _multilocusGenotypes[position];
-  _multilocusGenotypes.erase(_multilocusGenotypes.begin() + position);
-  _groups.erase(_groups.begin() + position);
+  MultilocusGenotype * tmp_mg = multilocusGenotypes_[position];
+  multilocusGenotypes_.erase(multilocusGenotypes_.begin() + position);
+  groups_.erase(groups_.begin() + position);
   return tmp_mg;
 }
+
+/******************************************************************************/
 
 void PolymorphismMultiGContainer::deleteMultilocusGenotype(unsigned int position) throw (IndexOutOfBoundsException)
 {
   if (position >= size())
     throw IndexOutOfBoundsException("PolymorphismMultiGContainer::deleteMultilocusGenotype: position out of bounds.", position, 0, size() - 1);
-  delete _multilocusGenotypes[position];
-  _multilocusGenotypes.erase(_multilocusGenotypes.begin() + position);
-  _groups.erase(_groups.begin() + position);
+  delete multilocusGenotypes_[position];
+  multilocusGenotypes_.erase(multilocusGenotypes_.begin() + position);
+  groups_.erase(groups_.begin() + position);
 }
+
+/******************************************************************************/
 
 bool PolymorphismMultiGContainer::isAligned() const
 {
   unsigned int value = 0;
   for (unsigned int i = 0 ; i < size() ; i++) {
     if (i == 0)
-      value = _multilocusGenotypes[i]->size();
+      value = multilocusGenotypes_[i]->size();
     else
-      if (_multilocusGenotypes[i]->size() != value)
+      if (multilocusGenotypes_[i]->size() != value)
         return false;
   }
   return true;
 }
+
+/******************************************************************************/
 
 unsigned int PolymorphismMultiGContainer::getNumberOfLoci() const throw (Exception)
 {
@@ -145,36 +157,44 @@ unsigned int PolymorphismMultiGContainer::getNumberOfLoci() const throw (Excepti
     throw Exception("MultilocusGenotypes are not aligned.");
   if (size() < 1)
     return 0;
-  return _multilocusGenotypes[0]->size();
+  return multilocusGenotypes_[0]->size();
 }
+
+/******************************************************************************/
 
 unsigned int PolymorphismMultiGContainer::getGroupId(unsigned int position) const throw (IndexOutOfBoundsException)
 {
   if (position >= size())
     throw IndexOutOfBoundsException("PolymorphismMultiGContainer::getGroupId: position out of bounds.", position, 0, size() - 1);
-  return _groups[position];
+  return groups_[position];
 }
+
+/******************************************************************************/
 
 void PolymorphismMultiGContainer::setGroupId(unsigned int position, unsigned int group_id) throw (IndexOutOfBoundsException)
 {
   if (position >= size())
     throw IndexOutOfBoundsException("PolymorphismMultiGContainer::setGroupId: position out of bounds.", position, 0, size() - 1);
-  _groups[position] = group_id;
+  groups_[position] = group_id;
 }
 
-set<unsigned int> PolymorphismMultiGContainer::getAllGroupsIds() const
+/******************************************************************************/
+
+std::set<unsigned int> PolymorphismMultiGContainer::getAllGroupsIds() const
 {
   set<unsigned int> groups_ids;
   for (unsigned int i = 0 ; i < size() ; i++)
-    groups_ids.insert(_groups[i]);
+    groups_ids.insert(groups_[i]);
   return groups_ids;
 }
 
-vector<string> PolymorphismMultiGContainer::getAllGroupsNames() const
+/******************************************************************************/
+
+std::vector<std::string> PolymorphismMultiGContainer::getAllGroupsNames() const
 {
   vector<string> grps_names;
   map<unsigned int, string>::const_iterator it;
-  for ( it = _groups_names.begin(); it != _groups_names.end(); it++)
+  for ( it = groups_names_.begin(); it != groups_names_.end(); it++)
   {
     string name = it->second;
     if (! name.empty())
@@ -186,57 +206,71 @@ vector<string> PolymorphismMultiGContainer::getAllGroupsNames() const
   return grps_names;
 }
 
+/******************************************************************************/
+
 bool PolymorphismMultiGContainer::groupExists(unsigned int group) const
 {
   for (unsigned int i = 0 ; i < size() ; i++)
-    if (_groups[i] == group)
+    if (groups_[i] == group)
       return true;
   return false;
 }
+
+/******************************************************************************/
 
 unsigned int PolymorphismMultiGContainer::getNumberOfGroups() const
 {
   return getAllGroupsIds().size();
 }
 
+/******************************************************************************/
+
 unsigned int PolymorphismMultiGContainer::getGroupSize(unsigned int group) const
 {
   unsigned int counter = 0;
   for (unsigned int i = 0 ; i < size() ; i++)
-    if (_groups[i] == group)
+    if (groups_[i] == group)
       counter++;
   return counter;
 }
 
-string PolymorphismMultiGContainer::getGroupName(unsigned int group_id) const  throw (GroupNotFoundException)
+/******************************************************************************/
+
+std::string PolymorphismMultiGContainer::getGroupName(unsigned int group_id) const  throw (GroupNotFoundException)
 {
   string name = TextTools::toString(group_id); //par defaut on retourne le n° de groupe
-  map<unsigned int, string>::const_iterator it = _groups_names.find(group_id);
-  if (it != _groups_names.end() ) name = it->second;
+  map<unsigned int, string>::const_iterator it = groups_names_.find(group_id);
+  if (it != groups_names_.end() ) name = it->second;
   else throw GroupNotFoundException("PolymorphismMultiGContainer::getGroupName: group not found.", group_id);
   return name;
 }
 
-void PolymorphismMultiGContainer::setGroupName(unsigned int group_id, string name)  throw (GroupNotFoundException)
+/******************************************************************************/
+
+void PolymorphismMultiGContainer::setGroupName(unsigned int group_id, std::string name)  throw (GroupNotFoundException)
 {
-  map<unsigned int, string>::iterator it = _groups_names.find(group_id);
-  if (it != _groups_names.end() ) it->second = name;
+  map<unsigned int, string>::iterator it = groups_names_.find(group_id);
+  if (it != groups_names_.end() ) it->second = name;
   else throw GroupNotFoundException("PolymorphismMultiGContainer::getGroupName: group not found.", group_id);
   return ;
 }
 
-void PolymorphismMultiGContainer::addGroupName(unsigned int group_id, string name)
+/******************************************************************************/
+
+void PolymorphismMultiGContainer::addGroupName(unsigned int group_id, std::string name)
 {
-  _groups_names[group_id] = name;
+  groups_names_[group_id] = name;
   return;
 }
+
+/******************************************************************************/
 
 unsigned int PolymorphismMultiGContainer::getLocusGroupSize(unsigned int group, unsigned int locus_position) const
 {
   unsigned int counter = 0;
   for (unsigned int i = 0 ; i < size() ; i++) {
     try {
-      if (_groups[i] == group && ! _multilocusGenotypes[i]->isMonolocusGenotypeMissing(locus_position))
+      if (groups_[i] == group && ! multilocusGenotypes_[i]->isMonolocusGenotypeMissing(locus_position))
         counter++;
     }
     catch (IndexOutOfBoundsException & ioobe) {
@@ -246,17 +280,23 @@ unsigned int PolymorphismMultiGContainer::getLocusGroupSize(unsigned int group, 
   return counter;
 }
 
+/******************************************************************************/
+
 unsigned int PolymorphismMultiGContainer::size() const
 {
-  return _multilocusGenotypes.size();
+  return multilocusGenotypes_.size();
 }
+
+/******************************************************************************/
 
 void PolymorphismMultiGContainer::clear()
 {
-  for(unsigned int i = 0; i < _multilocusGenotypes.size(); i++)
-    delete _multilocusGenotypes[i];
-  _multilocusGenotypes.clear();
-  _groups.clear();
-  _groups_names.clear();
+  for(unsigned int i = 0; i < multilocusGenotypes_.size(); i++)
+    delete multilocusGenotypes_[i];
+  multilocusGenotypes_.clear();
+  groups_.clear();
+  groups_names_.clear();
 }
+
+/******************************************************************************/
 

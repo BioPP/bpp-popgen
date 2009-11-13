@@ -69,15 +69,24 @@ namespace bpp
    *
    * <center><b>*** UNUSED CLASS ***</b></center>
    * This class is designed to store data on a single individual.
-   * This individual can store numerous sequences for each place. It was the first
-   * working implementation which manages sequences as a map of sequence container.
-   * We have replaced it with a simplest individual with only one sequence per
-   * locus.
+   * This individual can store numerous sequences for each place. It was the
+   * first working implementation which manages sequences as a map of sequence
+   * container. We have replaced it with a simplest individual with only one
+   * sequence per locus.
    *
    * @author Sylvain Gaillard
    */
   class MultiSeqIndividual
   {
+    private:
+      std::string id_;
+      unsigned short sex_;
+      Date * date_;
+      Point2D<double> * coord_;
+      const Locality<double> * locality_;
+      std::map<std::string,VectorSequenceContainer *> sequences_;
+      MultilocusGenotype * genotype_;
+
     public: // Constructors and destructor :
 
       /**
@@ -355,15 +364,6 @@ namespace bpp
        * @brief Tell if the MultiSeqIndividual has a MultilocusGenotype.
        */
       bool hasGenotype() const;
-
-    protected:
-      std::string _id;
-      unsigned short _sex;
-      Date * _date;
-      Point2D<double> * _coord;
-      const Locality<double> * _locality;
-      std::map<std::string,VectorSequenceContainer *> _sequences;
-      MultilocusGenotype * _genotype;
   };
 
 } //end of namespace bpp;

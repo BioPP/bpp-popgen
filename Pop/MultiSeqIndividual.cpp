@@ -43,76 +43,52 @@ using namespace bpp;
 
 //** Class constructor: *******************************************************/
 
-MultiSeqIndividual::MultiSeqIndividual()
-{
-  _id = "";
-  _sex = 0;
-  _date = NULL;
-  _coord = NULL;
-  _locality = NULL;
-  _genotype = NULL;
-}
+MultiSeqIndividual::MultiSeqIndividual(): id_(""), sex_(0), date_(0), coord_(0), locality_(0), sequences_(map<string,VectorSequenceContainer*>()), genotype_(0) {}
 
-MultiSeqIndividual::MultiSeqIndividual(const string & id)
-{
-  _id = id;
-  _sex = 0;
-  _date = NULL;
-  _coord = NULL;
-  _locality = NULL;
-  _genotype = NULL;
-}
+MultiSeqIndividual::MultiSeqIndividual(const std::string & id): id_(id), sex_(0), date_(0), coord_(0), locality_(0), sequences_(map<string,VectorSequenceContainer*>()), genotype_(0) {}
 
 MultiSeqIndividual::MultiSeqIndividual(
-    const string & id,
+    const std::string & id,
     const Date & date,
     const Point2D<double> & coord,
     Locality<double> * locality,
-    const unsigned short sex)
-{
-  _id = id;
-  _sex = sex;
-  _date = new Date(date);
-  _coord = new Point2D<double>(coord);
-  _locality = locality;
-}
+    const unsigned short sex):
+  id_(id), sex_(sex), date_(new Date(date)), coord_(new Point2D<double>(coord)), locality_(locality), sequences_(map<string, VectorSequenceContainer*>()), genotype_(0) {}
 
-MultiSeqIndividual::MultiSeqIndividual(const MultiSeqIndividual &ind)
+MultiSeqIndividual::MultiSeqIndividual(const MultiSeqIndividual& ind): id_(ind.getId()), sex_(ind.getSex()), date_(0), coord_(0), locality_(0), sequences_(map<string, VectorSequenceContainer*>()), genotype_(0)
 {
-  setId(ind.getId());
-  setSex(ind.getSex());
   try {
     setDate(* ind.getDate());
   }
   catch (NullPointerException) {
-    _date = NULL;
+    date_ = 0;
   }
   try {
     setCoord(* ind.getCoord());
   }
   catch (NullPointerException) {
-    _coord = NULL;
+    coord_ = 0;
   }
   try {
     setLocality(ind.getLocality());
   }
   catch (NullPointerException) {
-    _locality = NULL;
+    locality_ = 0;
   }
   if (ind.hasSequences()) {
     vector<string> keys = ind.getSequencesKeys();
     for (unsigned int i = 0 ; i < keys.size() ; i++)
-      _sequences[keys[i]] = new VectorSequenceContainer(* const_cast<const VectorSequenceContainer *>(ind.getVectorSequenceContainer(keys[i])));
+      sequences_[keys[i]] = new VectorSequenceContainer(* const_cast<const VectorSequenceContainer *>(ind.getVectorSequenceContainer(keys[i])));
   }
-  this->_genotype = ind.hasGenotype() ? new MultilocusGenotype(* ind.getGenotype()) : NULL;
+  genotype_ = ind.hasGenotype() ? new MultilocusGenotype(* ind.getGenotype()) : 0;
 }
 
 //** Class destructor: *******************************************************/
 
 MultiSeqIndividual::~MultiSeqIndividual()
 {
-  delete this->_date;
-  delete this->_coord;
+  delete date_;
+  delete coord_;
 }
 
 //** Other methodes: *********************************************************/
@@ -125,176 +101,214 @@ MultiSeqIndividual & MultiSeqIndividual::operator= (const MultiSeqIndividual & i
     setDate(* ind.getDate());
   }
   catch (NullPointerException) {
-    _date = NULL;
+    date_ = 0;
   }
   try {
     setCoord(* ind.getCoord());
   }
   catch (NullPointerException) {
-    _coord = NULL;
+    coord_ = 0;
   }
   try {
     setLocality(ind.getLocality());
   }
   catch (NullPointerException) {
-    _locality = NULL;
+    locality_ = 0;
   }
   if (ind.hasSequences())
   {
     vector<string> keys = ind.getSequencesKeys();
     for (unsigned int i = 0 ; i < keys.size() ; i++)
-      _sequences[keys[i]] = new VectorSequenceContainer(* const_cast<const VectorSequenceContainer *>(ind.getVectorSequenceContainer(keys[i])));
+      sequences_[keys[i]] = new VectorSequenceContainer(* const_cast<const VectorSequenceContainer *>(ind.getVectorSequenceContainer(keys[i])));
   }
-  this->_genotype = ind.hasGenotype() ? new MultilocusGenotype(* ind.getGenotype()) : NULL;
+  genotype_ = ind.hasGenotype() ? new MultilocusGenotype(* ind.getGenotype()) : 0;
   return * this;
 }
 
+/******************************************************************************/
+
 // Id
-void MultiSeqIndividual::setId(const string id)
+void MultiSeqIndividual::setId(const std::string id)
 {
-  _id = id;
+  id_ = id;
 }
 
-string MultiSeqIndividual::getId() const
+/******************************************************************************/
+
+std::string MultiSeqIndividual::getId() const
 {
-  return _id;
+  return id_;
 }
+
+/******************************************************************************/
 
 // Sex
 void MultiSeqIndividual::setSex(const unsigned short sex)
 {
-  _sex = sex;
+  sex_ = sex;
 }
+
+/******************************************************************************/
 
 unsigned short MultiSeqIndividual::getSex() const
 {
-  return _sex;
+  return sex_;
 }
+
+/******************************************************************************/
 
 // Date
 void MultiSeqIndividual::setDate(const Date & date)
 {
   if (!hasDate())
   {
-    _date = new Date(date);
+    date_ = new Date(date);
   }
-  else if (* _date != date)
+  else if (* date_ != date)
   {
-    delete _date;
-    _date = new Date(date);
+    delete date_;
+    date_ = new Date(date);
   }
 }
+
+/******************************************************************************/
 
 const Date * MultiSeqIndividual::getDate() const throw (NullPointerException)
 {
   if (hasDate())
-    return new Date(* _date);
+    return new Date(* date_);
   else
     throw(NullPointerException("MultiSeqIndividual::getDate: no date associated to this individual."));
 }
 
+/******************************************************************************/
+
 bool MultiSeqIndividual::hasDate() const
 {
-  return _date != NULL;
+  return date_ != 0;
 }
+
+/******************************************************************************/
 
 // Coord
 void MultiSeqIndividual::setCoord(const Point2D<double> & coord)
 {
   if (!hasCoord())
   {
-    _coord = new Point2D<double>(coord);
+    coord_ = new Point2D<double>(coord);
   }
-  else if  (* _coord != coord)
+  else if  (* coord_ != coord)
   {
-    delete _coord;
-    _coord = new Point2D<double>(coord);
+    delete coord_;
+    coord_ = new Point2D<double>(coord);
   }
 }
+
+/******************************************************************************/
 
 void MultiSeqIndividual::setCoord(const double x, const double y)
 {
   if (!hasCoord()) {
-    _coord = new Point2D<double>(x, y);
+    coord_ = new Point2D<double>(x, y);
   }
   else if (this->getX() != x || this->getY() != y)
   {
-    delete _coord;
-    _coord = new Point2D<double>(x, y);
+    delete coord_;
+    coord_ = new Point2D<double>(x, y);
   }
 }
+
+/******************************************************************************/
 
 const Point2D<double> * MultiSeqIndividual::getCoord() const throw(NullPointerException)
 {
   if (hasCoord())
-    return new Point2D<double>(* _coord);
+    return new Point2D<double>(* coord_);
   else
     throw(NullPointerException("MultiSeqIndividual::getCoord: no coord associated to this individual."));
 }
 
+/******************************************************************************/
+
 bool MultiSeqIndividual::hasCoord() const
 {
-  return _coord != NULL;
+  return coord_ != 0;
 }
+
+/******************************************************************************/
 
 void MultiSeqIndividual::setX(const double x) throw(NullPointerException)
 {
   if (hasCoord())
-    _coord->setX(x);
+    coord_->setX(x);
   else
     throw(NullPointerException("MultiSeqIndividual::setX: no coord associated to this individual."));
 }
 
+/******************************************************************************/
+
 void MultiSeqIndividual::setY(const double y) throw(NullPointerException)
 {
   if (hasCoord())
-    _coord->setY(y);
+    coord_->setY(y);
   else
     throw(NullPointerException("MultiSeqIndividual::setY: no coord associated to this individual."));
 }
 
+/******************************************************************************/
+
 double MultiSeqIndividual::getX() const throw(NullPointerException)
 {
   if (hasCoord())
-    return _coord->getX();
+    return coord_->getX();
   else
     throw(NullPointerException("MultiSeqIndividual::getX: no coord associated to this individual."));
 }
 
+/******************************************************************************/
+
 double MultiSeqIndividual::getY() const throw(NullPointerException)
 {
   if (hasCoord())
-    return _coord->getY();
+    return coord_->getY();
   else
     throw(NullPointerException("MultiSeqIndividual::getY: no coord associated to this individual."));
 }
 
+/******************************************************************************/
+
 // Locality
 void MultiSeqIndividual::setLocality(const Locality<double> * locality)
 {
-  _locality = locality;
+  locality_ = locality;
 }
+
+/******************************************************************************/
 
 const Locality<double> * MultiSeqIndividual::getLocality() const  throw (NullPointerException)
 {
   if (hasLocality())
-    return _locality;
+    return locality_;
   else
     throw(NullPointerException("MultiSeqIndividual::getLocality: no locality associated to this individual."));
 }
 
+/******************************************************************************/
+
 bool MultiSeqIndividual::hasLocality() const
 {
-  return _locality != NULL;
+  return locality_ != 0;
 }
 
+/******************************************************************************/
+
 // Sequences
-const VectorSequenceContainer * MultiSeqIndividual::getVectorSequenceContainer(const string & id) const throw (Exception)
+const VectorSequenceContainer * MultiSeqIndividual::getVectorSequenceContainer(const std::string & id) const throw (Exception)
 {
   map<string, VectorSequenceContainer *>::const_iterator it;
-  it = _sequences.find(id);
+  it = sequences_.find(id);
   // Test existence of id in the map.
-  if (it == _sequences.end()) {
+  if (it == sequences_.end()) {
     string mes = "MultiSeqIndividual::getSequence: sequence set not found (" + id
       + ").";
     throw(Exception(mes));
@@ -302,11 +316,13 @@ const VectorSequenceContainer * MultiSeqIndividual::getVectorSequenceContainer(c
   return const_cast<const VectorSequenceContainer *>(it->second);
 }
 
-  void MultiSeqIndividual::addSequence(const string & id, const Sequence & sequence)
+/******************************************************************************/
+
+  void MultiSeqIndividual::addSequence(const std::string & id, const Sequence & sequence)
 throw (Exception)
 {
   try {
-    _sequences[id]->addSequence(sequence);
+    sequences_[id]->addSequence(sequence);
   }
   catch (AlphabetMismatchException & ame)
   {
@@ -318,13 +334,15 @@ throw (Exception)
   }
 }
 
-const Sequence& MultiSeqIndividual::getSequence(const string & id, const string & name)
+/******************************************************************************/
+
+const Sequence& MultiSeqIndividual::getSequence(const std::string & id, const std::string & name)
 const throw(Exception)
 {
   map<string, VectorSequenceContainer *>::const_iterator it;
-  it = _sequences.find(id);
+  it = sequences_.find(id);
   // Test existence of id in the map.
-  if (it == _sequences.end()) {
+  if (it == sequences_.end()) {
     string mes = "MultiSeqIndividual::getSequence: sequence set not found (" + id
       + ").";
     throw(Exception(mes));
@@ -338,13 +356,15 @@ const throw(Exception)
   }
 }
 
-const Sequence& MultiSeqIndividual::getSequence(const string & id, unsigned int i)
+/******************************************************************************/
+
+const Sequence& MultiSeqIndividual::getSequence(const std::string & id, unsigned int i)
 const throw(Exception)
 {
   map<string, VectorSequenceContainer *>::const_iterator it;
-  it = _sequences.find(id);
+  it = sequences_.find(id);
   // Test existence of id in the map.
-  if (it == _sequences.end()) {
+  if (it == sequences_.end()) {
     string mes = "MultiSeqIndividual::getSequence: sequence set not found (" + id
       + ").";
     throw(Exception(mes));
@@ -357,32 +377,40 @@ const throw(Exception)
   }
 }
 
-vector<string> MultiSeqIndividual::getSequencesKeys() const
+/******************************************************************************/
+
+std::vector<std::string> MultiSeqIndividual::getSequencesKeys() const
 {
   vector<string> keys;
   map<string, VectorSequenceContainer *>::const_iterator it;
-  for(it = _sequences.begin(); it != _sequences.end(); it++)
+  for(it = sequences_.begin(); it != sequences_.end(); it++)
     keys.push_back(it->first);
   return keys;
 }
 
+/******************************************************************************/
+
 bool MultiSeqIndividual::hasSequences() const
 {
-  return _sequences.size() != 0;
+  return sequences_.size() != 0;
 }
+
+/******************************************************************************/
 
 unsigned int MultiSeqIndividual::getNumberOfSequenceSet() const
 {
-  return _sequences.size();
+  return sequences_.size();
 }
 
-  unsigned int MultiSeqIndividual::getNumberOfSequences(const string & id) const
+/******************************************************************************/
+
+  unsigned int MultiSeqIndividual::getNumberOfSequences(const std::string & id) const
 throw (Exception)
 {
   map<string, VectorSequenceContainer *>::const_iterator it;
-  it = _sequences.find(id);
+  it = sequences_.find(id);
   // Test existence of id in the map.
-  if(it == _sequences.end())
+  if(it == sequences_.end())
   {
     string mes = "MultiSeqIndividual::getSequence: sequence set not found (" + id
       + ").";
@@ -392,20 +420,28 @@ throw (Exception)
   return const_cast<const VectorSequenceContainer *>(it->second)->getNumberOfSequences();
 }
 
+/******************************************************************************/
+
 // MultilocusGenotype
 
 void MultiSeqIndividual::addGenotype(const MultilocusGenotype & genotype)
 {
-  _genotype = new MultilocusGenotype(genotype);
+  genotype_ = new MultilocusGenotype(genotype);
 }
+
+/******************************************************************************/
 
 const MultilocusGenotype * MultiSeqIndividual::getGenotype() const throw (NullPointerException)
 {
-  return _genotype;
+  return genotype_;
 }
+
+/******************************************************************************/
 
 bool MultiSeqIndividual::hasGenotype() const
 {
-  return _genotype != NULL;
+  return genotype_ != 0;
 }
+
+/******************************************************************************/
 
