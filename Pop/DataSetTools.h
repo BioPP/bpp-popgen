@@ -42,6 +42,7 @@
 
 // From STL
 #include <set>
+#include <memory>
 
 // From Utils
 #include <Utils/TextTools.h>
@@ -68,12 +69,12 @@ namespace bpp
       /**
        * @brief General method to build a DataSet from an OrderedSequenceContainer.
        */
-      static DataSet * buildDataSet(const OrderedSequenceContainer & osc) throw (Exception);
+      static std::auto_ptr<DataSet> buildDataSet(const OrderedSequenceContainer & osc) throw (Exception);
 
       /**
        * @brief Specific methode to build a DataSet from a PolymorphismSequenceContainer.
        */
-      static DataSet * buildDataSet(const PolymorphismSequenceContainer & psc) throw (Exception);
+      static std::auto_ptr<DataSet> buildDataSet(const PolymorphismSequenceContainer & psc) throw (Exception);
   };
 
 } //end of namespace bpp;

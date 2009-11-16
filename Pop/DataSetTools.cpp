@@ -42,9 +42,9 @@
 using namespace bpp;
 using namespace std;
 
-DataSet * DataSetTools::buildDataSet(const OrderedSequenceContainer & osc) throw (Exception)
+std::auto_ptr<DataSet> DataSetTools::buildDataSet(const OrderedSequenceContainer & osc) throw (Exception)
 {
-  DataSet * d_s = new DataSet();
+  auto_ptr<DataSet> d_s(new DataSet());
   d_s->addEmptyGroup(0);
   for (unsigned int i = 0 ; i < osc.getNumberOfSequences() ; i++) {
     d_s->addEmptyIndividualToGroup(0, string("Individual_") + TextTools::toString(i + 1));
@@ -58,9 +58,9 @@ DataSet * DataSetTools::buildDataSet(const OrderedSequenceContainer & osc) throw
   return d_s;
 }
 
-DataSet * DataSetTools::buildDataSet(const PolymorphismSequenceContainer & psc) throw (Exception)
+std::auto_ptr<DataSet> DataSetTools::buildDataSet(const PolymorphismSequenceContainer & psc) throw (Exception)
 {
-  DataSet * d_s = new DataSet();
+  auto_ptr<DataSet> d_s(new DataSet());
   set<unsigned int> grp_ids = psc.getAllGroupsIds();
   for (set<unsigned int>::iterator it = grp_ids.begin() ; it != grp_ids.end() ; it++)
     d_s->addEmptyGroup(* it);
