@@ -41,20 +41,11 @@
 #include "Genetix.h"
 
 using namespace bpp;
+using namespace std;
 
 Genetix::Genetix() {}
 
 Genetix::~Genetix() {}
-
-const string Genetix::getFormatName()
-{
-  return "Genetix ver 4.05";
-}
-
-const string Genetix::getFormatDescription()
-{
-  return "Genetix is a software for populations genetic for Windows(tm)";
-}
 
 void Genetix::read(istream & is, DataSet & data_set) throw (Exception)
 {

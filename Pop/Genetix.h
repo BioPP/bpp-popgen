@@ -72,10 +72,10 @@ namespace bpp
        * @name The IDataSet interface.
        * @{
        */
-      void read(istream & is, DataSet & data_set) throw (Exception);
-      void read(const string & path, DataSet & data_set) throw (Exception);
-      DataSet * read(istream & is) throw (Exception);
-      DataSet * read(const string & path) throw (Exception);
+      void read(std::istream & is, DataSet & data_set) throw (Exception);
+      void read(const std::string & path, DataSet & data_set) throw (Exception);
+      DataSet * read(std::istream & is) throw (Exception);
+      DataSet * read(const std::string & path) throw (Exception);
       /**
        * @}
        */
@@ -84,8 +84,12 @@ namespace bpp
        * @name The IODataSet interface
        * @{
        */
-      virtual const string getFormatName();
-      virtual const string getFormatDescription();
+      const std::string getFormatName() {
+        return "Genetix ver 4.05";
+      }
+      const std::string getFormatDescription() {
+        return "Genetix is a software for populations genetic for Windows(tm)";
+      }
       /**
        * @}
        */

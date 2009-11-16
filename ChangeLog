@@ -1,3 +1,6 @@
+16/11/09 Sylvain Gaillard
+* No more "using namespace" in header files.
+
 21/07/09 Sylvain Gaillard
 * Removed Coord and CoordsTools classes (move to Utils/Point2D and
 Utils/Point2DTools)

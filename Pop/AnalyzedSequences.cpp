@@ -43,6 +43,7 @@
 #include <Seq/ProteicAlphabet.h>
 
 using namespace bpp;
+using namespace std;
 
 AnalyzedSequences::AnalyzedSequences(): alphabet_(0), autoset_(false) {}
 

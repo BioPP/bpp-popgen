@@ -63,22 +63,22 @@ namespace bpp
       /**
        * @brief Read a DataSet on istream.
        */
-      virtual void read(istream & is, DataSet & data_set) throw (Exception) = 0;
+      virtual void read(std::istream & is, DataSet & data_set) throw (Exception) = 0;
 
       /**
        * @brief Read a DataSet from a text file.
        */
-      virtual void read(const string & path, DataSet & data_set) throw (Exception) = 0;
+      virtual void read(const std::string & path, DataSet & data_set) throw (Exception) = 0;
 
       /**
        * @brief Read istream and return a DataSet.
        */
-      virtual DataSet * read(istream & is) throw (Exception) = 0;
+      virtual DataSet * read(std::istream & is) throw (Exception) = 0;
 
       /**
        * @brief Read a text file and return a DataSet.
        */
-      virtual DataSet * read(const string & path) throw (Exception) = 0;
+      virtual DataSet * read(const std::string & path) throw (Exception) = 0;
   };
 
 } //end of namespace bpp;

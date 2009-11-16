@@ -73,14 +73,19 @@ namespace bpp
       /**
        * @brief Get the identitier of the allele.
        */
-      virtual std::string getId() const = 0;
+      virtual const std::string& getId() const = 0;
 
       /**
        * @name The Clonable interface
        *
        * @{
        */
-      AlleleInfo* clone() const  = 0;
+#ifdef NO_VIRTUAL_COV
+      Clonable*
+#else
+      AlleleInfo*
+#endif
+      clone() const  = 0;
       /** @} */
   };
 

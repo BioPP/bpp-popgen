@@ -70,8 +70,8 @@ namespace bpp
        * @name The ODataSet interface.
        * @{
        */
-      void write(ostream & os, const DataSet & data_set) const throw (Exception);
-      void write(const string & path, const DataSet & data_set, bool overwrite) const throw (Exception);
+      void write(std::ostream & os, const DataSet & data_set) const throw (Exception);
+      void write(const std::string & path, const DataSet & data_set, bool overwrite) const throw (Exception);
       /**
        * @}
        */
@@ -80,8 +80,8 @@ namespace bpp
        * @name The IODataSet interface
        * @{
        */
-      virtual const string getFormatName();
-      virtual const string getFormatDescription();
+      virtual const std::string getFormatName();
+      virtual const std::string getFormatDescription();
       /**
        * @}
        */

@@ -40,19 +40,11 @@
 #include "Genepop.h"
 
 using namespace bpp;
+using namespace std;
 
 Genepop::Genepop() {}
 
 Genepop::~Genepop() {}
-
-const string Genepop::getFormatName() {
-  return "Genepop ver 3.4";
-}
-
-const string Genepop::getFormatDescription()
-{
-  return "Genepop is a software for populations genetic for DOS operating system";
-}
 
 void Genepop::read(istream & is, DataSet & data_set) throw (Exception)
 {

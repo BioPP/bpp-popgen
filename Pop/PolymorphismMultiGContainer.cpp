@@ -40,6 +40,7 @@
 #include "PolymorphismMultiGContainer.h"
 
 using namespace bpp;
+using namespace std;
 
 //** Constructors : **********************************************************/
 

@@ -40,6 +40,7 @@
 #include "DataSetTools.h"
 
 using namespace bpp;
+using namespace std;
 
 DataSet * DataSetTools::buildDataSet(const OrderedSequenceContainer & osc) throw (Exception)
 {

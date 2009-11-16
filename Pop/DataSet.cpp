@@ -41,6 +41,7 @@
 #include "DataSet.h"
 
 using namespace bpp;
+using namespace std;
 
 //** Class constructor: *******************************************************/
 

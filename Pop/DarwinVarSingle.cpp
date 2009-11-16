@@ -40,6 +40,7 @@
 #include "DarwinVarSingle.h"
 
 using namespace bpp;
+using namespace std;
 
 DarwinVarSingle::DarwinVarSingle() {}
 

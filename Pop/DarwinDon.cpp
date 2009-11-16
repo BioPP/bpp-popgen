@@ -40,6 +40,7 @@
 #include "DarwinDon.h"
 
 using namespace bpp;
+using namespace std;
 
 DarwinDon::DarwinDon() {}
 

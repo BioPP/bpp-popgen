@@ -42,6 +42,7 @@
 #include "PolymorphismSequenceContainer.h"
 
 using namespace bpp;
+using namespace std;
 
 /******************************************************************************/
 

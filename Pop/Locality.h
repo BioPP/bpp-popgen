@@ -61,7 +61,7 @@ namespace bpp
     public bpp::Point2D<T>
   {
     protected:
-      std::string _name;
+      std::string name_;
 
     public: // Constructors and destructor
       /**
@@ -72,7 +72,7 @@ namespace bpp
        * @param y The latitude.
        */
       Locality<T>(const std::string name, const T x=0, const T y=0):
-        bpp::Point2D<T>(x, y), _name(name) {}
+        bpp::Point2D<T>(x, y), name_(name) {}
 
       /**
        * @brief Build a new locality with name and coordinates.
@@ -81,7 +81,7 @@ namespace bpp
        * @param coord The coordinates of the locality.
        */
       Locality<T>(const std::string name, const bpp::Point2D<T> & coord):
-        bpp::Point2D<T>(coord), _name(name) {}
+        bpp::Point2D<T>(coord), name_(name) {}
 
       /**
        * @brief Destroy a locality.
@@ -101,7 +101,7 @@ namespace bpp
        */
       virtual bool operator== (const Locality<T> & locality) const
       {
-        return this->getX() == locality.getX() && this->getY() == locality.getY() && _name == locality._name;
+        return this->getX() == locality.getX() && this->getY() == locality.getY() && name_ == locality.name_;
       }
 
       /**
@@ -115,12 +115,12 @@ namespace bpp
       /**
        * @brief Set the name of the locality.
        */
-      void setName(const std::string & name) { _name = name; }
+      void setName(const std::string & name) { name_ = name; }
 
       /**
        * @brief Get the name of the locality.
        */
-      std::string getName() const { return _name; }
+      const std::string& getName() const { return name_; }
 
   };
 

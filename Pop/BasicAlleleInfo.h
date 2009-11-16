@@ -95,14 +95,19 @@ namespace bpp
        * @name The Clonable interface
        * @{
        */
-      BasicAlleleInfo* clone() const { return new BasicAlleleInfo(*this); }
+#ifdef NO_VIRTUAL_COV
+      Clonable*
+#else
+      BasicAlleleInfo*
+#endif
+      clone() const { return new BasicAlleleInfo(*this); }
       /** @} */
 
       /**
        * @name The AlleleInfo interface
        */
       void setId(const std::string& allele_id);
-      std::string getId() const;
+      const std::string& getId() const;
       /** @} */
 };
 

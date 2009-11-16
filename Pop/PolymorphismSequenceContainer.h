@@ -104,9 +104,9 @@ namespace bpp
     public VectorSiteContainer
   {
     private:
-      vector<bool> ingroup_;
-      vector<unsigned int> count_;
-      vector<unsigned int> group_;
+      std::vector<bool> ingroup_;
+      std::vector<unsigned int> count_;
+      std::vector<unsigned int> group_;
 
     public: // Constructors and destructor
       /**

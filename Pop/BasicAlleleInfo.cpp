@@ -74,7 +74,7 @@ void BasicAlleleInfo::setId(const std::string& allele_id)
   id_ = allele_id;
 }
 
-std::string BasicAlleleInfo::getId() const
+const std::string& BasicAlleleInfo::getId() const
 {
   return id_;
 }

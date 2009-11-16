@@ -40,6 +40,7 @@
 #include "MultiSeqIndividual.h"
 
 using namespace bpp;
+using namespace std;
 
 //** Class constructor: *******************************************************/
 
