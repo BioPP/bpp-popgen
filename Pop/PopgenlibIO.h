@@ -58,7 +58,7 @@ namespace bpp
 {
 
   /**
-   * @brief The natif I/O format for popgenlib.
+   * @brief The native I/O format for popgenlib.
    *
    * @author Sylvain Gaillard
    */
@@ -170,11 +170,15 @@ namespace bpp
        */
 
       /**
-       * @name The IODataSet interface
+       * @name The IOFormat interface
        * @{
        */
-      const std::string getFormatName();
-      const std::string getFormatDescription();
+      const std::string getFormatName() const {
+        return "PopgenlibIO ver 0.1";
+      }
+      const std::string getFormatDescription() const {
+        return "IO format used to store DataSets inspired from Arlequin and Fasta";
+      }
       /**
        * @}
        */

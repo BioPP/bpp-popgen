@@ -98,14 +98,14 @@ namespace bpp
       /**
        * @brief Get the name of the locus.
        */
-      std::string getName() const;
+      const std::string& getName() const { return name_; }
 
       /**
        * @brief Get the ploidy of the locus.
        *
        * @return The ploidy as an unsigned integer.
        */
-      unsigned int getPloidy() const;
+      unsigned int getPloidy() const { return ploidy_; }
 
       /**
        * @brief Add an AlleleInfo to the LocusInfo.
@@ -120,7 +120,7 @@ namespace bpp
        *
        * @throw AlleleNotFoundException if the id is not found.
        */
-      AlleleInfo* getAlleleInfoById(const std::string& id) const
+      const AlleleInfo& getAlleleInfoById(const std::string& id) const
         throw (AlleleNotFoundException);
 
       /**
@@ -128,7 +128,7 @@ namespace bpp
        *
        * @throw IndexOutOfBoundsException if key excedes the number of alleles.
        */
-      AlleleInfo* getAlleleInfoByKey(unsigned int key) const
+      const AlleleInfo& getAlleleInfoByKey(unsigned int key) const
         throw (IndexOutOfBoundsException);
 
       /**

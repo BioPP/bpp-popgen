@@ -46,16 +46,6 @@ DarwinVarSingle::DarwinVarSingle() {}
 
 DarwinVarSingle::~DarwinVarSingle() {}
 
-const string DarwinVarSingle::getFormatName()
-{
-  return "Darwin .var single data";
-}
-
-const string DarwinVarSingle::getFormatDescription()
-{
-  return "Darwin .var file store data for each marker in each individual (1 variable per allele).";
-}
-
 void DarwinVarSingle::write(ostream & os, const DataSet & data_set) const throw (Exception)
 {
   if (!os)
@@ -67,9 +57,9 @@ void DarwinVarSingle::write(ostream & os, const DataSet & data_set) const throw 
   vector<string> header;
   header.push_back("Unit");
   for (unsigned int i = 0 ; i < data_set.getNumberOfLoci() ; i++) {
-    const LocusInfo * li = data_set.getLocusInfoAtPosition(i);
-    for (unsigned int j = 0 ; j < li->getNumberOfAlleles() ; j++) {
-      header.push_back(li->getName() + "." + li->getAlleleInfoByKey(j)->getId());
+    const LocusInfo& li = data_set.getLocusInfoAtPosition(i);
+    for (unsigned int j = 0 ; j < li.getNumberOfAlleles() ; j++) {
+      header.push_back(li.getName() + "." + li.getAlleleInfoByKey(j).getId());
     }
   }
   unsigned int var_nbr = header.size() - 1;

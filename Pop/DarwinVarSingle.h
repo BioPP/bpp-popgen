@@ -58,7 +58,7 @@ namespace bpp
    * @author Sylvain Gaillard
    */
   class DarwinVarSingle:
-    public AbstractODataSet
+    public virtual AbstractODataSet
   {
 
     public: // Constructor and destructor
@@ -77,11 +77,15 @@ namespace bpp
        */
 
       /**
-       * @name The IODataSet interface
+       * @name The IOFormat interface
        * @{
        */
-      virtual const std::string getFormatName();
-      virtual const std::string getFormatDescription();
+      virtual const std::string getFormatName() const {
+        return "Darwin .var single data";
+      }
+      virtual const std::string getFormatDescription() const {
+        return "Darwin .var file store data for each marker in each individual (1 variable per allele).";
+      }
       /**
        * @}
        */

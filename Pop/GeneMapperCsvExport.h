@@ -95,11 +95,15 @@ namespace bpp
        */
 
       /**
-       * @name The IODataSet interface
+       * @name The IOFormat interface
        * @{
        */
-      virtual const std::string getFormatName();
-      virtual const std::string getFormatDescription();
+      virtual const std::string getFormatName() const {
+        return "GeneMapper® cvs export";
+      }
+      virtual const std::string getFormatDescription() const {
+        return "GeneMapper® is a flexible genotyping software package that provides DNA sizing and quality allele calls for all Applied Biosystems electrophoresis-based genotyping systems.";
+      }
       /**
        * @}
        */

@@ -79,14 +79,14 @@ namespace bpp
        */
 
       /**
-       * @name The IODataSet interface
+       * @name The IOFormat interface
        * @{
        */
-      const std::string getFormatName() {
+      const std::string getFormatName() const {
         return "Genepop ver 3.4";
       }
 
-      const std::string getFormatDescription() {
+      const std::string getFormatDescription() const {
         return "Genepop is a software for populations genetic for DOS operating system";
       }
       /**

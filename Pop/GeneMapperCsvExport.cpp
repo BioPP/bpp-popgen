@@ -46,16 +46,6 @@ GeneMapperCsvExport::GeneMapperCsvExport(bool ia): IndependentAlleles_(ia) {}
 
 GeneMapperCsvExport::~GeneMapperCsvExport() {}
 
-const std::string GeneMapperCsvExport::getFormatName()
-{
-  return "GeneMapper® cvs export";
-}
-
-const std::string GeneMapperCsvExport::getFormatDescription()
-{
-  return "GeneMapper® is a flexible genotyping software package that provides DNA sizing and quality allele calls for all Applied Biosystems electrophoresis-based genotyping systems.";
-}
-
 void GeneMapperCsvExport::read(std::istream& is, DataSet& data_set) throw (Exception)
 {
   if (!is)
@@ -146,7 +136,7 @@ void GeneMapperCsvExport::read(std::istream& is, DataSet& data_set) throw (Excep
     vector<unsigned int> alleles;
     for (unsigned int j = 0 ; j < alleles_cols.size() ; j++) {
       if (!TextTools::isEmpty(dt(i,alleles_cols[j]))) {
-        unsigned int num = (data_set.getLocusInfoByName(dt(i, mark_col_index)))->getAlleleInfoKey(dt(i,alleles_cols[j]));
+        unsigned int num = (data_set.getLocusInfoByName(dt(i, mark_col_index))).getAlleleInfoKey(dt(i,alleles_cols[j]));
         alleles.push_back(num);
       }
     }

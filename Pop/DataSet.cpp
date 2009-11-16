@@ -824,9 +824,9 @@ void DataSet::setIndividualMonolocusGenotypeByAlleleIdInGroup(unsigned int group
 {
   if (group_position >= getNumberOfGroups())
     throw IndexOutOfBoundsException("DataSet::setIndividualMonolocusGenotypeByAlleleIdInGroup: group_position out of bounds.", group_position, 0, getNumberOfGroups());
-  const LocusInfo * locus_info = getLocusInfoAtPosition(locus_position);
+  const LocusInfo& locus_info = getLocusInfoAtPosition(locus_position);
   try {
-    groups_[group_position]->setIndividualMonolocusGenotypeByAlleleId(individual_position, locus_position, allele_id, *locus_info);
+    groups_[group_position]->setIndividualMonolocusGenotypeByAlleleId(individual_position, locus_position, allele_id, locus_info);
   }
   catch (IndexOutOfBoundsException & ioobe) {
     if (string(ioobe.what()).find("individual_position") < string(ioobe.what()).size())
@@ -961,7 +961,7 @@ void DataSet::setLocusInfo(unsigned int locus_position, const LocusInfo& locus) 
 
 /******************************************************************************/
 
-const LocusInfo* DataSet::getLocusInfoByName(const std::string& locus_name) const throw (Exception)
+const LocusInfo& DataSet::getLocusInfoByName(const std::string& locus_name) const throw (Exception)
 {
   if (analyzedLoci_ == 0)
     throw NullPointerException("DataSet::getLocusInfoByName: there's no AnalyzedLoci.");
@@ -975,7 +975,7 @@ const LocusInfo* DataSet::getLocusInfoByName(const std::string& locus_name) cons
 
 /******************************************************************************/
 
-const LocusInfo* DataSet::getLocusInfoAtPosition(unsigned int locus_position) const throw (Exception)
+const LocusInfo& DataSet::getLocusInfoAtPosition(unsigned int locus_position) const throw (Exception)
 {
   if (analyzedLoci_ == 0)
     throw NullPointerException("DataSet::getLocusInfoAtPosition: there's no AnalyzedLoci.");

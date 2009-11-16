@@ -58,7 +58,7 @@ namespace bpp
    * @author Sylvain Gaillard
    */
   class DarwinDon:
-    public AbstractODataSet
+    public virtual AbstractODataSet
   {
 
     public: // Constructor and destructor
@@ -77,11 +77,15 @@ namespace bpp
        */
 
       /**
-       * @name The IODataSet interface
+       * @name The IOFormat interface
        * @{
        */
-      virtual const std::string getFormatName();
-      virtual const std::string getFormatDescription();
+      const std::string getFormatName() const {
+        return "Darwin .don";
+      }
+      const std::string getFormatDescription() const {
+        return "Darwin .don file store data identifying individuals.";
+      }
       /**
        * @}
        */

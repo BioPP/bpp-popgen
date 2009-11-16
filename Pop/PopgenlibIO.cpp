@@ -69,16 +69,6 @@ throw (Exception): data_separator_(' '), missing_data_symbol_('$')
 
 PopgenlibIO::~PopgenlibIO() {}
 
-const std::string PopgenlibIO::getFormatName()
-{
-  return "PopgenlibIO ver 0.1";
-}
-
-const std::string PopgenlibIO::getFormatDescription()
-{
-  return "IO format used to store DataSets inspired from Arlequin and Fasta";
-}
-
 void PopgenlibIO::setMissingDataSymbol(const std::string& missing_data_symbol) throw (Exception)
 {
   if (missing_data_symbol.size() != 1 || isdigit(missing_data_symbol[0])
@@ -418,14 +408,13 @@ void PopgenlibIO::parseIndividual_(const std::vector<std::string>& in, DataSet& 
       string temp2 = in[++i];
       vector<string> allele_pos_str1 = getValues_(temp1, "");
       vector<string> allele_pos_str2 = getValues_(temp2, "");
-      const LocusInfo * locus_info;
       try {
         tmp_indiv.initGenotype(data_set.getNumberOfLoci());
       }
       catch (...) {}
       if (allele_pos_str1.size() == allele_pos_str2.size()) {
         for (unsigned int j = 0 ; j < allele_pos_str1.size() ; j++) {
-          locus_info = data_set.getLocusInfoAtPosition(j);
+          const LocusInfo& locus_info = data_set.getLocusInfoAtPosition(j);
           allele_pos_str1[j] = TextTools::removeSurroundingWhiteSpaces(allele_pos_str1[j]);
           vector<string> tmp_alleles_id;
           if (allele_pos_str1[j] != getMissingDataSymbol()) {
@@ -446,7 +435,7 @@ void PopgenlibIO::parseIndividual_(const std::vector<std::string>& in, DataSet& 
             tmp_alleles_id.push_back(allele_pos_str2[j]);
           }
           try {
-            tmp_indiv.setMonolocusGenotypeByAlleleId(j, tmp_alleles_id, * locus_info);
+            tmp_indiv.setMonolocusGenotypeByAlleleId(j, tmp_alleles_id, locus_info);
           }
           catch (...) {}
         }
@@ -511,19 +500,19 @@ void PopgenlibIO::write(std::ostream& os, const DataSet& data_set) const throw (
   if (data_set.hasAlleleicData()) {
     os << endl << "[Loci]" << endl;
     for (unsigned int i = 0 ; i < data_set.getNumberOfLoci() ; i++) {
-      const LocusInfo * tmp_locus_info = data_set.getLocusInfoAtPosition(i);
-      os << ">" << tmp_locus_info->getName() << endl;
+      const LocusInfo& tmp_locus_info = data_set.getLocusInfoAtPosition(i);
+      os << ">" << tmp_locus_info.getName() << endl;
       os << "Ploidy = ";
-      if (tmp_locus_info->getPloidy() == LocusInfo::HAPLOID)
+      if (tmp_locus_info.getPloidy() == LocusInfo::HAPLOID)
         os << HAPLOID;
-      else if (tmp_locus_info->getPloidy() == LocusInfo::DIPLOID)
+      else if (tmp_locus_info.getPloidy() == LocusInfo::DIPLOID)
         os << DIPLOID;
-      else if (tmp_locus_info->getPloidy() == LocusInfo::HAPLODIPLOID)
+      else if (tmp_locus_info.getPloidy() == LocusInfo::HAPLODIPLOID)
         os << HAPLODIPLOID;
-      else if (tmp_locus_info->getPloidy() == LocusInfo::UNKNOWN)
+      else if (tmp_locus_info.getPloidy() == LocusInfo::UNKNOWN)
         os << UNKNOWN;
       os << endl;
-      os << "NbAlleles = " << tmp_locus_info->getNumberOfAlleles() << endl;
+      os << "NbAlleles = " << tmp_locus_info.getNumberOfAlleles() << endl;
     }
   }
 
@@ -566,9 +555,9 @@ void PopgenlibIO::write(std::ostream& os, const DataSet& data_set) const throw (
           }
           else {
             vector<unsigned int> tmp_all_ind = tmp_genotype->getMonolocusGenotype(k)->getAlleleIndex();
-            output[k][0] = data_set.getLocusInfoAtPosition(k)->getAlleleInfoByKey(tmp_all_ind[0])->getId();
+            output[k][0] = data_set.getLocusInfoAtPosition(k).getAlleleInfoByKey(tmp_all_ind[0]).getId();
             if (tmp_all_ind.size() > 1)
-              output[k][1] = data_set.getLocusInfoAtPosition(k)->getAlleleInfoByKey(tmp_all_ind[1])->getId();
+              output[k][1] = data_set.getLocusInfoAtPosition(k).getAlleleInfoByKey(tmp_all_ind[1]).getId();
             else
               output[k][1] = getMissingDataChar();
           }

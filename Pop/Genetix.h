@@ -81,13 +81,13 @@ namespace bpp
        */
 
       /**
-       * @name The IODataSet interface
+       * @name The IOFormat interface
        * @{
        */
-      const std::string getFormatName() {
+      const std::string getFormatName() const {
         return "Genetix ver 4.05";
       }
-      const std::string getFormatDescription() {
+      const std::string getFormatDescription() const {
         return "Genetix is a software for populations genetic for Windows(tm)";
       }
       /**

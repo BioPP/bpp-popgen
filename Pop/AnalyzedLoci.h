@@ -106,7 +106,7 @@ namespace bpp
        *
        * @throw BadIdentifierException if locus_name is not found.
        */
-      const LocusInfo * getLocusInfoByName(const std::string & locus_name) const
+      const LocusInfo& getLocusInfoByName(const std::string & locus_name) const
         throw (BadIdentifierException);
 
       /**
@@ -115,7 +115,7 @@ namespace bpp
        * @throw NullPointerException if the LocusInfo is not difined.
        * @throw IndexOutOfBoundsException if locus_position is out of bounds.
        */
-      const LocusInfo * getLocusInfoAtPosition(unsigned int locus_position) const
+      const LocusInfo& getLocusInfoAtPosition(unsigned int locus_position) const
         throw (Exception);
 
       /**
@@ -141,7 +141,7 @@ namespace bpp
       /**
        * @brief Get the number of loci.
        */
-      unsigned int getNumberOfLoci() const;
+      unsigned int getNumberOfLoci() const { return loci_.size(); }
 
       /**
        * @brief Get the number of alleles at each locus.

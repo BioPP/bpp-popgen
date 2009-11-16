@@ -58,7 +58,7 @@ LocusInfo::LocusInfo(const std::string& name, const unsigned int ploidy): name_(
 LocusInfo::LocusInfo(const LocusInfo& locus_info): name_(locus_info.getName()), ploidy_(locus_info.getPloidy()), alleles_(vector<AlleleInfo*>(locus_info.getNumberOfAlleles()))
 {
   for (unsigned int i = 0 ; i < locus_info.getNumberOfAlleles() ; i++) {
-    alleles_[i] = dynamic_cast<AlleleInfo*>(locus_info.getAlleleInfoByKey(i)->clone());
+    alleles_[i] = dynamic_cast<AlleleInfo*>(locus_info.getAlleleInfoByKey(i).clone());
   }
 }
 
@@ -72,21 +72,9 @@ LocusInfo::~LocusInfo()
 }
 
 //** Other methodes: *********************************************************/
-// Name
-std::string LocusInfo::getName() const
-{
-  return name_;
-}
-
-// Ploidie
-unsigned int LocusInfo::getPloidy() const
-{
-  return ploidy_;
-}
 
 // AlleleInfos
-void LocusInfo::addAlleleInfo(const AlleleInfo& allele) throw (BadIdentifierException)
-{
+void LocusInfo::addAlleleInfo(const AlleleInfo& allele) throw (BadIdentifierException) {
   // Check if the allele id is not already in use
   for (unsigned int i = 0 ; i < alleles_.size() ; i++)
     if (alleles_[i]->getId() == allele.getId())
@@ -94,20 +82,17 @@ void LocusInfo::addAlleleInfo(const AlleleInfo& allele) throw (BadIdentifierExce
   alleles_.push_back(allele.clone());
 }
 
-  AlleleInfo* LocusInfo::getAlleleInfoById(const std::string& id) const
-throw (AlleleNotFoundException)
-{
+const AlleleInfo& LocusInfo::getAlleleInfoById(const std::string& id) const throw (AlleleNotFoundException) {
   for (unsigned int i = 0; i < alleles_.size(); i++)
     if (alleles_[i]->getId() == id)
-      return alleles_[i];
+      return *(alleles_[i]);
   throw AlleleNotFoundException("LocusInfo::getAlleleInfoById: AlleleInfo id unknown.", id);
 }
 
-AlleleInfo* LocusInfo::getAlleleInfoByKey(unsigned int key) const throw (IndexOutOfBoundsException)
-{
+const AlleleInfo& LocusInfo::getAlleleInfoByKey(unsigned int key) const throw (IndexOutOfBoundsException) {
   if (key >= alleles_.size())
     throw IndexOutOfBoundsException("LocusInfo::getAlleleInfoByKey: key out of bounds.", key, 0, alleles_.size());
-  return alleles_[key];
+  return *(alleles_[key]);
 }
 
   unsigned int LocusInfo::getAlleleInfoKey(const std::string& id) const

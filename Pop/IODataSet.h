@@ -42,6 +42,9 @@
 
 #include "DataSet.h"
 
+// From Utils:
+#include <Utils/IOFormat.h>
+
 // From STL
 #include <iostream>
 #include <fstream>
@@ -57,21 +60,16 @@ namespace bpp
    *
    * @author Sylvain Gaillard
    */
-  class IODataSet
+  class IODataSet: public virtual IOFormat
   {
-    public: // Class destructor
-      virtual ~IODataSet() {}
-
-    public:
       /**
-       * @brief Get the format's name.
+       * @name The IOFormat interface.
+       * @{
        */
-      virtual const std::string getFormatName() = 0;
-
+      const std::string getDataType() const { return "DataSet for population genetics"; }
       /**
-       * @brief Get a description of the format.
+       * @}
        */
-      virtual const std::string getFormatDescription() = 0;
   };
 
 } //end of namespace bpp;

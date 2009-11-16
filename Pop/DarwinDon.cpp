@@ -46,16 +46,6 @@ DarwinDon::DarwinDon() {}
 
 DarwinDon::~DarwinDon() {}
 
-const string DarwinDon::getFormatName()
-{
-  return "Darwin .don";
-}
-
-const string DarwinDon::getFormatDescription()
-{
-  return "Darwin .don file store data identifying individuals.";
-}
-
 void DarwinDon::write(ostream & os, const DataSet & data_set) const throw (Exception)
 {
   if (!os)

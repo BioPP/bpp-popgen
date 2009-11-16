@@ -42,31 +42,33 @@
 using namespace bpp;
 using namespace std;
 
-//** Constructors: ***********************************************************/
+/******************************************************************************/
 
-AnalyzedLoci::AnalyzedLoci(unsigned int number_of_loci): loci_(vector<LocusInfo*>(number_of_loci))
-{
+AnalyzedLoci::AnalyzedLoci(unsigned int number_of_loci): loci_(vector<LocusInfo*>(number_of_loci)) {
   for(unsigned int i = 0 ; i < loci_.size() ; i++)
     loci_[i] = 0;
 }
 
-AnalyzedLoci::AnalyzedLoci(const AnalyzedLoci& analyzed_loci): loci_(vector<LocusInfo*>(analyzed_loci.loci_.size()))
-{
+/******************************************************************************/
+
+AnalyzedLoci::AnalyzedLoci(const AnalyzedLoci& analyzed_loci): loci_(vector<LocusInfo*>(analyzed_loci.loci_.size())) {
   for(unsigned int i = 0; i < analyzed_loci.getNumberOfLoci(); i++)
-    loci_[i] = new LocusInfo(* analyzed_loci.getLocusInfoAtPosition(i));
+    loci_[i] = new LocusInfo(analyzed_loci.getLocusInfoAtPosition(i));
 }
 
-//** Destructor: *************************************************************/
+/******************************************************************************/
 
-AnalyzedLoci::~AnalyzedLoci()
-{
-  for(unsigned int i = 0; i < loci_.size(); i++)
+AnalyzedLoci::~AnalyzedLoci() {
+  for(unsigned int i = 0; i < loci_.size(); i++) {
     delete loci_[i];
+  }
 }
 
-//** Other methodes: *********************************************************/
-// LocusInfo
-  void AnalyzedLoci::setLocusInfo(unsigned int locus_position, const LocusInfo& locus)
+/******************************************************************************/
+
+void AnalyzedLoci::setLocusInfo(
+    unsigned int locus_position,
+    const LocusInfo& locus)
 throw (IndexOutOfBoundsException)
 {
   if (locus_position >= 0 && locus_position < loci_.size())
@@ -76,7 +78,10 @@ throw (IndexOutOfBoundsException)
         locus_position, 0, loci_.size());
 }
 
-  unsigned int AnalyzedLoci::getLocusInfoPosition(const std::string & locus_name) const
+/******************************************************************************/
+
+unsigned int AnalyzedLoci::getLocusInfoPosition(
+    const std::string & locus_name) const
 throw (BadIdentifierException)
 {
   for(unsigned int i = 0; i < loci_.size(); i++)
@@ -85,26 +90,34 @@ throw (BadIdentifierException)
   throw BadIdentifierException("AnalyzedLoci::getLocusInfoPosition: locus not found.", locus_name);
 }
 
-  const LocusInfo * AnalyzedLoci::getLocusInfoByName(const std::string& locus_name) const
+/******************************************************************************/
+
+const LocusInfo& AnalyzedLoci::getLocusInfoByName(
+    const std::string& locus_name) const
 throw (BadIdentifierException)
 {
   for(unsigned int i = 0; i < loci_.size(); i++)
     if (loci_[i] != NULL && loci_[i]->getName() == locus_name)
-      return loci_[i];
+      return *(loci_[i]);
   throw BadIdentifierException("AnalyzedLoci::getLocusInfo: locus not found.",
       locus_name);
 }
 
-  const LocusInfo* AnalyzedLoci::getLocusInfoAtPosition(unsigned int locus_position) const
+/******************************************************************************/
+
+const LocusInfo& AnalyzedLoci::getLocusInfoAtPosition(
+    unsigned int locus_position) const
 throw (Exception)
 {
   if(locus_position >= loci_.size())
     throw IndexOutOfBoundsException("AnalyzedLoci::getLocusInfoAtPosition: locus_position out of bounds.", locus_position, 0, loci_.size());
   if(loci_[locus_position] != NULL)
-    return loci_[locus_position];
+    return *(loci_[locus_position]);
   else
     throw NullPointerException("AnalyzedLoci::getLocusInfo: no locus defined here.");
 }
+
+/******************************************************************************/
 
 // AlleleInfo
 void AnalyzedLoci::addAlleleInfoByLocusName(const std::string& locus_name,
@@ -132,6 +145,8 @@ throw (Exception)
         locus_name);
 }
 
+/******************************************************************************/
+
 void AnalyzedLoci::addAlleleInfoByLocusPosition(unsigned int locus_position,
     const AlleleInfo& allele)
 throw (Exception)
@@ -152,10 +167,7 @@ throw (Exception)
         locus_position, 0, loci_.size());
 }
 
-// General
-unsigned int AnalyzedLoci::getNumberOfLoci() const {
-  return loci_.size();
-}
+/******************************************************************************/
 
 std::vector<unsigned int> AnalyzedLoci::getNumberOfAlleles() const
 {
@@ -164,6 +176,8 @@ std::vector<unsigned int> AnalyzedLoci::getNumberOfAlleles() const
     allele_count.push_back(loci_[i]->getNumberOfAlleles());
   return allele_count;
 }
+
+/******************************************************************************/
 
   unsigned int AnalyzedLoci::getPloidyByLocusName(const std::string& locus_name) const
 throw (LocusNotFoundException)
@@ -175,6 +189,8 @@ throw (LocusNotFoundException)
       locus_name);
 }
 
+/******************************************************************************/
+
   unsigned int AnalyzedLoci::getPloidyByLocusPosition(unsigned int locus_position) const
 throw (IndexOutOfBoundsException)
 {
@@ -182,4 +198,6 @@ throw (IndexOutOfBoundsException)
     throw IndexOutOfBoundsException("AnalyzedLoci::getPloidyByLocusPosition: locus_position out of bounds.", locus_position, 0, loci_.size());
   return loci_[locus_position]->getPloidy();
 }
+
+/******************************************************************************/
 

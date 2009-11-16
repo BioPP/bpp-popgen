@@ -621,13 +621,13 @@ namespace bpp
       /**
        * @brief Get a LocusInfo by its name.
        */
-      const LocusInfo * getLocusInfoByName(const std::string & locus_name) const
+      const LocusInfo& getLocusInfoByName(const std::string & locus_name) const
         throw (Exception);
 
       /**
        * @brief Get a LocusInfo by its position.
        */
-      const LocusInfo * getLocusInfoAtPosition(unsigned int locus_position) const
+      const LocusInfo& getLocusInfoAtPosition(unsigned int locus_position) const
         throw (Exception);
 
       /**
