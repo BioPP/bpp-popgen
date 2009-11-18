@@ -116,15 +116,15 @@ unsigned int DataSet::getLocalityPosition(const std::string& name) const throw (
 
 /******************************************************************************/
 
-const Locality<double> * DataSet::getLocalityAtPosition(unsigned int locality_position) const throw (IndexOutOfBoundsException)
+const Locality<double>& DataSet::getLocalityAtPosition(unsigned int locality_position) const throw (IndexOutOfBoundsException)
 {
   if (locality_position >= localities_.size()) throw IndexOutOfBoundsException("DataSet::getLocalityAtPosition: locality_position out of bounds.", locality_position, 0, localities_.size());
-  return localities_[locality_position];
+  return *(localities_[locality_position]);
 }
 
 /******************************************************************************/
 
-const Locality<double> * DataSet::getLocalityByName(const std::string& name) const throw (LocalityNotFoundException)
+const Locality<double>& DataSet::getLocalityByName(const std::string& name) const throw (LocalityNotFoundException)
 {
   try {
     return (getLocalityAtPosition(getLocalityPosition(name)));
@@ -192,12 +192,12 @@ void DataSet::addEmptyGroup(unsigned int group_id) throw (BadIdentifierException
 
 /******************************************************************************/
 
-const Group * DataSet::getGroupById(unsigned int group_id) const
+const Group& DataSet::getGroupById(unsigned int group_id) const throw (GroupNotFoundException)
 {
   for (unsigned int i = 0 ; i < groups_.size() ; i++)
     if (group_id == groups_[i]->getGroupId())
-      return groups_[i];
-  return NULL;
+      return *(groups_[i]);
+  throw GroupNotFoundException("DataSet::getGroupById: group_id not found.", group_id);
 }
 
 /******************************************************************************/
@@ -205,7 +205,7 @@ const Group * DataSet::getGroupById(unsigned int group_id) const
 string DataSet::getGroupName(unsigned int group_id) const throw (GroupNotFoundException)
 {
   string name;
-  name = this->getGroupById(group_id)->getGroupName();
+  name = getGroupById(group_id).getGroupName();
   if (!name.empty() ) return  name;
   else return TextTools::toString(group_id);
   throw GroupNotFoundException("DataSet::getGroupName: group_id not found.", group_id);
@@ -236,11 +236,11 @@ unsigned int DataSet::getGroupPosition(unsigned int group_id) const throw (Group
 
 /******************************************************************************/
 
-const Group * DataSet::getGroupAtPosition(unsigned int group_position) const throw (IndexOutOfBoundsException)
+const Group& DataSet::getGroupAtPosition(unsigned int group_position) const throw (IndexOutOfBoundsException)
 {
   if (group_position >= groups_.size())
     throw IndexOutOfBoundsException("DataSet::getGroup.", group_position, 0, groups_.size());
-  return groups_[group_position];
+  return *(groups_[group_position]);
 }
 
 /******************************************************************************/
@@ -265,15 +265,23 @@ unsigned int DataSet::getNumberOfGroups() const
 void DataSet::mergeTwoGroups(unsigned int source_id, unsigned int target_id) throw (GroupNotFoundException)
 {
   // Test the existance of the two groups.
-  if (getGroupById(source_id) == NULL)
+  try {
+    getGroupById(source_id);
+  }
+  catch (GroupNotFoundException &e) {
     throw GroupNotFoundException("DataSet::mergeTwoGroups: source_id not found.", source_id);
-  if (getGroupById(target_id) == NULL)
+  }
+  try {
+    getGroupById(target_id);
+  }
+  catch (GroupNotFoundException &e) {
     throw GroupNotFoundException("DataSet::mergeTwoGroups: target_id not found.", target_id);
+  }
   // Emptie the source into the target
   unsigned int source_pos = getGroupPosition(source_id);
   unsigned int target_pos = getGroupPosition(target_id);
   for (unsigned int i = 0 ; i < groups_[source_pos]->getNumberOfIndividuals() ; i++)
-    groups_[target_pos]->addIndividual(* groups_[source_pos]->getIndividualAtPosition(i));
+    groups_[target_pos]->addIndividual(groups_[source_pos]->getIndividualAtPosition(i));
   deleteGroupAtPosition(source_pos);
 }
 
@@ -282,17 +290,22 @@ void DataSet::mergeTwoGroups(unsigned int source_id, unsigned int target_id) thr
 void DataSet::mergeGroups(std::vector<unsigned int> & group_ids) throw (GroupNotFoundException)
 {
   // Test if all group id exists in the DataSet
-  for (unsigned int i = 0 ; i < group_ids.size() ; i++)
-    if (getGroupById(group_ids[i]) == NULL)
+  for (unsigned int i = 0 ; i < group_ids.size() ; i++) {
+    try {
+      getGroupById(group_ids[i]);
+    }
+    catch (GroupNotFoundException &e) {
       throw GroupNotFoundException("DataSet::mergeGroups: group not found.", group_ids[i]);
+    }
+  }
   // Sort the group id
   sort(group_ids.begin(), group_ids.end());
   // Merge all the groups in the first
   unsigned int pos_first = getGroupPosition(group_ids[0]);
   for (unsigned int i = 1 ; i < group_ids.size() ; i++) {
     unsigned int pos_current = getGroupPosition(group_ids[i]);
-    for (unsigned int j = 0 ; j < getGroupAtPosition(pos_current)->getNumberOfIndividuals() ; j++) {
-      groups_[pos_first]->addIndividual(* getGroupAtPosition(pos_current)->getIndividualAtPosition(j));
+    for (unsigned int j = 0 ; j < getGroupAtPosition(pos_current).getNumberOfIndividuals() ; j++) {
+      groups_[pos_first]->addIndividual(getGroupAtPosition(pos_current).getIndividualAtPosition(j));
     }
     deleteGroupAtPosition(pos_current);
   }
@@ -389,7 +402,7 @@ const Individual * DataSet::getIndividualAtPositionFromGroup(unsigned int group_
   if (group_position >= getNumberOfGroups())
     throw IndexOutOfBoundsException("DataSet::getIndividualAtPositionFromGroup: group_position out of bounds.", group_position, 0, getNumberOfGroups());
   try {
-    return groups_[group_position]->getIndividualAtPosition(individual_position);
+    return & groups_[group_position]->getIndividualAtPosition(individual_position);
   }
   catch (IndexOutOfBoundsException ioobe) {
     throw IndexOutOfBoundsException("DataSet::getIndividualAtPositionFromGroup: individual_position out of bouds.", ioobe.getBadInteger(), ioobe.getBounds()[0], ioobe.getBounds()[1]);
@@ -403,7 +416,7 @@ const Individual * DataSet::getIndividualByIdFromGroup(unsigned int group_positi
   if (group_position >= getNumberOfGroups())
     throw IndexOutOfBoundsException("DataSet::getIndividualByIdFromGroup: group_position out of bounds.", group_position, 0, getNumberOfGroups());
   try {
-    return groups_[group_position]->getIndividualById(individual_id);
+    return & groups_[group_position]->getIndividualById(individual_id);
   }
   catch (IndividualNotFoundException infe) {
     throw IndividualNotFoundException("DataSet::getIndividualByIdFromGroup: individual_id not found.", infe.getIdentifier());
@@ -487,7 +500,7 @@ const Date * DataSet::getIndividualDateInGroup(unsigned int group_position, unsi
   if (group_position >= getNumberOfGroups())
     throw IndexOutOfBoundsException("DataSet::getIndividualDateInGroup: group_position out of bounds.", group_position, 0, getNumberOfGroups());
   try {
-    return groups_[group_position]->getIndividualDateAtPosition(individual_position);
+    return & groups_[group_position]->getIndividualDateAtPosition(individual_position);
   }
   catch (IndexOutOfBoundsException & ioobe) {
     throw IndexOutOfBoundsException("DataSet::getIndividualDateInGroup: individual_position out of bounds.", ioobe.getBadInteger(), ioobe.getBounds()[0], ioobe.getBounds()[1]);
@@ -518,7 +531,7 @@ const Point2D<double> * DataSet::getIndividualCoordInGroup(unsigned int group_po
   if (group_position >= getNumberOfGroups())
     throw IndexOutOfBoundsException("DataSet::getIndividualCoordInGroup: group_position out of bounds.", group_position, 0, getNumberOfGroups());
   try {
-    return groups_[group_position]->getIndividualCoordAtPosition(individual_position);
+    return & groups_[group_position]->getIndividualCoordAtPosition(individual_position);
   }
   catch (IndexOutOfBoundsException & ioobe) {
     throw IndexOutOfBoundsException("DataSet::getIndividualCoordAtPosition: individual_position out of bounds.", ioobe.getBadInteger(), ioobe.getBounds()[0], ioobe.getBounds()[1]);
@@ -535,7 +548,7 @@ void DataSet::setIndividualLocalityInGroupByName(unsigned int group_position, un
   if (group_position >= getNumberOfGroups())
     throw IndexOutOfBoundsException("DataSet::setIndividualLocalityInGroup: group_position out of bounds.", group_position, 0, getNumberOfGroups());
   try {
-    groups_[group_position]->setIndividualLocalityAtPosition(individual_position, getLocalityByName(locality_name));
+    groups_[group_position]->setIndividualLocalityAtPosition(individual_position, &getLocalityByName(locality_name));
   }
   catch (IndexOutOfBoundsException & ioobe) {
     throw IndexOutOfBoundsException("DataSet::setIndividualLocalityInGroup: individual_position out of bounds.", ioobe.getBadInteger(), ioobe.getBounds()[0], ioobe.getBounds()[1]);
@@ -552,7 +565,7 @@ const Locality<double> * DataSet::getIndividualLocalityInGroup(unsigned int grou
   if (group_position >= getNumberOfGroups())
     throw IndexOutOfBoundsException("DataSet::getIndividualLocalityInGroup: group_position out of bounds.", group_position, 0, getNumberOfGroups());
   try {
-    return groups_[group_position]->getIndividualLocalityAtPosition(individual_position);
+    return & groups_[group_position]->getIndividualLocalityAtPosition(individual_position);
   }
   catch (IndexOutOfBoundsException & ioobe) {
     throw IndexOutOfBoundsException("DataSet::getIndividualLocalityInGroup: individual_position out of bounds.", ioobe.getBadInteger(), ioobe.getBounds()[0], ioobe.getBounds()[1]);
@@ -850,7 +863,7 @@ const MonolocusGenotype * DataSet::getIndividualMonolocusGenotypeInGroup(unsigne
   if (group_position >= getNumberOfGroups())
     throw IndexOutOfBoundsException("DataSet::getIndividualMonolocusGenotypeInGroup: group_position out of bounds.", group_position, 0, getNumberOfGroups());
   try {
-    return groups_[group_position]->getIndividualMonolocusGenotype(individual_position, locus_position);
+    return & groups_[group_position]->getIndividualMonolocusGenotype(individual_position, locus_position);
   }
   catch (IndexOutOfBoundsException & ioobe) {
     if (string(ioobe.what()).find("individual_position") < string(ioobe.what()).size())
@@ -1075,8 +1088,8 @@ PolymorphismMultiGContainer* DataSet::getPolymorphismMultiGContainer() const
     for (unsigned int j = 0 ; j < getNumberOfIndividualsInGroup(i) ; j++) {
       const Individual * tmp_ind = getIndividualAtPositionFromGroup(i, j);
       if (tmp_ind->hasGenotype()) {
-        const MultilocusGenotype * tmp_mg = tmp_ind->getGenotype();
-        pmgc->addMultilocusGenotype(* tmp_mg, i);
+        const MultilocusGenotype& tmp_mg = tmp_ind->getGenotype();
+        pmgc->addMultilocusGenotype(tmp_mg, i);
       }
     }
   }
@@ -1107,8 +1120,8 @@ PolymorphismMultiGContainer* DataSet::getPolymorphismMultiGContainer(const std::
         throw ioobe;
       }
       if (tmp_ind->hasGenotype()) {
-        const MultilocusGenotype * tmp_mg = tmp_ind->getGenotype();
-        pmgc->addMultilocusGenotype(* tmp_mg, i);
+        const MultilocusGenotype& tmp_mg = tmp_ind->getGenotype();
+        pmgc->addMultilocusGenotype(tmp_mg, i);
       }
     }
   }

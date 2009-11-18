@@ -100,7 +100,7 @@ namespace bpp
 
     public: // Methodes
 
-      //** Locality manipulation ***************************************************/
+//** Locality manipulation ***************************************************/
       /**
        * @brief Add a locality to the DataSet.
        *
@@ -125,14 +125,14 @@ namespace bpp
        * @param locality_position The position of the Locality in the DataSet.
        * @throw IndexOutOfBoundsException if locality_position excedes the number of locality of the DataSet.
        */
-      const Locality<double> * getLocalityAtPosition(unsigned int locality_position) const throw (IndexOutOfBoundsException);
+      const Locality<double>& getLocalityAtPosition(unsigned int locality_position) const throw (IndexOutOfBoundsException);
 
       /**
        * @brief Get a Locality by name.
        *
        * @throw LocalityNotFoundException if the locality's name is not found.
        */
-      const Locality<double> * getLocalityByName(const std::string& name) const throw (LocalityNotFoundException);
+      const Locality<double>& getLocalityByName(const std::string& name) const throw (LocalityNotFoundException);
 
       /**
        * @brief Delete a Locality from the DataSet.
@@ -176,7 +176,7 @@ namespace bpp
       /**
        * @brief Get a group by identifier.
        */
-      const Group* getGroupById(unsigned int group_id) const;
+      const Group& getGroupById(unsigned int group_id) const throw (GroupNotFoundException);
 
       /**
        * @brief Get the position of a Group.
@@ -203,7 +203,7 @@ namespace bpp
        *
        * @throw IndexOutOfBoundsException if group_position excedes the number of groups.
        */
-      const Group* getGroupAtPosition(unsigned int group_position) const throw (IndexOutOfBoundsException);
+      const Group& getGroupAtPosition(unsigned int group_position) const throw (IndexOutOfBoundsException);
 
       /**
        * @brief Delete a Group from the DataSet.

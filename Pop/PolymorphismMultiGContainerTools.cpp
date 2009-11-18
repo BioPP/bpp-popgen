@@ -72,7 +72,7 @@ PolymorphismMultiGContainer PolymorphismMultiGContainerTools::permutMonoG(const 
   for (unsigned int i = 0 ; i < pmgc.size() ; i++) {
     if (groups.find(pmgc.getGroupId(i)) != groups.end()) {
       for (unsigned int j = 0 ; j < loc_num ; j++)
-        mono_gens[j].push_back(pmgc.getMultilocusGenotype(i)->getMonolocusGenotype(j));
+        mono_gens[j].push_back(& pmgc.getMultilocusGenotype(i)->getMonolocusGenotype(j));
     }
   }
   // Permut the MonolocusGenotypes
@@ -131,7 +131,7 @@ PolymorphismMultiGContainer PolymorphismMultiGContainerTools::permutIntraGroupMo
           nb_ind_in_group ++;
 
           for(unsigned int j = 0; j < loc_num ; j++)
-            mono_gens[j].push_back(pmgc.getMultilocusGenotype(i)->getMonolocusGenotype(j));
+            mono_gens[j].push_back(& pmgc.getMultilocusGenotype(i)->getMonolocusGenotype(j));
         }
       }
       else //insert as is
@@ -188,9 +188,9 @@ PolymorphismMultiGContainer PolymorphismMultiGContainerTools::permutAlleles(cons
     if (groups.find(pmgc.getGroupId(i)) != groups.end())
     {
       for (unsigned int j = 0 ; j < loc_num ; j++)
-        if (pmgc.getMultilocusGenotype(i)->getMonolocusGenotype(j) != NULL)
-          for (unsigned int k = 0 ; k < pmgc.getMultilocusGenotype(i)->getMonolocusGenotype(j)->getAlleleIndex().size() ; k++)
-            alleles[j].push_back(pmgc.getMultilocusGenotype(i)->getMonolocusGenotype(j)->getAlleleIndex()[k]);
+        if (! pmgc.getMultilocusGenotype(i)->isMonolocusGenotypeMissing(j))
+          for (unsigned int k = 0 ; k < pmgc.getMultilocusGenotype(i)->getMonolocusGenotype(j).getAlleleIndex().size() ; k++)
+            alleles[j].push_back(pmgc.getMultilocusGenotype(i)->getMonolocusGenotype(j).getAlleleIndex()[k]);
     }
   }
   // Permut the alleles
@@ -206,11 +206,11 @@ PolymorphismMultiGContainer PolymorphismMultiGContainerTools::permutAlleles(cons
       MultilocusGenotype tmp_mg(loc_num);
       for (unsigned int j = 0 ; j < loc_num ; j++)
       {
-        if (pmgc.getMultilocusGenotype(i)->getMonolocusGenotype(j) != NULL)
+        if (! pmgc.getMultilocusGenotype(i)->isMonolocusGenotypeMissing(j))
         {
-          if (pmgc.getMultilocusGenotype(i)->getMonolocusGenotype(j)->getAlleleIndex().size() == 1)
+          if (pmgc.getMultilocusGenotype(i)->getMonolocusGenotype(j).getAlleleIndex().size() == 1)
             tmp_mg.setMonolocusGenotype(j, MonoAlleleMonolocusGenotype(alleles[j][k[j]++]));
-          if (pmgc.getMultilocusGenotype(i)->getMonolocusGenotype(j)->getAlleleIndex().size() == 2)
+          if (pmgc.getMultilocusGenotype(i)->getMonolocusGenotype(j).getAlleleIndex().size() == 2)
             tmp_mg.setMonolocusGenotype(j, BiAlleleMonolocusGenotype(alleles[j][k[j]++], alleles[j][k[j]++]));
         }
       }
@@ -260,14 +260,14 @@ PolymorphismMultiGContainer PolymorphismMultiGContainerTools::permutIntraGroupAl
           nb_ind_in_group++;
           for (unsigned int j = 0 ; j < loc_num ; j++)
           {
-            if (pmgc.getMultilocusGenotype(i)->getMonolocusGenotype(j) != NULL) //? données manquantes
+            if (! pmgc.getMultilocusGenotype(i)->isMonolocusGenotypeMissing(j))
             {
-              unsigned int nb_alls = pmgc.getMultilocusGenotype(i)->getMonolocusGenotype(j)->getAlleleIndex().size();
+              unsigned int nb_alls = pmgc.getMultilocusGenotype(i)->getMonolocusGenotype(j).getAlleleIndex().size();
               nb_alleles_for_inds[j].push_back(nb_alls);
               for (unsigned int k = 0 ; k < nb_alls ; k++)
-                alleles[j].push_back(pmgc.getMultilocusGenotype(i)->getMonolocusGenotype(j)->getAlleleIndex()[k]);
-            }//if
-          }//for j
+                alleles[j].push_back(pmgc.getMultilocusGenotype(i)->getMonolocusGenotype(j).getAlleleIndex()[k]);
+            }
+          }
         }
       }
       else //inserer tel quel

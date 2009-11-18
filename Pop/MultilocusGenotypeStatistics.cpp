@@ -37,13 +37,20 @@
    The fact that you are presently reading this means that you have had
    knowledge of the CeCILL license and that you accept its terms.
    */
+
+// From Utils
+
+#include <Utils/MapTools.h>
 #include "MultilocusGenotypeStatistics.h"
 #include "PolymorphismMultiGContainerTools.h"
 
 using namespace bpp;
 
+// From STL
+
 #include <iostream>
-#include <math.h>
+#include <cmath>
+#include <algorithm>
 
 using namespace std;
 
@@ -83,7 +90,7 @@ map<unsigned int, unsigned int> MultilocusGenotypeStatistics::getAllelesMapForGr
 
       if (! pmgc.getMultilocusGenotype(i)->isMonolocusGenotypeMissing(locus_position) &&  (groups.find(pmgc.getGroupId(i)) != groups.end()) ) {
         //if (! pmgc.getMultilocusGenotype(i)->isMonolocusGenotypeMissing(locus_position) &&  (find(groups.begin(), groups.end(), pmgc.getGroupId(i)) != groups.end()) ) {
-        vector<unsigned int> tmp_alleles = pmgc.getMultilocusGenotype(i)->getMonolocusGenotype(locus_position)->getAlleleIndex();
+        vector<unsigned int> tmp_alleles = pmgc.getMultilocusGenotype(i)->getMonolocusGenotype(locus_position).getAlleleIndex();
         for (unsigned int j = 0 ; j < tmp_alleles.size() ; j++) alleles_count[tmp_alleles[j]]++;
       }
       }
@@ -138,7 +145,7 @@ map<unsigned int, unsigned int> MultilocusGenotypeStatistics::getAllelesMapForGr
       try {
         //if (! pmgc.getMultilocusGenotype(i)->isMonolocusGenotypeMissing(locus_position) && (find(groups.begin(), groups.end(), pmgc.getGroupId(i)) != groups.end()) )
         if (! pmgc.getMultilocusGenotype(i)->isMonolocusGenotypeMissing(locus_position) && (groups.find(pmgc.getGroupId(i)) != groups.end()) )
-          if ((pmgc.getMultilocusGenotype(i)->getMonolocusGenotype(locus_position)->getAlleleIndex()).size() == 2)
+          if ((pmgc.getMultilocusGenotype(i)->getMonolocusGenotype(locus_position).getAlleleIndex()).size() == 2)
             counter++;
       }
       catch (IndexOutOfBoundsException & ioobe) {
@@ -154,10 +161,10 @@ map<unsigned int, unsigned int> MultilocusGenotypeStatistics::getAllelesMapForGr
     for (unsigned int i = 0 ; i < pmgc.size() ; i++) {
       try {
         if (! pmgc.getMultilocusGenotype(i)->isMonolocusGenotypeMissing(locus_position) && (groups.find(pmgc.getGroupId(i)) != groups.end() )) {
-          const MonolocusGenotype * tmp_mg = pmgc.getMultilocusGenotype(i)->getMonolocusGenotype(locus_position);
-          if ((tmp_mg->getAlleleIndex()).size() == 2) {
-            if (! dynamic_cast<const BiAlleleMonolocusGenotype *>(tmp_mg)->isHomozygous()) {
-              vector<unsigned int> tmp_alleles = tmp_mg->getAlleleIndex();
+          const MonolocusGenotype& tmp_mg = pmgc.getMultilocusGenotype(i)->getMonolocusGenotype(locus_position);
+          if ((tmp_mg.getAlleleIndex()).size() == 2) {
+            if (! dynamic_cast<const BiAlleleMonolocusGenotype&>(tmp_mg).isHomozygous()) {
+              vector<unsigned int> tmp_alleles = tmp_mg.getAlleleIndex();
               for (unsigned int j = 0 ; j < tmp_alleles.size() ; j++) counter[tmp_alleles[j]]++;
             }
           }
@@ -177,11 +184,11 @@ map<unsigned int, unsigned int> MultilocusGenotypeStatistics::getAllelesMapForGr
     for (unsigned int i = 0 ; i < pmgc.size() ; i++) {
       try {
         if (! pmgc.getMultilocusGenotype(i)->isMonolocusGenotypeMissing(locus_position) && (groups.find(pmgc.getGroupId(i)) != groups.end()) ) {
-          const MonolocusGenotype * tmp_mg = pmgc.getMultilocusGenotype(i)->getMonolocusGenotype(locus_position);
-          if ((tmp_mg->getAlleleIndex()).size() == 2) {
+          const MonolocusGenotype& tmp_mg = pmgc.getMultilocusGenotype(i)->getMonolocusGenotype(locus_position);
+          if ((tmp_mg.getAlleleIndex()).size() == 2) {
             counter++;
-            if (! dynamic_cast<const BiAlleleMonolocusGenotype *>(tmp_mg)->isHomozygous()) {
-              vector<unsigned int> tmp_alleles = tmp_mg->getAlleleIndex();
+            if (! dynamic_cast<const BiAlleleMonolocusGenotype&>(tmp_mg).isHomozygous()) {
+              vector<unsigned int> tmp_alleles = tmp_mg.getAlleleIndex();
               for (unsigned int j = 0 ; j < tmp_alleles.size() ; j++) freq[tmp_alleles[j]]++;
             }
           }
@@ -438,7 +445,7 @@ map<unsigned int, unsigned int> MultilocusGenotypeStatistics::getAllelesMapForGr
       for (map<unsigned int, double>::iterator it = hi.begin() ; it != hi.end() ; it++)
         hbar[it->first] += ni * it->second;
 
-      group_id.clear();	//khalid
+      group_id.clear();
     }
     nbar = nbar / (double) r;
     if (nbar <= 1)
@@ -461,7 +468,7 @@ map<unsigned int, unsigned int> MultilocusGenotypeStatistics::getAllelesMapForGr
         pi[ids[j]];
       for (map<unsigned int, double>::iterator it = pi.begin() ; it != pi.end() ; it++)
         s2[it->first] += ni * (it->second - pbar[it->first]) * (it->second - pbar[it->first]);
-      group_id.clear();	//khalid
+      group_id.clear();
     }
     for (map<unsigned int, double>::iterator it = s2.begin() ; it != s2.end() ; it++)
       it->second = it->second / (((double) r - 1.) * nbar);
@@ -480,14 +487,13 @@ map<unsigned int, unsigned int> MultilocusGenotypeStatistics::getAllelesMapForGr
     return values;
   }
 
-  //khalid 9 juin 2006
   double MultilocusGenotypeStatistics::getWCMultilocusFst(const PolymorphismMultiGContainer & pmgc, vector<unsigned int> locus_positions, const set<unsigned int> & groups) throw (Exception)
   {
     double A, B, C;
     A=B=C = 0.0;
     for(unsigned int i=0; i < locus_positions.size(); i++)
     {
-      //limiter les calculs pour les locus polymorphes pour ces groupes
+      //reduce computation for polymorphic loci for that groups
       vector<unsigned int> ids = getAllelesIdsForGroups(pmgc, i, groups);
       if (ids.size() >= 2)
       {
@@ -504,14 +510,13 @@ map<unsigned int, unsigned int> MultilocusGenotypeStatistics::getAllelesMapForGr
     return A/(A+B+C);
   }
 
-  //khalid juin 2006
   double MultilocusGenotypeStatistics::getWCMultilocusFis(const PolymorphismMultiGContainer & pmgc, vector<unsigned int> locus_positions, const set<unsigned int> & groups) throw (Exception)
   {
     double A, B, C;
     A=B=C = 0.0;
     for(unsigned int i=0; i < locus_positions.size(); i++)
     {
-      //limiter les calculs pour les locus polymorphes pour ces groupes
+      //reduce computation for polymorphic loci for that groups
       vector<unsigned int> ids = getAllelesIdsForGroups(pmgc, i, groups);
       if (ids.size() >= 2)
       {
@@ -528,10 +533,9 @@ map<unsigned int, unsigned int> MultilocusGenotypeStatistics::getAllelesMapForGr
     return 1.0 - C/(B+C);
   }
 
-  //khalid 19/06/2006
   MultilocusGenotypeStatistics::PermResults MultilocusGenotypeStatistics::getWCMultilocusFstAndPerm(const PolymorphismMultiGContainer & pmgc, vector<unsigned int> locus_positions,set<unsigned int> groups, int nb_perm) throw (Exception)
   {
-    //extraire un  PolymorphismMultiGContainer avec uniquement les groupes dans groups
+    //extract a PolymorphismMultiGContainer with only those groups
     PolymorphismMultiGContainer sub_pmgc =  PolymorphismMultiGContainerTools::extractGroups(pmgc, groups);
     double nb_sup = 0.0;
     double nb_inf = 0.0;
@@ -560,7 +564,7 @@ map<unsigned int, unsigned int> MultilocusGenotypeStatistics::getAllelesMapForGr
 
   MultilocusGenotypeStatistics::PermResults MultilocusGenotypeStatistics::getWCMultilocusFisAndPerm(const PolymorphismMultiGContainer & pmgc, vector<unsigned int> locus_positions,set<unsigned int> groups, int nb_perm) throw (Exception)
   {
-    //extraire un  PolymorphismMultiGContainer avec uniquement les groupes dans groups
+    //extract a PolymorphismMultiGContainer with only those groups
     PolymorphismMultiGContainer sub_pmgc =  PolymorphismMultiGContainerTools::extractGroups(pmgc, groups);
     double nb_sup = 0.0;
     double nb_inf = 0.0;
@@ -587,7 +591,6 @@ map<unsigned int, unsigned int> MultilocusGenotypeStatistics::getAllelesMapForGr
     return results;
   }
 
-  //khalid 14 juin 2006
   double MultilocusGenotypeStatistics::getRHMultilocusFst(const PolymorphismMultiGContainer & pmgc, vector<unsigned int> locus_positions, const set<unsigned int> & groups) throw (Exception)
   {
     double Au, Bu, Cu;
@@ -597,14 +600,14 @@ map<unsigned int, unsigned int> MultilocusGenotypeStatistics::getAllelesMapForGr
 
     for(unsigned int i=0; i < locus_positions.size(); i++)
     {
-      //limiter les calculs pour les locus polymorphes pour ces groupes
+      //reduce computation for polymorphic loci for that groups
       vector<unsigned int> ids = getAllelesIdsForGroups(pmgc, i, groups);
       if (ids.size() >= 2)
       {
         nb_alleles = 0;
-        //les frequences allèliques moyennes
+        //mean allelic frequencies
         map < unsigned int , double > P = MultilocusGenotypeStatistics::getAllelesFrqForGroups (pmgc ,locus_positions[i] , groups);
-        //les composantes de la variance selon W&C
+        //variance components from W&C
         map<unsigned int, MultilocusGenotypeStatistics::VarComp> values = getVarianceComponents(pmgc, locus_positions[i], groups);
         for (map<unsigned int, MultilocusGenotypeStatistics::VarComp>::iterator it = values.begin() ; it != values.end() ; it++)
         {
@@ -614,7 +617,7 @@ map<unsigned int, unsigned int> MultilocusGenotypeStatistics::getAllelesMapForGr
           Cu = it->second.c ;
           if ((Au + Bu + Cu) != 0 )
           {
-            double Pu = P[it->first]; //it->first contient le n° de l'allèle
+            double Pu = P[it->first]; //it->first is the allele number
             RH += (1- Pu) * Au / (Au + Bu + Cu);
             nb_alleles ++;
           }
@@ -626,22 +629,19 @@ map<unsigned int, unsigned int> MultilocusGenotypeStatistics::getAllelesMapForGr
     return  RH/ double(total_alleles);
   }
 
-  //khalid 13 juin 2006
-  DistanceMatrix * MultilocusGenotypeStatistics::getDistanceMatrix(const PolymorphismMultiGContainer & pmgc, vector<unsigned int> locus_positions, const set<unsigned int> & groups, string distance_methode) throw (Exception)
+  std::auto_ptr<DistanceMatrix> MultilocusGenotypeStatistics::getDistanceMatrix(const PolymorphismMultiGContainer & pmgc, vector<unsigned int> locus_positions, const set<unsigned int> & groups, string distance_methode) throw (Exception)
   {
     vector<string> names = pmgc.getAllGroupsNames();
     vector<unsigned int> grp_ids_vect;
     for (set<unsigned int>::iterator i=groups.begin(); i != groups.end(); i++)
     {
-      //names.push_back(TextTools::toString(*i));
       grp_ids_vect.push_back(*i);
     }
 
-    DistanceMatrix *_dist = new DistanceMatrix(names);
+    auto_ptr<DistanceMatrix> _dist(new DistanceMatrix(names));
     for (unsigned int i = 0; i < groups.size(); i++) (* _dist)(i, i) = 0;
 
     set<unsigned int> pairwise_grp;
-    //for each pair in the groups set
 
     for ( unsigned int j =0; j < groups.size () - 1; j ++)
     {

@@ -129,7 +129,7 @@ namespace bpp
       /**
        * @brief Get a MonolocusGenotype.
        */
-      const MonolocusGenotype* getMonolocusGenotype(unsigned int locus_position) const
+      const MonolocusGenotype& getMonolocusGenotype(unsigned int locus_position) const
         throw (IndexOutOfBoundsException);
 
       /**

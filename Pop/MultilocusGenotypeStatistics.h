@@ -43,15 +43,13 @@
 
 // From STL
 #include <string>
-#include <cmath>
 #include <vector>
 #include <map>
 #include <set>
-#include <algorithm>
+#include <memory>
 
 // From Utils
 #include <Utils/Exceptions.h>
-#include <Utils/MapTools.h>
 
 // From SeqLib
 #include <Seq/DistanceMatrix.h>
@@ -289,7 +287,7 @@ namespace bpp
        * distance is either Nei72, Nei78, Fst W&C or Fst Robertson & Hill, Nm,
        * D=-ln(1-Fst) of Reynolds et al. 1983, Rousset 1997 Fst/(1-Fst)
        */
-      static DistanceMatrix * getDistanceMatrix(const PolymorphismMultiGContainer & pmgc, std::vector<unsigned int> locus_positions, const std::set<unsigned int> & groups, std::string distance_methode) throw (Exception);
+      static std::auto_ptr<DistanceMatrix> getDistanceMatrix(const PolymorphismMultiGContainer & pmgc, std::vector<unsigned int> locus_positions, const std::set<unsigned int> & groups, std::string distance_methode) throw (Exception);
 
   };
 

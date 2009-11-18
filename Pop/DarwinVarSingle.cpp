@@ -71,18 +71,18 @@ void DarwinVarSingle::write(ostream & os, const DataSet & data_set) const throw 
     unsigned int ind_nbr_ig = data_set.getNumberOfIndividualsInGroup(i);
     for (unsigned int j = 0 ; j < ind_nbr_ig ; j++) {
       vector<unsigned int> var;
-      const MultilocusGenotype * geno = data_set.getIndividualAtPositionFromGroup(i, j)->getGenotype();
-      for (unsigned int k = 0 ; k < geno->size() ; k++) {
-        const MonolocusGenotype * mg = geno->getMonolocusGenotype(k);
+      const MultilocusGenotype& geno = data_set.getIndividualAtPositionFromGroup(i, j)->getGenotype();
+      for (unsigned int k = 0 ; k < geno.size() ; k++) {
+        const MonolocusGenotype& mg = geno.getMonolocusGenotype(k);
         const AnalyzedLoci * al = data_set.getAnalyzedLoci();
-        if (geno->isMonolocusGenotypeMissing(k)) {
+        if (geno.isMonolocusGenotypeMissing(k)) {
           for (unsigned int l = 0 ; l < al->getNumberOfAlleles()[k] ; l++)
             var.push_back(0);
         }
         else {
           for (unsigned int l = 0 ; l < al->getNumberOfAlleles()[k] ; l++) {
             unsigned int flag = 0;
-            if (VectorTools::contains(mg->getAlleleIndex(), l))
+            if (VectorTools::contains(mg.getAlleleIndex(), l))
               flag = 1;
             var.push_back(flag);
           }

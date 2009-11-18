@@ -369,7 +369,7 @@ void PopgenlibIO::parseIndividual_(const std::vector<std::string>& in, DataSet& 
       unsigned int sep_pos = temp.find("=", 0);
       string loc_name = TextTools::removeSurroundingWhiteSpaces(string(temp.begin()+sep_pos+1, temp.end()));
       try {
-        tmp_indiv.setLocality(data_set.getLocalityByName(loc_name));
+        tmp_indiv.setLocality(& data_set.getLocalityByName(loc_name));
       }
       catch (...) {}
     }
@@ -481,9 +481,9 @@ void PopgenlibIO::write(std::ostream& os, const DataSet& data_set) const throw (
   if (data_set.hasLocality()) {
     os << endl << "[Localities]" << endl;
     for (unsigned int i = 0 ; i < data_set.getNumberOfLocalities() ; i++) {
-      os << ">" << (data_set.getLocalityAtPosition(i))->getName() << endl;
-      os << "Coord = " << (data_set.getLocalityAtPosition(i))->getX();
-      os << " " << (data_set.getLocalityAtPosition(i))->getY() << endl;
+      os << ">" << (data_set.getLocalityAtPosition(i)).getName() << endl;
+      os << "Coord = " << (data_set.getLocalityAtPosition(i)).getX();
+      os << " " << (data_set.getLocalityAtPosition(i)).getY() << endl;
     }
   }
 
@@ -493,7 +493,7 @@ void PopgenlibIO::write(std::ostream& os, const DataSet& data_set) const throw (
     os << endl << "[Sequences]" << endl;
     for (unsigned int i = 0 ; i < data_set.getNumberOfGroups() ; i++)
       for (unsigned int j = 0 ; j < data_set.getNumberOfIndividualsInGroup(i) ; j++)
-        fasta.write(os, * (data_set.getIndividualAtPositionFromGroup(i,j))->getSequences());
+        fasta.write(os, data_set.getIndividualAtPositionFromGroup(i,j)->getSequences());
   }
 
   // AllelicData section ----------------------------------
@@ -523,10 +523,10 @@ void PopgenlibIO::write(std::ostream& os, const DataSet& data_set) const throw (
       if (i>0 || j>0) os << endl;
       const Individual * tmp_ind = data_set.getIndividualAtPositionFromGroup(i,j);
       os << ">" << tmp_ind->getId() << endl;
-      os << "Group = " << TextTools::toString((data_set.getGroupAtPosition(i))->getGroupId()) << endl;
+      os << "Group = " << TextTools::toString((data_set.getGroupAtPosition(i)).getGroupId()) << endl;
       if (tmp_ind->hasLocality()) os << "Locality = " << tmp_ind->getLocality()->getName() << endl;
       if (tmp_ind->hasCoord()) os << "Coord = " << tmp_ind->getX() << " " << tmp_ind->getY() << endl;
-      if (tmp_ind->hasDate()) os << "Date = " << tmp_ind->getDate()->getDateStr() << endl;
+      if (tmp_ind->hasDate()) os << "Date = " << tmp_ind->getDate().getDateStr() << endl;
       if (tmp_ind->hasSequences()) {
         unsigned int nbss = tmp_ind->getNumberOfSequences();
         os << "SequenceData = {" << endl;
@@ -544,17 +544,17 @@ void PopgenlibIO::write(std::ostream& os, const DataSet& data_set) const throw (
         os << "}" << endl;
       }
       if (tmp_ind->hasGenotype()) {
-        const MultilocusGenotype * tmp_genotype = tmp_ind->getGenotype();
-        vector<vector<string> > output(tmp_genotype->size());
+        const MultilocusGenotype& tmp_genotype = tmp_ind->getGenotype();
+        vector<vector<string> > output(tmp_genotype.size());
         os << "AllelicData = {" << endl;
-        for (unsigned int k = 0 ; k < tmp_genotype->size() ; k++) {
+        for (unsigned int k = 0 ; k < tmp_genotype.size() ; k++) {
           output[k].resize(2);
-          if (tmp_genotype->isMonolocusGenotypeMissing(k)) {
+          if (tmp_genotype.isMonolocusGenotypeMissing(k)) {
             output[k][0] = getMissingDataChar();
             output[k][1] = getMissingDataChar();
           }
           else {
-            vector<unsigned int> tmp_all_ind = tmp_genotype->getMonolocusGenotype(k)->getAlleleIndex();
+            vector<unsigned int> tmp_all_ind = tmp_genotype.getMonolocusGenotype(k).getAlleleIndex();
             output[k][0] = data_set.getLocusInfoAtPosition(k).getAlleleInfoByKey(tmp_all_ind[0]).getId();
             if (tmp_all_ind.size() > 1)
               output[k][1] = data_set.getLocusInfoAtPosition(k).getAlleleInfoByKey(tmp_all_ind[1]).getId();

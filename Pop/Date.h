@@ -43,6 +43,7 @@
 
 // From Utils
 #include <Utils/Exceptions.h>
+#include <Utils/Clonable.h>
 
 namespace bpp
 {
@@ -54,7 +55,7 @@ namespace bpp
    *
    * @author Sylvain Gaillard
    */
-  class Date
+  class Date: public Clonable
   {
     private:
       int day_;
@@ -124,13 +125,6 @@ namespace bpp
       void setDay(const int day) throw(BadIntegerException);
 
       /**
-       * @brief Get the Date.
-       *
-       * @return A pointer to a Date object.
-       */
-      Date* getDate() const;
-
-      /**
        * @brief Get the Date as a string.
        *
        * @return The date as a string DDMMYYYY (i.e. January 1 2000 : 01012000).
@@ -140,17 +134,17 @@ namespace bpp
       /**
        * @brief Get the Year as an int.
        */
-      int getYear() const;
+      int getYear() const { return year_; }
 
       /**
        * @brief Get the month as an int.
        */
-      int getMonth() const;
+      int getMonth() const { return month_; }
 
       /**
        * @brief Get the day as an int.
        */
-      int getDay() const;
+      int getDay() const { return day_; }
 
       /**
        * @brief The == operator.
@@ -185,6 +179,17 @@ namespace bpp
        * @brief The >= operator.
        */
       bool operator>= (const Date& date) const { return !(*this < date); }
+
+      /**
+       * @name The Clonable interface
+       * @{
+       */
+#ifdef NO_VIRTUAL_COV
+      Clonable*
+#else
+      Date*
+#endif
+      clone() const { return new Date(*this); }
   };
 
 } //end of namespace bpp;

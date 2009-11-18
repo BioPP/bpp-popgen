@@ -1,3 +1,9 @@
+18/11/09 Sylain Gaillard
+* Switching from pointer to reference in many methods arguments and return
+values.
+* Introducing std::auto_ptr when methods need to return pointer to new
+object.
+
 16/11/09 Sylvain Gaillard
 * No more "using namespace" in header files.
 

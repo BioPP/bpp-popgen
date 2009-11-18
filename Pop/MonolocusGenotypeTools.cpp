@@ -47,14 +47,14 @@
 using namespace bpp;
 using namespace std;
 
-MonolocusGenotype* MonolocusGenotypeTools::buildMonolocusGenotypeByAlleleKey(const std::vector<unsigned int> allele_keys) throw (Exception) {
+  std::auto_ptr<MonolocusGenotype> MonolocusGenotypeTools::buildMonolocusGenotypeByAlleleKey(const std::vector<unsigned int> allele_keys) throw (Exception) {
   if (allele_keys.size() < 1)
     throw Exception("MonolocusGenotypeTools::buildMonolocusGenotypeByAlleleKey: no key in allele_keys.");
 
   if (allele_keys.size() == 1)
-    return new MonoAlleleMonolocusGenotype(allele_keys);
+    return auto_ptr<MonolocusGenotype>(new MonoAlleleMonolocusGenotype(allele_keys));
   if (allele_keys.size() == 2)
-    return new BiAlleleMonolocusGenotype(allele_keys);
+    return auto_ptr<MonolocusGenotype>(new BiAlleleMonolocusGenotype(allele_keys));
   // for all other cases (allele_keys.size() > 2)
-  return new MultiAlleleMonolocusGenotype(allele_keys);
+  return auto_ptr<MonolocusGenotype>(new MultiAlleleMonolocusGenotype(allele_keys));
 }

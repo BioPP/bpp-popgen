@@ -43,6 +43,7 @@
 
 // From STL
 #include <vector>
+#include <memory>
 
 // From Utils
 #include <Utils/Exceptions.h>
@@ -118,7 +119,7 @@ namespace bpp
        *
        * @return The name of the Group as a string.
        */
-      std::string getGroupName() const;
+      const std::string& getGroupName() const { return name_; }
 
       /**
        * @brief Set the name of the Group.
@@ -132,7 +133,7 @@ namespace bpp
        *
        * @return The id of the Group as an unsigned int.
        */
-      unsigned int getGroupId() const;
+      unsigned int getGroupId() const { return id_; }
 
       /**
        * @brief Add an Individual.
@@ -175,23 +176,23 @@ namespace bpp
         throw (IndividualNotFoundException);
 
       /**
-       * @brief Get a pointer to an Individual.
+       * @brief Get a reference to an Individual.
        *
        * @param individual_id The id of the Individual to find.
        *
        * @return A pointer to the Individual or NULL if the Individual is not found.
        */
-      const Individual* getIndividualById(const std::string& individual_id) const;
+      const Individual& getIndividualById(const std::string& individual_id) const throw (IndividualNotFoundException);
 
       /**
-       * @brief Get a pointer to an Individual by its position.
+       * @brief Get a reference to an Individual by its position.
        *
        * @param individual_position The position of the Individual in the group.
        *
        * @return A pointer to the Individual.
        * @throw IndividualNotFoundException if individual_id is not found.
        */
-      const Individual* getIndividualAtPosition(unsigned int individual_position) const
+      const Individual& getIndividualAtPosition(unsigned int individual_position) const
         throw (IndexOutOfBoundsException);
 
       /**
@@ -199,25 +200,25 @@ namespace bpp
        *
        * @param individual_id The id of the Individual to remove.
        *
-       * @return A pointer to the removed Individual.
+       * @return An std::auto_ptr to the removed Individual.
        * @throw IndividualNotFoundException if individual_id is not found.
        *
        * Search an Individual in the Group by cheking the id and remove it
        * if it is found then return a pointer to this Individual.
        */
-      Individual* removeIndividualById(const std::string& individual_id) throw (IndividualNotFoundException);
+      std::auto_ptr<Individual> removeIndividualById(const std::string& individual_id) throw (IndividualNotFoundException);
 
       /**
        * @brief Remove an Individual from the Group.
        *
        * @param individual_position The position in the Group of the Individual to remove.
        *
-       * @return A pointer to the removed Individual.
+       * @return An std::auto_ptr to the removed Individual.
        *
        * Remove the individual at the specified position and return a pointer
        * to this Individual.
        */
-      Individual* removeIndividualAtPosition(unsigned int individual_position) throw (IndexOutOfBoundsException);
+      std::auto_ptr<Individual> removeIndividualAtPosition(unsigned int individual_position) throw (IndexOutOfBoundsException);
 
       /**
        * @brief Delete an Individual from the Group.
@@ -278,7 +279,7 @@ namespace bpp
        * @throw IndexOutOfBoundsException if individual_position excedes the number of individuals.
        * @throw NullPointerException if the Individual has no date.
        */
-      const Date* getIndividualDateAtPosition(unsigned int individual_position) const
+      const Date& getIndividualDateAtPosition(unsigned int individual_position) const
         throw (Exception);
 
       /**
@@ -295,7 +296,7 @@ namespace bpp
        * @throw IndexOutOfBoundsException if individual_position excedes the number of individuals.
        * @throw NullPointerException if the individual has no coordinate.
        */
-      const Point2D<double>* getIndividualCoordAtPosition(unsigned int individual_position) const
+      const Point2D<double>& getIndividualCoordAtPosition(unsigned int individual_position) const
         throw (Exception);
 
       /**
@@ -312,7 +313,7 @@ namespace bpp
        * @throw IndexOutOfBoundsException if individual_position excedes the number of individuals.
        * @throw NullPointerException if the individual has no locality.
        */
-      const Locality<double>* getIndividualLocalityAtPosition(unsigned int individual_position) const
+      const Locality<double>& getIndividualLocalityAtPosition(unsigned int individual_position) const
         throw (Exception);
 
       /**
@@ -478,7 +479,7 @@ namespace bpp
        * @throw NullPointerException if the individual has no genotype.
        * @throw IndexOutOfBoundsException if locus_position excedes the number of locus.
        */
-      const MonolocusGenotype* getIndividualMonolocusGenotype(unsigned int individual_position,
+      const MonolocusGenotype& getIndividualMonolocusGenotype(unsigned int individual_position,
           unsigned int locus_position) const throw (Exception);
 
       /**

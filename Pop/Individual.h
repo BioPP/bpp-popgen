@@ -42,9 +42,9 @@
 
 // From STL
 #include <vector>
+#include <memory>
 
 // From Utils
-#include <Utils/Clonable.h>
 #include <Utils/Point2D.h>
 #include <Utils/Exceptions.h>
 #include <Utils/TextTools.h>
@@ -79,11 +79,11 @@ namespace bpp
     protected:
       std::string id_;
       unsigned short sex_;
-      Date* date_;
-      Point2D<double>* coord_;
+      std::auto_ptr<Date> date_;
+      std::auto_ptr< Point2D<double> > coord_;
       const Locality<double>* locality_;
-      MapSequenceContainer* sequences_;
-      MultilocusGenotype* genotype_;
+      std::auto_ptr<MapSequenceContainer> sequences_;
+      std::auto_ptr<MultilocusGenotype> genotype_;
 
     public: // Constructors and destructor :
 
@@ -116,7 +116,7 @@ namespace bpp
       /**
        * @brief The Individual copy constructor.
        */
-      Individual(const Individual &ind);
+      Individual(const Individual& ind);
 
       /**
        * @brief Destroy an Individual.
@@ -131,7 +131,7 @@ namespace bpp
        * @return A ref toward the assigned Individual.
        * Make a copy of each atribute of the Individual.
        */
-      Individual & operator= (const Individual & ind);
+      Individual& operator= (const Individual & ind);
 
       /**
        * @brief Set the id of the Individual.
@@ -145,7 +145,7 @@ namespace bpp
        *
        * @return The id of the Individual as a string.
        */
-      std::string getId() const;
+      const std::string& getId() const { return id_; }
 
       /**
        * @brief Set the sex of the Individual.
@@ -159,7 +159,7 @@ namespace bpp
        *
        * @return The sex of the Individual as an unsigned short.
        */
-      unsigned short getSex() const;
+      unsigned short getSex() const { return sex_; }
 
       /**
        * @brief Set the date of the Individual.
@@ -174,7 +174,7 @@ namespace bpp
        * @return A pointer toward a Date object if the Individual has a date.
        * Otherwise throw a NullPointerException.
        */
-      const Date * getDate() const throw (NullPointerException);
+      const Date& getDate() const throw (NullPointerException);
 
       /**
        * @brief Tell if this Individual has a date.
@@ -202,7 +202,7 @@ namespace bpp
        * @return A pointer toward a Point2D object if the Individual has
        * coordinates. Otherwise throw a NullPointerException.
        */
-      const Point2D<double> * getCoord() const throw(NullPointerException);
+      const Point2D<double>& getCoord() const throw (NullPointerException);
 
       /**
        * @brief Tell if this Individual has coordinates.
@@ -217,7 +217,7 @@ namespace bpp
        * Set the X coordinate if the Individual has coordinates.
        * Otherwise throw a NullPointerException.
        */
-      void setX(const double x) throw(NullPointerException);
+      void setX(const double x) throw (NullPointerException);
 
       /**
        * @brief Set the Y coordinate of th Individual.
@@ -227,7 +227,7 @@ namespace bpp
        * Set the Y coordinate if the Individual has coordinates.
        * Otherwise throw a NullPointerException.
        */
-      void setY(const double y) throw(NullPointerException);
+      void setY(const double y) throw (NullPointerException);
 
       /**
        * @brief Get the X coordinate of the Individual.
@@ -235,7 +235,7 @@ namespace bpp
        * @return The X coordinate as a double if the Individual has coordinates.
        * Otherwise throw a NullPointerException.
        */
-      double getX() const throw(NullPointerException);
+      double getX() const throw (NullPointerException);
 
       /**
        * @brief Get the Y coordinate of the Individual.
@@ -243,7 +243,7 @@ namespace bpp
        * @return The Y coordinate as a double if the Individual has coordinates.
        * Otherwise throw a NullPointerException.
        */
-      double getY() const throw(NullPointerException);
+      double getY() const throw (NullPointerException);
 
       /**
        * @brief Set the locality of the Individual.
@@ -276,7 +276,7 @@ namespace bpp
        * @throw BadIdentifierException if sequence's name is already in use.
        * @throw BadIntegerException if sequence_position is already in use.
        */
-      void addSequence(unsigned int sequence_key, const Sequence & sequence)
+      void addSequence(unsigned int sequence_key, const Sequence& sequence)
         throw (Exception);
 
       /**
@@ -287,7 +287,7 @@ namespace bpp
        * @throw NullPointerException if there is no sequence container defined.
        * @throw SequenceNotFoundException if sequence_name is not found.
        */
-      const Sequence& getSequenceByName(const std::string & sequence_name)
+      const Sequence& getSequenceByName(const std::string& sequence_name)
         const throw(Exception);
 
       /**
@@ -361,7 +361,7 @@ namespace bpp
        * @throw NullPointerException if there is no sequence container defined.
        * @throw SequenceNotFoundException if sequence_name is not found.
        */
-      unsigned int getSequencePosition(const std::string & sequence_name) const throw (Exception);
+      unsigned int getSequencePosition(const std::string& sequence_name) const throw (Exception);
 
       /**
        * @brief Get the number of sequences.
@@ -371,21 +371,21 @@ namespace bpp
       /**
        * @brief Set all the sequences with a MapSequenceContainer.
        */
-      void setSequences(const MapSequenceContainer & msc);
+      void setSequences(const MapSequenceContainer& msc);
 
       /**
-       * @brief Get a pointer to the sequence container.
+       * @brief Get a reference to the sequence container.
        *
        * @throw NullPointerException if there is no sequence container defined.
        */
-      const OrderedSequenceContainer * getSequences() const throw (NullPointerException);
+      const OrderedSequenceContainer& getSequences() const throw (NullPointerException);
 
       /**
        * @brief Set a genotype.
        *
        * @param genotype The MultilocusGenotype which will be copied.
        */
-      void setGenotype(const MultilocusGenotype & genotype);
+      void setGenotype(const MultilocusGenotype& genotype);
 
       /**
        * @brief Init the genotype.
@@ -398,7 +398,7 @@ namespace bpp
       /**
        * @brief Get the genotype.
        */
-      const MultilocusGenotype * getGenotype() const throw (NullPointerException);
+      const MultilocusGenotype& getGenotype() const throw (NullPointerException);
 
       /**
        * @brief Delete the genotype of the individual.
@@ -416,7 +416,7 @@ namespace bpp
        * @throw NullPointerException if there is no genotype defined.
        * @throw IndexOutOfBoundsException if locus_position excedes the number of loci.
        */
-      void setMonolocusGenotype(unsigned int locus_position, const MonolocusGenotype & monogen)
+      void setMonolocusGenotype(unsigned int locus_position, const MonolocusGenotype& monogen)
         throw (Exception);
 
       /**
@@ -445,7 +445,7 @@ namespace bpp
        * @throw NullPointerException if there is no genotype defined.
        * @throw IndexOutOfBoundsException if locus_position excedes the number of loci.
        */
-      const MonolocusGenotype * getMonolocusGenotype(unsigned int locus_position) throw (Exception);
+      const MonolocusGenotype& getMonolocusGenotype(unsigned int locus_position) throw (Exception);
 
       /**
        * @brief Count the number of non missing MonolocusGenotype.

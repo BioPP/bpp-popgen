@@ -51,13 +51,13 @@ Group::Group(const Group & group): id_(group.getGroupId()), name_(group.getGroup
   individuals_(vector<Individual*>())
 {
   for (unsigned int i = 0 ; i < group.getNumberOfIndividuals() ; i++)
-    addIndividual(* (group.getIndividualAtPosition(i)));
+    addIndividual(group.getIndividualAtPosition(i));
 }
 
 Group::Group(const Group & group, unsigned int group_id): id_(group_id), name_(group.getGroupName()), individuals_(vector<Individual*>())
 {
   for (unsigned int i = 0 ; i < group.getNumberOfIndividuals() ; i++)
-    addIndividual(* (group.getIndividualAtPosition(i)));
+    addIndividual(group.getIndividualAtPosition(i));
 }
 
 //** Class destructor: ********************************************************/
@@ -70,7 +70,7 @@ Group& Group::operator= (const Group & group)
 {
   setGroupId(group.getGroupId());
   for (unsigned int i = 0 ; i < group.getNumberOfIndividuals() ; i++)
-    addIndividual(* (group.getIndividualAtPosition(i)));
+    addIndividual(group.getIndividualAtPosition(i));
   return * this;
 }
 
@@ -79,19 +79,9 @@ void Group::setGroupId(unsigned int group_id)
   id_ = group_id;
 }
 
-unsigned int Group::getGroupId() const
-{
-  return id_;
-}
-
 void Group::setGroupName(const std::string& group_name)
 {
   name_ = group_name;
-}
-
-std::string Group::getGroupName() const
-{
-  return name_;
 }
 
 void Group::addIndividual(const Individual& ind) throw (BadIdentifierException)
@@ -120,11 +110,11 @@ unsigned int Group::getIndividualPosition(const std::string& individual_id) cons
   throw IndividualNotFoundException("Group::getIndividualPosition: individual_id not found.", individual_id);
 }
 
-Individual * Group::removeIndividualById(const std::string& individual_id) throw (IndividualNotFoundException)
+std::auto_ptr<Individual> Group::removeIndividualById(const std::string& individual_id) throw (IndividualNotFoundException)
 {
   try {
     unsigned int indPos = getIndividualPosition(individual_id);
-    Individual * ind = individuals_[indPos];
+    auto_ptr<Individual> ind(individuals_[indPos]);
     individuals_.erase(individuals_.begin() + indPos);
     return ind;
   }
@@ -133,11 +123,11 @@ Individual * Group::removeIndividualById(const std::string& individual_id) throw
   }
 }
 
-Individual * Group::removeIndividualAtPosition(unsigned int individual_position) throw (IndexOutOfBoundsException)
+std::auto_ptr<Individual> Group::removeIndividualAtPosition(unsigned int individual_position) throw (IndexOutOfBoundsException)
 {
   if (individual_position >= individuals_.size())
     throw IndexOutOfBoundsException("Group::removeIndividualAtPosition.", individual_position, 0, individuals_.size());
-  Individual * ind = individuals_[individual_position];
+  auto_ptr<Individual> ind(individuals_[individual_position]);
   individuals_.erase(individuals_.begin() + individual_position);
   return ind;
 }
@@ -145,8 +135,7 @@ Individual * Group::removeIndividualAtPosition(unsigned int individual_position)
 void Group::deleteIndividualById(const std::string& individual_id) throw (IndividualNotFoundException)
 {
   try {
-    Individual * ind = removeIndividualById(individual_id);
-    delete ind;
+    removeIndividualById(individual_id);
   }
   catch (IndividualNotFoundException & infe) {
     throw IndividualNotFoundException("Group::deleteIndividualById: individual_id not found.", individual_id);
@@ -156,8 +145,7 @@ void Group::deleteIndividualById(const std::string& individual_id) throw (Indivi
 void Group::deleteIndividualAtPosition(unsigned int individual_position) throw (IndexOutOfBoundsException)
 {
   try {
-    Individual * ind = removeIndividualAtPosition(individual_position);
-    delete ind;
+    removeIndividualAtPosition(individual_position);
   }
   catch (IndexOutOfBoundsException & ioobe) {
     throw IndexOutOfBoundsException("Group::deleteIndividualAtPosition.", individual_position, 0, getNumberOfIndividuals());
@@ -171,21 +159,21 @@ void Group::clear()
   individuals_.clear();
 }
 
-const Individual * Group::getIndividualById(const std::string& individual_id) const
+const Individual& Group::getIndividualById(const std::string& individual_id) const throw (IndividualNotFoundException)
 {
   for (unsigned int i = 0 ; i < individuals_.size() ; i++) {
     if (individuals_[i]->getId() == individual_id)
       return getIndividualAtPosition(i);
   }
-  return NULL;
+  throw IndividualNotFoundException("Group::getIndividualById: individual_id not found.", individual_id);
 }
 
-  const Individual * Group::getIndividualAtPosition(unsigned int individual_position) const
+  const Individual& Group::getIndividualAtPosition(unsigned int individual_position) const
 throw (IndexOutOfBoundsException)
 {
   if (individual_position >= individuals_.size())
     throw IndexOutOfBoundsException("Group::getIndividualAtPosition: individual_position out of bounds.", individual_position, 0, individuals_.size());
-  return individuals_[individual_position];
+  return * individuals_[individual_position];
 }
 
 unsigned int Group::getNumberOfIndividuals() const
@@ -227,7 +215,7 @@ void Group::setIndividualDateAtPosition(unsigned int individual_position, const 
   individuals_[individual_position]->setDate(date);
 }
 
-const Date * Group::getIndividualDateAtPosition(unsigned int individual_position) const throw (Exception)
+const Date& Group::getIndividualDateAtPosition(unsigned int individual_position) const throw (Exception)
 {
   if (individual_position >= getNumberOfIndividuals())
     throw IndexOutOfBoundsException("Group::getIndividualDateAtPosition: individual_position out of bounds.", individual_position, 0, getNumberOfIndividuals());
@@ -246,7 +234,7 @@ void Group::setIndividualCoordAtPosition(unsigned int individual_position, const
   individuals_[individual_position]->setCoord(coord);
 }
 
-const Point2D<double> * Group::getIndividualCoordAtPosition(unsigned int individual_position) const throw (Exception)
+const Point2D<double>& Group::getIndividualCoordAtPosition(unsigned int individual_position) const throw (Exception)
 {
   if (individual_position >= getNumberOfIndividuals())
     throw IndexOutOfBoundsException("Group::getIndividualCoordAtPosition: individual_position out of bounds.", individual_position, 0, getNumberOfIndividuals());
@@ -265,12 +253,12 @@ void Group::setIndividualLocalityAtPosition(unsigned int individual_position, co
   individuals_[individual_position]->setLocality(locality);
 }
 
-const Locality<double> * Group::getIndividualLocalityAtPosition(unsigned int individual_position) const throw (Exception)
+const Locality<double>& Group::getIndividualLocalityAtPosition(unsigned int individual_position) const throw (Exception)
 {
   if (individual_position >= getNumberOfIndividuals())
     throw IndexOutOfBoundsException("Group::getIndividualLocalityAtPosition: individual_position out of bounds.", individual_position, 0, getNumberOfIndividuals());
   try {
-    return individuals_[individual_position]->getLocality();
+    return * individuals_[individual_position]->getLocality();
   }
   catch (NullPointerException & npe) {
     throw NullPointerException("Group::getIndividualLocalityAtPosition: individuals has no locality.");
@@ -495,7 +483,7 @@ void Group::setIndividualMonolocusGenotypeByAlleleId(unsigned int individual_pos
   }
 }
 
-const MonolocusGenotype *  Group::getIndividualMonolocusGenotype(unsigned int individual_position, unsigned int locus_position) const throw (Exception)
+const MonolocusGenotype&  Group::getIndividualMonolocusGenotype(unsigned int individual_position, unsigned int locus_position) const throw (Exception)
 {
   if (individual_position >= getNumberOfIndividuals())
     throw IndexOutOfBoundsException("Group::getIndividualMonolocusGenotype: individual_position out of bounds.", individual_position, 0, getNumberOfIndividuals());
@@ -529,7 +517,7 @@ unsigned int Group::getGroupSizeForLocus(unsigned int locus_position) const
 {
   unsigned int count = 0;
   for (unsigned int i = 0 ; i < individuals_.size() ; i++)
-    if (individuals_[i]->hasGenotype() && !individuals_[i]->getGenotype()->isMonolocusGenotypeMissing(locus_position))
+    if (individuals_[i]->hasGenotype() && !individuals_[i]->getGenotype().isMonolocusGenotypeMissing(locus_position))
       count++;
   return count;
 }

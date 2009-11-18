@@ -106,33 +106,13 @@ void Date::setDay(const int day) throw(BadIntegerException)
     throw(BadIntegerException("Date::Date: day must be in [1;31].", day));
 }
 
-Date* Date::getDate() const
-{
-  return new Date(* this);
-}
-
-string Date::getDateStr() const
+std::string Date::getDateStr() const
 {
   string date, uDay="", uMonth="";
   if (day_ < 10) uDay="0";
   if (month_ < 10) uMonth="0";
   date = uDay + TextTools::toString(day_) + uMonth + TextTools::toString(month_) + TextTools::toString(year_);
   return date;
-}
-
-int Date::getYear() const
-{
-  return year_;
-}
-
-int Date::getMonth() const
-{
-  return month_;
-}
-
-int Date::getDay() const
-{
-  return day_;
 }
 
 bool Date::operator==(const Date& date) const

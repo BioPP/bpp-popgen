@@ -58,11 +58,11 @@ Individual::Individual(const string & id,
 Individual::Individual(const Individual &ind): id_(ind.getId()), sex_(ind.getSex()), date_(0), coord_(0), locality_(0), sequences_(0), genotype_(0)
 {
   try {
-    setDate(* ind.getDate());
+    setDate(ind.getDate());
   }
   catch (...) {}
   try {
-    setCoord(* ind.getCoord());
+    setCoord(ind.getCoord());
   }
   catch (...) {}
   try {
@@ -70,33 +70,15 @@ Individual::Individual(const Individual &ind): id_(ind.getId()), sex_(ind.getSex
   }
   catch (...) {}
   try {
-    setSequences(* dynamic_cast<const MapSequenceContainer *>(ind.getSequences()));
+    setSequences(dynamic_cast<const MapSequenceContainer&>(ind.getSequences()));
   }
   catch (...) {}
   if (ind.hasGenotype())
-    genotype_ = new MultilocusGenotype(* ind.getGenotype());
+    genotype_.reset(new MultilocusGenotype(ind.getGenotype()));
 }
 
 //** Class destructor: *******************************************************/
-Individual::~Individual ()
-{
-  if (date_ != 0)
-  {
-    delete date_;
-  }
-  if (coord_ != 0)
-  {
-    delete coord_;
-  }
-  if (sequences_ != 0)
-  {
-    delete sequences_;
-  }
-  if (genotype_ != 0)
-  {
-    delete genotype_;
-  }
-}
+Individual::~Individual () {}
 
 //** Other methodes: *********************************************************/
 
@@ -105,16 +87,16 @@ Individual & Individual::operator= (const Individual & ind)
   setId(ind.getId());
   setSex(ind.getSex());
   try {
-    setDate(* ind.getDate());
+    setDate(ind.getDate());
   }
   catch (NullPointerException) {
-    date_ = 0;
+    date_.reset();
   }
   try {
-    setCoord(* ind.getCoord());
+    setCoord(ind.getCoord());
   }
   catch (NullPointerException) {
-    coord_ = 0;
+    coord_.reset();
   }
   try {
     setLocality(ind.getLocality());
@@ -123,12 +105,12 @@ Individual & Individual::operator= (const Individual & ind)
     locality_ = 0;
   }
   try {
-    setSequences(* dynamic_cast<const MapSequenceContainer *>(ind.getSequences()));
+    setSequences(dynamic_cast<const MapSequenceContainer&>(ind.getSequences()));
   }
   catch (NullPointerException) {
-    sequences_ = 0;
+    sequences_.reset();
   }
-  genotype_ = ind.hasGenotype() ? new MultilocusGenotype(* ind.getGenotype()) : 0;
+  genotype_.reset(ind.hasGenotype() ? new MultilocusGenotype(ind.getGenotype()) : 0);
   return * this;
 }
 
@@ -142,13 +124,6 @@ void Individual::setId(const std::string& id)
 
 /******************************************************************************/
 
-std::string Individual::getId() const
-{
-  return id_;
-}
-
-/******************************************************************************/
-
 // Sex
 void Individual::setSex(const unsigned short sex)
 {
@@ -157,33 +132,18 @@ void Individual::setSex(const unsigned short sex)
 
 /******************************************************************************/
 
-unsigned short Individual::getSex() const
-{
-  return sex_;
-}
-
-/******************************************************************************/
-
 // Date
-void Individual::setDate(const Date & date)
+void Individual::setDate(const Date& date)
 {
-  if (!hasDate())
-  {
-    date_ = new Date(date);
-  }
-  else if (* date_ != date)
-  {
-    delete date_;
-    date_ = new Date(date);
-  }
+  date_.reset(new Date(date));
 }
 
 /******************************************************************************/
 
-const Date * Individual::getDate() const throw (NullPointerException)
+const Date& Individual::getDate() const throw (NullPointerException)
 {
   if (hasDate())
-    return new Date(* date_);
+    return * date_.get();
   else
     throw(NullPointerException("Individual::getDate: no date associated to this individual."));
 }
@@ -192,7 +152,7 @@ const Date * Individual::getDate() const throw (NullPointerException)
 
 bool Individual::hasDate() const
 {
-  return date_ != 0;
+  return date_.get() != 0;
 }
 
 /******************************************************************************/
@@ -200,38 +160,22 @@ bool Individual::hasDate() const
 // Coord
 void Individual::setCoord(const Point2D<double> & coord)
 {
-  if (!hasCoord())
-  {
-    coord_ = new Point2D<double>(coord);
-  }
-  else if	(* coord_ != coord)
-  {
-    delete coord_;
-    coord_ = new Point2D<double>(coord);
-  }
+  coord_.reset(new Point2D<double>(coord));
 }
 
 /******************************************************************************/
 
 void Individual::setCoord(const double x, const double y)
 {
-  if (!hasCoord())
-  {
-    coord_ = new Point2D<double>(x, y);
-  }
-  else if (this->getX() != x || this->getY() != y)
-  {
-    delete coord_;
-    coord_ = new Point2D<double>(x, y);
-  }
+  coord_.reset(new Point2D<double>(x, y));
 }
 
 /******************************************************************************/
 
-const Point2D<double> * Individual::getCoord() const throw(NullPointerException)
+const Point2D<double>& Individual::getCoord() const throw(NullPointerException)
 {
   if (hasCoord())
-    return new Point2D<double>(* coord_);
+    return * coord_.get();
   else
     throw(NullPointerException("Individual::getCoord: no coord associated to this individual."));
 }
@@ -240,7 +184,7 @@ const Point2D<double> * Individual::getCoord() const throw(NullPointerException)
 
 bool Individual::hasCoord() const
 {
-  return coord_ != 0;
+  return coord_.get() != 0;
 }
 
 /******************************************************************************/
@@ -314,8 +258,8 @@ bool Individual::hasLocality() const
   void Individual::addSequence(unsigned int sequence_key, const Sequence & sequence)
 throw (Exception)
 {
-  if (sequences_ == 0)
-    sequences_ = new MapSequenceContainer(sequence.getAlphabet());
+  if (sequences_.get() == 0)
+    sequences_.reset(new MapSequenceContainer(sequence.getAlphabet()));
   try {
     sequences_->addSequence(TextTools::toString(sequence_key), sequence);
   }
@@ -338,10 +282,10 @@ throw (Exception)
 const Sequence& Individual::getSequenceByName(const std::string& sequence_name)
 const throw (Exception)
 {
-  if (sequences_ == 0)
+  if (sequences_.get() == 0)
     throw NullPointerException("Individual::getSequenceByName: no sequence data.");
   try {
-    return const_cast<const MapSequenceContainer *>(sequences_)->getSequence(sequence_name);
+    return sequences_->getSequence(sequence_name);
   }
   catch (SequenceNotFoundException & snfe) {
     throw SequenceNotFoundException("Individual::getSequenceByName: sequence_name not found.", snfe.getSequenceId());
@@ -353,10 +297,10 @@ const throw (Exception)
 const Sequence& Individual::getSequenceAtPosition(unsigned int sequence_position)
 const throw (Exception)
 {
-  if (sequences_ == 0)
+  if (sequences_.get() == 0)
     throw NullPointerException("Individual::getSequenceAtPosition: no sequence data.");
   try {
-    return const_cast<const MapSequenceContainer *>(sequences_)->getSequenceByKey(TextTools::toString(sequence_position));
+    return sequences_->getSequenceByKey(TextTools::toString(sequence_position));
   }
   catch (SequenceNotFoundException & snfe) {
     throw SequenceNotFoundException("Individual::getSequenceAtPosition: sequence_position not found", snfe.getSequenceId());
@@ -367,7 +311,7 @@ const throw (Exception)
 
 void Individual::deleteSequenceByName(const std::string& sequence_name) throw (Exception)
 {
-  if (sequences_ == 0)
+  if (sequences_.get() == 0)
     throw NullPointerException("Individual::deleteSequenceByName: no sequence data.");
   try {
     sequences_->deleteSequence(sequence_name);
@@ -381,7 +325,7 @@ void Individual::deleteSequenceByName(const std::string& sequence_name) throw (E
 
 void Individual::deleteSequenceAtPosition(unsigned int sequence_position) throw (Exception)
 {
-  if (sequences_ == 0)
+  if (sequences_.get() == 0)
     throw NullPointerException("Individual::deleteSequenceAtPosition: no sequence data.");
   try {
     sequences_->deleteSequenceByKey(TextTools::toString(sequence_position));
@@ -395,7 +339,7 @@ void Individual::deleteSequenceAtPosition(unsigned int sequence_position) throw 
 
 std::vector<std::string> Individual::getSequencesNames() const throw (NullPointerException)
 {
-  if (sequences_ == 0)
+  if (sequences_.get() == 0)
     throw NullPointerException("Individual::getSequencesNames: no sequence data.");
   return sequences_->getSequencesNames();
 }
@@ -404,7 +348,7 @@ std::vector<std::string> Individual::getSequencesNames() const throw (NullPointe
 
 std::vector<unsigned int> Individual::getSequencesPositions() const throw (NullPointerException)
 {
-  if (sequences_ == 0)
+  if (sequences_.get() == 0)
     throw NullPointerException("Individual::getSequencesPositions: no sequence data.");
   vector<unsigned int> seqpos;
   vector<string> seqkeys = sequences_->getKeys();
@@ -417,7 +361,7 @@ std::vector<unsigned int> Individual::getSequencesPositions() const throw (NullP
 
 unsigned int Individual::getSequencePosition(const std::string & sequence_name) const throw (Exception)
 {
-  if (sequences_ == 0)
+  if (sequences_.get() == 0)
     throw NullPointerException("Individual::getSequencePosition: no sequence data.");
   try {
     return (unsigned int) TextTools::toInt(sequences_->getKey(getSequencePosition(sequence_name)));
@@ -451,7 +395,7 @@ bool Individual::hasSequenceAtPosition(unsigned int position) const
 
 const Alphabet * Individual::getSequenceAlphabet() const throw (NullPointerException)
 {
-  if (sequences_ == 0)
+  if (sequences_.get() == 0)
     throw NullPointerException("Individual::getSequenceAlphabet: no sequence data.");
   return sequences_->getAlphabet();
 }
@@ -460,29 +404,25 @@ const Alphabet * Individual::getSequenceAlphabet() const throw (NullPointerExcep
 
 unsigned int Individual::getNumberOfSequences() const
 {
-  if (sequences_ == 0)
+  if (sequences_.get() == 0)
     return 0;
-  return const_cast<const MapSequenceContainer *>(sequences_)->getNumberOfSequences();
+  return sequences_->getNumberOfSequences();
 }
 
 /******************************************************************************/
 
 void Individual::setSequences(const MapSequenceContainer & msc)
 {
-  if (hasSequences()) {
-    delete(sequences_);
-    sequences_ = 0;
-  }
-  sequences_ = new MapSequenceContainer(msc);
+  sequences_.reset(new MapSequenceContainer(msc));
 }
 
 /******************************************************************************/
 
-const OrderedSequenceContainer * Individual::getSequences() const throw (NullPointerException)
+const OrderedSequenceContainer& Individual::getSequences() const throw (NullPointerException)
 {
-  if (sequences_ == 0)
+  if (sequences_.get() == 0)
     throw NullPointerException("Individual::getSequences: no sequence data.");
-  return sequences_;
+  return * sequences_;
 }
 
 /******************************************************************************/
@@ -491,9 +431,7 @@ const OrderedSequenceContainer * Individual::getSequences() const throw (NullPoi
 
 void Individual::setGenotype(const MultilocusGenotype & genotype)
 {
-  if (hasGenotype())
-    delete genotype_;
-  genotype_ = new MultilocusGenotype(genotype);
+  genotype_.reset(new MultilocusGenotype(genotype));
 }
 
 /******************************************************************************/
@@ -503,34 +441,34 @@ void Individual::initGenotype(unsigned int loci_number) throw (Exception)
   if (hasGenotype())
     throw Exception("Individual::initGenotype: individual already has a genotype.");
   try {
-    genotype_ = new MultilocusGenotype(loci_number);
+    genotype_.reset(new MultilocusGenotype(loci_number));
   }
-  catch (BadIntegerException & bie) {
+  catch (BadIntegerException& bie) {
     throw BadIntegerException("Individual::initGenotype: loci_number must be > 0.", bie.getBadInteger());
   }
 }
 
 /******************************************************************************/
 
-const MultilocusGenotype * Individual::getGenotype() const throw (NullPointerException)
+const MultilocusGenotype& Individual::getGenotype() const throw (NullPointerException)
 {
   if (!hasGenotype())
     throw NullPointerException("Individual::getGenotype: individual has no genotype.");
-  return genotype_;
+  return * genotype_;
 }
 
 /******************************************************************************/
 
 void Individual::deleteGenotype()
 {
-  if (hasGenotype()) delete genotype_;
+  genotype_.reset();
 }
 
 /******************************************************************************/
 
 bool Individual::hasGenotype() const
 {
-  return genotype_ != 0;
+  return genotype_.get() != 0;
 }
 
 /******************************************************************************/
@@ -583,7 +521,7 @@ void Individual::setMonolocusGenotypeByAlleleId(unsigned int locus_position, con
 
 /******************************************************************************/
 
-const MonolocusGenotype * Individual::getMonolocusGenotype(unsigned int locus_position) throw (Exception)
+const MonolocusGenotype& Individual::getMonolocusGenotype(unsigned int locus_position) throw (Exception)
 {
   if (!hasGenotype())
     throw NullPointerException("Individual::getMonolocusGenotype: individual has no genotype.");

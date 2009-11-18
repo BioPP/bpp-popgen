@@ -59,7 +59,7 @@ MultilocusGenotype::MultilocusGenotype(const MultilocusGenotype& genotype): loci
   for(unsigned int i = 0; i < genotype.size(); i++)
   {
     if (! genotype.isMonolocusGenotypeMissing(i))
-      loci_[i] = dynamic_cast<MonolocusGenotype *>((genotype.getMonolocusGenotype(i))->clone());
+      loci_[i] = dynamic_cast<MonolocusGenotype *>(genotype.getMonolocusGenotype(i).clone());
     else
       loci_[i] = 0;
   }
@@ -136,11 +136,11 @@ bool MultilocusGenotype::isMonolocusGenotypeMissing(unsigned int locus_position)
   return loci_[locus_position] == NULL;
 }
 
-const MonolocusGenotype * MultilocusGenotype::getMonolocusGenotype(unsigned int locus_position) const throw (IndexOutOfBoundsException)
+const MonolocusGenotype& MultilocusGenotype::getMonolocusGenotype(unsigned int locus_position) const throw (IndexOutOfBoundsException)
 {
   if (locus_position >= loci_.size())
     throw IndexOutOfBoundsException("MultilocusGenotype::getMonolocusGenotype: locus_position out of bounds", locus_position, 0, loci_.size());
-  return loci_[locus_position];
+  return * loci_[locus_position];
 }
 
 unsigned int MultilocusGenotype::size() const
