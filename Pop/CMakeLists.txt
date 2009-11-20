@@ -43,7 +43,6 @@ set(H_FILES
   AnalyzedSequences.h
   BasicAlleleInfo.h
   BiAlleleMonolocusGenotype.h
-  Coord.h
   DarwinDon.h
   DarwinVarSingle.h
   DataSet.h
