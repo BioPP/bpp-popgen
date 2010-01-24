@@ -3,8 +3,15 @@
 # Created: 21/08/2009
 
 # Global parameters
+<<<<<<< CMakeLists.txt
+cmake_minimum_required(VERSION 2.6)
+if(NOT DEFINED CMAKE_BUILD_TYPE)
+  project(bpppopgen CXX)
+endif(NOT DEFINED CMAKE_BUILD_TYPE)
+set(CMAKE_CXX_FLAGS "-Wall")
+=======
 CMAKE_MINIMUM_REQUIRED(VERSION 2.6)
-PROJECT(bpppopgen CXX)
+PROJECT(bpp-popgen CXX)
 IF(NOT CMAKE_BUILD_TYPE)
   SET(CMAKE_BUILD_TYPE RelWithDebInfo CACHE STRING
       "Choose the type of build, options are: None Debug Release RelWithDebInfo MinSizeRel."
@@ -22,6 +29,7 @@ IF(NO_VIRTUAL_COV)
   MESSAGE("-- Covariant return with virtual inheritance disabled.")
   SET(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -DNO_VIRTUAL_COV=1")
 ENDIF(NO_VIRTUAL_COV)
+>>>>>>> 1.4
 
 # Libtool-like version number
 # CURRENT:REVISION:AGE => file.so.(C-A).A.R
@@ -103,8 +111,6 @@ SET(CPACK_SOURCE_IGNORE_FILES
  ".*Makefile"
  ".*_CPack_Packages"
  ".*CMakeCache.txt"
- "debian/"
- "PopGen.spec"
  ".*\\\\.cmake"
  ".*CVS/"
  ".*.gz"
@@ -114,8 +120,6 @@ SET(CPACK_SOURCE_IGNORE_FILES
  "Pop/\\\\..*"
  "html"
  "PopGen.tag"
- "autogen.sh"
- "autoclean.sh"
  ${CPACK_SOURCE_IGNORE_FILES}
 )
 SET(CPACK_SOURCE_PACKAGE_FILE_NAME "${CMAKE_PROJECT_NAME}-${CPACK_PACKAGE_VERSION_MAJOR}.${CPACK_PACKAGE_VERSION_MINOR}.${CPACK_PACKAGE_VERSION_PATCH}")
@@ -123,4 +127,15 @@ INCLUDE(CPack)
 
 #This adds the 'dist' target
 ADD_CUSTOM_TARGET(dist COMMAND ${CMAKE_MAKE_PROGRAM} package_source)
+
+IF (UNIX)
+#This creates deb packages:
+ADD_CUSTOM_TARGET(deb fakeroot debian/rules binary)
+ADD_DEPENDENCIES(deb dist)
+
+#This creates rpm packages:
+ADD_CUSTOM_TARGET(rpm rpmbuild -ta ${CPACK_SOURCE_PACKAGE_FILE_NAME}.tar.gz)
+ADD_DEPENDENCIES(rpm dist)
+
+ENDIF()
 
