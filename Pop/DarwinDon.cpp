@@ -39,6 +39,9 @@
 
 #include "DarwinDon.h"
 
+//From Utils:
+#include <Utils/OutputStream.h>
+
 using namespace bpp;
 using namespace std;
 
@@ -50,20 +53,21 @@ void DarwinDon::write(ostream & os, const DataSet & data_set) const throw (Excep
 {
   if (!os)
     throw IOException("DarwinDon::write: fail to open stream.");
-  os << "@DARwin 5.0 - DON" << endl;
+  StlOutputStreamWrapper out(&os);
+  (out << "@DARwin 5.0 - DON").endLine();
   unsigned int ind_nbr = 0;
   for (unsigned int i = 0 ; i < data_set.getNumberOfGroups() ; i++)
     ind_nbr += data_set.getNumberOfIndividualsInGroup(i);
   vector<string> header;
   header.push_back("N°");
   header.push_back("Name");
-  os << ind_nbr << "\t" << header.size() - 1 << endl;
-  VectorTools::print(header, os, "\t");
+  (out << ind_nbr << "\t" << header.size() - 1).endLine();
+  VectorTools::print(header, out, "\t");
   //unsigned int ind_index = 0;
   for (unsigned int i = 0 ; i < data_set.getNumberOfGroups() ; i++) {
     unsigned int ind_nbr_ig = data_set.getNumberOfIndividualsInGroup(i);
     for (unsigned int j = 0 ; j < ind_nbr_ig ; j++) {
-      os << j + (i * ind_nbr_ig) + 1 << "\t" << data_set.getIndividualAtPositionFromGroup(i, j)->getId() << endl;
+      (out << j + (i * ind_nbr_ig) + 1 << "\t" << data_set.getIndividualAtPositionFromGroup(i, j)->getId()).endLine();
     }
   }
 }

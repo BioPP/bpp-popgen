@@ -50,7 +50,8 @@ void DarwinVarSingle::write(ostream & os, const DataSet & data_set) const throw 
 {
   if (!os)
     throw IOException("DarwinVarSingle::write: fail to open stream.");
-  os << "@DARwin 5.0 - SINGLE" << endl;
+  StlOutputStreamWrapper out(&os);
+  (out << "@DARwin 5.0 - SINGLE").endLine();
   unsigned int ind_nbr = 0;
   for (unsigned int i = 0 ; i < data_set.getNumberOfGroups() ; i++)
     ind_nbr += data_set.getNumberOfIndividualsInGroup(i);
@@ -64,8 +65,8 @@ void DarwinVarSingle::write(ostream & os, const DataSet & data_set) const throw 
   }
   unsigned int var_nbr = header.size() - 1;
   //header.push_back("Name");
-  os << ind_nbr << "\t" << var_nbr << endl;
-  VectorTools::print(header, os, "\t");
+  (out << ind_nbr << "\t" << var_nbr).endLine();
+  VectorTools::print(header, out, "\t");
   //unsigned int ind_index = 0;
   for (unsigned int i = 0 ; i < data_set.getNumberOfGroups() ; i++) {
     unsigned int ind_nbr_ig = data_set.getNumberOfIndividualsInGroup(i);
@@ -89,7 +90,7 @@ void DarwinVarSingle::write(ostream & os, const DataSet & data_set) const throw 
         }
         //var.push_back((mg->getAlleleIndex()).size());
       }
-      os << j + (i * ind_nbr_ig) + 1 << "\t" << VectorTools::paste(var, "\t") << endl;
+      (out << j + (i * ind_nbr_ig) + 1 << "\t" << VectorTools::paste(var, "\t")).endLine();
     }
   }
 }
