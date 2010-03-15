@@ -1,9 +1,9 @@
 //
 // File SequenceStatistics.cpp
-// Author : Eric Bazin
+// Authors: Eric Bazin
 //          Sylvain Gailard
 //          Khalid Belkhir
-// Last modification : Wednesday April 08 2009
+// Created on: Wed Aug 04 2004
 //
 
 /*
@@ -218,16 +218,15 @@ double SequenceStatistics::squaredHeterozygosity(const PolymorphismSequenceConta
 //GC statistics
 //******************************************************************************
 
-double SequenceStatistics::gcContent(const PolymorphismSequenceContainer & psc)
+double SequenceStatistics::gcContent(const PolymorphismSequenceContainer& psc)
 {
-  SiteContainer* sc = new VectorSiteContainer(psc);
   map<int, double> freqs;
-  SequenceContainerTools::getFrequencies(*sc, freqs);
-  delete sc;
-  return (freqs[1] + freqs[2]) / (freqs[0] + freqs[1] + freqs[2] + freqs[3]);
+  SequenceContainerTools::getFrequencies(psc, freqs);
+  const Alphabet* alpha = psc.getAlphabet();
+  return (freqs[alpha->charToInt("C")] + freqs[alpha->charToInt("G")]) / (freqs[alpha->charToInt("A")] + freqs[alpha->charToInt("C")] + freqs[alpha->charToInt("G")] + freqs[alpha->charToInt("T")]);
 }
 
-vector<unsigned int> SequenceStatistics::gcPolymorphism(const PolymorphismSequenceContainer & psc, bool stopflag)
+vector<unsigned int> SequenceStatistics::gcPolymorphism(const PolymorphismSequenceContainer& psc, bool stopflag)
 {
   unsigned int nbMut = 0;
   unsigned int nbGC = 0;

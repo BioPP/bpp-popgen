@@ -1,9 +1,9 @@
 //
 // File SequenceStatistics.h
-// Author : Eric Bazin
+// Authors: Eric Bazin
 //          Sylvain Gaillard
-//          khalid Belkhir
-// Last modification : Friday December 12 2005
+//          Khalid Belkhir
+// Created on: Wed Aug 04 2004
 //
 
 /*
