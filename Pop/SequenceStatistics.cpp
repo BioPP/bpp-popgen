@@ -72,11 +72,11 @@ SequenceStatistics::~SequenceStatistics() {}
 //Basic statistics
 //******************************************************************************
 
-unsigned int SequenceStatistics::polymorphicSiteNumber(const PolymorphismSequenceContainer & psc, bool gapflag)
+unsigned int SequenceStatistics::polymorphicSiteNumber(const PolymorphismSequenceContainer& psc, bool gapflag)
 {
-  unsigned int S=0;
+  unsigned int S = 0;
   const Site *site;
-  SiteIterator * si = NULL;
+  SiteIterator *si = 0;
   if (gapflag)
     si = new CompleteSiteIterator(psc);
   else
@@ -183,32 +183,32 @@ unsigned int SequenceStatistics::totMutationsExternalBranchs(
   return nmuts;
 }
 
-double SequenceStatistics::heterozygosity(const PolymorphismSequenceContainer & psc, bool gapflag)
+double SequenceStatistics::heterozygosity(const PolymorphismSequenceContainer& psc, bool gapflag)
 {
-  SiteIterator *si;
-  const Site * site;
+  SiteIterator* si = 0;
+  const Site* site = 0;
   if (gapflag) si = new CompleteSiteIterator(psc);
   else si = new SimpleSiteIterator(psc);
-  double S=0;
-  while ( si->hasMoreSites() ) {
-    site=si->nextSite();
-    S+=SiteTools::heterozygosity(*site);
+  double S = 0;
+  while (si->hasMoreSites()) {
+    site = si->nextSite();
+    S += SiteTools::heterozygosity(*site);
   }
   delete si;
   return S;
 }
 
-double SequenceStatistics::squaredHeterozygosity(const PolymorphismSequenceContainer & psc, bool gapflag)
+double SequenceStatistics::squaredHeterozygosity(const PolymorphismSequenceContainer& psc, bool gapflag)
 {
-  SiteIterator *si;
-  const Site * site;
+  SiteIterator* si = 0;
+  const Site* site = 0;
   if (gapflag) si = new CompleteSiteIterator(psc);
   else si = new SimpleSiteIterator(psc);
-  double S=0;
-  while ( si->hasMoreSites() ) {
-    site=si->nextSite();
+  double S = 0;
+  while (si->hasMoreSites()) {
+    site = si->nextSite();
     double h = SiteTools::heterozygosity(*site);
-    S+= h*h;
+    S += h * h;
   }
   delete si;
   return S;
@@ -226,24 +226,30 @@ double SequenceStatistics::gcContent(const PolymorphismSequenceContainer& psc)
   return (freqs[alpha->charToInt("C")] + freqs[alpha->charToInt("G")]) / (freqs[alpha->charToInt("A")] + freqs[alpha->charToInt("C")] + freqs[alpha->charToInt("G")] + freqs[alpha->charToInt("T")]);
 }
 
-vector<unsigned int> SequenceStatistics::gcPolymorphism(const PolymorphismSequenceContainer& psc, bool stopflag)
+std::vector<unsigned int> SequenceStatistics::gcPolymorphism(const PolymorphismSequenceContainer& psc, bool gapflag)
 {
   unsigned int nbMut = 0;
   unsigned int nbGC = 0;
   const unsigned int nbSeq = psc.getNumberOfSequences();
   vector<unsigned int> vect(2);
-  const Site * site;
-  SiteIterator * si = NULL;
-  if (stopflag) si = new CompleteSiteIterator(psc);
+  const Site* site;
+  SiteIterator* si = 0;
+  if (gapflag) si = new CompleteSiteIterator(psc);
   else si = new NoGapSiteIterator(psc);
   while (si->hasMoreSites()) {
     site = si->nextSite();
     if (!SiteTools::isConstant(*site)) {
-      double freqGC = StringSequenceTools::getGCcontent(site->toString(),0, nbSeq);
+      double freqGC = SymbolListTools::getGCContent(*site);
+      /*
+       * SG 15/03/2010: realy unclear ...
+       *   freqGC is always in [0,1] then why testing it ?
+       *   why casting double into unsigned int ?
+       *   is that method used by someone ?
+       */
       if (freqGC > 0 && freqGC < 1) {
-        nbMut += (unsigned int) nbSeq;
+        nbMut += static_cast<unsigned int>(nbSeq);
         double adGC = freqGC*nbSeq;
-        nbGC += (unsigned int)adGC;
+        nbGC += static_cast<unsigned int>(adGC);
       }
     }
   }
@@ -705,14 +711,18 @@ double SequenceStatistics::tajimaDTNM(const PolymorphismSequenceContainer & psc,
   return (tajima - eta_a1) / sqrt((values["e1"] * eta) + (values["e2"] * eta * (eta - 1)));
 }
 
-double SequenceStatistics::fuliD(const PolymorphismSequenceContainer & ingroup, const PolymorphismSequenceContainer & outgroup)
+double SequenceStatistics::fuliD(const PolymorphismSequenceContainer& ingroup, const PolymorphismSequenceContainer& outgroup, bool original)
 {
   unsigned int n = ingroup.getNumberOfSequences();
   map<string, double> values = getUsefullValues_(n);
   double vD = getVD_(n, values["a1"], values["a2"], values["cn"]); 
   double uD = getUD_(values["a1"], vD);
   double eta = static_cast<double>(totNumberMutations(ingroup));
-  double etae = static_cast<double>(totMutationsExternalBranchs(ingroup,outgroup));
+  double etae = 0.;
+  if (original)
+    etae = static_cast<double>(countSingleton(outgroup));
+  else
+    etae = static_cast<double>(totMutationsExternalBranchs(ingroup,outgroup)); // added by Khalid 13/07/2005
   return (eta - (values["a1"] * etae)) / sqrt((uD * eta) + (vD * eta * eta));
 }
 
@@ -736,7 +746,7 @@ double SequenceStatistics::fuliDstar(const PolymorphismSequenceContainer & group
   */
 }
 
-double SequenceStatistics::fuliF(const PolymorphismSequenceContainer & ingroup, const PolymorphismSequenceContainer & outgroup)
+double SequenceStatistics::fuliF(const PolymorphismSequenceContainer& ingroup, const PolymorphismSequenceContainer& outgroup, bool original)
 {
   unsigned int n = ingroup.getNumberOfSequences();
   double nn = (double) n;
@@ -745,7 +755,11 @@ double SequenceStatistics::fuliF(const PolymorphismSequenceContainer & ingroup, 
   double vF = (values["cn"] + values["b2"] - 2. / (nn - 1.)) / (pow(values["a1"], 2) + values["a2"]);
   double uF = ((1. + values["b1"] - (4. * ((nn + 1.) / ((nn - 1.) * (nn - 1.)))) * (values["a1n"] - (2. * nn) / (nn + 1.))) / values["a1"]) - vF;
   double eta = (double) totNumberMutations(ingroup);
-  double etae = (double) totMutationsExternalBranchs(ingroup,outgroup);
+  double etae = 0.;
+  if (original)
+    etae = (double) countSingleton(outgroup);
+  else
+    etae = (double) totMutationsExternalBranchs(ingroup,outgroup); // added by Khalid 13/07/2005
   return (pi - etae) / sqrt(uF * eta + vF * eta * eta);
 }
 

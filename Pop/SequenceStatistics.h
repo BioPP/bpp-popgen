@@ -109,6 +109,7 @@ namespace bpp
        * @param psc a PolymorphismSequenceContainer
        * @param gapflag a boolean set by default to true if you don't want to
        * take gap into account
+       * @author Sylvain Gaillard
        */
       static unsigned int countSingleton(const PolymorphismSequenceContainer & psc, bool gapflag = true);
 
@@ -120,6 +121,7 @@ namespace bpp
        * @param psc a PolymorphismSequenceContainer
        * @param gapflag a boolean set by default to true if you don't want to
        * take gap into account
+       * @author Sylvain Gaillard
        */
       static unsigned int totNumberMutations(const PolymorphismSequenceContainer & psc, bool gapflag = true);
 
@@ -133,6 +135,7 @@ namespace bpp
        *
        * @param  ing a PolymorphismSequenceContainer the ingroup alignement
        * @param  outg a PolymorphismSequenceContainer the outgroup alignement
+       * @author Khalid Belkhir
        */
       static unsigned int totMutationsExternalBranchs(const PolymorphismSequenceContainer & ing,
           const PolymorphismSequenceContainer outg);
@@ -143,6 +146,7 @@ namespace bpp
        *
        * @param psc a PolymorphismSequenceContainer
        * @param gapflag a boolean set by default to true if you don't want to take gap into account
+       * @author Sylvain Glémin
        */
       static unsigned int tripletNumber(const PolymorphismSequenceContainer & psc, bool gapflag = true);
 
@@ -161,7 +165,8 @@ namespace bpp
        * @brief Compute the sum of per site squared heterozygosity in an alignment
        *
        * @param psc a PolymorphismSequenceContainer
-       * @param gapflag a boolean set by default to true if you don't want to take gap into account
+       * @param gapflag a boolean set by default to true if you don't want
+       * to take gap into account
        */
       static double squaredHeterozygosity(const PolymorphismSequenceContainer & psc, bool gapflag=true);
 
@@ -179,11 +184,15 @@ namespace bpp
        *
        * G vs C and A vs T polymorphism are not taken into account
        *
-       * @param psc a PolymorphismSequenceContainer
-       * @param stopflag a boolean set by default to true if you don't want
-       * to take stop codons into account
+       * @warning SG 15/03/2010: The code of this method is not clear. See
+       * implementation for more details.
+       *
+       * @param[in] psc a PolymorphismSequenceContainer
+       * @param[in] gapflag a boolean set by default to true if you don't want
+       * to take gap into account
+       * @return A std::vector of size 2 containing the number of GC alleles and the total number of alleles.
        */
-      static std::vector<unsigned int> gcPolymorphism(const PolymorphismSequenceContainer & psc, bool stopflag = true);
+      static std::vector<unsigned int> gcPolymorphism(const PolymorphismSequenceContainer & psc, bool gapflag = true);
 
 
 
@@ -198,6 +207,7 @@ namespace bpp
        * @param psc a PolymorphismSequenceContainer
        * @param gapflag flag set by default to true if you don't want to
        * take gap into account
+       * @author Sylvain Gaillard
        */
       static double watterson75( const PolymorphismSequenceContainer & psc, bool gapflag = true );
 
@@ -215,6 +225,7 @@ namespace bpp
        * @param psc a PolymorphismSequenceContainer
        * @param gapflag flag set by default to true if you don't want to
        * take gap into account
+       * @author Sylvain Gaillard
        */
       static double tajima83( const PolymorphismSequenceContainer & psc, bool gapflag = true );
 
@@ -226,6 +237,7 @@ namespace bpp
        * @param psc a PolymorphismSequenceContainer
        * @param gapflag flag set by default to true if you don't want to
        * take gap into account
+       * @author Éric Bazin
        */
       static unsigned int DVK ( const PolymorphismSequenceContainer & psc, bool gapflag = true );
 
@@ -237,6 +249,7 @@ namespace bpp
        * @param psc a PolymorphismSequenceContainer
        * @param gapflag flag set by default to true if you don't want to
        * take gaps into account
+       * @author Éric Bazin
        */
       static double DVH ( const PolymorphismSequenceContainer & psc, bool gapflag = true );
 
@@ -245,6 +258,7 @@ namespace bpp
        * @brief Return the number of transitions.
        *
        * @param psc a PolymorphismSequenceContainer
+       * @author Éric Bazin
        */
       static unsigned int getNumberOfTransitions( const PolymorphismSequenceContainer & psc );
 
@@ -253,6 +267,7 @@ namespace bpp
        * @brief Return the number of transversions.
        *
        * @param psc a PolymorphismSequenceContainer
+       * @author Éric Bazin
        */
       static unsigned int getNumberOfTransversions( const PolymorphismSequenceContainer & psc );
 
@@ -261,6 +276,7 @@ namespace bpp
        * @brief Return the ratio of transitions/transversions.
        *
        * @param psc a PolymorphismSequenceContainer
+       * @author Éric Bazin
        */
       static double getTransitionsTransversionsRatio( const PolymorphismSequenceContainer & psc ) throw(Exception);
 
@@ -272,6 +288,7 @@ namespace bpp
        *
        * @param psc a PolymorphismSequenceContainer
        * @param gapflag a boolean set by default to true if you don't want to take gaps into account
+       * @author Sylvain Glémin
        */
       static unsigned int stopCodonSiteNumber(const PolymorphismSequenceContainer & psc, bool gapflag = true);
 
@@ -286,6 +303,7 @@ namespace bpp
        * to take stop codon neither undefined sites into account
        * @param gapflag a boolean set by default to true if you don't want
        * to take gaps into account
+       * @author Sylvain Glémin
        */
       static unsigned int monoSitePolymorphicCodonNumber(const PolymorphismSequenceContainer & psc, bool stopflag = true, bool gapflag = true);
 
@@ -298,6 +316,8 @@ namespace bpp
        *
        * @param psc a PolymorphismSequenceContainer
        * @param gc a GeneticCode
+       * @author Sylvain Glémin
+       * @author Éric Bazin
        */
       static unsigned int synonymousPolymorphicCodonNumber(const PolymorphismSequenceContainer & psc, const GeneticCode & gc);
 
@@ -313,6 +333,7 @@ namespace bpp
        *
        * @param psc a PolymorphismSequenceContainer
        * @param gc a GeneticCode
+       * @author Sylvain Glémin
        */
       static double watterson75Synonymous(const PolymorphismSequenceContainer & psc, const GeneticCode & gc);
 
@@ -327,6 +348,7 @@ namespace bpp
        *
        * @param psc a PolymorphismSequenceContainer
        * @param gc a GeneticCode
+       * @author Sylvain Glémin
        */
       static double watterson75NonSynonymous(const PolymorphismSequenceContainer & psc, const GeneticCode & gc);
 
@@ -340,6 +362,8 @@ namespace bpp
        * @param psc a PolymorphismSequenceContainer
        * @param gc a GeneticCode
        * @param minchange a boolean set to false
+       * @author Sylvain Glémin
+       * @author Éric Bazin
        */
       static double piSynonymous(const PolymorphismSequenceContainer & psc, const GeneticCode & gc, bool minchange=false);
 
@@ -354,6 +378,8 @@ namespace bpp
        * @param psc a PolymorphismSequenceContainer
        * @param gc a GeneticCode
        * @param minchange a boolean set by default to false
+       * @author Sylvain Glémin
+       * @author Éric Bazin
        */
       static double piNonSynonymous(const PolymorphismSequenceContainer & psc, const GeneticCode & gc, bool minchange=false);
 
@@ -368,6 +394,8 @@ namespace bpp
        * @param psc a PolymorphismSequenceContainer
        * @param gc a GeneticCode
        * @param ratio a double
+       * @author Sylvain Glémin
+       * @author Éric Bazin
        */
       static double meanSynonymousSitesNumber(const PolymorphismSequenceContainer & psc, const GeneticCode & gc, double ratio=1.0);
 
@@ -382,6 +410,7 @@ namespace bpp
        * @param psc a PolymorphismSequenceContainer
        * @param gc a GeneticCode
        * @param ratio a double
+       * @author Éric Bazin
        */
       static double meanNonSynonymousSitesNumber(const PolymorphismSequenceContainer & psc, const GeneticCode & gc, double ratio=1.0);
 
@@ -430,6 +459,7 @@ namespace bpp
        * @param pscout a PolymorphismSequenceContainer
        * @param psccons a PolymorphismSequenceContainer
        * @param gc a GeneticCode
+       * @author Sylvain Glémin
        */
       static std::vector<unsigned int> fixedDifferences(const PolymorphismSequenceContainer & pscin, const PolymorphismSequenceContainer & pscout, PolymorphismSequenceContainer & psccons, const GeneticCode & gc);
 
@@ -441,6 +471,7 @@ namespace bpp
        * @param outgroup a PolymorphismSequenceContainer
        * @param gc a GeneticCode
        * @param freqmin a double, to exclude snp in frequency strictly lower than freqmin
+       * @author Sylvain Glémin
        */
       static std::vector<unsigned int> MKtable(const PolymorphismSequenceContainer & ingroup, const PolymorphismSequenceContainer & outgroup , const GeneticCode & gc, double freqmin = 0);
 
@@ -455,6 +486,7 @@ namespace bpp
        * @param outgroup a PolymorphismSequenceContainer
        * @param gc a GeneticCode
        * @param freqmin a double, to exclude snp in frequency strictly lower than freqmin
+       * @author Sylvain Glémin
        */
       static double neutralityIndex(const PolymorphismSequenceContainer & ingroup, const PolymorphismSequenceContainer & outgroup , const GeneticCode & gc, double freqmin = 0);
 
@@ -472,6 +504,7 @@ namespace bpp
        * @param psc a PolymorphismSequenceContainer
        * @param gapflag flag set by default to true if you don't want to
        * take gap into account
+       * @author Sylvain Gaillard
        */
       static double tajimaDSS(const PolymorphismSequenceContainer & psc, bool gapflag = true);
 
@@ -486,6 +519,7 @@ namespace bpp
        * @param psc a PolymorphismSequenceContainer
        * @param gapflag flag set by default to true if you don't want to
        * take gap into account
+       * @author Sylvain Gaillard
        */
       static double tajimaDTNM(const PolymorphismSequenceContainer & psc, bool gapflag = true);
 
@@ -495,18 +529,23 @@ namespace bpp
        *
        * @param ingroup a PolymorphismSequenceContainer
        * @param outgroup a PolymorphismSequenceContainer
+       * @param original true: use the Fu & Li methode, false: use mutations in
+       * external branch.
+       * @author Sylvain Gaillard
+       * @author Khalid Belkhir
        *
-       * This version uses the number of mutations
-       * If the outgroup contains more than one sequence the sites with more than one
-       * variant will not be considered for external branch mutations !
+       * If one set original=false then the number of mutations will be used.
+       * If the outgroup contains more than one sequence the sites with more
+       * than one variant will not be considered for external branch mutations!
        */
-      static double fuliD(const PolymorphismSequenceContainer & ingroup, const PolymorphismSequenceContainer & outgroup);
+      static double fuliD(const PolymorphismSequenceContainer & ingroup, const PolymorphismSequenceContainer & outgroup, bool original = true);
 
 
       /**
        * @brief Return the Fu and Li D<sup>*</sup> test (Fu & Li 1993, Genetics, 133 pp693-709).
        *
        * @param group a PolymorphismSequenceContainer
+       * @author Sylvain Gaillard
        */
       static double fuliDstar(const PolymorphismSequenceContainer & group);
 
@@ -516,21 +555,25 @@ namespace bpp
 
        * @brief Return the Fu and Li F test (Fu & Li 1993, Genetics, 133 pp693-709).
        *
-       * This version uses the number of mutations
-       * This version uses the number of mutations
-       * If the outgroup contains more than one sequence the sites with more than one
-       * variant will not be considered for externalbranch mutations !
-       *
        * @param ingroup a PolymorphismSequenceContainer
        * @param outgroup a PolymorphismSequenceContainer
+       * @param original true: use the Fu & Li methode, false: use mutations in
+       * external branch.
+       * @author Sylvain Gaillard
+       * @author Khalid Belkhir
+       *
+       * If one set original=false then the number of mutations will be used.
+       * If the outgroup contains more than one sequence the sites with more
+       * than one variant will not be considered for external branch mutations!
        */
-      static double fuliF(const PolymorphismSequenceContainer & ingroup, const PolymorphismSequenceContainer & outgroup);
+      static double fuliF(const PolymorphismSequenceContainer& ingroup, const PolymorphismSequenceContainer& outgroup, bool original = true);
 
 
       /**
        * @brief Return the Fu and Li F<sup>*</sup> test (Fu & Li 1993, Genetics, 133 pp693-709).
        *
        * @param group a PolymorphismSequenceContainer
+       * @author Sylvain Gaillard
        */
       static double fuliFstar(const PolymorphismSequenceContainer & group);
 
@@ -549,6 +592,7 @@ namespace bpp
        * @param psc a PolymorphismSequenceContainer
        * @param keepsingleton a boolean (true by default, false to exclude singleton)
        * @param freqmin a float (to exlude site with the lowest allele frequency less than the threshold given by freqmin, 0 by default)
+       * @author Sylvain Glémin
        */
       static PolymorphismSequenceContainer * generateLDContainer(const PolymorphismSequenceContainer & psc, bool keepsingleton=true, double freqmin=0);
 
@@ -562,6 +606,7 @@ namespace bpp
        * @param keepsingleton a boolean (true by default, false to exclude singleton)
        * @param freqmin a float (to exlude site with the lowest allele frequency less than the threshold given by freqmin, 0 by default)
        * @throw DimensionException if the number of sites is lower than 2
+       * @author Sylvain Glémin
        */
       static Vdouble pairwiseDistances1(const PolymorphismSequenceContainer & psc, bool keepsingleton=true, double freqmin=0) throw (DimensionException);
 
@@ -576,6 +621,7 @@ namespace bpp
        * @param keepsingleton a boolean (true by default, false to exclude singleton)
        * @param freqmin a float (to exlude site with the lowest allele frequency less than the threshold given by freqmin, 0 by default)
        * @throw DimensionException if the number of sites is lower than 2
+       * @author Sylvain Glémin
        */
       static Vdouble pairwiseDistances2(const PolymorphismSequenceContainer & psc, bool keepsingleton=true, double freqmin=0) throw (DimensionException);
 
@@ -587,6 +633,7 @@ namespace bpp
        * @param keepsingleton a boolean (true by default, false to exclude singleton)
        * @param freqmin a float (to exlude site with the lowest allele frequency less than the threshold given by freqmin, 0 by default)
        * @throw DimensionException if the number of sites or the number of sequences is lower than 2
+       * @author Sylvain Glémin
        */
       static Vdouble pairwiseD(const PolymorphismSequenceContainer & psc, bool keepsingleton=true, double freqmin=0) throw (DimensionException);
 
@@ -598,6 +645,7 @@ namespace bpp
        * @param keepsingleton a boolean (true by default, false to exclude singleton)
        * @param freqmin a float (to exlude site with the lowest allele frequency less than the threshold given by freqmin, 0 by default)
        * @throw DimensionException if the number of sites or the number of sequences is lower than 2
+       * @author Sylvain Glémin
        */
       static Vdouble pairwiseDprime(const PolymorphismSequenceContainer & psc, bool keepsingleton=true, double freqmin=0) throw (DimensionException);
 
@@ -609,6 +657,7 @@ namespace bpp
        * @param keepsingleton a boolean (true by default, false to exclude singleton)
        * @param freqmin a float (to exlude site with the lowest allele frequency less than the threshold given by freqmin, 0 by default)
        * @throw DimensionException if the number of sites or the number of sequences is lower than 2
+       * @author Sylvain Glémin
        */
       static Vdouble pairwiseR2(const PolymorphismSequenceContainer & psc, bool keepsingleton=true, double freqmin=0) throw (DimensionException);
 
@@ -620,6 +669,7 @@ namespace bpp
        * @param keepsingleton a boolean (true by default, false to exclude singleton)
        * @param freqmin a float (to exlude site with the lowest allele frequency less than the threshold given by freqmin, 0 by default)
        * @throw DimensionException if the number of sites or the number of sequences is lower than 2
+       * @author Sylvain Glémin
        */
       static double meanD(const PolymorphismSequenceContainer & psc, bool keepsingleton=true, double freqmin=0) throw (DimensionException);
 
@@ -631,6 +681,7 @@ namespace bpp
        * @param keepsingleton a boolean (true by default, false to exclude singleton)
        * @param freqmin a float (to exlude site with the lowest allele frequency less than the threshold given by freqmin, 0 by default)
        * @throw DimensionException if the number of sites or the number of sequences is lower than 2
+       * @author Sylvain Glémin
        */
       static double meanDprime(const PolymorphismSequenceContainer & psc, bool keepsingleton=true, double freqmin=0) throw (DimensionException);
 
@@ -642,6 +693,7 @@ namespace bpp
        * @param keepsingleton a boolean (true by default, false to exclude singleton)
        * @param freqmin a float (to exlude site with the lowest allele frequency less than the threshold given by freqmin, 0 by default)
        * @throw DimensionException if the number of sites or the number of sequences is lower than 2
+       * @author Sylvain Glémin
        */
       static double meanR2(const PolymorphismSequenceContainer & psc, bool keepsingleton=true, double freqmin=0) throw (DimensionException);
 
@@ -653,6 +705,7 @@ namespace bpp
        * @param keepsingleton a boolean (true by default, false to exclude singleton)
        * @param freqmin a float (to exlude site with the lowest allele frequency less than the threshold given by freqmin, 0 by default)
        * @throw DimensionException if the number of sites is lower than 2
+       * @author Sylvain Glémin
        */
       static double meanDistance1(const PolymorphismSequenceContainer & psc, bool keepsingleton=true, double freqmin=0) throw (DimensionException);
 
@@ -665,6 +718,7 @@ namespace bpp
        * @param keepsingleton a boolean (true by default, false to exclude singleton)
        * @param freqmin a float (to exlude site with the lowest allele frequency less than the threshold given by freqmin, 0 by default)
        * @throw DimensionException if the number of sites is lower than 2
+       * @author Sylvain Glémin
        */
       static double meanDistance2(const PolymorphismSequenceContainer & psc, bool keepsingleton=true, double freqmin=0) throw (DimensionException);
 
@@ -679,6 +733,7 @@ namespace bpp
        * @param keepsingleton a boolean (true by default, false to exclude singleton)
        * @param freqmin a float (to exlude site with the lowest allele frequency less than the threshold given by freqmin, 0 by default)
        * @throw DimensionException if the number of sites or the number of sequences is lower than 2
+       * @author Sylvain Glémin
        */
       static double originRegressionD(const PolymorphismSequenceContainer & psc, bool distance1=false, bool keepsingleton=true, double freqmin=0) throw (DimensionException);
 
@@ -693,6 +748,7 @@ namespace bpp
        * @param keepsingleton a boolean (true by default, false to exclude singleton)
        * @param freqmin a float (to exlude site with the lowest allele frequency less than the threshold given by freqmin, 0 by default)
        * @throw DimensionException if the number of sites or the number of sequences is lower than 2
+       * @author Sylvain Glémin
        */
       static double originRegressionDprime(const PolymorphismSequenceContainer & psc, bool distance1=false, bool keepsingleton=true, double freqmin=0) throw (DimensionException);
 
@@ -707,6 +763,7 @@ namespace bpp
        * @param keepsingleton a boolean (true by default, false to exclude singleton)
        * @param freqmin a float (to exlude site with the lowest allele frequency less than the threshold given by freqmin, 0 by default)
        * @throw DimensionException if the number of sites or the number of sequences is lower than 2
+       * @author Sylvain Glémin
        */
       static double originRegressionR2(const PolymorphismSequenceContainer & psc, bool distance1=false, bool keepsingleton=true, double freqmin=0) throw (DimensionException);
 
@@ -721,6 +778,7 @@ namespace bpp
        * @param keepsingleton a boolean (true by default, false to exclude singleton)
        * @param freqmin a float (to exlude site with the lowest allele frequency less than the threshold given by freqmin, 0 by default)
        * @throw DimensionException if the number of sites or the number of sequences is lower than 2
+       * @author Sylvain Glémin
        */
       static Vdouble linearRegressionD(const PolymorphismSequenceContainer & psc, bool distance1=false, bool keepsingleton=true, double freqmin=0) throw (DimensionException);
 
@@ -735,6 +793,7 @@ namespace bpp
        * @param keepsingleton a boolean (true by default, false to exclude singleton)
        * @param freqmin a float (to exlude site with the lowest allele frequency less than the threshold given by freqmin, 0 by default)
        * @throw DimensionException if the number of sites or the number of sequences is lower than 2
+       * @author Sylvain Glémin
        */
       static Vdouble linearRegressionDprime(const PolymorphismSequenceContainer & psc, bool distance1=false, bool keepsingleton=true, double freqmin=0) throw (DimensionException);
 
@@ -749,6 +808,7 @@ namespace bpp
        * @param keepsingleton a boolean (true by default, false to exclude singleton)
        * @param freqmin a float (to exlude site with the lowest allele frequency less than the threshold given by freqmin, 0 by default)
        * @throw DimensionException if the number of sites or the number of sequences is lower than 2
+       * @author Sylvain Glémin
        */
       static Vdouble linearRegressionR2(const PolymorphismSequenceContainer & psc, bool distance1=false, bool keepsingleton=true, double freqmin=0) throw (DimensionException);
 
@@ -764,6 +824,7 @@ namespace bpp
        * @param keepsingleton a boolean (true by default, false to exclude singleton)
        * @param freqmin a float (to exlude site with the lowest allele frequency less than the threshold given by freqmin, 0 by default)
        * @throw DimensionException if the number of sites or the number of sequences is lower than 2
+       * @author Sylvain Glémin
        */
       static double inverseRegressionR2(const PolymorphismSequenceContainer & psc, bool distance1=false, bool keepsingleton=true, double freqmin=0) throw (DimensionException);
 
@@ -775,6 +836,7 @@ namespace bpp
        * @param precision default value = 0.000001
        * @param cinf initial value, by default cinf=0.001
        * @param csup initial value, by default csup = 10000
+       * @author Sylvain Glémin
        */
       static double hudson87(const PolymorphismSequenceContainer & psc, double precision = 0.000001, double cinf=0.001, double csup=10000);
 
@@ -803,6 +865,7 @@ namespace bpp
        *
        * will count singletons that are not in site_out (a site in outgroup)
        * site_in is a site from an ingroup
+       * @author Khalid Belkhir
        */
       static unsigned int getDerivedSingletonNumber_(const Site & site_in,const Site & site_out );
 
