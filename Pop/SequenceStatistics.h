@@ -88,8 +88,10 @@ namespace bpp
        * @param psc a PolymorphismSequenceContainer
        * @param gapflag a boolean set by default to true if you don't want to
        * take gap into account
+       * @param ignoreUnknown a boolean set by default to true to ignore
+       * unknown states
        */
-      static unsigned int polymorphicSiteNumber(const PolymorphismSequenceContainer & psc, bool gapflag = true);
+      static unsigned int polymorphicSiteNumber(const PolymorphismSequenceContainer & psc, bool gapflag = true, bool ignoreUnknown = true);
 
 
 
@@ -187,8 +189,8 @@ namespace bpp
        * @warning SG 15/03/2010: The code of this method is not clear. See
        * implementation for more details.
        *
-       * @param[in] psc a PolymorphismSequenceContainer
-       * @param[in] gapflag a boolean set by default to true if you don't want
+       * @param psc a PolymorphismSequenceContainer
+       * @param gapflag a boolean set by default to true if you don't want
        * to take gap into account
        * @return A std::vector of size 2 containing the number of GC alleles and the total number of alleles.
        */
@@ -207,9 +209,11 @@ namespace bpp
        * @param psc a PolymorphismSequenceContainer
        * @param gapflag flag set by default to true if you don't want to
        * take gap into account
+       * @param ignoreUnknown a boolean set by default to true to ignore
+       * unknown states
        * @author Sylvain Gaillard
        */
-      static double watterson75( const PolymorphismSequenceContainer & psc, bool gapflag = true );
+      static double watterson75(const PolymorphismSequenceContainer & psc, bool gapflag = true, bool ignoreUnknown = true);
 
 
       /**

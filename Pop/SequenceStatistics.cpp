@@ -72,7 +72,7 @@ SequenceStatistics::~SequenceStatistics() {}
 //Basic statistics
 //******************************************************************************
 
-unsigned int SequenceStatistics::polymorphicSiteNumber(const PolymorphismSequenceContainer& psc, bool gapflag)
+unsigned int SequenceStatistics::polymorphicSiteNumber(const PolymorphismSequenceContainer& psc, bool gapflag, bool ignoreUnknown)
 {
   unsigned int S = 0;
   const Site *site;
@@ -83,7 +83,7 @@ unsigned int SequenceStatistics::polymorphicSiteNumber(const PolymorphismSequenc
     si = new SimpleSiteIterator(psc);
   while ( si->hasMoreSites() ) {
     site=si->nextSite();
-    if ( !SiteTools::isConstant(*site) ) {
+    if ( !SiteTools::isConstant(*site, ignoreUnknown) ) {
       S++;
     }
   }
@@ -263,11 +263,11 @@ std::vector<unsigned int> SequenceStatistics::gcPolymorphism(const PolymorphismS
 //Diversity statistics
 //******************************************************************************
 
-double SequenceStatistics::watterson75(const PolymorphismSequenceContainer & psc, bool gapflag)
+double SequenceStatistics::watterson75(const PolymorphismSequenceContainer &psc, bool gapflag, bool ignoreUnknown)
 {
   double ThetaW;
   unsigned int n = psc.getNumberOfSequences();
-  unsigned int S = polymorphicSiteNumber(psc, gapflag);
+  unsigned int S = polymorphicSiteNumber(psc, gapflag, ignoreUnknown);
   map<string, double> values = getUsefullValues_(n);
   ThetaW = (double) S / values["a1"];
   return ThetaW;
