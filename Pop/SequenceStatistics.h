@@ -139,8 +139,9 @@ namespace bpp
        * @param  outg a PolymorphismSequenceContainer the outgroup alignement
        * @author Khalid Belkhir
        */
-      static unsigned int totMutationsExternalBranchs(const PolymorphismSequenceContainer & ing,
-          const PolymorphismSequenceContainer outg);
+      static unsigned int totMutationsExternalBranchs(
+          const PolymorphismSequenceContainer& ing,
+          const PolymorphismSequenceContainer& outg);
 
 
       /**
@@ -308,6 +309,8 @@ namespace bpp
        * @param gapflag a boolean set by default to true if you don't want
        * to take gaps into account
        * @author Sylvain Glémin
+       * @bug Sylvain Gaillard 17/03/2010: stopflag don't work as expected
+       * because CompleteSiteIterator don't skip stop codon.
        */
       static unsigned int monoSitePolymorphicCodonNumber(const PolymorphismSequenceContainer & psc, bool stopflag = true, bool gapflag = true);
 
@@ -464,6 +467,8 @@ namespace bpp
        * @param psccons a PolymorphismSequenceContainer
        * @param gc a GeneticCode
        * @author Sylvain Glémin
+       * @bug Sylvain Gaillard 17.03.2010: should throw something if pscin,
+       * pscout and psccons have different length (site number).
        */
       static std::vector<unsigned int> fixedDifferences(const PolymorphismSequenceContainer & pscin, const PolymorphismSequenceContainer & pscout, PolymorphismSequenceContainer & psccons, const GeneticCode & gc);
 
@@ -509,6 +514,7 @@ namespace bpp
        * @param gapflag flag set by default to true if you don't want to
        * take gap into account
        * @author Sylvain Gaillard
+       * @bug Sylvain Gaillard 17.03.2010: should throw Exception if S == 0
        */
       static double tajimaDSS(const PolymorphismSequenceContainer & psc, bool gapflag = true);
 
@@ -524,6 +530,7 @@ namespace bpp
        * @param gapflag flag set by default to true if you don't want to
        * take gap into account
        * @author Sylvain Gaillard
+       * @bug Sylvain Gaillard 17.03.2010: should throw Exception if eta == 0
        */
       static double tajimaDTNM(const PolymorphismSequenceContainer & psc, bool gapflag = true);
 
@@ -541,6 +548,7 @@ namespace bpp
        * If one set original=false then the number of mutations will be used.
        * If the outgroup contains more than one sequence the sites with more
        * than one variant will not be considered for external branch mutations!
+       * @bug Sylvain Gaillard 17.03.2010: should throw Exception if eta == 0
        */
       static double fuliD(const PolymorphismSequenceContainer & ingroup, const PolymorphismSequenceContainer & outgroup, bool original = true);
 
@@ -550,6 +558,7 @@ namespace bpp
        *
        * @param group a PolymorphismSequenceContainer
        * @author Sylvain Gaillard
+       * @bug Sylvain Gaillard 17.03.2010: should throw Exception if eta == 0
        */
       static double fuliDstar(const PolymorphismSequenceContainer & group);
 
@@ -569,6 +578,7 @@ namespace bpp
        * If one set original=false then the number of mutations will be used.
        * If the outgroup contains more than one sequence the sites with more
        * than one variant will not be considered for external branch mutations!
+       * @bug Sylvain Gaillard 17.03.2010: should throw Exception if eta == 0
        */
       static double fuliF(const PolymorphismSequenceContainer& ingroup, const PolymorphismSequenceContainer& outgroup, bool original = true);
 
@@ -578,6 +588,7 @@ namespace bpp
        *
        * @param group a PolymorphismSequenceContainer
        * @author Sylvain Gaillard
+       * @bug Sylvain Gaillard 17.03.2010: should throw Exception if eta == 0
        */
       static double fuliFstar(const PolymorphismSequenceContainer & group);
 
@@ -597,6 +608,9 @@ namespace bpp
        * @param keepsingleton a boolean (true by default, false to exclude singleton)
        * @param freqmin a float (to exlude site with the lowest allele frequency less than the threshold given by freqmin, 0 by default)
        * @author Sylvain Glémin
+       * @warning Sylvain Gaillard 17/03/2010: Needs cleaning and lack of tests
+       * of usability. This methode assume that psc as a DNA alphabet but don't
+       * check for conformity.
        */
       static PolymorphismSequenceContainer * generateLDContainer(const PolymorphismSequenceContainer & psc, bool keepsingleton=true, double freqmin=0);
 
@@ -850,7 +864,7 @@ namespace bpp
        * @param n then number of observed sequences
        * @author Sylvain Gaillard
        */
-      static void testUsefullvalues(std::ostream & s, unsigned int n);
+      static void testUsefullValues(std::ostream & s, unsigned int n);
 
 
     private:
