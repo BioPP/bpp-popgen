@@ -66,8 +66,6 @@ using namespace std;
 
 using namespace bpp;
 
-SequenceStatistics::~SequenceStatistics() {}
-
 //******************************************************************************
 //Basic statistics
 //******************************************************************************
@@ -164,8 +162,10 @@ unsigned int SequenceStatistics::totNumberMutations(const PolymorphismSequenceCo
 
 unsigned int SequenceStatistics::totMutationsExternalBranchs(
     const PolymorphismSequenceContainer& ing,
-    const PolymorphismSequenceContainer& outg)
+    const PolymorphismSequenceContainer& outg) throw (Exception)
 {
+  if (ing.getNumberOfSites() != outg.getNumberOfSites())
+    throw Exception("ing and outg must have the same size");
   unsigned int nmuts = 0;
   const Site* site_in = 0;
   const Site* site_out = 0;
@@ -715,9 +715,11 @@ double SequenceStatistics::neutralityIndex(const PolymorphismSequenceContainer& 
 //Statistical tests
 //******************************************************************************
 
-double SequenceStatistics::tajimaDSS(const PolymorphismSequenceContainer& psc, bool gapflag)
+double SequenceStatistics::tajimaDSS(const PolymorphismSequenceContainer& psc, bool gapflag) throw (ZeroDivisionException)
 {
   unsigned int S = polymorphicSiteNumber(psc, gapflag);
+  if (!S)
+    throw ZeroDivisionException("S should not be null");
   double tajima = tajima83(psc, gapflag);
   double watterson = watterson75(psc, gapflag);
   unsigned int n = psc.getNumberOfSequences();
@@ -727,9 +729,11 @@ double SequenceStatistics::tajimaDSS(const PolymorphismSequenceContainer& psc, b
   return (tajima - watterson) / sqrt((values["e1"] * S) + (values["e2"] * S * (S - 1)));
 }
 
-double SequenceStatistics::tajimaDTNM(const PolymorphismSequenceContainer & psc, bool gapflag)
+double SequenceStatistics::tajimaDTNM(const PolymorphismSequenceContainer& psc, bool gapflag) throw (ZeroDivisionException)
 {
   unsigned int eta = totNumberMutations(psc, gapflag);
+  if (!eta)
+    throw ZeroDivisionException("eta should not be null");
   double tajima = tajima83(psc, gapflag);
   unsigned int n = psc.getNumberOfSequences();
   map<string, double> values = getUsefullValues_(n);
@@ -737,13 +741,15 @@ double SequenceStatistics::tajimaDTNM(const PolymorphismSequenceContainer & psc,
   return (tajima - eta_a1) / sqrt((values["e1"] * eta) + (values["e2"] * eta * (eta - 1)));
 }
 
-double SequenceStatistics::fuliD(const PolymorphismSequenceContainer& ingroup, const PolymorphismSequenceContainer& outgroup, bool original)
+double SequenceStatistics::fuliD(const PolymorphismSequenceContainer& ingroup, const PolymorphismSequenceContainer& outgroup, bool original) throw (ZeroDivisionException)
 {
   unsigned int n = ingroup.getNumberOfSequences();
   map<string, double> values = getUsefullValues_(n);
   double vD = getVD_(n, values["a1"], values["a2"], values["cn"]); 
   double uD = getUD_(values["a1"], vD);
   double eta = static_cast<double>(totNumberMutations(ingroup));
+  if (eta == 0.)
+    throw ZeroDivisionException("eta should not be null");
   double etae = 0.;
   if (original)
     etae = static_cast<double>(countSingleton(outgroup));
@@ -752,7 +758,7 @@ double SequenceStatistics::fuliD(const PolymorphismSequenceContainer& ingroup, c
   return (eta - (values["a1"] * etae)) / sqrt((uD * eta) + (vD * eta * eta));
 }
 
-double SequenceStatistics::fuliDstar(const PolymorphismSequenceContainer & group)
+double SequenceStatistics::fuliDstar(const PolymorphismSequenceContainer & group) throw (ZeroDivisionException) 
 {
   unsigned int n = group.getNumberOfSequences();
   double nn = static_cast<double>(n);
@@ -761,6 +767,8 @@ double SequenceStatistics::fuliDstar(const PolymorphismSequenceContainer & group
   double vDs = getVDstar_(n, values["a1"], values["a2"], values["dn"]);
   double uDs = getUDstar_(n, values["a1"], vDs);
   double eta = static_cast<double>(totNumberMutations(group));
+  if (eta == 0.)
+    throw ZeroDivisionException("eta should not be null");
   double etas = static_cast<double>(countSingleton(group));
 
   // Fu & Li 1993
@@ -772,15 +780,17 @@ double SequenceStatistics::fuliDstar(const PolymorphismSequenceContainer & group
   */
 }
 
-double SequenceStatistics::fuliF(const PolymorphismSequenceContainer& ingroup, const PolymorphismSequenceContainer& outgroup, bool original)
+double SequenceStatistics::fuliF(const PolymorphismSequenceContainer& ingroup, const PolymorphismSequenceContainer& outgroup, bool original) throw (ZeroDivisionException) 
 {
   unsigned int n = ingroup.getNumberOfSequences();
-  double nn = (double) n;
+  double nn = static_cast<double>(n);
   map<string, double> values = getUsefullValues_(n);
   double pi = tajima83(ingroup, true);
   double vF = (values["cn"] + values["b2"] - 2. / (nn - 1.)) / (pow(values["a1"], 2) + values["a2"]);
   double uF = ((1. + values["b1"] - (4. * ((nn + 1.) / ((nn - 1.) * (nn - 1.)))) * (values["a1n"] - (2. * nn) / (nn + 1.))) / values["a1"]) - vF;
-  double eta = (double) totNumberMutations(ingroup);
+  double eta = static_cast<double>(totNumberMutations(ingroup));
+  if (eta == 0.)
+    throw ZeroDivisionException("eta should not be null");
   double etae = 0.;
   if (original)
     etae = static_cast<double>(countSingleton(outgroup));
@@ -789,7 +799,8 @@ double SequenceStatistics::fuliF(const PolymorphismSequenceContainer& ingroup, c
   return (pi - etae) / sqrt(uF * eta + vF * eta * eta);
 }
 
-double SequenceStatistics::fuliFstar(const PolymorphismSequenceContainer & group) {
+double SequenceStatistics::fuliFstar(const PolymorphismSequenceContainer & group) throw (ZeroDivisionException)
+{
   unsigned int n = group.getNumberOfSequences();
   double nn = static_cast<double>(n);
   map<string, double> values = getUsefullValues_(n);
@@ -803,6 +814,8 @@ double SequenceStatistics::fuliFstar(const PolymorphismSequenceContainer & group
   double vFs = (((2*nn*nn*nn + 110*nn*nn - 255*nn + 153) / (9*nn*nn*(nn-1))) + ((2*(n-1)*values["a1"]) / (nn*nn)) - 8*values["a2"]/nn) / (pow(values["a1"], 2) + values["a2"]);
   double uFs = (((4*nn*nn + 19*nn + 3 - 12*(nn+1.)*values["a1n"]) / (3*nn*(n-1))) / values["a1"]) - vFs;
   double eta = static_cast<double>(totNumberMutations(group));
+  if (eta == 0.)
+    throw ZeroDivisionException("eta should not be null");
   double etas = static_cast<double>(countSingleton(group));
   // Fu & Li 1993
   // Simonsen et al. 1995
