@@ -31,9 +31,9 @@ ENDIF(NO_VIRTUAL_COV)
 #           library implements.
 # In other words, the library implements all the interface numbers in the
 # range from number current - age to current.
-SET(BPPPOPGEN_VERSION_CURRENT "5")
+SET(BPPPOPGEN_VERSION_CURRENT "6")
 SET(BPPPOPGEN_VERSION_REVISION "0")
-SET(BPPPOPGEN_VERSION_AGE "2")
+SET(BPPPOPGEN_VERSION_AGE "0")
 
 # Effective version number computation
 MATH(EXPR BPPPOPGEN_VERSION_MAJOR "${BPPPOPGEN_VERSION_CURRENT} - ${BPPPOPGEN_VERSION_AGE}")
@@ -84,25 +84,25 @@ ENDIF (DOXYGEN_FOUND)
 # Packager
 SET(CPACK_PACKAGE_NAME "libbpp-popgen")
 SET(CPACK_PACKAGE_VENDOR "Bio++ Development Team")
-SET(CPACK_PACKAGE_VERSION "1.4.0")
+SET(CPACK_PACKAGE_VERSION "1.5.0")
 SET(CPACK_PACKAGE_VERSION_MAJOR "1")
-SET(CPACK_PACKAGE_VERSION_MINOR "4")
+SET(CPACK_PACKAGE_VERSION_MINOR "5")
 SET(CPACK_PACKAGE_VERSION_PATCH "0")
 SET(CPACK_PACKAGE_DESCRIPTION_SUMMARY "The Bio++ Population Genetics library")
 SET(CPACK_RESOURCE_FILE_LICENSE "${CMAKE_SOURCE_DIR}/COPYING")
 SET(CPACK_RESOURCE_FILE_AUTHORS "${CMAKE_SOURCE_DIR}/AUTHORS")
 SET(CPACK_SOURCE_GENERATOR "TGZ")
 SET(CPACK_SOURCE_IGNORE_FILES
- ".*CMakeFiles"
- ".*Makefile"
- ".*_CPack_Packages"
- ".*CMakeCache.txt"
+ "CMakeFiles"
+ "Makefile"
+ "_CPack_Packages"
+ "CMakeCache.txt"
  ".*\\\\.cmake"
- ".*CVS/"
- ".*.gz"
- ".*.deb"
- ".*.rpm"
- ".*~"
+ "/CVS/"
+ ".*\\\\.gz"
+ ".*\\\\.deb"
+ ".*\\\\.rpm"
+ "\\\\..*\\\\.swp"
  "Pop/\\\\..*"
  "html"
  "PopGen.tag"
