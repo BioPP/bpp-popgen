@@ -14,7 +14,7 @@ Group: System Environment/Libraries
 BuildRoot: %{_builddir}/%{name}-root
 Packager: Julien Dutheil
 AutoReqProv: no
-Requires: libstdc++6
+Requires: libstdc++
 Requires: bpp-utils = 1.5.0
 Requires: bpp-numcalc = 1.8.0
 Requires: bpp-seq = 1.7.0
