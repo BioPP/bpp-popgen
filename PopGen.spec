@@ -1,7 +1,7 @@
 %define name bpp-popgen
 %define version 1.5.0
 %define release 1
-%define _prefix /usr/local
+%define _prefix /usr
 
 Summary: The Bio++ PopGenLib library.
 Name: %{name}
