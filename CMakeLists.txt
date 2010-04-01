@@ -104,6 +104,10 @@ SET(CPACK_SOURCE_IGNORE_FILES
  ".*\\\\.rpm"
  "\\\\..*\\\\.swp"
  "Pop/\\\\..*"
+ "Pop/\\\\..*"
+ "Pop/libbpp*"
+ "debian/libbpp*"
+ "debian/tmp"
  "html"
  "PopGen.tag"
  ${CPACK_SOURCE_IGNORE_FILES}
