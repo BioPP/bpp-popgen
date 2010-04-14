@@ -44,9 +44,9 @@ using namespace std;
 
 //** Constructors : **********************************************************/
 
-PolymorphismMultiGContainer::PolymorphismMultiGContainer(): multilocusGenotypes_(vector<MultilocusGenotype*>()), groups_(vector<unsigned int>()), groups_names_(map<unsigned int, string>()) {}
+PolymorphismMultiGContainer::PolymorphismMultiGContainer(): multilocusGenotypes_(std::vector<MultilocusGenotype*>()), groups_(std::vector<unsigned int>()), groups_names_(std::map<unsigned int, std::string>()) {}
 
-PolymorphismMultiGContainer::PolymorphismMultiGContainer(const PolymorphismMultiGContainer & pmgc): multilocusGenotypes_(vector<MultilocusGenotype*>(pmgc.getNumberOfLoci())), groups_(vector<unsigned int>(pmgc.getNumberOfLoci())), groups_names_(map<unsigned int, string>())
+PolymorphismMultiGContainer::PolymorphismMultiGContainer(const PolymorphismMultiGContainer & pmgc): multilocusGenotypes_(std::vector<MultilocusGenotype*>(pmgc.size())), groups_(std::vector<unsigned int>(pmgc.size())), groups_names_(std::map<unsigned int, std::string>())
 {
   for(unsigned int i = 0; i < pmgc.size(); i++)
   {
