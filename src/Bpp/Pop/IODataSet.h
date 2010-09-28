@@ -42,8 +42,7 @@
 
 #include "DataSet.h"
 
-// From Utils:
-#include <Utils/IOFormat.h>
+#include <Bpp/Io/IoFormat.h>
 
 // From STL
 #include <iostream>

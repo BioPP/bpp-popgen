@@ -45,14 +45,13 @@
 #include <vector>
 #include <memory>
 
-// From Utils
-#include <Utils/Exceptions.h>
-#include <Utils/Point2D.h>
+#include <Bpp/Exceptions.h>
+#include <Bpp/Graphics/Point2D.h>
 
 // From SeqLib
-#include <Seq/VectorSequenceContainer.h>
-#include <Seq/VectorSiteContainer.h>
-#include <Seq/SequenceContainerTools.h>
+#include <Bpp/Seq/Container/VectorSequenceContainer.h>
+#include <Bpp/Seq/Container/VectorSiteContainer.h>
+#include <Bpp/Seq/Container/SequenceContainerTools.h>
 
 // From local
 #include "Individual.h"

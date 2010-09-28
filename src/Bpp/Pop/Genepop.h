@@ -40,11 +40,10 @@
 #ifndef _GENEPOP_H_
 #define _GENEPOP_H_
 
-// From Utils
-#include <Utils/TextTools.h>
-#include <Utils/FileTools.h>
-#include <Utils/Exceptions.h>
-#include <Utils/StringTokenizer.h>
+#include <Bpp/Exceptions.h>
+#include <Bpp/Io/FileTools.h>
+#include <Bpp/Text/TextTools.h>
+#include <Bpp/Text/StringTokenizer.h>
 
 // From local Pop
 #include "AbstractIDataSet.h"

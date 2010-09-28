@@ -69,7 +69,7 @@ ENDMACRO(IMPROVED_FIND_LIBRARY)
 
 #Find the Bio++ libraries:
 IMPROVED_FIND_LIBRARY(LIBS bpp-seq Bpp/Seq/Alphabet/Alphabet.h)
-IMPROVED_FIND_LIBRARY(LIBS bpp-core Utils/Clonable.h)
+IMPROVED_FIND_LIBRARY(LIBS bpp-core Bpp/Clonable.h)
 
 # Subdirectories
 ADD_SUBDIRECTORY(src)

@@ -42,8 +42,7 @@
 
 #include "IODataSet.h"
 
-// From Utils
-#include <Utils/Exceptions.h>
+#include <Bpp/Exceptions.h>
 
 namespace bpp
 {

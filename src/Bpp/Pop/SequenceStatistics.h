@@ -44,14 +44,13 @@
 #define _SEQUENCESTATISTICS_H_
 
 //From the SeqLib library
-#include <Seq/SiteIterator.h>
-#include <Seq/SiteContainer.h>
-#include <Seq/SymbolListTools.h>
-#include <Seq/CodonAlphabet.h>
-#include <Seq/GeneticCode.h>
-#include <Seq/SiteContainerTools.h>
+#include <Bpp/Seq/SymbolListTools.h>
+#include <Bpp/Seq/Alphabet/CodonAlphabet.h>
+#include <Bpp/Seq/GeneticCode/GeneticCode.h>
+#include <Bpp/Seq/Container/SiteIterator.h>
+#include <Bpp/Seq/Container/SiteContainer.h>
+#include <Bpp/Seq/Container/SiteContainerTools.h>
 
-//From the PolyLib library
 #include "PolymorphismSequenceContainer.h"
 
 // From the STL

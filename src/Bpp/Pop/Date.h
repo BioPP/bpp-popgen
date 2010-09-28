@@ -41,9 +41,8 @@
 #ifndef _DATE_H_
 #define _DATE_H_
 
-// From Utils
-#include <Utils/Exceptions.h>
-#include <Utils/Clonable.h>
+#include <Bpp/Exceptions.h>
+#include <Bpp/Clonable.h>
 
 namespace bpp
 {

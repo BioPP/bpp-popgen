@@ -44,8 +44,7 @@
 #include <vector>
 #include <string>
 
-//From Utils
-#include <Utils/Exceptions.h>
+#include <Bpp/Exceptions.h>
 
 // From local
 #include "LocusInfo.h"

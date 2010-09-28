@@ -41,20 +41,17 @@
 #ifndef _POLYMORPHISMSEQUENCECONTAINERTOOL_H_
 #define _POLYMORPHISMSEQUENCECONTAINERTOOL_H_
 
+#include <Bpp/Numeric/RandomTools.h>
+#include <Bpp/Text/StringTokenizer.h>
+
 // from SeqLib
-#include <Seq/CodonAlphabet.h>
-#include <Seq/Mase.h>
-#include <Seq/MaseTools.h>
-#include <Seq/SequenceContainerTools.h>
-#include <Seq/SiteIterator.h>
-#include <Seq/SiteTools.h>
-#include <Seq/VectorSiteContainer.h>
-
-// from NumCalc
-#include <NumCalc/RandomTools.h>
-
-// from Utils
-#include <Utils/StringTokenizer.h>
+#include <Bpp/Seq/Alphabet/CodonAlphabet.h>
+#include <Bpp/Seq/Io/Mase.h>
+#include <Bpp/Seq/Io/MaseTools.h>
+#include <Bpp/Seq/Container/SequenceContainerTools.h>
+#include <Bpp/Seq/Container/SiteIterator.h>
+#include <Bpp/Seq/Container/VectorSiteContainer.h>
+#include <Bpp/Seq/SiteTools.h>
 
 // from STL
 #include <string>

@@ -40,14 +40,13 @@
 #ifndef _POPULIBIO_H_
 #define _POPULIBIO_H_
 
-// From Utils
-#include <Utils/TextTools.h>
-#include <Utils/FileTools.h>
-#include <Utils/Exceptions.h>
+#include <Bpp/Exceptions.h>
+#include <Bpp/Text/TextTools.h>
+#include <Bpp/Io/FileTools.h>
 
 // From Seq
-#include <Seq/Fasta.h>
-#include <Seq/VectorSequenceContainer.h>
+#include <Bpp/Seq/Io/Fasta.h>
+#include <Bpp/Seq/Container/VectorSequenceContainer.h>
 
 // From local Pop
 #include "AbstractIDataSet.h"

@@ -38,9 +38,8 @@
    knowledge of the CeCILL license and that you accept its terms.
    */
 
-// From Utils
+#include <Bpp/Utils/MapTools.h>
 
-#include <Utils/MapTools.h>
 #include "MultilocusGenotypeStatistics.h"
 #include "PolymorphismMultiGContainerTools.h"
 

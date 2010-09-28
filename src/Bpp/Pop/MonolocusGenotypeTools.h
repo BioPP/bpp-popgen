@@ -44,8 +44,7 @@
 #include <vector>
 #include <memory>
 
-// From Utils
-#include <Utils/Exceptions.h>
+#include <Bpp/Exceptions.h>
 
 //From Pop
 #include "MonolocusGenotype.h"

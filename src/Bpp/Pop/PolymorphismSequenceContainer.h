@@ -44,12 +44,12 @@
 #include <set>
 #include <string>
 
-#include <Utils/Clonable.h>
-#include <Utils/StringTokenizer.h>
-#include <Utils/TextTools.h>
+#include <Bpp/Clonable.h>
+#include <Bpp/Text/StringTokenizer.h>
+#include <Bpp/Text/TextTools.h>
 
-#include <Seq/VectorSiteContainer.h>
-#include <Seq/SequenceContainerTools.h>
+#include <Bpp/Seq/Container/VectorSiteContainer.h>
+#include <Bpp/Seq/Container/SequenceContainerTools.h>
 
 /**
  * @mainpage

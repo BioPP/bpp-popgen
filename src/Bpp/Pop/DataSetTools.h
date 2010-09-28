@@ -44,12 +44,11 @@
 #include <set>
 #include <memory>
 
-// From Utils
-#include <Utils/TextTools.h>
-#include <Utils/Exceptions.h>
+#include <Bpp/Exceptions.h>
+#include <Bpp/Text/TextTools.h>
 
 // From SeqLib
-#include <Seq/OrderedSequenceContainer.h>
+#include <Bpp/Seq/Container/OrderedSequenceContainer.h>
 
 // From local PopGenLib
 #include "DataSet.h"

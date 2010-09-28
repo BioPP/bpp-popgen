@@ -40,8 +40,7 @@
 #ifndef _MONOALLELEMONOLOCUSGENOTYPE_H_
 #define _MONOALLELEMONOLOCUSGENOTYPE_H_
 
-// From Utils
-#include <Utils/Exceptions.h>
+#include <Bpp/Exceptions.h>
 
 // From local
 #include "MonolocusGenotype.h"

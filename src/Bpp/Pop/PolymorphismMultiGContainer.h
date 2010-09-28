@@ -40,10 +40,10 @@
 #define _POLYMORPHYSMMULTIGCONTAINER_H_
 
 // From Utils
-#include <Utils/Clonable.h>
-#include <Utils/Exceptions.h>
-#include <Utils/MapTools.h>
-#include <Utils/TextTools.h>
+#include <Bpp/Clonable.h>
+#include <Bpp/Exceptions.h>
+#include <Bpp/Utils/MapTools.h>
+#include <Bpp/Text/TextTools.h>
 
 // From popgenlib
 #include "MultilocusGenotype.h"

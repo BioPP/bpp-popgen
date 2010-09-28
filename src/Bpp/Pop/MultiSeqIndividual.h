@@ -45,15 +45,14 @@
 #include <vector>
 #include <string>
 
-// From Utils
-#include <Utils/Clonable.h>
-#include <Utils/Exceptions.h>
-#include <Utils/Point2D.h>
+#include <Bpp/Clonable.h>
+#include <Bpp/Exceptions.h>
+#include <Bpp/Graphics/Point2D.h>
 
 // From SeqLib
-#include <Seq/Sequence.h>
-#include <Seq/VectorSequenceContainer.h>
-#include <Seq/SequenceExceptions.h>
+#include <Bpp/Seq/Sequence.h>
+#include <Bpp/Seq/SequenceExceptions.h>
+#include <Bpp/Seq/Container/VectorSequenceContainer.h>
 
 // From PopGenLib
 #include "Locality.h"

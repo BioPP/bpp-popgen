@@ -37,8 +37,7 @@
    knowledge of the CeCILL license and that you accept its terms.
    */
 
-// From Utils
-#include <Utils/TextTools.h>
+#include <Bpp/Text/TextTools.h>
 
 #include "LocusInfo.h"
 #include "GeneralExceptions.h"

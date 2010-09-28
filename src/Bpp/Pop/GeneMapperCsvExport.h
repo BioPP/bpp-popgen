@@ -40,14 +40,11 @@
 #ifndef _GENEMAPPERCSVEXPORT_H_
 #define _GENEMAPPERCSVEXPORT_H_
 
-// From Utils
-#include <Utils/TextTools.h>
-#include <Utils/FileTools.h>
-#include <Utils/Exceptions.h>
-#include <Utils/StringTokenizer.h>
-
-// From NumCalc
-#include <NumCalc/DataTable.h>
+#include <Bpp/Exceptions.h>
+#include <Bpp/Io/FileTools.h>
+#include <Bpp/Text/TextTools.h>
+#include <Bpp/Text/StringTokenizer.h>
+#include <Bpp/Numeric/DataTable.h>
 
 // From local Pop
 #include "AbstractIDataSet.h"

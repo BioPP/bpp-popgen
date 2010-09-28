@@ -46,10 +46,9 @@
 #include <map>
 #include <string>
 
-// From Utils
-#include <Utils/Exceptions.h>
-#include <Utils/Point2D.h>
-#include <Utils/MapTools.h>
+#include <Bpp/Exceptions.h>
+#include <Bpp/Graphics/Point2D.h>
+#include <Bpp/Utils/MapTools.h>
 
 // From PopGenLib (local)
 #include "Group.h"

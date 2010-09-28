@@ -44,16 +44,15 @@
 #include <vector>
 #include <memory>
 
-// From Utils
-#include <Utils/Point2D.h>
-#include <Utils/Exceptions.h>
-#include <Utils/TextTools.h>
+#include <Bpp/Graphics/Point2D.h>
+#include <Bpp/Exceptions.h>
+#include <Bpp/Text/TextTools.h>
 
 // From SeqLib
-#include <Seq/Sequence.h>
-#include <Seq/OrderedSequenceContainer.h>
-#include <Seq/MapSequenceContainer.h>
-#include <Seq/SequenceExceptions.h>
+#include <Bpp/Seq/Sequence.h>
+#include <Bpp/Seq/SequenceExceptions.h>
+#include <Bpp/Seq/Container/OrderedSequenceContainer.h>
+#include <Bpp/Seq/Container/MapSequenceContainer.h>
 
 // From PopGenLib
 #include "Locality.h"

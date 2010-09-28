@@ -52,17 +52,16 @@
 using namespace std;
 
 // From SeqLib:
-#include <Seq/Site.h>
-#include <Seq/SiteTools.h>
-#include <Seq/StringSequenceTools.h>
-#include <Seq/CodonSiteTools.h>
-#include <Seq/DNA.h>
-#include <Seq/StandardCodonAlphabet.h>
-#include <Seq/StandardGeneticCode.h>
+#include <Bpp/Seq/Site.h>
+#include <Bpp/Seq/SiteTools.h>
+#include <Bpp/Seq/StringSequenceTools.h>
+#include <Bpp/Seq/CodonSiteTools.h>
+#include <Bpp/Seq/Alphabet/DNA.h>
+#include <Bpp/Seq/Alphabet/StandardCodonAlphabet.h>
+#include <Bpp/Seq/GeneticCode/StandardGeneticCode.h>
 
-// from NumCalc
-#include <NumCalc/VectorTools.h>
-#include <NumCalc/VectorExceptions.h>
+#include <Bpp/Numeric/VectorTools.h>
+#include <Bpp/Numeric/VectorExceptions.h>
 
 using namespace bpp;
 

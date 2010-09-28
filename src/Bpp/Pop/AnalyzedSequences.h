@@ -42,7 +42,7 @@
 #define _ANALYZEDSEQUENCES_H_
 
 // From Seq
-#include <Seq/Alphabet.h>
+#include <Bpp/Seq/Alphabet/Alphabet.h>
 
 namespace bpp
 {

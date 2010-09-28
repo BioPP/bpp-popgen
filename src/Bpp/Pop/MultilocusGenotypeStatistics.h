@@ -48,11 +48,10 @@
 #include <set>
 #include <memory>
 
-// From Utils
-#include <Utils/Exceptions.h>
+#include <Bpp/Exceptions.h>
 
 // From SeqLib
-#include <Seq/DistanceMatrix.h>
+#include <Bpp/Seq/DistanceMatrix.h>
 
 // From popgenlib
 #include "PolymorphismMultiGContainer.h"

@@ -43,8 +43,7 @@
 // From std lib
 #include <string>
 
-// From Urils
-#include <Utils/Point2D.h>
+#include <Bpp/Graphics/Point2D.h>
 
 namespace bpp
 {

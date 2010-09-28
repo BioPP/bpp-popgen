@@ -38,9 +38,9 @@
    */
 
 #include "AnalyzedSequences.h"
-#include <Seq/DNA.h>
-#include <Seq/RNA.h>
-#include <Seq/ProteicAlphabet.h>
+#include <Bpp/Seq/Alphabet/DNA.h>
+#include <Bpp/Seq/Alphabet/RNA.h>
+#include <Bpp/Seq/Alphabet/ProteicAlphabet.h>
 
 using namespace bpp;
 using namespace std;

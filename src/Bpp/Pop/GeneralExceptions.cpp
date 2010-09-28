@@ -39,8 +39,7 @@
 
 #include "GeneralExceptions.h"
 
-// From Utils
-#include <Utils/TextTools.h>
+#include <Bpp/Text/TextTools.h>
 
 using namespace bpp;
 using namespace std;

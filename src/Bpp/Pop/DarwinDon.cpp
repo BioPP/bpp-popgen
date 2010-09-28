@@ -39,8 +39,7 @@
 
 #include "DarwinDon.h"
 
-//From Utils:
-#include <Utils/OutputStream.h>
+#include <Bpp/Io/OutputStream.h>
 
 using namespace bpp;
 using namespace std;

@@ -43,8 +43,7 @@
 // From STL
 #include <vector>
 
-// From Utils
-#include <Utils/Exceptions.h>
+#include <Bpp/Exceptions.h>
 
 //From local
 #include "MonolocusGenotype.h"

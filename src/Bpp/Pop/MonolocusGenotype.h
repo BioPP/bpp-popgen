@@ -43,8 +43,7 @@
 // From STL
 #include <vector>
 
-// From Utils
-#include <Utils/Clonable.h>
+#include <Bpp/Clonable.h>
 
 namespace bpp
 {
