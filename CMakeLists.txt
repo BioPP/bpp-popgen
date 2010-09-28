@@ -68,12 +68,11 @@ MACRO(IMPROVED_FIND_LIBRARY OUTPUT_LIBS lib_name include_to_find)
 ENDMACRO(IMPROVED_FIND_LIBRARY)
 
 #Find the Bio++ libraries:
-IMPROVED_FIND_LIBRARY(LIBS bpp-seq Seq/Alphabet.h)
-IMPROVED_FIND_LIBRARY(LIBS bpp-numcalc NumCalc/NumTools.h)
-IMPROVED_FIND_LIBRARY(LIBS bpp-utils Utils/Clonable.h)
+IMPROVED_FIND_LIBRARY(LIBS bpp-seq Bpp/Seq/Alphabet/Alphabet.h)
+IMPROVED_FIND_LIBRARY(LIBS bpp-core Utils/Clonable.h)
 
 # Subdirectories
-ADD_SUBDIRECTORY(Pop)
+ADD_SUBDIRECTORY(src)
 
 # Doxygen
 FIND_PACKAGE(Doxygen)
@@ -98,14 +97,13 @@ SET(CPACK_SOURCE_IGNORE_FILES
  "_CPack_Packages"
  "CMakeCache.txt"
  ".*\\\\.cmake"
- "/CVS/"
+ ".*\\\\.svn"
  ".*\\\\.gz"
  ".*\\\\.deb"
  ".*\\\\.rpm"
  "\\\\..*\\\\.swp"
- "Pop/\\\\..*"
- "Pop/\\\\..*"
- "Pop/libbpp*"
+ "src/\\\\..*"
+ "src/libbpp*"
  "debian/libbpp*"
  "debian/tmp"
  "html"
