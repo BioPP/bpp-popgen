@@ -1,0 +1,14 @@
+# files to be ignored
+
+BppPopGen.tag
+CMakeCache.txt
+CMakeFiles
+*.cmake
+Makefile
+html
+install_manifest.txt
+libbpp-popgen.*
+
+# file to be specifically not ignored by previous rules
+
+!/CTestConfig.cmake
