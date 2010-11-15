@@ -73,6 +73,7 @@ PolymorphismMultiGContainer::~PolymorphismMultiGContainer()
 
 PolymorphismMultiGContainer & PolymorphismMultiGContainer::operator= (const PolymorphismMultiGContainer & pmgc)
 {
+  clear();
   for(unsigned int i = 0; i < pmgc.size(); i++)
   {
     multilocusGenotypes_.push_back(new MultilocusGenotype(* pmgc.getMultilocusGenotype(i)));
