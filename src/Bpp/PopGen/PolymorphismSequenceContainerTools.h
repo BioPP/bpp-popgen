@@ -41,7 +41,7 @@
 #ifndef _POLYMORPHISMSEQUENCECONTAINERTOOL_H_
 #define _POLYMORPHISMSEQUENCECONTAINERTOOL_H_
 
-#include <Bpp/Numeric/RandomTools.h>
+#include <Bpp/Numeric/Random/RandomTools.h>
 #include <Bpp/Text/StringTokenizer.h>
 
 // from SeqLib

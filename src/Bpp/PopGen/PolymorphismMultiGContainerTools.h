@@ -47,7 +47,7 @@
 //From the PolGenLib library
 #include "PolymorphismMultiGContainer.h"
 
-#include <Bpp/Numeric/RandomTools.h>
+#include <Bpp/Numeric/Random/RandomTools.h>
 
 namespace bpp
 {
