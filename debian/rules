@@ -50,7 +50,8 @@ build-stamp:  config.status
 clean:
 	dh_testdir
 	dh_testroot
-	rm -f build-stamp 
+	rm -f build-stamp
+  rm CMakeCache.txt
 
 	# Add here commands to clean up after the build process.
 	[ ! -f Makefile ] || $(MAKE) clean
@@ -79,7 +80,7 @@ binary-arch: build install
 	dh_installchangelogs ChangeLog
 	dh_installdocs
 	dh_installexamples
-#	dh_install
+	dh_install
 #	dh_installmenu
 #	dh_installdebconf	
 #	dh_installlogrotate
@@ -101,10 +102,6 @@ binary-arch: build install
 	dh_shlibdeps
 	dh_gencontrol
 	dh_md5sums
-	#have to do that, otherwise nothing is installed!
-	cp -r $(CURDIR)/debian/tmp/usr/lib/lib*.so* $(CURDIR)/debian/libbpp-popgen/usr/lib
-	cp -r $(CURDIR)/debian/tmp/usr/lib/lib*.*a $(CURDIR)/debian/libbpp-popgen-dev/usr/lib
-	cp -r $(CURDIR)/debian/tmp/usr/include/* $(CURDIR)/debian/libbpp-popgen-dev/usr/include
 	dh_builddeb
 
 binary: binary-indep binary-arch

@@ -1,3 +1,9 @@
+libbpp-popgen (2.0.0) unstable; urgency=low
+
+  * Update for version 2.0 of Bio++. Code reorganization.
+
+ -- Julien Dutheil <julien.dutheil@univ-montp2.fr>  Mon, 07 Feb 2011 09:00:00 +0100
+
 libbpp-popgen (1.5.0) unstable; urgency=low
 
   * Update for version 1.9 of Bio++. Several interface improvements and bug fixed.
