@@ -52,7 +52,7 @@ MACRO(IMPROVED_FIND_LIBRARY OUTPUT_LIBS lib_name include_to_find)
   #start:
   FIND_PATH(${lib_name}_INCLUDE_DIR ${include_to_find})
   SET(${lib_name}_NAMES ${lib_name} ${lib_name}lib ${lib_name}dll)
-  FIND_LIBRARY(${lib_name}_LIBRARY NAMES ${${lib_name}_NAMES})
+  FIND_LIBRARY(${lib_name}_LIBRARY NAMES ${${lib_name}_NAMES} PATH_SUFFIXES lib${LIB_SUFFIX})
 
   IF(${lib_name}_LIBRARY)
     MESSAGE("-- Library ${lib_name} found here:")
@@ -78,6 +78,9 @@ ADD_SUBDIRECTORY(src)
 FIND_PACKAGE(Doxygen)
 IF (DOXYGEN_FOUND)
   ADD_CUSTOM_TARGET (apidoc ${DOXYGEN_EXECUTABLE} Doxyfile)
+  ADD_CUSTOM_TARGET (apidoc-stable cp Doxyfile Doxyfile-stable
+    COMMAND echo "HTML_HEADER=header.html" >> Doxyfile-stable
+    COMMAND ${DOXYGEN_EXECUTABLE} Doxyfile-stable )
 ENDIF (DOXYGEN_FOUND)
 
 # Packager
@@ -90,6 +93,7 @@ SET(CPACK_PACKAGE_VERSION_PATCH "0")
 SET(CPACK_PACKAGE_DESCRIPTION_SUMMARY "The Bio++ Population Genetics library")
 SET(CPACK_RESOURCE_FILE_LICENSE "${CMAKE_SOURCE_DIR}/COPYING.txt")
 SET(CPACK_RESOURCE_FILE_AUTHORS "${CMAKE_SOURCE_DIR}/AUTHORS.txt")
+SET(CPACK_RESOURCE_FILE_INSTALL "${CMAKE_SOURCE_DIR}/INSTALL.txt")
 SET(CPACK_SOURCE_GENERATOR "TGZ")
 SET(CPACK_SOURCE_IGNORE_FILES
  "CMakeFiles"
