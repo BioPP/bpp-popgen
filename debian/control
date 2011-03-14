@@ -1,24 +1,25 @@
 Source: libbpp-popgen
 Section: libs
 Priority: optional
-Maintainer: Julien Dutheil <julien.dutheil@univ-montp2.fr>
+Maintainer: Loic Dachary <loic@dachary.org>
+Uploaders: Julien Dutheil <julien.dutheil@univ-montp2.fr>
 Build-Depends: debhelper (>= 5), cmake (>= 2.6),
-  libbpp-core-dev (>= 2.0.0), libbpp-seq-dev (>= 2.0.0)
+  libbpp-core-dev (>= 2.0.1), libbpp-seq-dev (>= 2.0.1)
 Standards-Version: 3.9.1
 
 Package: libbpp-popgen-dev
 Section: libdevel
 Architecture: any
-Depends: libbpp-popgen (= ${binary:Version}), ${misc:Depends},
-  libbpp-core-dev (>= 2.0.0), libbpp-seq-dev (>= 2.0.0)
+Depends: libbpp-popgen6 (= ${binary:Version}), ${misc:Depends},
+  libbpp-core-dev (>= 2.0.1), libbpp-seq-dev (>= 2.0.1)
 Description: The Bio++ Population Genetics library development files.
  Contains the Bio++ classes for population genetics.
 
-Package: libbpp-popgen
+Package: libbpp-popgen6
 Section: libs
 Architecture: any
 Depends: ${shlibs:Depends}, ${misc:Depends},
-  libbpp-core (>= 2.0.0), libbpp-seq (>= 2.0.0)
+  libbpp-core2 (>= 2.0.1), libbpp-seq9 (>= 2.0.1)
 Description: The Bio++ Population Genetics library.
  Contains the Bio++ classes for population genetics.
 
