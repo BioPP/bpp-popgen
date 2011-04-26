@@ -313,6 +313,47 @@ double SequenceStatistics::tajima83(const PolymorphismSequenceContainer& psc, bo
   return value2;
 }
 
+double SequenceStatistics::FayWu2000(const PolymorphismSequenceContainer& psc, const Sequence& ancestralSites)
+{
+  if(psc.getNumberOfSites() != ancestralSites.size())
+    throw Exception("SequenceStatistics::FayWu2000: ancestralSites and psc don't have the same size!!!'" );
+
+  const Sequence& tmps = psc.getSequence(0);
+
+  unsigned int alphabet_size = (psc.getAlphabet())->getSize();
+  double value = 0.;
+  for(unsigned int i = 0; i < psc.getNumberOfSites(); i++){
+
+    const Site& site = psc.getSite(i);
+    string ancB = ancestralSites.getChar(i);
+    int ancV = ancestralSites.getValue(i);
+
+    if (! SiteTools::isConstant(site) || tmps.getChar(i) != ancB) {
+      if(ancV < 0)
+        continue;
+
+      map<int, unsigned int> count;
+      SymbolListTools::getCounts(site, count);
+      map<int, unsigned int> tmp_k;
+      unsigned int tmp_n = 0;
+      for (map<int, unsigned int>::iterator it = count.begin() ; it != count.end() ; it++){
+        if (it->first >= 0 && it->first < static_cast<int>(alphabet_size)) {
+          /* if derived allele */
+          if(it->first != ancV){
+            tmp_k[it->first] = 2 * it->second * it->second;
+          }
+          tmp_n += it->second;
+        }
+      }
+      if (tmp_n == 0 || tmp_n == 1) continue;
+      for (map<int, unsigned int>::iterator it = tmp_k.begin() ; it != tmp_k.end() ; it++){
+        value += static_cast<double>(it->second) / (tmp_n * (tmp_n - 1));
+      }
+    }
+  }
+  return value;
+}
+
 unsigned int SequenceStatistics::DVK(const PolymorphismSequenceContainer& psc, bool gapflag)
 {
   /*

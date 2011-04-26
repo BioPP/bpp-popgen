@@ -3,6 +3,7 @@
 // Authors: Eric Bazin
 //          Sylvain Gaillard
 //          Khalid Belkhir
+//          Benoit Nabholz
 // Created on: Wed Aug 04 2004
 //
 
@@ -244,6 +245,18 @@ namespace bpp
       static double tajima83(
           const PolymorphismSequenceContainer& psc,
           bool gapflag = true);
+
+      /**
+       * @brief Compute diversity estimator Theta H (eq. 3) of Fay and Wu (2000, Genetics, 155: 1405-1413)
+       *
+       * @param psc a PolymorphismSequenceContainer
+       * @param ancestralSites a Sequence containing the ancestral states
+       * (reconstructed independently) to fold the mutation in the psc SequenceContainer.
+       @author Benoit Nabholz
+       */
+       double FayWu2000(
+           const PolymorphismSequenceContainer& psc,
+           const Sequence& ancestralSites);
 
       /**
        * @brief Return the number of haplotype in the sample.
