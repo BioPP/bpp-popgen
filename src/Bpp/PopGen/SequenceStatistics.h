@@ -254,7 +254,7 @@ namespace bpp
        * (reconstructed independently) to fold the mutation in the psc SequenceContainer.
        @author Benoit Nabholz
        */
-       double FayWu2000(
+       static double FayWu2000(
            const PolymorphismSequenceContainer& psc,
            const Sequence& ancestralSites);
 
