@@ -62,8 +62,7 @@
 namespace bpp
 {
   /**
-   * @brief Static class providing methods to compute statistics on sequences
-   * data.
+   * @brief Static class providing methods to compute statistics on sequences data.
    *
    * @author Sylvain Gaillard
    */
@@ -671,6 +670,30 @@ namespace bpp
       static double fuliFstar(
           const PolymorphismSequenceContainer& group)
         throw (ZeroDivisionException);
+
+      /**
+       * Fst of Hudson, Slatkin and Maddison
+       *
+       * Taken from eq. 3 of  Hudson, Slatkin and Maddison 1992 Genetics 132:153
+       *
+       * @[
+       * F_{st} = 1 - \frac{H_w}{H_b}
+       * @f]
+       * where @f$H_w@f$ is mean number of differences between different
+       * sequences sampled from the same subpopulation, and @f$H_b@f$ is the
+       * mean number of differences between sequences sampled from the two
+       * different subpopulations sampled.
+       *
+       * @param psc a PolymorphismSequenceContainer will at least two populations
+       * @param id1 is the id of the population 1
+       * @param id2 is the id of the population 2
+       * @author Benoit Nabholz
+       */
+      double FstHudson92(
+          const PolymorphismSequenceContainer& psc,
+          unsigned int id1,
+          unsigned int id2);
+
 
       /**
        * @brief generate a special PolymorphismSequenceContainer for linkage disequilbrium analysis

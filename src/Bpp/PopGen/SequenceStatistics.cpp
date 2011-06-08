@@ -3,6 +3,7 @@
 // Authors: Eric Bazin
 //          Sylvain Gailard
 //          Khalid Belkhir
+//          Benoit Nabholz
 // Created on: Wed Aug 04 2004
 //
 
@@ -860,6 +861,39 @@ double SequenceStatistics::fuliFstar(const PolymorphismSequenceContainer & group
   // Fu & Li 1993
   // Simonsen et al. 1995
   return (pi - ((nn - 1.) / nn * etas)) / sqrt(uFs * eta + vFs * eta * eta);
+}
+
+double SequenceStatistics::FstHudson92(const PolymorphismSequenceContainer& psc, unsigned int id1, unsigned int id2)
+{
+  vector<double> vdiff;
+  double piIntra1, piIntra2, meanPiIntra, piInter, Fst;
+
+  PolymorphismSequenceContainer *Pop1 = PolymorphismSequenceContainerTools::extractGroup(psc, id1);
+  PolymorphismSequenceContainer *Pop2 = PolymorphismSequenceContainerTools::extractGroup(psc, id2);
+
+  piIntra1 = SequenceStatistics::tajima83(*Pop1, false);
+  piIntra2 = SequenceStatistics::tajima83(*Pop2, false);
+
+  meanPiIntra = (piIntra1 + piIntra2) / 2;
+
+  unsigned int n = 0;
+  for(unsigned int i = 0; i < Pop1->getNumberOfSequences(); i++) {
+    const Sequence &s1 = Pop1->getSequence(i);
+    for(unsigned int j = 0; j < Pop2->getNumberOfSequences(); j++) {
+      n++;
+      const Sequence &s2 = Pop2->getSequence(j);
+      vdiff.push_back(SiteContainerTools::computeSimilarity(s1, s2, true, "no gap", true));
+    }
+  }
+  piInter = (VectorTools::sum(vdiff) / n)*psc.getNumberOfSites();
+
+
+  Fst = 1.0 - meanPiIntra / piInter;
+
+  delete Pop1;
+  delete Pop2;
+
+  return Fst;
 }
 
 //******************************************************************************
