@@ -12,7 +12,7 @@ Section: libdevel
 Architecture: any
 Depends: libbpp-popgen6 (= ${binary:Version}), ${misc:Depends},
   libbpp-core-dev (>= 2.0.1), libbpp-seq-dev (>= 2.0.1)
-Description: The Bio++ Population Genetics library development files.
+Description: Bio++ Population Genetics library development files.
  Contains the Bio++ classes for population genetics.
 
 Package: libbpp-popgen6
@@ -20,6 +20,6 @@ Section: libs
 Architecture: any
 Depends: ${shlibs:Depends}, ${misc:Depends},
   libbpp-core2 (>= 2.0.1), libbpp-seq9 (>= 2.0.1)
-Description: The Bio++ Population Genetics library.
+Description: Bio++ Population Genetics library.
  Contains the Bio++ classes for population genetics.
 
