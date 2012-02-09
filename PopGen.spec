@@ -1,5 +1,5 @@
 %define name bpp-popgen
-%define version 2.0.2
+%define version 2.0.3
 %define release 1
 %define _prefix /usr
 
@@ -65,6 +65,8 @@ rm -rf $RPM_BUILD_ROOT
 %{_prefix}/include/*
 
 %changelog
+* Thu Feb 09 2012 Julien Dutheil <julien.dutheil@univ-montp2.fr>
+- Version 2.0.3. Recompilation for dependencies.
 * Thu Jun 09 2011 Julien Dutheil <julien.dutheil@univ-montp2.fr>
 - Version 2.0.2. New Fst calculations + bugs fixed.
 * Mon Feb 28 2011 Julien Dutheil <julien.dutheil@univ-montp2.fr>
