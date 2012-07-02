@@ -42,7 +42,7 @@
 using namespace bpp;
 using namespace std;
 
-DarwinVarSingle::DarwinVarSingle() {}
+DarwinVarSingle::DarwinVarSingle(unsigned int missingData): missingData_(missingData) {}
 
 DarwinVarSingle::~DarwinVarSingle() {}
 
@@ -68,6 +68,7 @@ void DarwinVarSingle::write(ostream & os, const DataSet & data_set) const throw 
   (out << ind_nbr << "\t" << var_nbr).endLine();
   VectorTools::print(header, out, "\t");
   //unsigned int ind_index = 0;
+  const AnalyzedLoci * al = data_set.getAnalyzedLoci();
   for (unsigned int i = 0 ; i < data_set.getNumberOfGroups() ; i++) {
     unsigned int ind_nbr_ig = data_set.getNumberOfIndividualsInGroup(i);
     for (unsigned int j = 0 ; j < ind_nbr_ig ; j++) {
@@ -75,10 +76,9 @@ void DarwinVarSingle::write(ostream & os, const DataSet & data_set) const throw 
       const MultilocusGenotype& geno = data_set.getIndividualAtPositionFromGroup(i, j)->getGenotype();
       for (unsigned int k = 0 ; k < geno.size() ; k++) {
         const MonolocusGenotype& mg = geno.getMonolocusGenotype(k);
-        const AnalyzedLoci * al = data_set.getAnalyzedLoci();
         if (geno.isMonolocusGenotypeMissing(k)) {
           for (unsigned int l = 0 ; l < al->getNumberOfAlleles()[k] ; l++)
-            var.push_back(0);
+            var.push_back(missingData_);
         }
         else {
           for (unsigned int l = 0 ; l < al->getNumberOfAlleles()[k] ; l++) {

@@ -59,9 +59,11 @@ namespace bpp
   class DarwinVarSingle:
     public virtual AbstractODataSet
   {
+    private:
+      unsigned int missingData_;
 
     public: // Constructor and destructor
-      DarwinVarSingle();
+      DarwinVarSingle(unsigned int missingData = 999);
       ~DarwinVarSingle();
 
     public:
