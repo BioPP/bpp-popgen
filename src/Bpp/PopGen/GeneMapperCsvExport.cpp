@@ -1,46 +1,58 @@
 //
-// File GeneMapperCsvExport.cpp
-// Authors : Sylvain Gaillard
-// Last modification : April 2, 2008
+// File:    GeneMapperCsvExport.cpp
+// Author:  Sylvain Gaillard
+// Created: April 2, 2008
 //
 
 /*
-   Copyright or © or Copr. CNRS, (April 2, 2008)
+Copyright or © or Copr. Bio++ Development Team, (April 2, 2008)
 
-   This software is a computer program whose purpose is to provide classes
-   for population genetics analysis.
+This software is a computer program whose purpose is to provide classes
+for population genetics analysis.
 
-   This software is governed by the CeCILL  license under French law and
-   abiding by the rules of distribution of free software.  You can  use, 
-   modify and/ or redistribute the software under the terms of the CeCILL
-   license as circulated by CEA, CNRS and INRIA at the following URL
-   "http://www.cecill.info". 
+This software is governed by the CeCILL  license under French law and
+abiding by the rules of distribution of free software.  You can  use, 
+modify and/ or redistribute the software under the terms of the CeCILL
+license as circulated by CEA, CNRS and INRIA at the following URL
+"http://www.cecill.info". 
 
-   As a counterpart to the access to the source code and  rights to copy,
-   modify and redistribute granted by the license, users are provided only
-   with a limited warranty  and the software's author,  the holder of the
-   economic rights,  and the successive licensors  have only  limited
-   liability. 
+As a counterpart to the access to the source code and  rights to copy,
+modify and redistribute granted by the license, users are provided only
+with a limited warranty  and the software's author,  the holder of the
+economic rights,  and the successive licensors  have only  limited
+liability. 
 
-   In this respect, the user's attention is drawn to the risks associated
-   with loading,  using,  modifying and/or developing or reproducing the
-   software by the user in light of its specific status of free software,
-   that may mean  that it is complicated to manipulate,  and  that  also
-   therefore means  that it is reserved for developers  and  experienced
-   professionals having in-depth computer knowledge. Users are therefore
-   encouraged to load and test the software's suitability as regards their
-   requirements in conditions enabling the security of their systems and/or 
-   data to be ensured and,  more generally, to use and operate it in the 
-   same conditions as regards security. 
+In this respect, the user's attention is drawn to the risks associated
+with loading,  using,  modifying and/or developing or reproducing the
+software by the user in light of its specific status of free software,
+that may mean  that it is complicated to manipulate,  and  that  also
+therefore means  that it is reserved for developers  and  experienced
+professionals having in-depth computer knowledge. Users are therefore
+encouraged to load and test the software's suitability as regards their
+requirements in conditions enabling the security of their systems and/or 
+data to be ensured and,  more generally, to use and operate it in the 
+same conditions as regards security. 
 
-   The fact that you are presently reading this means that you have had
-   knowledge of the CeCILL license and that you accept its terms.
-   */
+The fact that you are presently reading this means that you have had
+knowledge of the CeCILL license and that you accept its terms.
+*/
 
 #include "GeneMapperCsvExport.h"
 
 using namespace bpp;
 using namespace std;
+
+const std::string GeneMapperCsvExport::SAMPLE_FILE_H = "Sample File";
+const std::string GeneMapperCsvExport::SAMPLE_NAME_H = "Sample Name";
+const std::string GeneMapperCsvExport::PANEL_H = "Panel";
+const std::string GeneMapperCsvExport::MARKER_H = "Marker";
+const std::string GeneMapperCsvExport::DYE_H = "Dye";
+const std::string GeneMapperCsvExport::ALLELE_H = "Allele ";
+const std::string GeneMapperCsvExport::SIZE_H = "Size ";
+const std::string GeneMapperCsvExport::HEIGHT_H = "Height ";
+const std::string GeneMapperCsvExport::PEAK_AREA_H = "Peak Area ";
+const std::string GeneMapperCsvExport::DAC_H = "DAC";
+const std::string GeneMapperCsvExport::AN_H = "AN";
 
 GeneMapperCsvExport::GeneMapperCsvExport(bool ia): IndependentAlleles_(ia) {}
 
@@ -54,7 +66,8 @@ void GeneMapperCsvExport::read(std::istream& is, DataSet& data_set) throw (Excep
   /*
    * Feed a DataTable with the data
    */
-  DataTable dt = * DataTable::read(is, "\t", true, -1);
+  DataTable* dtp = DataTable::read(is, "\t", true, -1);
+  DataTable& dt = *dtp;
 
   /*
    * Fixe the individuals' name if there is duplicate in the file
@@ -62,22 +75,22 @@ void GeneMapperCsvExport::read(std::istream& is, DataSet& data_set) throw (Excep
   vector<string> ind_names;
   vector<string> markers;
   try {
-    ind_names = dt.getColumn("Sample Name");
-    markers = dt.getColumn("Marker");
+    ind_names = dt.getColumn(SAMPLE_NAME_H);
+    markers = dt.getColumn(MARKER_H);
   }
   catch (Exception &e) {
     throw e;
   }
   map<string, int> indname_marker;
   for (unsigned int i = 0 ; i < dt.getNumberOfRows() ; i++) {
-    string test_lab = dt(i, "Sample Name") + dt(i, "Marker");
+    string test_lab = dt(i, SAMPLE_NAME_H) + dt(i, MARKER_H);
     if (indname_marker.find(test_lab) != indname_marker.end()) {
-      string new_lab = dt(i, "Sample Name") + "_" + TextTools::toString(indname_marker[test_lab] + 1);
-      dt (i, "Sample Name") = new_lab;
+      string new_lab = dt(i, SAMPLE_NAME_H) + "_" + TextTools::toString(indname_marker[test_lab] + 1);
+      dt (i, SAMPLE_NAME_H) = new_lab;
     }
     indname_marker[test_lab]++;
   }
-  ind_names = dt.getColumn("Sample Name");
+  ind_names = dt.getColumn(SAMPLE_NAME_H);
 
   map<string, unsigned int> ind_count = VectorTools::countValues(ind_names);
   ind_names = VectorTools::unique(ind_names);
@@ -103,26 +116,29 @@ void GeneMapperCsvExport::read(std::istream& is, DataSet& data_set) throw (Excep
    */
   AnalyzedLoci al(markers.size());
   vector<string> col_names = dt.getColumnNames();
+
+  // Finds columns containing allele data
   vector<unsigned int> alleles_cols;
   for (unsigned int i = 0 ; i < col_names.size() ; i++)
-    if (TextTools::count(col_names[i], "Allele "))
+    if (TextTools::startsWith(col_names[i], ALLELE_H))
       alleles_cols.push_back(i);
+  // Set LocusInfo
   vector<vector <unsigned int> > alleles_pos;
   for (unsigned int i = 0 ; i < markers.size() ; i++) {
     al.setLocusInfo(i, LocusInfo(markers[i], LocusInfo::UNKNOWN));
-    vector<unsigned int> v = VectorTools::whichAll(dt.getColumn("Marker"), markers[i]);
-    alleles_pos.push_back(v);
   }
-  for (unsigned int i = 0 ; i < alleles_cols.size() ; i++) {
-    for (unsigned int j = 0 ; j < markers.size() ; j++) {
-      vector<string> m_allele;
-      for (unsigned int k = 0 ; k < alleles_pos[j].size() ; k++) {
-        if (dt(alleles_pos[j][k],alleles_cols[i]) != string(""))
-          m_allele.push_back(dt(alleles_pos[j][k],alleles_cols[i]));
+  std::map< std::string, std::set< std::string > > markerAlleles;
+  for (unsigned int i = 0 ; i < dt.getNumberOfRows() ; ++i) {
+    for (unsigned int j = 0 ; j < alleles_cols.size() ; ++j) {
+      if (dt(i, alleles_cols[j]) != "") {
+        markerAlleles[dt(i, MARKER_H)].insert(dt(i, alleles_cols[j]));
       }
-      m_allele = VectorTools::unique(m_allele);
-      if (m_allele.size() > 0)
-        al.addAlleleInfoByLocusName(markers[j], BasicAlleleInfo(m_allele[0]));
+    }
+  }
+  for (std::map< std::string, std::set< std::string > >::iterator itm = markerAlleles.begin() ; itm != markerAlleles.end() ; itm++) {
+    std::set< std::string >& s = itm->second;
+    for (std::set< std::string >::iterator its = s.begin() ; its != s.end() ; its++) {
+      al.addAlleleInfoByLocusName(itm->first, BasicAlleleInfo(*its));
     }
   }
   data_set.setAnalyzedLoci(al);
@@ -130,8 +146,8 @@ void GeneMapperCsvExport::read(std::istream& is, DataSet& data_set) throw (Excep
   /*
    * Individuals informations
    */
-  unsigned int ind_col_index = VectorTools::which(dt.getColumnNames(), string("Sample Name"));
-  unsigned int mark_col_index = VectorTools::which(dt.getColumnNames(), string("Marker"));
+  unsigned int ind_col_index = VectorTools::which(dt.getColumnNames(), SAMPLE_NAME_H);
+  unsigned int mark_col_index = VectorTools::which(dt.getColumnNames(), MARKER_H);
   for (unsigned int i = 0 ; i < dt.getNumberOfRows() ; i++) {
     vector<unsigned int> alleles;
     for (unsigned int j = 0 ; j < alleles_cols.size() ; j++) {
@@ -147,6 +163,7 @@ void GeneMapperCsvExport::read(std::istream& is, DataSet& data_set) throw (Excep
     if (alleles.size())
       data_set.setIndividualMonolocusGenotypeInGroup(0, data_set.getIndividualPositionInGroup(0, dt(i, ind_col_index)), data_set.getAnalyzedLoci()->getLocusInfoPosition(dt(i, mark_col_index)),ma);
   }
+  delete dtp;
 }
 
 void GeneMapperCsvExport::read(const std::string& path, DataSet& data_set) throw (Exception)
@@ -164,3 +181,30 @@ DataSet* GeneMapperCsvExport::read(const std::string& path) throw (Exception)
   return AbstractIDataSet::read(path);
 }
 
+//--- GeneMapperCsvExport::Record ---
+GeneMapperCsvExport::Record::Record(const std::string& row): sampleFile_(), sampleName_(), panel_(), markerName_(), dye_(), alleles_(), dac_(), an_(0.) {
+  StringTokenizer st(row, "\t", true, false);
+  /*
+     if (st.numberOfRemainingTokens() != 7 + 4 * alleleNumber) {
+     throw Exception("GeneMapperCsvExport::Record::Record: bad number of allele");
+     }
+   */
+  unsigned int itemNum = st.numberOfRemainingTokens();
+  unsigned int alleleNum = (itemNum - 7) / 4;
+  sampleFile_ = st.getToken(0);
+  sampleName_ = st.getToken(1);
+  panel_ = st.getToken(2);
+  markerName_ = st.getToken(3);
+  dye_ = st.getToken(4);
+  dac_ = st.getToken(itemNum - 2);
+  an_ = TextTools::toDouble(st.getToken(itemNum - 1));
+  for (unsigned int i = 0 ; i < alleleNum ; ++i) {
+    GeneMapperCsvExport::Allele al(
+        st.getToken(5 + i),
+        TextTools::toDouble(st.getToken(5 + alleleNum + i)),
+        TextTools::to<unsigned int>(st.getToken(5 + (2 * alleleNum) + i)),
+        TextTools::toDouble(st.getToken(5 + (3 * alleleNum) + i))
+        );
+    alleles_.push_back(al);
+  }
+}
