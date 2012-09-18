@@ -54,7 +54,7 @@ PolymorphismSequenceContainer* PolymorphismSequenceContainerTools::read(const st
   const OrderedSequenceContainer* seqc = 0;
   try
   {
-    seqc = dynamic_cast<OrderedSequenceContainer*>(ms.read( path, alpha ));
+    seqc = dynamic_cast<OrderedSequenceContainer*>(ms.readSequences(path, alpha ));
   }
   catch (Exception& e)
   {

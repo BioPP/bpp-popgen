@@ -306,7 +306,7 @@ void PopgenlibIO::parseSequence_(const std::vector<std::string>& in, VectorSeque
   stringstream is;
   for (unsigned int i = 0 ; i < in.size() ; i++)
     is << in[i] << endl;
-  ifasta.read(is, vsc);
+  ifasta.readSequences(is, vsc);
 }
 
 void PopgenlibIO::parseLoci_(const std::vector<std::string>& in, std::vector<LocusInfo>& locus_info)
@@ -493,7 +493,7 @@ void PopgenlibIO::write(std::ostream& os, const DataSet& data_set) const throw (
     os << endl << "[Sequences]" << endl;
     for (unsigned int i = 0 ; i < data_set.getNumberOfGroups() ; i++)
       for (unsigned int j = 0 ; j < data_set.getNumberOfIndividualsInGroup(i) ; j++)
-        fasta.write(os, data_set.getIndividualAtPositionFromGroup(i,j)->getSequences());
+        fasta.writeSequences(os, data_set.getIndividualAtPositionFromGroup(i,j)->getSequences());
   }
 
   // AllelicData section ----------------------------------
