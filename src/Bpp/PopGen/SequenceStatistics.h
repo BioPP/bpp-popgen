@@ -84,7 +84,7 @@ public:
    * @param ignoreUnknown a boolean set by default to true to ignore
    * unknown states
    */
-  static unsigned int polymorphicSiteNumber(
+  static size_t polymorphicSiteNumber(
     const PolymorphismSequenceContainer& psc,
     bool gapflag = true,
     bool ignoreUnknown = true);
@@ -96,7 +96,7 @@ public:
    * @param gapflag a boolean set by default to true if you don't want to
    * take gap into account
    */
-  static unsigned int parsimonyInformativeSiteNumber(
+  static size_t parsimonyInformativeSiteNumber(
     const PolymorphismSequenceContainer& psc,
     bool gapflag = true);
 
@@ -108,7 +108,7 @@ public:
    * take gap into account
    * @author Sylvain Gaillard
    */
-  static unsigned int countSingleton(
+  static size_t countSingleton(
     const PolymorphismSequenceContainer& psc,
     bool gapflag = true);
 
@@ -122,7 +122,7 @@ public:
    * take gap into account
    * @author Sylvain Gaillard
    */
-  static unsigned int totNumberMutations(
+  static size_t totNumberMutations(
     const PolymorphismSequenceContainer& psc,
     bool gapflag = true);
 
@@ -139,7 +139,7 @@ public:
    * @throw Exception if ing and outg are not of the same size (site number)
    * @author Khalid Belkhir
    */
-  static unsigned int totMutationsExternalBranchs(
+  static size_t totMutationsExternalBranchs(
     const PolymorphismSequenceContainer& ing,
     const PolymorphismSequenceContainer& outg)
   throw (Exception);
@@ -151,7 +151,7 @@ public:
    * @param gapflag a boolean set by default to true if you don't want to take gap into account
    * @author Sylvain Glémin
    */
-  static unsigned int tripletNumber(
+  static size_t tripletNumber(
     const PolymorphismSequenceContainer& psc,
     bool gapflag = true);
 
@@ -198,7 +198,7 @@ public:
    * @return A std::vector of size 2 containing the number of GC alleles
    * and the total number of alleles.
    */
-  static std::vector<unsigned int> gcPolymorphism(
+  static std::vector<size_t> gcPolymorphism(
     const PolymorphismSequenceContainer& psc,
     bool gapflag = true);
 
@@ -268,7 +268,7 @@ public:
    *  - remove unneeded Sequence Container recopy
    *  - work on Sequence rather on string
    */
-  static unsigned int DVK(
+  static size_t DVK(
     const PolymorphismSequenceContainer& psc,
     bool gapflag = true);
 
@@ -294,7 +294,7 @@ public:
    * @param psc a PolymorphismSequenceContainer
    * @author Éric Bazin
    */
-  static unsigned int getNumberOfTransitions(
+  static size_t getNumberOfTransitions(
     const PolymorphismSequenceContainer& psc);
 
   /**
@@ -303,7 +303,7 @@ public:
    * @param psc a PolymorphismSequenceContainer
    * @author Éric Bazin
    */
-  static unsigned int getNumberOfTransversions(
+  static size_t getNumberOfTransversions(
     const PolymorphismSequenceContainer& psc);
 
   /**
@@ -324,7 +324,7 @@ public:
    * take gaps into account
    * @author Sylvain Glémin
    */
-  static unsigned int stopCodonSiteNumber(
+  static size_t stopCodonSiteNumber(
     const PolymorphismSequenceContainer& psc,
     bool gapflag = true);
 
@@ -340,7 +340,7 @@ public:
    * @bug Sylvain Gaillard 17/03/2010: stopflag don't work as expected
    * because CompleteSiteIterator don't skip stop codon.
    */
-  static unsigned int monoSitePolymorphicCodonNumber(
+  static size_t monoSitePolymorphicCodonNumber(
     const PolymorphismSequenceContainer& psc,
     bool stopflag = true,
     bool gapflag = true);
@@ -355,7 +355,7 @@ public:
    * @author Sylvain Glémin
    * @author Éric Bazin
    */
-  static unsigned int synonymousPolymorphicCodonNumber(
+  static size_t synonymousPolymorphicCodonNumber(
     const PolymorphismSequenceContainer& psc,
     const GeneticCode& gc);
 
@@ -487,7 +487,7 @@ public:
    * @param freqmin a double, to exclude snp in frequency strictly lower
    * than freqmin
    */
-  static unsigned int synonymousSubstitutionsNumber(
+  static size_t synonymousSubstitutionsNumber(
     const PolymorphismSequenceContainer& psc,
     const GeneticCode& gc,
     double freqmin = 0.);
@@ -507,7 +507,7 @@ public:
    * @param freqmin a double, to exclude snp in frequency strictly lower
    * than freqmin
    */
-  static unsigned int nonSynonymousSubstitutionsNumber(
+  static size_t nonSynonymousSubstitutionsNumber(
     const PolymorphismSequenceContainer& psc,
     const GeneticCode& gc,
     double freqmin = 0.);
@@ -529,7 +529,7 @@ public:
    * @bug Sylvain Gaillard 17.03.2010: should throw something if pscin,
    * pscout and psccons have different length (site number).
    */
-  static std::vector<unsigned int> fixedDifferences(
+  static std::vector<size_t> fixedDifferences(
     const PolymorphismSequenceContainer& pscin,
     const PolymorphismSequenceContainer& pscout,
     PolymorphismSequenceContainer& psccons,
@@ -546,7 +546,7 @@ public:
    * than freqmin
    * @author Sylvain Glémin
    */
-  static std::vector<unsigned int> MKtable(
+  static std::vector<size_t> MKtable(
     const PolymorphismSequenceContainer& ingroup,
     const PolymorphismSequenceContainer& outgroup,
     const GeneticCode& gc,
@@ -690,8 +690,8 @@ public:
    */
   double FstHudson92(
     const PolymorphismSequenceContainer& psc,
-    unsigned int id1,
-    unsigned int id2);
+    size_t id1,
+    size_t id2);
 
 
   /**
@@ -1090,19 +1090,19 @@ public:
    */
   static void testUsefullValues(
     std::ostream& s,
-    unsigned int n);
+    size_t n);
 
 private:
   /**
    * @brief Count the number of mutation for a site.
    */
-  static unsigned int getMutationNumber_(
+  static size_t getMutationNumber_(
     const Site& site);
 
   /**
    * @brief Count the number of singleton for a site.
    */
-  static unsigned int getSingletonNumber_(
+  static size_t getSingletonNumber_(
     const Site& site);
 
   /**
@@ -1112,7 +1112,7 @@ private:
    * site_in is a site from an ingroup
    * @author Khalid Belkhir
    */
-  static unsigned int getDerivedSingletonNumber_(
+  static size_t getDerivedSingletonNumber_(
     const Site& site_in,
     const Site& site_out);
 
@@ -1150,7 +1150,7 @@ private:
    * @author Sylvain Gaillard
    */
   static std::map<std::string, double> getUsefullValues_(
-    unsigned int n);
+    size_t n);
 
   /**
    * @brief Get the vD value of equation (32) in Fu & Li 1993, Genetics, 133 pp693-709)
@@ -1165,7 +1165,7 @@ private:
    * @author Sylvain Gaillard
    */
   static double getVD_(
-    unsigned int n,
+    size_t n,
     double a1,
     double a2,
     double cn);
@@ -1197,7 +1197,7 @@ private:
    * @author Sylvain Gaillard
    */
   static double getVDstar_(
-    unsigned int n,
+    size_t n,
     double a1,
     double a2,
     double dn);
@@ -1214,7 +1214,7 @@ private:
    * @author Sylvain Gaillard
    */
   static double getUDstar_(
-    unsigned int n,
+    size_t n,
     double a1,
     double vDs);
 
@@ -1232,7 +1232,7 @@ private:
    */
   static double rightHandHudson_(
     double c,
-    unsigned int n);
+    size_t n);
 
   /************************************************************************/
 };

@@ -6,7 +6,7 @@
 //
 
 /*
-   Copyright or © or Copr. CNRS, (November 17, 2004)
+   Copyright or © or Copr. Bio++ Development Team, (November 17, 2004)
 
    This software is a computer program whose purpose is to provide classes
    for population genetics analysis.
@@ -110,11 +110,11 @@ public:
    * @brief Extract a special group from the PolymorphismSequenceContainer.
    *
    * @param psc a PolymorphismSequenceContainer reference.
-   * @param group_id the group identifier as an unsigned int.
+   * @param group_id the group identifier as an size_t.
    *
    * @throw GroupNotFoundException if group_id is not found.
    */
-  static PolymorphismSequenceContainer* extractGroup(const PolymorphismSequenceContainer& psc, unsigned int group_id) throw (Exception);
+  static PolymorphismSequenceContainer* extractGroup(const PolymorphismSequenceContainer& psc, size_t group_id) throw (Exception);
 
   /**
    * @brief Extract selected sequences
@@ -133,7 +133,7 @@ public:
    * @param n the number of sequence to get
    * @param replace a boolean flag true for sampling with replacement
    */
-  static PolymorphismSequenceContainer* sample(const PolymorphismSequenceContainer& psc, unsigned int n, bool replace = true);
+  static PolymorphismSequenceContainer* sample(const PolymorphismSequenceContainer& psc, size_t n, bool replace = true);
 
   /**
    * @brief Retrieves sites without gaps from PolymorphismSequenceContainer.
@@ -150,7 +150,7 @@ public:
    *
    * @throw Exception if there is no ingroup sequence
    */
-  static unsigned int getNumberOfNonGapSites(const PolymorphismSequenceContainer& psc, bool ingroup) throw (Exception);
+  static size_t getNumberOfNonGapSites(const PolymorphismSequenceContainer& psc, bool ingroup) throw (Exception);
 
   /**
    * @brief Return number of completely resolved sites in a PolymorphismSequenceContainer.
@@ -161,7 +161,7 @@ public:
    *
    * @throw Exception if there is no ingroup sequence
    */
-  static unsigned int getNumberOfCompleteSites(const PolymorphismSequenceContainer& psc, bool ingroup) throw (Exception);
+  static size_t getNumberOfCompleteSites(const PolymorphismSequenceContainer& psc, bool ingroup) throw (Exception);
 
 
   /**
@@ -212,7 +212,7 @@ public:
    * @param setName name of the CDS site selection
    * @param pos position index.
    */
-  static PolymorphismSequenceContainer* getOnePosition(const PolymorphismSequenceContainer& psc, const std::string& setName, unsigned int pos);
+  static PolymorphismSequenceContainer* getOnePosition(const PolymorphismSequenceContainer& psc, const std::string& setName, size_t pos);
 
   /**
    * @brief Retrieve intron sites

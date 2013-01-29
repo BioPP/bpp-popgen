@@ -3,7 +3,7 @@
 # Created: 21/08/2009
 
 # File list
-set(CPP_FILES
+SET(CPP_FILES
   Bpp/PopGen/AbstractIDataSet.cpp
   Bpp/PopGen/AbstractODataSet.cpp
   Bpp/PopGen/AnalyzedLoci.cpp
@@ -35,7 +35,7 @@ set(CPP_FILES
   Bpp/PopGen/PopgenlibIO.cpp
   Bpp/PopGen/SequenceStatistics.cpp
   )
-set(H_FILES
+SET(H_FILES
   Bpp/PopGen/AbstractIDataSet.h
   Bpp/PopGen/AbstractODataSet.h
   Bpp/PopGen/AlleleInfo.h
@@ -75,26 +75,30 @@ set(H_FILES
   )
 
 # Build the static lib
-add_library(bpppopgen-static STATIC ${CPP_FILES})
-set_target_properties(bpppopgen-static
+ADD_LIBRARY(bpppopgen-static STATIC ${CPP_FILES})
+SET_TARGET_PROPERTIES(bpppopgen-static
   PROPERTIES OUTPUT_NAME bpp-popgen
   CLEAN_DIRECT_OUTPUT 1
   )
-target_link_libraries(bpppopgen-static ${LIBS})
+TARGET_LINK_LIBRARIES(bpppopgen-static ${LIBS})
 
 # Build the shared lib
-add_library(bpppopgen-shared SHARED ${CPP_FILES})
-set_target_properties(bpppopgen-shared
+ADD_LIBRARY(bpppopgen-shared SHARED ${CPP_FILES})
+SET_TARGET_PROPERTIES(bpppopgen-shared
   PROPERTIES OUTPUT_NAME bpp-popgen
   CLEAN_DIRECT_OUTPUT 1
   VERSION ${BPPPOPGEN_VERSION}
   SOVERSION ${BPPPOPGEN_VERSION_MAJOR}
   )
-target_link_libraries(bpppopgen-shared ${LIBS})
+TARGET_LINK_LIBRARIES(bpppopgen-shared ${LIBS})
 
 # Install libs
-install(TARGETS bpppopgen-static DESTINATION lib${LIB_SUFFIX})
-install(TARGETS bpppopgen-shared DESTINATION lib${LIB_SUFFIX})
+INSTALL(TARGETS bpppopgen-static DESTINATION lib${LIB_SUFFIX})
+INSTALL(TARGETS bpppopgen-shared DESTINATION lib${LIB_SUFFIX})
 
 # Install headers
-install(DIRECTORY Bpp/ DESTINATION include/Bpp FILES_MATCHING PATTERN "*.h" PATTERN "*.all")
+INSTALL(DIRECTORY Bpp/ DESTINATION include/Bpp FILES_MATCHING PATTERN "*.h")
+
+# Generate generic include files (.all)
+INSTALL(CODE "EXECUTE_PROCESS(COMMAND python ${CMAKE_SOURCE_DIR}/genIncludes.py ${CMAKE_PREFIX_PATH}/include/Bpp)")
+
