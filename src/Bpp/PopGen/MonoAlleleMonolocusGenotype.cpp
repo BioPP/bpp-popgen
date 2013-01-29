@@ -46,10 +46,10 @@ using namespace std;
 
 MonoAlleleMonolocusGenotype::MonoAlleleMonolocusGenotype(size_t allele_index) : allele_index_(allele_index) {}
 
-MonoAlleleMonolocusGenotype::MonoAlleleMonolocusGenotype(std::vector<size_t> allele_index) throw (BadIntegerException) : allele_index_(0)
+MonoAlleleMonolocusGenotype::MonoAlleleMonolocusGenotype(std::vector<size_t> allele_index) throw (BadSizeException) : allele_index_(0)
 {
   if (allele_index.size() != 1)
-    throw BadIntegerException("MonoAlleleMonolocusGenotype::MonoAlleleMonolocusGenotype: allele_index must conain one value.", static_cast<int>(allele_index.size()));
+    throw BadSizeException("MonoAlleleMonolocusGenotype::MonoAlleleMonolocusGenotype: allele_index must conain one value.", allele_index.size(), 1);
   allele_index_ = allele_index[0];
 }
 

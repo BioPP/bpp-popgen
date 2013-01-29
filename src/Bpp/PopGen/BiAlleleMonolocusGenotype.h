@@ -72,7 +72,7 @@ public:
   /**
    * @brief Build a monolocus genotype containing two alleles.
    */
-  BiAlleleMonolocusGenotype(std::vector<size_t> allele_index) throw (BadIntegerException);
+  BiAlleleMonolocusGenotype(std::vector<size_t> allele_index) throw (BadSizeException);
 
   /**
    * @brief Copy constructor.

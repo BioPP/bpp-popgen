@@ -420,7 +420,7 @@ void PopgenlibIO::parseIndividual_(const std::vector<std::string>& in, DataSet& 
     if (in[i].find("Locality", 0) != string::npos)
     {
       temp = in[i];
-      unsigned int sep_pos = temp.find("=", 0);
+      size_t sep_pos = temp.find("=", 0);
       string loc_name = TextTools::removeSurroundingWhiteSpaces(string(temp.begin() + sep_pos + 1, temp.end()));
       try
       {

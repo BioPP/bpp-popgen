@@ -140,7 +140,7 @@ PolymorphismMultiGContainer PolymorphismMultiGContainerTools::permutIntraGroupMo
       size_t indiv_grp = pmgc.getGroupId(i);
       if (groups.find(indiv_grp) != groups.end())
       {
-        if (indiv_grp == (int)(*g))
+        if (indiv_grp == *g)
         {
           nb_ind_in_group++;
 
@@ -276,10 +276,10 @@ PolymorphismMultiGContainer PolymorphismMultiGContainerTools::permutIntraGroupAl
     // Get all the alleles to permut
     for (size_t i = 0; i < pmgc.size(); i++)
     {
-      int indiv_grp = pmgc.getGroupId(i);
+      size_t indiv_grp = pmgc.getGroupId(i);
       if (groups.find(indiv_grp) != groups.end() )
       {
-        if (indiv_grp == (int)(*g) )
+        if (indiv_grp == *g)
         {
           nb_ind_in_group++;
           for (size_t j = 0; j < loc_num; j++)
@@ -353,10 +353,10 @@ PolymorphismMultiGContainer PolymorphismMultiGContainerTools::extractGroups(cons
     // Get all the MonolocusGenotypes of group g to extract
     for (size_t i = 0; i < pmgc.size(); i++)
     {
-      int indiv_grp = pmgc.getGroupId(i);
+      size_t indiv_grp = pmgc.getGroupId(i);
       if (groups.find(indiv_grp) != groups.end() )
       {
-        if (indiv_grp == (int)(*g))
+        if (indiv_grp == *g)
         {
           sub_pmgc.addMultilocusGenotype(*(pmgc.getMultilocusGenotype(i)), indiv_grp);
         }
