@@ -38,7 +38,7 @@
 
    The fact that you are presently reading this means that you have had
    knowledge of the CeCILL license and that you accept its terms.
-   */
+ */
 
 #include "SequenceStatistics.h" // class's header file
 #include "PolymorphismSequenceContainerTools.h"
@@ -66,9 +66,9 @@ using namespace std;
 
 using namespace bpp;
 
-//******************************************************************************
-//Basic statistics
-//******************************************************************************
+// ******************************************************************************
+// Basic statistics
+// ******************************************************************************
 
 unsigned int SequenceStatistics::polymorphicSiteNumber(const PolymorphismSequenceContainer& psc, bool gapflag, bool ignoreUnknown)
 {
@@ -79,9 +79,11 @@ unsigned int SequenceStatistics::polymorphicSiteNumber(const PolymorphismSequenc
     si = new CompleteSiteIterator(psc);
   else
     si = new SimpleSiteIterator(psc);
-  while (si->hasMoreSites()) {
+  while (si->hasMoreSites())
+  {
     site = si->nextSite();
-    if (!SiteTools::isConstant(* site, ignoreUnknown)) {
+    if (!SiteTools::isConstant(*site, ignoreUnknown))
+    {
       S++;
     }
   }
@@ -92,13 +94,17 @@ unsigned int SequenceStatistics::polymorphicSiteNumber(const PolymorphismSequenc
 unsigned int SequenceStatistics::parsimonyInformativeSiteNumber(const PolymorphismSequenceContainer& psc, bool gapflag)
 {
   SiteIterator* si = 0;
-  if (gapflag) si = new CompleteSiteIterator(psc);
-  else si = new SimpleSiteIterator(psc);
+  if (gapflag)
+    si = new CompleteSiteIterator(psc);
+  else
+    si = new SimpleSiteIterator(psc);
   unsigned int S = 0;
   const Site* site = 0;
-  while (si->hasMoreSites()) {
+  while (si->hasMoreSites())
+  {
     site = si->nextSite();
-    if (SiteTools::isParsimonyInformativeSite(* site)) {
+    if (SiteTools::isParsimonyInformativeSite(*site))
+    {
       S++;
     }
   }
@@ -115,9 +121,10 @@ unsigned int SequenceStatistics::countSingleton(const PolymorphismSequenceContai
     si = new CompleteSiteIterator(psc);
   else
     si = new SimpleSiteIterator(psc);
-  while (si->hasMoreSites()) {
+  while (si->hasMoreSites())
+  {
     site = si->nextSite();
-    nus += getSingletonNumber_(* site);
+    nus += getSingletonNumber_(*site);
   }
   delete si;
   return nus;
@@ -132,9 +139,11 @@ unsigned int SequenceStatistics::tripletNumber(const PolymorphismSequenceContain
     si = new SimpleSiteIterator(psc);
   int S = 0;
   const Site* site = 0;
-  while (si->hasMoreSites()) {
+  while (si->hasMoreSites())
+  {
     site = si->nextSite();
-    if (SiteTools::isTriplet(* site)) {
+    if (SiteTools::isTriplet(*site))
+    {
       S++;
     }
   }
@@ -152,17 +161,18 @@ unsigned int SequenceStatistics::totNumberMutations(const PolymorphismSequenceCo
     si = new CompleteSiteIterator(psc);
   else
     si = new SimpleSiteIterator(psc);
-  while (si->hasMoreSites()) {
+  while (si->hasMoreSites())
+  {
     site = si->nextSite();
-    tnm += getMutationNumber_(* site);
+    tnm += getMutationNumber_(*site);
   }
   delete si;
   return tnm;
 }
 
 unsigned int SequenceStatistics::totMutationsExternalBranchs(
-    const PolymorphismSequenceContainer& ing,
-    const PolymorphismSequenceContainer& outg) throw (Exception)
+  const PolymorphismSequenceContainer& ing,
+  const PolymorphismSequenceContainer& outg) throw (Exception)
 {
   if (ing.getNumberOfSites() != outg.getNumberOfSites())
     throw Exception("ing and outg must have the same size");
@@ -173,12 +183,13 @@ unsigned int SequenceStatistics::totMutationsExternalBranchs(
   SiteIterator* so = 0;
   si = new SimpleSiteIterator(ing);
   so = new SimpleSiteIterator(outg);
-  while (si->hasMoreSites()) {
+  while (si->hasMoreSites())
+  {
     site_in = si->nextSite();
-    site_out= so->nextSite();
-    //use fully resolved sites
-    if (SiteTools::isComplete(* site_in) &&  SiteTools::isComplete(* site_out))
-      nmuts += getDerivedSingletonNumber_(* site_in, * site_out);//singletons that are not in outgroup
+    site_out = so->nextSite();
+    // use fully resolved sites
+    if (SiteTools::isComplete(*site_in) &&  SiteTools::isComplete(*site_out))
+      nmuts += getDerivedSingletonNumber_(*site_in, *site_out);                                                                   // singletons that are not in outgroup
   }
   delete si;
   delete so;
@@ -194,9 +205,10 @@ double SequenceStatistics::heterozygosity(const PolymorphismSequenceContainer& p
   else
     si = new SimpleSiteIterator(psc);
   double S = 0;
-  while (si->hasMoreSites()) {
+  while (si->hasMoreSites())
+  {
     site = si->nextSite();
-    S += SiteTools::heterozygosity(* site);
+    S += SiteTools::heterozygosity(*site);
   }
   delete si;
   return S;
@@ -211,18 +223,19 @@ double SequenceStatistics::squaredHeterozygosity(const PolymorphismSequenceConta
   else
     si = new SimpleSiteIterator(psc);
   double S = 0;
-  while (si->hasMoreSites()) {
+  while (si->hasMoreSites())
+  {
     site = si->nextSite();
-    double h = SiteTools::heterozygosity(* site);
+    double h = SiteTools::heterozygosity(*site);
     S += h * h;
   }
   delete si;
   return S;
 }
 
-//******************************************************************************
-//GC statistics
-//******************************************************************************
+// ******************************************************************************
+// GC statistics
+// ******************************************************************************
 
 double SequenceStatistics::gcContent(const PolymorphismSequenceContainer& psc)
 {
@@ -244,32 +257,35 @@ std::vector<unsigned int> SequenceStatistics::gcPolymorphism(const PolymorphismS
     si = new CompleteSiteIterator(psc);
   else
     si = new NoGapSiteIterator(psc);
-  while (si->hasMoreSites()) {
+  while (si->hasMoreSites())
+  {
     site = si->nextSite();
-    if (!SiteTools::isConstant(* site)) {
-      double freqGC = SymbolListTools::getGCContent(* site);
+    if (!SiteTools::isConstant(*site))
+    {
+      double freqGC = SymbolListTools::getGCContent(*site);
       /*
        * Sylvain Gaillard 15/03/2010: realy unclear ...
        *   freqGC is always in [0,1] then why testing it ?
        *   why casting double into unsigned int ?
        *   is that method used by someone ?
        */
-      if (freqGC > 0 && freqGC < 1) {
+      if (freqGC > 0 && freqGC < 1)
+      {
         nbMut += static_cast<unsigned int>(nbSeq);
         double adGC = freqGC * nbSeq;
         nbGC += static_cast<unsigned int>(adGC);
       }
     }
   }
-  vect[0]=nbMut;
-  vect[1]=nbGC;
+  vect[0] = nbMut;
+  vect[1] = nbGC;
   delete si;
   return vect;
 }
 
-//******************************************************************************
-//Diversity statistics
-//******************************************************************************
+// ******************************************************************************
+// Diversity statistics
+// ******************************************************************************
 
 double SequenceStatistics::watterson75(const PolymorphismSequenceContainer& psc, bool gapflag, bool ignoreUnknown)
 {
@@ -291,22 +307,30 @@ double SequenceStatistics::tajima83(const PolymorphismSequenceContainer& psc, bo
     si = new CompleteSiteIterator(psc);
   else
     si = new SimpleSiteIterator(psc);
-  while (si->hasMoreSites()) {
+  while (si->hasMoreSites())
+  {
     site = si->nextSite();
-    if (! SiteTools::isConstant(* site)) {
+    if (!SiteTools::isConstant(*site))
+    {
       double value = 0.;
       map<int, unsigned int> count;
-      SymbolListTools::getCounts(* site, count);
+      SymbolListTools::getCounts(*site, count);
       map<int, unsigned int> tmp_k;
       unsigned int tmp_n = 0;
-      for (map<int, unsigned int>::iterator it = count.begin() ; it != count.end() ; it++)
-        if (it->first >= 0 && it->first < static_cast<int>(alphabet_size)) {
+      for (map<int, unsigned int>::iterator it = count.begin(); it != count.end(); it++)
+      {
+        if (it->first >= 0 && it->first < static_cast<int>(alphabet_size))
+        {
           tmp_k[it->first] = it->second * (it->second - 1);
           tmp_n += it->second;
         }
-      if (tmp_n == 0 || tmp_n == 1) continue;
-      for (map<int, unsigned int>::iterator it = tmp_k.begin() ; it != tmp_k.end() ; it++)
+      }
+      if (tmp_n == 0 || tmp_n == 1)
+        continue;
+      for (map<int, unsigned int>::iterator it = tmp_k.begin(); it != tmp_k.end(); it++)
+      {
         value += static_cast<double>(it->second) / (tmp_n * (tmp_n - 1));
+      }
       value2 += 1. - value;
     }
   }
@@ -316,38 +340,44 @@ double SequenceStatistics::tajima83(const PolymorphismSequenceContainer& psc, bo
 
 double SequenceStatistics::FayWu2000(const PolymorphismSequenceContainer& psc, const Sequence& ancestralSites)
 {
-  if(psc.getNumberOfSites() != ancestralSites.size())
+  if (psc.getNumberOfSites() != ancestralSites.size())
     throw Exception("SequenceStatistics::FayWu2000: ancestralSites and psc don't have the same size!!!'" );
 
   const Sequence& tmps = psc.getSequence(0);
 
   unsigned int alphabet_size = (psc.getAlphabet())->getSize();
   double value = 0.;
-  for(unsigned int i = 0; i < psc.getNumberOfSites(); i++){
-
+  for (unsigned int i = 0; i < psc.getNumberOfSites(); i++)
+  {
     const Site& site = psc.getSite(i);
     string ancB = ancestralSites.getChar(i);
     int ancV = ancestralSites.getValue(i);
 
-    if (! SiteTools::isConstant(site) || tmps.getChar(i) != ancB) {
-      if(ancV < 0)
+    if (!SiteTools::isConstant(site) || tmps.getChar(i) != ancB)
+    {
+      if (ancV < 0)
         continue;
 
       map<int, unsigned int> count;
       SymbolListTools::getCounts(site, count);
       map<int, unsigned int> tmp_k;
       unsigned int tmp_n = 0;
-      for (map<int, unsigned int>::iterator it = count.begin() ; it != count.end() ; it++){
-        if (it->first >= 0 && it->first < static_cast<int>(alphabet_size)) {
+      for (map<int, unsigned int>::iterator it = count.begin(); it != count.end(); it++)
+      {
+        if (it->first >= 0 && it->first < static_cast<int>(alphabet_size))
+        {
           /* if derived allele */
-          if(it->first != ancV){
+          if (it->first != ancV)
+          {
             tmp_k[it->first] = 2 * it->second * it->second;
           }
           tmp_n += it->second;
         }
       }
-      if (tmp_n == 0 || tmp_n == 1) continue;
-      for (map<int, unsigned int>::iterator it = tmp_k.begin() ; it != tmp_k.end() ; it++){
+      if (tmp_n == 0 || tmp_n == 1)
+        continue;
+      for (map<int, unsigned int>::iterator it = tmp_k.begin(); it != tmp_k.end(); it++)
+      {
         value += static_cast<double>(it->second) / (tmp_n * (tmp_n - 1));
       }
     }
@@ -367,26 +397,30 @@ unsigned int SequenceStatistics::DVK(const PolymorphismSequenceContainer& psc, b
     sc = PolymorphismSequenceContainerTools::getSitesWithoutGaps(psc);
   else
     sc = new PolymorphismSequenceContainer(psc);
-  //int K = 0;
+  // int K = 0;
   vector<string> pscvector;
   pscvector.push_back(sc->toString(0));
-  //K++;
-  for (unsigned int i = 1 ; i < sc->getNumberOfSequences() ; i++) {
+  // K++;
+  for (unsigned int i = 1; i < sc->getNumberOfSequences(); i++)
+  {
     bool uniq = true;
     string query = sc->toString(i);
-    for (vector<string>::iterator it = pscvector.begin() ; it != pscvector.end() ; it++) {
-      if ( query.compare(*it) == 0 ) {
+    for (vector<string>::iterator it = pscvector.begin(); it != pscvector.end(); it++)
+    {
+      if (query.compare(*it) == 0)
+      {
         uniq = false;
         break;
       }
     }
-    if (uniq) {
-      //K++;
+    if (uniq)
+    {
+      // K++;
       pscvector.push_back(query);
     }
   }
   delete sc;
-  //return K;
+  // return K;
   return pscvector.size();
 }
 
@@ -409,23 +443,28 @@ double SequenceStatistics::DVH(const PolymorphismSequenceContainer& psc, bool ga
   pscvector.push_back(sc->toString(0));
   effvector.push_back(sc->getSequenceCount(0));
   nbSeq = sc->getSequenceCount(0);
-  for (unsigned int i = 1 ; i < sc->getNumberOfSequences() ; i++) {
+  for (unsigned int i = 1; i < sc->getNumberOfSequences(); i++)
+  {
     nbSeq += sc->getSequenceCount(i);
     bool uniq = true;
     string query = sc->toString(i);
-    for (unsigned int j = 0 ; j < pscvector.size() ; j++) {
-      if (query.compare(pscvector[j]) == 0) {
+    for (unsigned int j = 0; j < pscvector.size(); j++)
+    {
+      if (query.compare(pscvector[j]) == 0)
+      {
         effvector[j] += sc->getSequenceCount(i);
         uniq = false;
         break;
       }
     }
-    if (uniq) {
+    if (uniq)
+    {
       pscvector.push_back(query);
       effvector.push_back(sc->getSequenceCount(i));
     }
   }
-  for ( unsigned int i = 0; i < effvector.size(); i++ ) {
+  for (unsigned int i = 0; i < effvector.size(); i++)
+  {
     H -= (static_cast<double>(effvector[i]) / static_cast<double>(nbSeq)) * ( static_cast<double>(effvector[i]) / static_cast<double>(nbSeq));
   }
   H += 1.;
@@ -438,22 +477,26 @@ unsigned int SequenceStatistics::getNumberOfTransitions(const PolymorphismSequen
   unsigned int nbT = 0;
   SiteIterator* si = new CompleteSiteIterator(psc);
   const Site* site = 0;
-  while (si->hasMoreSites()) {
+  while (si->hasMoreSites())
+  {
     site = si->nextSite();
-    //if (SiteTools::isConstant(*site) || SiteTools::isTriplet(*site)) continue;
-    if (SiteTools::getNumberOfDistinctCharacters(* site) != 2)
+    // if (SiteTools::isConstant(*site) || SiteTools::isTriplet(*site)) continue;
+    if (SiteTools::getNumberOfDistinctCharacters(*site) != 2)
       continue;
     vector<int> seq = site->getContent();
     int state1 = seq[0];
     int state2 = seq[0];
-    for (unsigned int i = 1 ; i < seq.size() ; i++) {
-      if (state1 != seq[i]) {
+    for (unsigned int i = 1; i < seq.size(); i++)
+    {
+      if (state1 != seq[i])
+      {
         state2 = seq[i];
         break;
       }
     }
-    if (((state1==0 && state2==2) || (state1==2 && state2==0)) ||
-        ((state1==1 && state2==3) || (state1==3 && state2==1))) {
+    if (((state1 == 0 && state2 == 2) || (state1 == 2 && state2 == 0)) ||
+        ((state1 == 1 && state2 == 3) || (state1 == 3 && state2 == 1)))
+    {
       nbT++;
     }
   }
@@ -466,22 +509,26 @@ unsigned int SequenceStatistics::getNumberOfTransversions(const PolymorphismSequ
   unsigned int nbTv = 0;
   SiteIterator* si = new CompleteSiteIterator(psc);
   const Site* site = 0;
-  while (si->hasMoreSites()) {
+  while (si->hasMoreSites())
+  {
     site = si->nextSite();
-    //if (SiteTools::isConstant(*site) || SiteTools::isTriplet(*site)) continue;
-    if (SiteTools::getNumberOfDistinctCharacters(* site) != 2)
+    // if (SiteTools::isConstant(*site) || SiteTools::isTriplet(*site)) continue;
+    if (SiteTools::getNumberOfDistinctCharacters(*site) != 2)
       continue;
     vector<int> seq = site->getContent();
     int state1 = seq[0];
     int state2 = seq[0];
-    for (unsigned int i = 1 ; i < seq.size() ; i++) {
-      if (state1 != seq[i]) {
+    for (unsigned int i = 1; i < seq.size(); i++)
+    {
+      if (state1 != seq[i])
+      {
         state2 = seq[i];
         break;
       }
     }
-    if (!(((state1==0 && state2==2) || (state1==2 && state2==0)) ||
-          ((state1==1 && state2==3) || (state1==3 && state2==1)))) {
+    if (!(((state1 == 0 && state2 == 2) || (state1 == 2 && state2 == 0)) ||
+          ((state1 == 1 && state2 == 3) || (state1 == 3 && state2 == 1))))
+    {
       nbTv++;
     }
   }
@@ -489,44 +536,46 @@ unsigned int SequenceStatistics::getNumberOfTransversions(const PolymorphismSequ
   return nbTv;
 }
 
-double SequenceStatistics::getTransitionsTransversionsRatio(const PolymorphismSequenceContainer& psc) throw(Exception)
+double SequenceStatistics::getTransitionsTransversionsRatio(const PolymorphismSequenceContainer& psc) throw (Exception)
 {
-  //return (double) getNumberOfTransitions(psc)/getNumberOfTransversions(psc);
+  // return (double) getNumberOfTransitions(psc)/getNumberOfTransversions(psc);
   unsigned int nbT = 0;
   unsigned int nbTv = 0;
   SiteIterator* si = new CompleteSiteIterator(psc);
   const Site* site = 0;
-  vector < int > state(2);
-  while (si->hasMoreSites()) {
-    map<int,unsigned int> count ;
+  vector< int > state(2);
+  while (si->hasMoreSites())
+  {
+    map<int, unsigned int> count;
     site = si->nextSite();
-    SymbolListTools::getCounts(* site, count);
+    SymbolListTools::getCounts(*site, count);
     if (count.size() != 2)
       continue;
     int i = 0;
-    for (map<int, unsigned int>::iterator it = count.begin() ; it != count.end() ; it++)
+    for (map<int, unsigned int>::iterator it = count.begin(); it != count.end(); it++)
     {
       state[i] = it->first;
       i++;
     }
-    if (((state[0]==0 && state[1]==2) || (state[0]==2 && state[1]==0)) ||
-        ((state[0]==1 && state[1]==3) || (state[0]==3 && state[1]==1))) {
-      nbT++;//transitions
+    if (((state[0] == 0 && state[1] == 2) || (state[0] == 2 && state[1] == 0)) ||
+        ((state[0] == 1 && state[1] == 3) || (state[0] == 3 && state[1] == 1)))
+    {
+      nbT++; // transitions
     }
-    else {
-      nbTv++;//transversion
+    else
+    {
+      nbTv++; // transversion
     }
   }
   delete si;
   if (nbTv == 0)
     throw ZeroDivisionException("SequenceStatistics::getTransitionsTransversionsRatio.");
-  return (double)nbT/nbTv;
-
+  return (double)nbT / nbTv;
 }
 
-//******************************************************************************
-//Synonymous and non-synonymous polymorphism
-//******************************************************************************
+// ******************************************************************************
+// Synonymous and non-synonymous polymorphism
+// ******************************************************************************
 
 unsigned int SequenceStatistics::stopCodonSiteNumber(const PolymorphismSequenceContainer& psc, bool gapflag)
 {
@@ -541,9 +590,11 @@ unsigned int SequenceStatistics::stopCodonSiteNumber(const PolymorphismSequenceC
     si = new SimpleSiteIterator(psc);
   unsigned int S = 0;
   const Site* site = 0;
-  while (si->hasMoreSites()) {
+  while (si->hasMoreSites())
+  {
     site = si->nextSite();
-    if (CodonSiteTools::hasStop(* site))S++;
+    if (CodonSiteTools::hasStop(*site))
+      S++;
   }
   delete si;
   return S;
@@ -554,7 +605,8 @@ unsigned int SequenceStatistics::monoSitePolymorphicCodonNumber(const Polymorphi
   SiteIterator* si = 0;
   if (stopflag)
     si = new CompleteSiteIterator(psc);
-  else {
+  else
+  {
     if (gapflag)
       si = new NoGapSiteIterator(psc);
     else
@@ -562,9 +614,10 @@ unsigned int SequenceStatistics::monoSitePolymorphicCodonNumber(const Polymorphi
   }
   unsigned int S = 0;
   const Site* site;
-  while (si->hasMoreSites()) {
+  while (si->hasMoreSites())
+  {
     site = si->nextSite();
-    if (CodonSiteTools::isMonoSitePolymorphic(* site))
+    if (CodonSiteTools::isMonoSitePolymorphic(*site))
       S++;
   }
   delete si;
@@ -576,9 +629,10 @@ unsigned int SequenceStatistics::synonymousPolymorphicCodonNumber(const Polymorp
   SiteIterator* si = new CompleteSiteIterator(psc);
   unsigned int S = 0;
   const Site* site;
-  while (si->hasMoreSites()) {
+  while (si->hasMoreSites())
+  {
     site = si->nextSite();
-    if (CodonSiteTools::isSynonymousPolymorphic(* site,gc))
+    if (CodonSiteTools::isSynonymousPolymorphic(*site, gc))
       S++;
   }
   delete si;
@@ -589,7 +643,7 @@ double SequenceStatistics::watterson75Synonymous(const PolymorphismSequenceConta
 {
   double ThetaW = 0.;
   unsigned int n = psc.getNumberOfSequences();
-  unsigned int S = synonymousSubstitutionsNumber(psc,gc);
+  unsigned int S = synonymousSubstitutionsNumber(psc, gc);
   map<string, double> values = getUsefullValues_(n);
   ThetaW = static_cast<double>(S) / values["a1"];
   return ThetaW;
@@ -610,9 +664,10 @@ double SequenceStatistics::piSynonymous(const PolymorphismSequenceContainer& psc
   double S = 0.;
   SiteIterator* si = new CompleteSiteIterator(psc);
   const Site* site = 0;
-  while(si->hasMoreSites()) {
+  while (si->hasMoreSites())
+  {
     site = si->nextSite();
-    S += CodonSiteTools::piSynonymous(* site, gc, minchange);
+    S += CodonSiteTools::piSynonymous(*site, gc, minchange);
   }
   delete si;
   return S;
@@ -623,9 +678,10 @@ double SequenceStatistics::piNonSynonymous(const PolymorphismSequenceContainer& 
   double S = 0.;
   SiteIterator* si = new CompleteSiteIterator(psc);
   const Site* site = 0;
-  while(si->hasMoreSites()) {
+  while (si->hasMoreSites())
+  {
     site = si->nextSite();
-    S += CodonSiteTools::piNonSynonymous(* site, gc, minchange);
+    S += CodonSiteTools::piNonSynonymous(*site, gc, minchange);
   }
   delete si;
   return S;
@@ -636,9 +692,10 @@ double SequenceStatistics::meanSynonymousSitesNumber(const PolymorphismSequenceC
   double S = 0.;
   SiteIterator* si = new CompleteSiteIterator(psc);
   const Site* site = 0;
-  while(si->hasMoreSites()) {
+  while (si->hasMoreSites())
+  {
     site = si->nextSite();
-    S += CodonSiteTools::meanNumberOfSynonymousPositions(* site, gc, ratio);
+    S += CodonSiteTools::meanNumberOfSynonymousPositions(*site, gc, ratio);
   }
   delete si;
   return S;
@@ -650,10 +707,11 @@ double SequenceStatistics::meanNonSynonymousSitesNumber(const PolymorphismSequen
   int n = 0;
   SiteIterator* si = new CompleteSiteIterator(psc);
   const Site* site = 0;
-  while(si->hasMoreSites()) {
+  while (si->hasMoreSites())
+  {
     site = si->nextSite();
     n = n + 3;
-    S += CodonSiteTools::meanNumberOfSynonymousPositions(* site, gc, ratio);
+    S += CodonSiteTools::meanNumberOfSynonymousPositions(*site, gc, ratio);
   }
   delete si;
   return static_cast<double>(n - S);
@@ -664,10 +722,11 @@ unsigned int SequenceStatistics::synonymousSubstitutionsNumber(const Polymorphis
   unsigned int St = 0, Sns = 0;
   SiteIterator* si = new CompleteSiteIterator(psc);
   const Site* site = 0;
-  while(si->hasMoreSites()) {
+  while (si->hasMoreSites())
+  {
     site = si->nextSite();
-    St += CodonSiteTools::numberOfSubsitutions(* site, freqmin);
-    Sns += CodonSiteTools::numberOfNonSynonymousSubstitutions(* site, gc, freqmin);
+    St += CodonSiteTools::numberOfSubsitutions(*site, freqmin);
+    Sns += CodonSiteTools::numberOfNonSynonymousSubstitutions(*site, gc, freqmin);
   }
   delete si;
   return St - Sns;
@@ -678,9 +737,10 @@ unsigned int SequenceStatistics::nonSynonymousSubstitutionsNumber(const Polymorp
   unsigned int Sns = 0;
   SiteIterator* si = new CompleteSiteIterator(psc);
   const Site* site = 0;
-  while(si->hasMoreSites()) {
+  while (si->hasMoreSites())
+  {
     site = si->nextSite();
-    Sns += CodonSiteTools::numberOfNonSynonymousSubstitutions(* site, gc, freqmin);
+    Sns += CodonSiteTools::numberOfNonSynonymousSubstitutions(*site, gc, freqmin);
   }
   delete si;
   return Sns;
@@ -694,13 +754,14 @@ vector<unsigned int> SequenceStatistics::fixedDifferences(const PolymorphismSequ
   const Site* siteIn = 0;
   const Site* siteOut = 0;
   const Site* siteCons = 0;
-  unsigned int NfixS=0;
-  unsigned int NfixA=0;
-  while (siIn->hasMoreSites()) {
+  unsigned int NfixS = 0;
+  unsigned int NfixA = 0;
+  while (siIn->hasMoreSites())
+  {
     siteIn = siIn->nextSite();
     siteOut = siOut->nextSite();
     siteCons = siCons->nextSite();
-    vector<unsigned int> v = CodonSiteTools::fixedDifferences(* siteIn, * siteOut, siteCons->getValue(0), siteCons->getValue(1), gc);
+    vector<unsigned int> v = CodonSiteTools::fixedDifferences(*siteIn, *siteOut, siteCons->getValue(0), siteCons->getValue(1), gc);
     NfixS += v[0];
     NfixA += v[1];
   }
@@ -713,37 +774,53 @@ vector<unsigned int> SequenceStatistics::fixedDifferences(const PolymorphismSequ
   return v;
 }
 
-vector<unsigned int> SequenceStatistics::MKtable(const PolymorphismSequenceContainer& ingroup, const PolymorphismSequenceContainer& outgroup , const GeneticCode& gc, double freqmin)
+vector<unsigned int> SequenceStatistics::MKtable(const PolymorphismSequenceContainer& ingroup, const PolymorphismSequenceContainer& outgroup, const GeneticCode& gc, double freqmin)
 {
   PolymorphismSequenceContainer psctot(ingroup);
-  for (unsigned int i = 0 ; i < outgroup.getNumberOfSequences() ; i++) {
+  for (unsigned int i = 0; i < outgroup.getNumberOfSequences(); i++)
+  {
     psctot.addSequence(outgroup.getSequence(i));
     psctot.setAsOutgroupMember(i + ingroup.getNumberOfSequences());
   }
   const PolymorphismSequenceContainer* psccomplet = PolymorphismSequenceContainerTools::getCompleteSites(psctot);
-  const PolymorphismSequenceContainer* pscin = PolymorphismSequenceContainerTools::extractIngroup(* psccomplet);
-  const PolymorphismSequenceContainer* pscout = PolymorphismSequenceContainerTools::extractOutgroup(* psccomplet);
-  const Sequence* consensusIn = SiteContainerTools::getConsensus(* pscin, "consensusIn");
-  const Sequence* consensusOut = SiteContainerTools::getConsensus(* pscout, "consensusOut");
+  const PolymorphismSequenceContainer* pscin = PolymorphismSequenceContainerTools::extractIngroup(*psccomplet);
+  const PolymorphismSequenceContainer* pscout = PolymorphismSequenceContainerTools::extractOutgroup(*psccomplet);
+  const Sequence* consensusIn = SiteContainerTools::getConsensus(*pscin, "consensusIn");
+  const Sequence* consensusOut = SiteContainerTools::getConsensus(*pscout, "consensusOut");
   PolymorphismSequenceContainer* consensus = new PolymorphismSequenceContainer(ingroup.getAlphabet());
-  consensus->addSequence(* consensusIn);
-  consensus->addSequence(* consensusOut);
-  vector<unsigned int> u = SequenceStatistics::fixedDifferences(* pscin, *pscout, * consensus, gc);
+  consensus->addSequence(*consensusIn);
+  consensus->addSequence(*consensusOut);
+  vector<unsigned int> u = SequenceStatistics::fixedDifferences(*pscin, *pscout, *consensus, gc);
   vector<unsigned int> v(4);
-  v[0] = SequenceStatistics::nonSynonymousSubstitutionsNumber(* pscin, gc, freqmin);
-  v[1] = SequenceStatistics::synonymousSubstitutionsNumber(* pscin, gc, freqmin);
+  v[0] = SequenceStatistics::nonSynonymousSubstitutionsNumber(*pscin, gc, freqmin);
+  v[1] = SequenceStatistics::synonymousSubstitutionsNumber(*pscin, gc, freqmin);
   v[2] = u[1];
   v[3] = u[0];
   delete consensus;
-  if (psccomplet) {delete psccomplet;}
-  if (pscin) {delete pscin;}
-  if (pscout) {delete pscout;}
-  if (consensusIn) {delete consensusIn;}
-  if (consensusOut) {delete consensusOut;}
+  if (psccomplet)
+  {
+    delete psccomplet;
+  }
+  if (pscin)
+  {
+    delete pscin;
+  }
+  if (pscout)
+  {
+    delete pscout;
+  }
+  if (consensusIn)
+  {
+    delete consensusIn;
+  }
+  if (consensusOut)
+  {
+    delete consensusOut;
+  }
   return v;
 }
 
-double SequenceStatistics::neutralityIndex(const PolymorphismSequenceContainer& ingroup, const PolymorphismSequenceContainer& outgroup , const GeneticCode& gc, double freqmin)
+double SequenceStatistics::neutralityIndex(const PolymorphismSequenceContainer& ingroup, const PolymorphismSequenceContainer& outgroup, const GeneticCode& gc, double freqmin)
 {
   vector<unsigned int> v = SequenceStatistics::MKtable(ingroup, outgroup, gc, freqmin);
   if (v[1] != 0 && v[2] != 0)
@@ -752,9 +829,9 @@ double SequenceStatistics::neutralityIndex(const PolymorphismSequenceContainer& 
     return -1;
 }
 
-//******************************************************************************
-//Statistical tests
-//******************************************************************************
+// ******************************************************************************
+// Statistical tests
+// ******************************************************************************
 
 double SequenceStatistics::tajimaDSS(const PolymorphismSequenceContainer& psc, bool gapflag) throw (ZeroDivisionException)
 {
@@ -765,7 +842,7 @@ double SequenceStatistics::tajimaDSS(const PolymorphismSequenceContainer& psc, b
   double watterson = watterson75(psc, gapflag);
   unsigned int n = psc.getNumberOfSequences();
   map<string, double> values = getUsefullValues_(n);
-  //if (S == 0)
+  // if (S == 0)
   //  cout << "ARG S == 0" << endl;
   return (tajima - watterson) / sqrt((values["e1"] * S) + (values["e2"] * S * (S - 1)));
 }
@@ -786,7 +863,7 @@ double SequenceStatistics::fuliD(const PolymorphismSequenceContainer& ingroup, c
 {
   unsigned int n = ingroup.getNumberOfSequences();
   map<string, double> values = getUsefullValues_(n);
-  double vD = getVD_(n, values["a1"], values["a2"], values["cn"]); 
+  double vD = getVD_(n, values["a1"], values["a2"], values["cn"]);
   double uD = getUD_(values["a1"], vD);
   double eta = static_cast<double>(totNumberMutations(ingroup));
   if (eta == 0.)
@@ -795,11 +872,11 @@ double SequenceStatistics::fuliD(const PolymorphismSequenceContainer& ingroup, c
   if (original)
     etae = static_cast<double>(countSingleton(outgroup));
   else
-    etae = static_cast<double>(totMutationsExternalBranchs(ingroup,outgroup)); // added by Khalid 13/07/2005
+    etae = static_cast<double>(totMutationsExternalBranchs(ingroup, outgroup));  // added by Khalid 13/07/2005
   return (eta - (values["a1"] * etae)) / sqrt((uD * eta) + (vD * eta * eta));
 }
 
-double SequenceStatistics::fuliDstar(const PolymorphismSequenceContainer & group) throw (ZeroDivisionException) 
+double SequenceStatistics::fuliDstar(const PolymorphismSequenceContainer& group) throw (ZeroDivisionException)
 {
   unsigned int n = group.getNumberOfSequences();
   double nn = static_cast<double>(n);
@@ -817,11 +894,11 @@ double SequenceStatistics::fuliDstar(const PolymorphismSequenceContainer & group
 
   // Simonsen et al. 1995
   /*
-  return ((eta / values["a1"]) - (etas * ((n - 1) / n))) / sqrt(uDs * eta + vDs * eta * eta);
-  */
+     return ((eta / values["a1"]) - (etas * ((n - 1) / n))) / sqrt(uDs * eta + vDs * eta * eta);
+   */
 }
 
-double SequenceStatistics::fuliF(const PolymorphismSequenceContainer& ingroup, const PolymorphismSequenceContainer& outgroup, bool original) throw (ZeroDivisionException) 
+double SequenceStatistics::fuliF(const PolymorphismSequenceContainer& ingroup, const PolymorphismSequenceContainer& outgroup, bool original) throw (ZeroDivisionException)
 {
   unsigned int n = ingroup.getNumberOfSequences();
   double nn = static_cast<double>(n);
@@ -836,11 +913,11 @@ double SequenceStatistics::fuliF(const PolymorphismSequenceContainer& ingroup, c
   if (original)
     etae = static_cast<double>(countSingleton(outgroup));
   else
-    etae = static_cast<double>(totMutationsExternalBranchs(ingroup, outgroup)); // added by Khalid 13/07/2005
+    etae = static_cast<double>(totMutationsExternalBranchs(ingroup, outgroup));  // added by Khalid 13/07/2005
   return (pi - etae) / sqrt(uF * eta + vF * eta * eta);
 }
 
-double SequenceStatistics::fuliFstar(const PolymorphismSequenceContainer & group) throw (ZeroDivisionException)
+double SequenceStatistics::fuliFstar(const PolymorphismSequenceContainer& group) throw (ZeroDivisionException)
 {
   unsigned int n = group.getNumberOfSequences();
   double nn = static_cast<double>(n);
@@ -852,8 +929,8 @@ double SequenceStatistics::fuliFstar(const PolymorphismSequenceContainer & group
   //  double uFs = (((nn / (nn - 1.)) + values["b1"] - (4. / (nn * (nn - 1.))) + 2. * ((nn + 1.) / (pow((nn - 1.), 2))) * (values["a1n"] - 2. * nn / (nn + 1.))) / values["a1"]) - vFs;
 
   // Simonsen et al. 1995
-  double vFs = (((2*nn*nn*nn + 110*nn*nn - 255*nn + 153) / (9*nn*nn*(nn-1))) + ((2*(n-1)*values["a1"]) / (nn*nn)) - 8*values["a2"]/nn) / (pow(values["a1"], 2) + values["a2"]);
-  double uFs = (((4*nn*nn + 19*nn + 3 - 12*(nn+1.)*values["a1n"]) / (3*nn*(n-1))) / values["a1"]) - vFs;
+  double vFs = (((2 * nn * nn * nn + 110 * nn * nn - 255 * nn + 153) / (9 * nn * nn * (nn - 1))) + ((2 * (n - 1) * values["a1"]) / (nn * nn)) - 8 * values["a2"] / nn) / (pow(values["a1"], 2) + values["a2"]);
+  double uFs = (((4 * nn * nn + 19 * nn + 3 - 12 * (nn + 1.) * values["a1n"]) / (3 * nn * (n - 1))) / values["a1"]) - vFs;
   double eta = static_cast<double>(totNumberMutations(group));
   if (eta == 0.)
     throw ZeroDivisionException("eta should not be null");
@@ -868,8 +945,8 @@ double SequenceStatistics::FstHudson92(const PolymorphismSequenceContainer& psc,
   vector<double> vdiff;
   double piIntra1, piIntra2, meanPiIntra, piInter, Fst;
 
-  PolymorphismSequenceContainer *Pop1 = PolymorphismSequenceContainerTools::extractGroup(psc, id1);
-  PolymorphismSequenceContainer *Pop2 = PolymorphismSequenceContainerTools::extractGroup(psc, id2);
+  PolymorphismSequenceContainer* Pop1 = PolymorphismSequenceContainerTools::extractGroup(psc, id1);
+  PolymorphismSequenceContainer* Pop2 = PolymorphismSequenceContainerTools::extractGroup(psc, id2);
 
   piIntra1 = SequenceStatistics::tajima83(*Pop1, false);
   piIntra2 = SequenceStatistics::tajima83(*Pop2, false);
@@ -877,15 +954,17 @@ double SequenceStatistics::FstHudson92(const PolymorphismSequenceContainer& psc,
   meanPiIntra = (piIntra1 + piIntra2) / 2;
 
   unsigned int n = 0;
-  for(unsigned int i = 0; i < Pop1->getNumberOfSequences(); i++) {
-    const Sequence &s1 = Pop1->getSequence(i);
-    for(unsigned int j = 0; j < Pop2->getNumberOfSequences(); j++) {
+  for (unsigned int i = 0; i < Pop1->getNumberOfSequences(); i++)
+  {
+    const Sequence& s1 = Pop1->getSequence(i);
+    for (unsigned int j = 0; j < Pop2->getNumberOfSequences(); j++)
+    {
       n++;
-      const Sequence &s2 = Pop2->getSequence(j);
+      const Sequence& s2 = Pop2->getSequence(j);
       vdiff.push_back(SiteContainerTools::computeSimilarity(s1, s2, true, "no gap", true));
     }
   }
-  piInter = (VectorTools::sum(vdiff) / n)*psc.getNumberOfSites();
+  piInter = (VectorTools::sum(vdiff) / n) * psc.getNumberOfSites();
 
 
   Fst = 1.0 - meanPiIntra / piInter;
@@ -896,9 +975,9 @@ double SequenceStatistics::FstHudson92(const PolymorphismSequenceContainer& psc,
   return Fst;
 }
 
-//******************************************************************************
-//Linkage disequilibrium statistics
-//******************************************************************************
+// ******************************************************************************
+// Linkage disequilibrium statistics
+// ******************************************************************************
 
 /**********************/
 /* Preliminary method */
@@ -908,7 +987,8 @@ PolymorphismSequenceContainer* SequenceStatistics::generateLDContainer(const Pol
 {
   SiteSelection ss;
   // Extract polymorphic site with only two alleles
-  for (unsigned int i=0 ; i<psc.getNumberOfSites() ; i++){
+  for (unsigned int i = 0; i < psc.getNumberOfSites(); i++)
+  {
     if (keepsingleton)
     {
       if (SiteTools::isComplete(psc.getSite(i)) && !SiteTools::isConstant(psc.getSite(i)) && !SiteTools::isTriplet(psc.getSite(i)))
@@ -916,7 +996,8 @@ PolymorphismSequenceContainer* SequenceStatistics::generateLDContainer(const Pol
         ss.push_back(i);
       }
     }
-    else{
+    else
+    {
       if (SiteTools::isComplete(psc.getSite(i)) && !SiteTools::isConstant(psc.getSite(i)) && !SiteTools::isTriplet(psc.getSite(i)) && !SiteTools::hasSingleton(psc.getSite(i)))
       {
         ss.push_back(i);
@@ -928,28 +1009,33 @@ PolymorphismSequenceContainer* SequenceStatistics::generateLDContainer(const Pol
   Alphabet* alpha = new DNA(); // Sylvain Gaillard 17/03/2010: What if psc's Alphabet is not DNA
   PolymorphismSequenceContainer* ldpsc = new PolymorphismSequenceContainer(sc->getNumberOfSequences(), alpha);
   // Assign 1 to the more frequent and 0 to the less frequent alleles
-  for (unsigned int i = 0 ; i < sc->getNumberOfSites() ; i++) {
+  for (unsigned int i = 0; i < sc->getNumberOfSites(); i++)
+  {
     const Site& site = sc->getSite(i);
     Site siteclone(site);
     bool deletesite = false;
     map<int, double> freqs;
     SymbolListTools::getFrequencies(siteclone, freqs);
     int first = 0;
-    for (map<int,double>::iterator it = freqs.begin() ; it != freqs.end() ; it++)
+    for (map<int, double>::iterator it = freqs.begin(); it != freqs.end(); it++)
     {
       if (it->second >= 0.5)
         first = it->first;
     }
-    for (unsigned int j = 0 ; j < sc->getNumberOfSequences() ; j++) {
-      if (freqs[site.getValue(j)] >= 0.5 && site.getValue(j) == first){
-        if (freqs[site.getValue(j)] <= 1 - freqmin) {
+    for (unsigned int j = 0; j < sc->getNumberOfSequences(); j++)
+    {
+      if (freqs[site.getValue(j)] >= 0.5 && site.getValue(j) == first)
+      {
+        if (freqs[site.getValue(j)] <= 1 - freqmin)
+        {
           siteclone.setElement(j, 1);
           first = site.getValue(j);
         }
         else
           deletesite = true;
       }
-      else {
+      else
+      {
         if (freqs[site.getValue(j)] >= freqmin)
           siteclone.setElement(j, 0);
         else
@@ -969,67 +1055,19 @@ PolymorphismSequenceContainer* SequenceStatistics::generateLDContainer(const Pol
 
 Vdouble SequenceStatistics::pairwiseDistances1(const PolymorphismSequenceContainer& psc, bool keepsingleton, double freqmin) throw (DimensionException)
 {
-  //get Positions with sites of interest
+  // get Positions with sites of interest
   SiteSelection ss;
-  for (unsigned int i = 0 ; i < psc.getNumberOfSites() ; i++) {
-    if (keepsingleton) {
+  for (unsigned int i = 0; i < psc.getNumberOfSites(); i++)
+  {
+    if (keepsingleton)
+    {
       if (SiteTools::isComplete(psc.getSite(i)) && !SiteTools::isConstant(psc.getSite(i)) && !SiteTools::isTriplet(psc.getSite(i)))
       {
         const Site& site = psc.getSite(i);
         bool deletesite = false;
         map<int, double> freqs;
         SymbolListTools::getFrequencies(site, freqs);
-        for (unsigned int j = 0 ; j < site.getAlphabet()->getSize() ; j++)
-        {
-          if (freqs[j] >= 1 - freqmin)
-            deletesite = true;
-        }
-        if (!deletesite)
-          ss.push_back(i);
-      }
-    }
-    else{
-      if (SiteTools::isComplete(psc.getSite(i)) && !SiteTools::isConstant(psc.getSite(i)) && !SiteTools::isTriplet(psc.getSite(i)) && !SiteTools::hasSingleton(psc.getSite(i)))
-      {
-        ss.push_back(i);
-        const Site& site = psc.getSite(i);
-        bool deletesite = false;
-        map<int, double> freqs;
-        SymbolListTools::getFrequencies(site, freqs);
-        for (unsigned int j = 0 ; j < site.getAlphabet()->getSize() ; j++)
-        {
-          if (freqs[j] >= 1 - freqmin)
-            deletesite = true;
-        }
-        if (!deletesite)
-          ss.push_back(i);
-      }
-    }
-  }
-  //compute pairwise distances
-  if (ss.size() < 2)
-    throw DimensionException("SequenceStatistics::pairwiseDistances1 : less than 2 sites are available", ss.size(), 2);
-  Vdouble dist;
-  for (unsigned int i = 0 ; i < ss.size() - 1 ; i++) {
-    for (unsigned int j = i + 1 ; j < ss.size() ; j++) {
-      dist.push_back(ss[j] - ss[i]);
-    }
-  }
-  return dist;
-}
-
-Vdouble SequenceStatistics::pairwiseDistances2(const PolymorphismSequenceContainer& psc, bool keepsingleton, double freqmin) throw (DimensionException)
-{
-  SiteSelection ss;
-  for (unsigned int i = 0 ; i < psc.getNumberOfSites() ; i++) {
-    if (keepsingleton) {
-      if (SiteTools::isComplete(psc.getSite(i)) && !SiteTools::isConstant(psc.getSite(i)) && !SiteTools::isTriplet(psc.getSite(i)))
-      {
-        const Site& site = psc.getSite(i);
-        bool deletesite = false;
-        map<int, double> freqs;
-        SymbolListTools::getFrequencies(site, freqs);
-        for (unsigned int j = 0 ; j < site.getAlphabet()->getSize() ; j++)
+        for (unsigned int j = 0; j < site.getAlphabet()->getSize(); j++)
         {
           if (freqs[j] >= 1 - freqmin)
             deletesite = true;
@@ -1047,7 +1085,63 @@ Vdouble SequenceStatistics::pairwiseDistances2(const PolymorphismSequenceContain
         bool deletesite = false;
         map<int, double> freqs;
         SymbolListTools::getFrequencies(site, freqs);
-        for (unsigned int j = 0 ; j < site.getAlphabet()->getSize() ; j++) {
+        for (unsigned int j = 0; j < site.getAlphabet()->getSize(); j++)
+        {
+          if (freqs[j] >= 1 - freqmin)
+            deletesite = true;
+        }
+        if (!deletesite)
+          ss.push_back(i);
+      }
+    }
+  }
+  // compute pairwise distances
+  if (ss.size() < 2)
+    throw DimensionException("SequenceStatistics::pairwiseDistances1 : less than 2 sites are available", ss.size(), 2);
+  Vdouble dist;
+  for (unsigned int i = 0; i < ss.size() - 1; i++)
+  {
+    for (unsigned int j = i + 1; j < ss.size(); j++)
+    {
+      dist.push_back(ss[j] - ss[i]);
+    }
+  }
+  return dist;
+}
+
+Vdouble SequenceStatistics::pairwiseDistances2(const PolymorphismSequenceContainer& psc, bool keepsingleton, double freqmin) throw (DimensionException)
+{
+  SiteSelection ss;
+  for (unsigned int i = 0; i < psc.getNumberOfSites(); i++)
+  {
+    if (keepsingleton)
+    {
+      if (SiteTools::isComplete(psc.getSite(i)) && !SiteTools::isConstant(psc.getSite(i)) && !SiteTools::isTriplet(psc.getSite(i)))
+      {
+        const Site& site = psc.getSite(i);
+        bool deletesite = false;
+        map<int, double> freqs;
+        SymbolListTools::getFrequencies(site, freqs);
+        for (unsigned int j = 0; j < site.getAlphabet()->getSize(); j++)
+        {
+          if (freqs[j] >= 1 - freqmin)
+            deletesite = true;
+        }
+        if (!deletesite)
+          ss.push_back(i);
+      }
+    }
+    else
+    {
+      if (SiteTools::isComplete(psc.getSite(i)) && !SiteTools::isConstant(psc.getSite(i)) && !SiteTools::isTriplet(psc.getSite(i)) && !SiteTools::hasSingleton(psc.getSite(i)))
+      {
+        ss.push_back(i);
+        const Site& site = psc.getSite(i);
+        bool deletesite = false;
+        map<int, double> freqs;
+        SymbolListTools::getFrequencies(site, freqs);
+        for (unsigned int j = 0; j < site.getAlphabet()->getSize(); j++)
+        {
           if (freqs[j] >= 1 - freqmin)
             deletesite = true;
         }
@@ -1066,19 +1160,24 @@ Vdouble SequenceStatistics::pairwiseDistances2(const PolymorphismSequenceContain
     const Sequence& seq = psc.getSequence(k);
     SiteSelection gap, newss = ss;
     Vdouble dist;
-    for (unsigned int i = 0 ; i < nbsite ; i++){
+    for (unsigned int i = 0; i < nbsite; i++)
+    {
       if (seq.getValue(i) == -1)
         gap.push_back(i);
     }
-    //Site positions are re-numbered to take gaps into account
-    for (unsigned int i = 0 ; i < gap.size() ; i++) {
-      for (unsigned int j = 0 ; j < ss.size() ; j++) {
+    // Site positions are re-numbered to take gaps into account
+    for (unsigned int i = 0; i < gap.size(); i++)
+    {
+      for (unsigned int j = 0; j < ss.size(); j++)
+      {
         if (ss[j] > gap[i])
           newss[j]--;
       }
     }
-    for (unsigned int i = 0 ; i < n - 1 ; i++) {
-      for (unsigned int j = i + 1 ; j < n ; j++) {
+    for (unsigned int i = 0; i < n - 1; i++)
+    {
+      for (unsigned int j = i + 1; j < n; j++)
+      {
         dist.push_back(newss[j] - newss[i]);
       }
     }
@@ -1098,16 +1197,19 @@ Vdouble SequenceStatistics::pairwiseD(const PolymorphismSequenceContainer& psc, 
     throw DimensionException("SequenceStatistics::pairwiseD: less than two sites are available", nbsite, 2);
   if (nbseq < 2)
     throw DimensionException("SequenceStatistics::pairwiseD: less than two sequences are available", nbseq, 2);
-  for (unsigned int i = 0 ; i < nbsite - 1 ; i++) {
-    for (unsigned int j = i + 1 ; j < nbsite ; j++) {
+  for (unsigned int i = 0; i < nbsite - 1; i++)
+  {
+    for (unsigned int j = i + 1; j < nbsite; j++)
+    {
       double haplo = 0;
       const Site& site1 = newpsc->getSite(i);
       const Site& site2 = newpsc->getSite(j);
-      map<int,double> freq1;
-      map<int,double> freq2;
+      map<int, double> freq1;
+      map<int, double> freq2;
       SymbolListTools::getFrequencies(site1, freq1);
       SymbolListTools::getFrequencies(site2, freq2);
-      for (unsigned int k = 0 ; k < nbseq ; k++){
+      for (unsigned int k = 0; k < nbseq; k++)
+      {
         if (site1.getValue(k) + site2.getValue(k) == 2)
           haplo++;
       }
@@ -1128,34 +1230,43 @@ Vdouble SequenceStatistics::pairwiseDprime(const PolymorphismSequenceContainer& 
     throw DimensionException("SequenceStatistics::pairwiseD: less than two sites are available", nbsite, 2);
   if (nbseq < 2)
     throw DimensionException("SequenceStatistics::pairwiseD: less than two sequences are available", nbseq, 2);
-  for (unsigned int i = 0 ; i < nbsite - 1 ; i++) {
-    for (unsigned int j = i + 1; j < nbsite; j++) {
+  for (unsigned int i = 0; i < nbsite - 1; i++)
+  {
+    for (unsigned int j = i + 1; j < nbsite; j++)
+    {
       double haplo = 0;
       const Site& site1 = newpsc->getSite(i);
       const Site& site2 = newpsc->getSite(j);
-      map<int,double> freq1;
-      map<int,double> freq2;
+      map<int, double> freq1;
+      map<int, double> freq2;
       SymbolListTools::getFrequencies(site1, freq1);
       SymbolListTools::getFrequencies(site2, freq2);
-      for (unsigned int k = 0 ; k < nbseq ; k++) {
+      for (unsigned int k = 0; k < nbseq; k++)
+      {
         if (site1.getValue(k) + site2.getValue(k) == 2)
           haplo++;
       }
       haplo = haplo / nbseq;
       double d, D = (haplo - freq1[1] * freq2[1]);
-      if (D > 0){
-        if (freq1[1] * freq2[0] <= freq1[0] * freq2[1]) {
+      if (D > 0)
+      {
+        if (freq1[1] * freq2[0] <= freq1[0] * freq2[1])
+        {
           d = std::abs(D) / (freq1[1] * freq2[0]);
         }
-        else {
+        else
+        {
           d = std::abs(D) / (freq1[0] * freq2[1]);
         }
       }
-      else {
-        if (freq1[1] * freq2[1] <= freq1[0] * freq2[0]) {
+      else
+      {
+        if (freq1[1] * freq2[1] <= freq1[0] * freq2[0])
+        {
           d = std::abs(D) / (freq1[1] * freq2[1]);
         }
-        else {
+        else
+        {
           d = std::abs(D) / (freq1[0] * freq2[0]);
         }
       }
@@ -1175,16 +1286,19 @@ Vdouble SequenceStatistics::pairwiseR2(const PolymorphismSequenceContainer& psc,
     throw DimensionException("SequenceStatistics::pairwiseD: less than two sites are available", nbsite, 2);
   if (nbseq < 2)
     throw DimensionException("SequenceStatistics::pairwiseD: less than two sequences are available", nbseq, 2);
-  for (unsigned int i = 0 ; i < nbsite - 1 ; i++) {
-    for (unsigned int j = i + 1; j < nbsite; j++) {
+  for (unsigned int i = 0; i < nbsite - 1; i++)
+  {
+    for (unsigned int j = i + 1; j < nbsite; j++)
+    {
       double haplo = 0;
       const Site& site1 = newpsc->getSite(i);
       const Site& site2 = newpsc->getSite(j);
-      map<int,double> freq1;
-      map<int,double> freq2;
+      map<int, double> freq1;
+      map<int, double> freq2;
       SymbolListTools::getFrequencies(site1, freq1);
       SymbolListTools::getFrequencies(site2, freq2);
-      for (unsigned int k = 0 ; k < nbseq ; k++) {
+      for (unsigned int k = 0; k < nbseq; k++)
+      {
         if (site1.getValue(k) + site2.getValue(k) == 2)
           haplo++;
       }
@@ -1208,38 +1322,54 @@ double SequenceStatistics::meanD(const PolymorphismSequenceContainer& psc, bool 
 
 double SequenceStatistics::meanDprime(const PolymorphismSequenceContainer& psc, bool keepsingleton, double freqmin) throw (DimensionException)
 {
-  try {
+  try
+  {
     Vdouble Dprime = pairwiseDprime(psc, keepsingleton, freqmin);
     return VectorTools::mean<double, double>(Dprime);
   }
-  catch (DimensionException& e) {throw e;}
+  catch (DimensionException& e)
+  {
+    throw e;
+  }
 }
 
 double SequenceStatistics::meanR2(const PolymorphismSequenceContainer& psc, bool keepsingleton, double freqmin) throw (DimensionException)
 {
-  try {
+  try
+  {
     Vdouble R2 = SequenceStatistics::pairwiseR2(psc, keepsingleton, freqmin);
     return VectorTools::mean<double, double>(R2);
   }
-  catch (DimensionException& e) {throw e;}
+  catch (DimensionException& e)
+  {
+    throw e;
+  }
 }
 
 double SequenceStatistics::meanDistance1(const PolymorphismSequenceContainer& psc, bool keepsingleton, double freqmin) throw (DimensionException)
 {
-  try {
+  try
+  {
     Vdouble dist = pairwiseDistances1(psc, keepsingleton, freqmin);
     return VectorTools::mean<double, double>(dist);
   }
-  catch (DimensionException& e) {throw e;}
+  catch (DimensionException& e)
+  {
+    throw e;
+  }
 }
 
 double SequenceStatistics::meanDistance2(const PolymorphismSequenceContainer& psc, bool keepsingleton, double freqmin) throw (DimensionException)
 {
-  try {
+  try
+  {
     Vdouble dist = pairwiseDistances2(psc, keepsingleton, freqmin);
     return VectorTools::mean<double, double>(dist);
   }
-  catch (DimensionException& e) {throw e;}
+  catch (DimensionException& e)
+  {
+    throw e;
+  }
 }
 
 /**********************/
@@ -1248,7 +1378,8 @@ double SequenceStatistics::meanDistance2(const PolymorphismSequenceContainer& ps
 
 double SequenceStatistics::originRegressionD(const PolymorphismSequenceContainer& psc, bool distance1, bool keepsingleton, double freqmin) throw (DimensionException)
 {
-  try {
+  try
+  {
     Vdouble D = pairwiseD(psc, keepsingleton, freqmin) - 1;
     Vdouble dist;
     if (distance1)
@@ -1257,12 +1388,16 @@ double SequenceStatistics::originRegressionD(const PolymorphismSequenceContainer
       dist = pairwiseDistances2(psc, keepsingleton, freqmin) / 1000;
     return VectorTools::sum(D * dist) / VectorTools::sum(dist * dist);
   }
-  catch (DimensionException& e) {throw e;}
+  catch (DimensionException& e)
+  {
+    throw e;
+  }
 }
 
 double SequenceStatistics::originRegressionDprime(const PolymorphismSequenceContainer& psc, bool distance1, bool keepsingleton, double freqmin) throw (DimensionException)
 {
-  try {
+  try
+  {
     Vdouble Dprime = pairwiseDprime(psc, keepsingleton, freqmin) - 1;
     Vdouble dist;
     if (distance1)
@@ -1271,12 +1406,16 @@ double SequenceStatistics::originRegressionDprime(const PolymorphismSequenceCont
       dist = pairwiseDistances2(psc, keepsingleton, freqmin) / 1000;
     return VectorTools::sum(Dprime * dist) / VectorTools::sum(dist * dist);
   }
-  catch (DimensionException& e) {throw e;}
+  catch (DimensionException& e)
+  {
+    throw e;
+  }
 }
 
 double SequenceStatistics::originRegressionR2(const PolymorphismSequenceContainer& psc, bool distance1, bool keepsingleton, double freqmin) throw (DimensionException)
 {
-  try {
+  try
+  {
     Vdouble R2 = pairwiseR2(psc, keepsingleton, freqmin) - 1;
     Vdouble dist;
     if (distance1)
@@ -1285,12 +1424,16 @@ double SequenceStatistics::originRegressionR2(const PolymorphismSequenceContaine
       dist = pairwiseDistances2(psc, keepsingleton, freqmin) / 1000;
     return VectorTools::sum(R2 * dist) / VectorTools::sum(dist * dist);
   }
-  catch (DimensionException& e) {throw e;}
+  catch (DimensionException& e)
+  {
+    throw e;
+  }
 }
 
 Vdouble SequenceStatistics::linearRegressionD(const PolymorphismSequenceContainer& psc, bool distance1, bool keepsingleton, double freqmin) throw (DimensionException)
 {
-  try {
+  try
+  {
     Vdouble D = pairwiseD(psc, keepsingleton, freqmin);
     Vdouble dist;
     Vdouble reg(2);
@@ -1302,12 +1445,16 @@ Vdouble SequenceStatistics::linearRegressionD(const PolymorphismSequenceContaine
     reg[1] = VectorTools::mean<double, double>(D) - reg[0] * VectorTools::mean<double, double>(dist);
     return reg;
   }
-  catch (DimensionException& e) {throw e;}
+  catch (DimensionException& e)
+  {
+    throw e;
+  }
 }
 
 Vdouble SequenceStatistics::linearRegressionDprime(const PolymorphismSequenceContainer& psc, bool distance1, bool keepsingleton, double freqmin) throw (DimensionException)
 {
-  try {
+  try
+  {
     Vdouble Dprime = pairwiseDprime(psc, keepsingleton, freqmin);
     Vdouble dist;
     Vdouble reg(2);
@@ -1319,12 +1466,16 @@ Vdouble SequenceStatistics::linearRegressionDprime(const PolymorphismSequenceCon
     reg[1] = VectorTools::mean<double, double>(Dprime) - reg[0] * VectorTools::mean<double, double>(dist);
     return reg;
   }
-  catch (DimensionException& e) {throw e;}
+  catch (DimensionException& e)
+  {
+    throw e;
+  }
 }
 
 Vdouble SequenceStatistics::linearRegressionR2(const PolymorphismSequenceContainer& psc, bool distance1, bool keepsingleton, double freqmin) throw (DimensionException)
 {
-  try {
+  try
+  {
     Vdouble R2 = pairwiseR2(psc, keepsingleton, freqmin);
     Vdouble dist;
     Vdouble reg(2);
@@ -1336,15 +1487,19 @@ Vdouble SequenceStatistics::linearRegressionR2(const PolymorphismSequenceContain
     reg[1] = VectorTools::mean<double, double>(R2) - reg[0] * VectorTools::mean<double, double>(dist);
     return reg;
   }
-  catch (DimensionException& e) {throw e;}
+  catch (DimensionException& e)
+  {
+    throw e;
+  }
 }
 
 double SequenceStatistics::inverseRegressionR2(const PolymorphismSequenceContainer& psc, bool distance1, bool keepsingleton, double freqmin) throw (DimensionException)
 {
-  try {
+  try
+  {
     Vdouble R2 = pairwiseR2(psc, keepsingleton, freqmin);
     Vdouble unit(R2.size(), 1);
-    Vdouble R2transformed = unit / R2 -1;
+    Vdouble R2transformed = unit / R2 - 1;
     Vdouble dist;
     if (distance1)
       dist = pairwiseDistances1(psc, keepsingleton, freqmin) / 1000;
@@ -1352,14 +1507,18 @@ double SequenceStatistics::inverseRegressionR2(const PolymorphismSequenceContain
       dist = pairwiseDistances2(psc, keepsingleton, freqmin) / 1000;
     return VectorTools::sum(R2transformed * dist) / VectorTools::sum(dist * dist);
   }
-  catch (DimensionException& e) {throw e;}
+  catch (DimensionException& e)
+  {
+    throw e;
+  }
 }
 
 /**********************/
 /*   Hudson method    */
 /**********************/
 
-double SequenceStatistics::hudson87(const PolymorphismSequenceContainer& psc, double precision, double cinf, double csup){
+double SequenceStatistics::hudson87(const PolymorphismSequenceContainer& psc, double precision, double cinf, double csup)
+{
   double left = leftHandHudson_(psc);
   unsigned int n = psc.getNumberOfSequences();
   double dif = 1;
@@ -1371,7 +1530,8 @@ double SequenceStatistics::hudson87(const PolymorphismSequenceContainer& psc, do
     return cinf;
   if (rightHandHudson_(c2, n) > left)
     return csup;
-  while (dif > precision) {
+  while (dif > precision)
+  {
     if (rightHandHudson_((c1 + c2) / 2, n) > left)
       c1 = (c1 + c2) / 2;
     else
@@ -1385,7 +1545,8 @@ double SequenceStatistics::hudson87(const PolymorphismSequenceContainer& psc, do
 /* Tests methods */
 /*****************/
 
-void SequenceStatistics::testUsefullValues(std::ostream& s, unsigned int n) {
+void SequenceStatistics::testUsefullValues(std::ostream& s, unsigned int n)
+{
   map<string, double> v = getUsefullValues_(n);
   double vD = getVD_(n, v["a1"], v["a2"], v["cn"]);
   double uD = getUD_(v["a1"], vD);
@@ -1410,46 +1571,57 @@ void SequenceStatistics::testUsefullValues(std::ostream& s, unsigned int n) {
   s << vDs << endl;
 }
 
-//******************************************************************************
-//Private methods
-//******************************************************************************
+// ******************************************************************************
+// Private methods
+// ******************************************************************************
 
-unsigned int SequenceStatistics::getMutationNumber_(const Site& site) {
+unsigned int SequenceStatistics::getMutationNumber_(const Site& site)
+{
   unsigned int tmp_count = 0;
   map<int, unsigned int> states_count;
   SymbolListTools::getCounts(site, states_count);
 
-  for (map<int, unsigned int>::iterator it = states_count.begin() ; it != states_count.end() ; it++)
+  for (map<int, unsigned int>::iterator it = states_count.begin(); it != states_count.end(); it++)
+  {
     if (it->first >= 0)
       tmp_count++;
+  }
   if (tmp_count > 0)
     tmp_count--;
   return tmp_count;
 }
 
-unsigned int SequenceStatistics::getSingletonNumber_(const Site& site) {
+unsigned int SequenceStatistics::getSingletonNumber_(const Site& site)
+{
   unsigned int nus = 0;
   map<int, unsigned int> states_count;
   SymbolListTools::getCounts(site, states_count);
-  for (map<int, unsigned int>::iterator it = states_count.begin() ; it != states_count.end() ; it++)
+  for (map<int, unsigned int>::iterator it = states_count.begin(); it != states_count.end(); it++)
+  {
     if (it->second == 1)
       nus++;
+  }
   return nus;
 }
 
-unsigned int SequenceStatistics::getDerivedSingletonNumber_(const Site& site_in,const Site& site_out) {
+unsigned int SequenceStatistics::getDerivedSingletonNumber_(const Site& site_in, const Site& site_out)
+{
   unsigned int nus = 0;
   map<int, unsigned int> states_count;
   map<int, unsigned int> outgroup_states_count;
   SymbolListTools::getCounts(site_in, states_count);
   SymbolListTools::getCounts(site_out, outgroup_states_count);
-  //if there is more than one variant in the outgroup we will not be able to recover the ancestral state
-  if (outgroup_states_count.size() == 1 ) {
-    for (map<int, unsigned int>::iterator it = states_count.begin() ; it != states_count.end() ; it++)
-      if (it->second == 1) {
+  // if there is more than one variant in the outgroup we will not be able to recover the ancestral state
+  if (outgroup_states_count.size() == 1)
+  {
+    for (map<int, unsigned int>::iterator it = states_count.begin(); it != states_count.end(); it++)
+    {
+      if (it->second == 1)
+      {
         if (outgroup_states_count.find(it->first) == outgroup_states_count.end())
           nus++;
       }
+    }
   }
   return nus;
 }
@@ -1468,8 +1640,10 @@ std::map<std::string, double> SequenceStatistics::getUsefullValues_(unsigned int
   values["dn"] = 0.;
   values["e1"] = 0.;
   values["e2"] = 0.;
-  if (n > 1) {
-    for (unsigned int i = 1 ; i < n ; i++) {
+  if (n > 1)
+  {
+    for (unsigned int i = 1; i < n; i++)
+    {
       values["a1"] += 1. / i;
       values["a2"] += 1. / (i * i);
     }
@@ -1479,10 +1653,13 @@ std::map<std::string, double> SequenceStatistics::getUsefullValues_(unsigned int
     values["b2"] = 2. * ((nn * nn) + nn + 3.) / (9. * nn * (nn - 1.));
     values["c1"] = values["b1"] - (1. / values["a1"]);
     values["c2"] = values["b2"] - ((nn + 2.) / (values["a1"] * nn)) + (values["a2"] / (values["a1"] * values["a1"]));
-    if (n == 2) {
+    if (n == 2)
+    {
       values["cn"] = 1.;
       values["dn"] = 2.;
-    } else {
+    }
+    else
+    {
       values["cn"] = 2. * ((nn * values["a1"]) - (2. * (nn - 1.))) / ((nn - 1.) * (nn - 2.));
       values["dn"] =
         values["cn"]
@@ -1496,7 +1673,8 @@ std::map<std::string, double> SequenceStatistics::getUsefullValues_(unsigned int
   return values;
 }
 
-double SequenceStatistics::getVD_(unsigned int n, double a1, double a2, double cn) {
+double SequenceStatistics::getVD_(unsigned int n, double a1, double a2, double cn)
+{
   double nn = static_cast<double>(n);
   if (n < 3)
     return 0.;
@@ -1504,11 +1682,13 @@ double SequenceStatistics::getVD_(unsigned int n, double a1, double a2, double c
   return vD;
 }
 
-double SequenceStatistics::getUD_(double a1, double vD) {
+double SequenceStatistics::getUD_(double a1, double vD)
+{
   return a1 - 1. - vD;
 }
 
-double SequenceStatistics::getVDstar_(unsigned int n, double a1, double a2, double dn) {
+double SequenceStatistics::getVDstar_(unsigned int n, double a1, double a2, double dn)
+{
   double denom = (a1 * a1) + a2;
   if (n < 3 || denom == 0.)
     return 0.;
@@ -1516,26 +1696,27 @@ double SequenceStatistics::getVDstar_(unsigned int n, double a1, double a2, doub
   double nnn = nn / (nn - 1.);
   // Fu & Li 1993
   double vDs = (
-      (nnn * nnn * a2)
-      + (a1 * a1 * dn)
-      - (2. * (nn * a1 * (a1 + 1)) / ((nn - 1.) * (nn - 1.)))
-      )
-      /
-      denom;
+    (nnn * nnn * a2)
+    + (a1 * a1 * dn)
+    - (2. * (nn * a1 * (a1 + 1)) / ((nn - 1.) * (nn - 1.)))
+    )
+               /
+               denom;
   // Simonsen et al. 1995
   /*
-  double vDs = (
+     double vDs = (
       (values["a2"] / pow(values["a1"], 2))
       - (2./nn) * (1. + 1./values["a1"] - values["a1"] + values["a1"]/nn)
       - 1./(nn*nn)
       )
       /
       (pow(values["a1"], 2) + values["a2"]);
-  */
+   */
   return vDs;
 }
 
-double SequenceStatistics::getUDstar_(unsigned int n, double a1, double vDs) {
+double SequenceStatistics::getUDstar_(unsigned int n, double a1, double vDs)
+{
   if (n < 3)
     return 0.;
   double nn = static_cast<double>(n);
@@ -1544,30 +1725,33 @@ double SequenceStatistics::getUDstar_(unsigned int n, double a1, double vDs) {
   double uDs = (nnn * (a1 - nnn)) - vDs;
   // Simonsen et al. 1995
   /*
-  double uDs = (((nn - 1.)/nn - 1./values["a1"]) / values["a1"]) - vDs;
-  */
+     double uDs = (((nn - 1.)/nn - 1./values["a1"]) / values["a1"]) - vDs;
+   */
   return uDs;
 }
 
-double SequenceStatistics::leftHandHudson_(const PolymorphismSequenceContainer& psc) {
+double SequenceStatistics::leftHandHudson_(const PolymorphismSequenceContainer& psc)
+{
   PolymorphismSequenceContainer* newpsc = PolymorphismSequenceContainerTools::getCompleteSites(psc);
   unsigned int nbseq = newpsc->getNumberOfSequences();
   double S1 = 0;
   double S2 = 0;
-  for (unsigned int i = 0 ; i < nbseq - 1 ; i++) {
-    for (unsigned int j = i + 1 ; j < nbseq ; j++) {
+  for (unsigned int i = 0; i < nbseq - 1; i++)
+  {
+    for (unsigned int j = i + 1; j < nbseq; j++)
+    {
       SequenceSelection ss(2);
       ss[0] = i;
       ss[1] = j;
-      PolymorphismSequenceContainer* psc2 = PolymorphismSequenceContainerTools::getSelectedSequences(* newpsc, ss);
-      S1 += SequenceStatistics::watterson75(* psc2, true);
-      S2 += SequenceStatistics::watterson75(* psc2, true) * SequenceStatistics::watterson75(* psc2, true);
+      PolymorphismSequenceContainer* psc2 = PolymorphismSequenceContainerTools::getSelectedSequences(*newpsc, ss);
+      S1 += SequenceStatistics::watterson75(*psc2, true);
+      S2 += SequenceStatistics::watterson75(*psc2, true) * SequenceStatistics::watterson75(*psc2, true);
       delete psc2;
     }
   }
   double Sk = (2 * S2 - pow(2 * S1 / nbseq, 2.)) / pow(nbseq, 2.);
-  double H = SequenceStatistics::heterozygosity(* newpsc);
-  double H2 = SequenceStatistics::squaredHeterozygosity(* newpsc);
+  double H = SequenceStatistics::heterozygosity(*newpsc);
+  double H2 = SequenceStatistics::squaredHeterozygosity(*newpsc);
   delete newpsc;
   return static_cast<double>(Sk - H + H2) / pow(H * nbseq / (nbseq - 1), 2.);
 }

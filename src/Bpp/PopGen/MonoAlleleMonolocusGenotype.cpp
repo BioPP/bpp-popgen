@@ -5,22 +5,22 @@
 //
 
 /*
-   Copyright or © or Copr. CNRS, (November 17, 2004)
+   Copyright or © or Copr. Bio++ Development Team, (November 17, 2004)
 
    This software is a computer program whose purpose is to provide classes
    for population genetics analysis.
 
    This software is governed by the CeCILL  license under French law and
-   abiding by the rules of distribution of free software.  You can  use, 
+   abiding by the rules of distribution of free software.  You can  use,
    modify and/ or redistribute the software under the terms of the CeCILL
    license as circulated by CEA, CNRS and INRIA at the following URL
-   "http://www.cecill.info". 
+   "http://www.cecill.info".
 
    As a counterpart to the access to the source code and  rights to copy,
    modify and redistribute granted by the license, users are provided only
    with a limited warranty  and the software's author,  the holder of the
    economic rights,  and the successive licensors  have only  limited
-   liability. 
+   liability.
 
    In this respect, the user's attention is drawn to the risks associated
    with loading,  using,  modifying and/or developing or reproducing the
@@ -29,58 +29,58 @@
    therefore means  that it is reserved for developers  and  experienced
    professionals having in-depth computer knowledge. Users are therefore
    encouraged to load and test the software's suitability as regards their
-   requirements in conditions enabling the security of their systems and/or 
-   data to be ensured and,  more generally, to use and operate it in the 
-   same conditions as regards security. 
+   requirements in conditions enabling the security of their systems and/or
+   data to be ensured and,  more generally, to use and operate it in the
+   same conditions as regards security.
 
    The fact that you are presently reading this means that you have had
    knowledge of the CeCILL license and that you accept its terms.
-   */
+ */
 
 #include "MonoAlleleMonolocusGenotype.h"
 
 using namespace bpp;
 using namespace std;
 
-//** Class constructor: *******************************************************/
+// ** Class constructor: *******************************************************/
 
-MonoAlleleMonolocusGenotype::MonoAlleleMonolocusGenotype(unsigned int allele_index): allele_index_(allele_index) {}
+MonoAlleleMonolocusGenotype::MonoAlleleMonolocusGenotype(size_t allele_index) : allele_index_(allele_index) {}
 
-MonoAlleleMonolocusGenotype::MonoAlleleMonolocusGenotype(std::vector<unsigned int> allele_index) throw (BadIntegerException): allele_index_(0)
+MonoAlleleMonolocusGenotype::MonoAlleleMonolocusGenotype(std::vector<size_t> allele_index) throw (BadIntegerException) : allele_index_(0)
 {
   if (allele_index.size() != 1)
-    throw BadIntegerException("MonoAlleleMonolocusGenotype::MonoAlleleMonolocusGenotype: allele_index must conaines one value.", allele_index.size());
+    throw BadIntegerException("MonoAlleleMonolocusGenotype::MonoAlleleMonolocusGenotype: allele_index must conain one value.", static_cast<int>(allele_index.size()));
   allele_index_ = allele_index[0];
 }
 
-MonoAlleleMonolocusGenotype::MonoAlleleMonolocusGenotype(const MonoAlleleMonolocusGenotype& mmg): allele_index_(mmg.getAlleleIndex()[0]) {}
+MonoAlleleMonolocusGenotype::MonoAlleleMonolocusGenotype(const MonoAlleleMonolocusGenotype& mmg) : allele_index_(mmg.getAlleleIndex()[0]) {}
 
-//** Class destructor: ********************************************************/
+// ** Class destructor: ********************************************************/
 
 MonoAlleleMonolocusGenotype::~MonoAlleleMonolocusGenotype() {}
 
-//** Other methodes: **********************************************************/
+// ** Other methodes: **********************************************************/
 
-MonoAlleleMonolocusGenotype& MonoAlleleMonolocusGenotype::operator= (const MonoAlleleMonolocusGenotype& mmg)
+MonoAlleleMonolocusGenotype& MonoAlleleMonolocusGenotype::operator=(const MonoAlleleMonolocusGenotype& mmg)
 {
   allele_index_ = mmg.getAlleleIndex()[0];
-  return * this;
+  return *this;
 }
 
-bool MonoAlleleMonolocusGenotype::operator== (const MonoAlleleMonolocusGenotype& mmg) const
+bool MonoAlleleMonolocusGenotype::operator==(const MonoAlleleMonolocusGenotype& mmg) const
 {
-  return (allele_index_ == mmg.getAlleleIndex()[0]);
+  return allele_index_ == mmg.getAlleleIndex()[0];
 }
 
-std::vector<unsigned int> MonoAlleleMonolocusGenotype::getAlleleIndex() const
+std::vector<size_t> MonoAlleleMonolocusGenotype::getAlleleIndex() const
 {
-  vector<unsigned int> index;
+  vector<size_t> index;
   index.push_back(allele_index_);
   return index;
 }
 
 MonoAlleleMonolocusGenotype* MonoAlleleMonolocusGenotype::clone() const
 {
-  return new MonoAlleleMonolocusGenotype(* this);
+  return new MonoAlleleMonolocusGenotype(*this);
 }
 

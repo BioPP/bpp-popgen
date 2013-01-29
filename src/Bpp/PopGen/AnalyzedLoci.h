@@ -5,22 +5,22 @@
 //
 
 /*
-   Copyright or © or Copr. CNRS, (November 17, 2004)
+   Copyright or © or Copr. Bio++ Development Team, (November 17, 2004)
 
    This software is a computer program whose purpose is to provide classes
    for population genetics analysis.
 
    This software is governed by the CeCILL  license under French law and
-   abiding by the rules of distribution of free software.  You can  use, 
+   abiding by the rules of distribution of free software.  You can  use,
    modify and/ or redistribute the software under the terms of the CeCILL
    license as circulated by CEA, CNRS and INRIA at the following URL
-   "http://www.cecill.info". 
+   "http://www.cecill.info".
 
    As a counterpart to the access to the source code and  rights to copy,
    modify and redistribute granted by the license, users are provided only
    with a limited warranty  and the software's author,  the holder of the
    economic rights,  and the successive licensors  have only  limited
-   liability. 
+   liability.
 
    In this respect, the user's attention is drawn to the risks associated
    with loading,  using,  modifying and/or developing or reproducing the
@@ -29,13 +29,13 @@
    therefore means  that it is reserved for developers  and  experienced
    professionals having in-depth computer knowledge. Users are therefore
    encouraged to load and test the software's suitability as regards their
-   requirements in conditions enabling the security of their systems and/or 
-   data to be ensured and,  more generally, to use and operate it in the 
-   same conditions as regards security. 
+   requirements in conditions enabling the security of their systems and/or
+   data to be ensured and,  more generally, to use and operate it in the
+   same conditions as regards security.
 
    The fact that you are presently reading this means that you have had
    knowledge of the CeCILL license and that you accept its terms.
-   */
+ */
 
 #ifndef _ANALYZEDLOCI_H_
 #define _ANALYZEDLOCI_H_
@@ -52,119 +52,119 @@
 
 namespace bpp
 {
+/**
+ * @brief The AnalyzedLoci class.
+ *
+ * This is a LocusInfo container.
+ * Its instanciation requires a number of locus wich is fixed
+ * and can't be modified.
+ *
+ * @author Sylvain Gaillard
+ */
+class AnalyzedLoci
+{
+private:
+  std::vector<LocusInfo*> loci_;
+
+public:
+  // Constructors and Destructor
+  /**
+   * @brief Build a void AnalyzedLoci with a specific number of loci.
+   */
+  AnalyzedLoci(size_t number_of_loci);
 
   /**
-   * @brief The AnalyzedLoci class.
-   *
-   * This is a LocusInfo container.
-   * Its instanciation requires a number of locus wich is fixed
-   * and can't be modified.
-   *
-   * @author Sylvain Gaillard
+   * @brief Copy constructor.
    */
-  class AnalyzedLoci
-  {
-    private:
-      std::vector<LocusInfo *> loci_;
+  AnalyzedLoci(const AnalyzedLoci& analyzed_loci);
 
-    public: // Constructors and Destructor
-      /**
-       * @brief Build a void AnalyzedLoci with a specific number of loci.
-       */
-      AnalyzedLoci(unsigned int number_of_loci);
+  /**
+   * @brief Destroy the AnalyzedLoci.
+   */
+  ~AnalyzedLoci();
 
-      /**
-       * @brief Copy constructor.
-       */
-      AnalyzedLoci(const AnalyzedLoci & analyzed_loci);
+public:
+  // Other methodes
+  /**
+   * @brief Set a LocusInfo.
+   *
+   * @throw IndexOutOfBoundsException if locus_position is out of bounds.
+   */
+  void setLocusInfo(size_t locus_position, const LocusInfo& locus)
+  throw (IndexOutOfBoundsException);
 
-      /**
-       * @brief Destroy the AnalyzedLoci.
-       */
-      ~AnalyzedLoci();
+  /**
+   * @brief Get the position of a LocusInfo.
+   *
+   * @throw BadIdentifierException if locus_name is not found.
+   */
+  size_t getLocusInfoPosition(const std::string& locus_name) const
+  throw (BadIdentifierException);
 
-    public: // Other methodes
-      /**
-       * @brief Set a LocusInfo.
-       *
-       * @throw IndexOutOfBoundsException if locus_position is out of bounds.
-       */
-      void setLocusInfo(unsigned int locus_position, const LocusInfo & locus)
-        throw (IndexOutOfBoundsException);
+  /**
+   * @brief Get a LocusInfo by name.
+   *
+   * @throw BadIdentifierException if locus_name is not found.
+   */
+  const LocusInfo& getLocusInfoByName(const std::string& locus_name) const
+  throw (BadIdentifierException);
 
-      /**
-       * @brief Get the position of a LocusInfo.
-       *
-       * @throw BadIdentifierException if locus_name is not found.
-       */
-      unsigned int getLocusInfoPosition(const std::string & locus_name) const
-        throw (BadIdentifierException);
+  /**
+   * @brief Get a LocusInfo by its position.
+   *
+   * @throw NullPointerException if the LocusInfo is not difined.
+   * @throw IndexOutOfBoundsException if locus_position is out of bounds.
+   */
+  const LocusInfo& getLocusInfoAtPosition(size_t locus_position) const
+  throw (Exception);
 
-      /**
-       * @brief Get a LocusInfo by name.
-       *
-       * @throw BadIdentifierException if locus_name is not found.
-       */
-      const LocusInfo& getLocusInfoByName(const std::string & locus_name) const
-        throw (BadIdentifierException);
+  /**
+   * @brief Add an AlleleInfo to a LocusInfo by LocusInfo name.
+   *
+   * @throw BadIdentifierException if the allele's id is already in use.
+   * @throw LocusNotFoundException if locus_name is not found.
+   */
+  void addAlleleInfoByLocusName(const std::string& locus_name,
+                                const AlleleInfo& allele)
+  throw (Exception);
 
-      /**
-       * @brief Get a LocusInfo by its position.
-       *
-       * @throw NullPointerException if the LocusInfo is not difined.
-       * @throw IndexOutOfBoundsException if locus_position is out of bounds.
-       */
-      const LocusInfo& getLocusInfoAtPosition(unsigned int locus_position) const
-        throw (Exception);
+  /**
+   * @brief Add an AlleleInfo to a LocusInfo by its position.
+   *
+   * @throw BadIdentifierException if the allele's id is already in use.
+   * @throw IndexOutOfBoundsException if locus_position is out of bounds.
+   */
+  void addAlleleInfoByLocusPosition(size_t locus_position,
+                                    const AlleleInfo& allele)
+  throw (Exception);
 
-      /**
-       * @brief Add an AlleleInfo to a LocusInfo by LocusInfo name.
-       *
-       * @throw BadIdentifierException if the allele's id is already in use.
-       * @throw LocusNotFoundException if locus_name is not found.
-       */
-      void addAlleleInfoByLocusName(const std::string & locus_name,
-          const AlleleInfo & allele)
-        throw (Exception);
+  /**
+   * @brief Get the number of loci.
+   */
+  size_t getNumberOfLoci() const { return loci_.size(); }
 
-      /**
-       * @brief Add an AlleleInfo to a LocusInfo by its position.
-       *
-       * @throw BadIdentifierException if the allele's id is already in use.
-       * @throw IndexOutOfBoundsException if locus_position is out of bounds.
-       */
-      void addAlleleInfoByLocusPosition(unsigned int locus_position,
-          const AlleleInfo & allele)
-        throw (Exception);
+  /**
+   * @brief Get the number of alleles at each locus.
+   */
+  std::vector<size_t> getNumberOfAlleles() const;
 
-      /**
-       * @brief Get the number of loci.
-       */
-      unsigned int getNumberOfLoci() const { return loci_.size(); }
+  /**
+   * @brief Get the ploidy of a locus by name.
+   *
+   * @throw LocusNotFoundException if locus_name is not found.
+   */
+  unsigned int getPloidyByLocusName(const std::string& locus_name) const
+  throw (LocusNotFoundException);
 
-      /**
-       * @brief Get the number of alleles at each locus.
-       */
-      std::vector<unsigned int> getNumberOfAlleles() const;
-
-      /**
-       * @brief Get the ploidy of a locus by name.
-       *
-       * @throw LocusNotFoundException if locus_name is not found.
-       */
-      unsigned int getPloidyByLocusName(const std::string & locus_name) const
-        throw (LocusNotFoundException);
-
-      /**
-       * @brief Get the ploidy of a locus by its position.
-       *
-       * @throw IndexOutOfBoundsException if locus_position is out of bounds.
-       */
-      unsigned int getPloidyByLocusPosition(unsigned int locus_position) const
-        throw (IndexOutOfBoundsException);
-  };
-
-} //end of namespace bpp;
+  /**
+   * @brief Get the ploidy of a locus by its position.
+   *
+   * @throw IndexOutOfBoundsException if locus_position is out of bounds.
+   */
+  unsigned int getPloidyByLocusPosition(size_t locus_position) const
+  throw (IndexOutOfBoundsException);
+};
+} // end of namespace bpp;
 
 #endif // _ANALYZEDLOCI_H_
 

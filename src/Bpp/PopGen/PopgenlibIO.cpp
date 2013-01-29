@@ -11,16 +11,16 @@
    for population genetics analysis.
 
    This software is governed by the CeCILL  license under French law and
-   abiding by the rules of distribution of free software.  You can  use, 
+   abiding by the rules of distribution of free software.  You can  use,
    modify and/ or redistribute the software under the terms of the CeCILL
    license as circulated by CEA, CNRS and INRIA at the following URL
-   "http://www.cecill.info". 
+   "http://www.cecill.info".
 
    As a counterpart to the access to the source code and  rights to copy,
    modify and redistribute granted by the license, users are provided only
    with a limited warranty  and the software's author,  the holder of the
    economic rights,  and the successive licensors  have only  limited
-   liability. 
+   liability.
 
    In this respect, the user's attention is drawn to the risks associated
    with loading,  using,  modifying and/or developing or reproducing the
@@ -29,13 +29,13 @@
    therefore means  that it is reserved for developers  and  experienced
    professionals having in-depth computer knowledge. Users are therefore
    encouraged to load and test the software's suitability as regards their
-   requirements in conditions enabling the security of their systems and/or 
-   data to be ensured and,  more generally, to use and operate it in the 
-   same conditions as regards security. 
+   requirements in conditions enabling the security of their systems and/or
+   data to be ensured and,  more generally, to use and operate it in the
+   same conditions as regards security.
 
    The fact that you are presently reading this means that you have had
    knowledge of the CeCILL license and that you accept its terms.
-   */
+ */
 
 #include "PopgenlibIO.h"
 
@@ -52,17 +52,21 @@ const string PopgenlibIO::HAPLOID = string("HAPLOID");
 const string PopgenlibIO::HAPLODIPLOID = string("HAPLODIPLOID");
 const string PopgenlibIO::UNKNOWN = string("UNKNOWN");
 
-PopgenlibIO::PopgenlibIO(): data_separator_(' '), missing_data_symbol_('$') {}
+PopgenlibIO::PopgenlibIO() : data_separator_(' '),
+  missing_data_symbol_('$') {}
 
 PopgenlibIO::PopgenlibIO(const std::string& missing_data_symbol,
-    const std::string& data_separator)
-throw (Exception): data_separator_(' '), missing_data_symbol_('$')
+                         const std::string& data_separator)
+throw (Exception) : data_separator_(' '),
+  missing_data_symbol_('$')
 {
-  try {
+  try
+  {
     setDataSeparator(data_separator);
     setMissingDataSymbol(missing_data_symbol);
   }
-  catch (Exception& e) {
+  catch (Exception& e)
+  {
     throw e;
   }
 }
@@ -74,7 +78,7 @@ void PopgenlibIO::setMissingDataSymbol(const std::string& missing_data_symbol) t
   if (missing_data_symbol.size() != 1 || isdigit(missing_data_symbol[0])
       || TextTools::isWhiteSpaceCharacter(missing_data_symbol[0])
       || missing_data_symbol[0] == data_separator_
-     )
+      )
     throw Exception("PopgenlibIO::setMissingData: not expected value for missing_data_symbol.");
 
   missing_data_symbol_ = missing_data_symbol[0];
@@ -82,14 +86,19 @@ void PopgenlibIO::setMissingDataSymbol(const std::string& missing_data_symbol) t
 
 void PopgenlibIO::setDataSeparator(const std::string& data_separator) throw (Exception)
 {
-  if (data_separator == WHITESPACE) data_separator_ = ' ';
-  else if (data_separator == TAB) data_separator_ = '\t';
-  else if (data_separator == COMA) data_separator_ = ',';
-  else if (data_separator == SEMICOLON) data_separator_ = ';';
-  else {
+  if (data_separator == WHITESPACE)
+    data_separator_ = ' ';
+  else if (data_separator == TAB)
+    data_separator_ = '\t';
+  else if (data_separator == COMA)
+    data_separator_ = ',';
+  else if (data_separator == SEMICOLON)
+    data_separator_ = ';';
+  else
+  {
     if (isdigit(data_separator[0])
         || data_separator == getMissingDataSymbol()
-       )
+        )
       throw Exception("PopgenlibIO::setDataSeparator: not expected value for data_separator.");
     data_separator_ = data_separator.c_str()[0];
   }
@@ -102,12 +111,13 @@ std::string PopgenlibIO::getMissingDataSymbol() const
 
 std::string PopgenlibIO::getDataSeparator() const
 {
-  switch (data_separator_) {
-    case (' '): return WHITESPACE;
-    case ('\t'): return TAB;
-    case (','): return COMA;
-    case (';'): return SEMICOLON;
-    default: return TextTools::toString(data_separator_);
+  switch (data_separator_)
+  {
+  case (' '): return WHITESPACE;
+  case ('\t'): return TAB;
+  case (','): return COMA;
+  case (';'): return SEMICOLON;
+  default: return TextTools::toString(data_separator_);
   }
 }
 
@@ -128,7 +138,7 @@ void PopgenlibIO::read(std::istream& is, DataSet& data_set) throw (Exception)
   string temp = "";
   vector<string> temp_v;
   stringstream tmp_ss;
-  VectorSequenceContainer * tmp_vsc = NULL;
+  VectorSequenceContainer* tmp_vsc = NULL;
   Locality<double> tmp_locality("tmp");
   vector<LocusInfo> tmp_locinf;
   Individual tmp_indiv;
@@ -141,40 +151,48 @@ void PopgenlibIO::read(std::istream& is, DataSet& data_set) throw (Exception)
   unsigned int previous_section = 0;
   unsigned int linenum = 0;
   // Main loop for all file lines
-  while (!is.eof()) {
+  while (!is.eof())
+  {
     temp = FileTools::getNextLine(is);
     linenum++;
     // Get the correct current section
-    if (temp.find("[General]", 0) != string::npos) {
+    if (temp.find("[General]", 0) != string::npos)
+    {
       previous_section = current_section;
       current_section = 1;
       continue;
     }
-    else if (temp.find("[Localities]", 0) != string::npos) {
+    else if (temp.find("[Localities]", 0) != string::npos)
+    {
       previous_section = current_section;
       current_section = 2;
       continue;
     }
-    else if (temp.find("[Sequences]", 0) != string::npos) {
+    else if (temp.find("[Sequences]", 0) != string::npos)
+    {
       previous_section = current_section;
       current_section = 3;
       continue;
     }
-    else if (temp.find("[Loci]", 0) != string::npos) {
+    else if (temp.find("[Loci]", 0) != string::npos)
+    {
       previous_section = current_section;
       current_section = 4;
       continue;
     }
-    else if (temp.find("[Individuals]", 0) != string::npos) {
+    else if (temp.find("[Individuals]", 0) != string::npos)
+    {
       previous_section = current_section;
       current_section = 5;
       continue;
     }
     // General section ------------------------------------
-    if (current_section == 1 && previous_section < 1) {
+    if (current_section == 1 && previous_section < 1)
+    {
       temp_v.push_back(temp);
     }
-    if (section1 && current_section != 1 && previous_section == 1) {
+    if (section1 && current_section != 1 && previous_section == 1)
+    {
       section1 = false;
       parseGeneral_(temp_v, data_set);
       temp_v.clear();
@@ -183,8 +201,10 @@ void PopgenlibIO::read(std::istream& is, DataSet& data_set) throw (Exception)
     }
 
     // Localities section ---------------------------------
-    if (current_section == 2 && previous_section < 2) {
-      if (temp.find(">", 0) != string::npos) {
+    if (current_section == 2 && previous_section < 2)
+    {
+      if (temp.find(">", 0) != string::npos)
+      {
         parseLocality_(temp_v, data_set);
         temp_v.clear();
         temp_v.push_back(temp);
@@ -192,15 +212,18 @@ void PopgenlibIO::read(std::istream& is, DataSet& data_set) throw (Exception)
       else
         temp_v.push_back(temp);
     }
-    if (section2 && current_section !=2 && previous_section == 2) {
+    if (section2 && current_section != 2 && previous_section == 2)
+    {
       section2 = false;
       parseLocality_(temp_v, data_set);
       temp_v.clear();
-    }	
+    }
 
     // Sequences section ----------------------------------
-    if (current_section == 3 && previous_section < 3) {
-      if (temp.find(">", 0) != string::npos) {
+    if (current_section == 3 && previous_section < 3)
+    {
+      if (temp.find(">", 0) != string::npos)
+      {
         parseSequence_(temp_v, *tmp_vsc);
         temp_v.clear();
         temp_v.push_back(temp);
@@ -208,15 +231,18 @@ void PopgenlibIO::read(std::istream& is, DataSet& data_set) throw (Exception)
       else
         temp_v.push_back(temp);
     }
-    if (section3 && current_section !=3 && previous_section == 3) {
+    if (section3 && current_section != 3 && previous_section == 3)
+    {
       section3 = false;
       parseSequence_(temp_v, *tmp_vsc);
       temp_v.clear();
     }
 
     // Loci section ---------------------------------------
-    if (current_section == 4 && previous_section <4) {
-      if (temp.find(">", 0) != string::npos) {
+    if (current_section == 4 && previous_section < 4)
+    {
+      if (temp.find(">", 0) != string::npos)
+      {
         parseLoci_(temp_v, tmp_locinf);
         temp_v.clear();
         temp_v.push_back(temp);
@@ -224,29 +250,35 @@ void PopgenlibIO::read(std::istream& is, DataSet& data_set) throw (Exception)
       else
         temp_v.push_back(temp);
     }
-    if (section4 && current_section != 4 && previous_section == 4) {
+    if (section4 && current_section != 4 && previous_section == 4)
+    {
       section4 = false;
       parseLoci_(temp_v, tmp_locinf);
       temp_v.clear();
       AnalyzedLoci tmp_anloc(tmp_locinf.size());
-      for (unsigned int i = 0 ; i < tmp_locinf.size() ; i++)
+      for (unsigned int i = 0; i < tmp_locinf.size(); i++)
+      {
         tmp_anloc.setLocusInfo(i, tmp_locinf[i]);
+      }
       data_set.setAnalyzedLoci(tmp_anloc);
     }
 
     // Individuals section --------------------------------
-    if (current_section == 5 && previous_section < 5) {
-      if (temp.find(">", 0) != string::npos) {
-        parseIndividual_(temp_v, data_set, * tmp_vsc);
+    if (current_section == 5 && previous_section < 5)
+    {
+      if (temp.find(">", 0) != string::npos)
+      {
+        parseIndividual_(temp_v, data_set, *tmp_vsc);
         temp_v.clear();
         temp_v.push_back(temp);
       }
       else
         temp_v.push_back(temp);
     }
-    if (section5 && current_section != 5 && previous_section == 5) {
+    if (section5 && current_section != 5 && previous_section == 5)
+    {
       section5 = false;
-      parseIndividual_(temp_v, data_set, * tmp_vsc);
+      parseIndividual_(temp_v, data_set, *tmp_vsc);
       temp_v.clear();
     }
   }
@@ -254,19 +286,22 @@ void PopgenlibIO::read(std::istream& is, DataSet& data_set) throw (Exception)
   if (section2 && current_section == 2)
     parseLocality_(temp_v, data_set);
   if (section3 && current_section == 3)
-    parseSequence_(temp_v, * tmp_vsc);
+    parseSequence_(temp_v, *tmp_vsc);
   if (section5 && current_section == 5)
-    parseIndividual_(temp_v, data_set, * tmp_vsc);
+    parseIndividual_(temp_v, data_set, *tmp_vsc);
   temp_v.clear();
 }
 
 void PopgenlibIO::parseGeneral_(const std::vector<std::string>& in, DataSet& data_set)
 {
   stringstream is;
-  for (unsigned int i = 0 ; i < in.size() ; i++)
+  for (unsigned int i = 0; i < in.size(); i++)
+  {
     is << in[i] << endl;
+  }
   string temp;
-  while (!is.eof() && in.size() != 0) {
+  while (!is.eof() && in.size() != 0)
+  {
     temp = FileTools::getNextLine(is);
     if (temp.find("MissingData", 0) != string::npos)
       setMissingDataSymbol(getValues_(temp, "=")[0]);
@@ -280,17 +315,22 @@ void PopgenlibIO::parseGeneral_(const std::vector<std::string>& in, DataSet& dat
 void PopgenlibIO::parseLocality_(const std::vector<std::string>& in, DataSet& data_set)
 {
   stringstream is;
-  for (unsigned int i = 0 ; i < in.size() ; i++)
+  for (unsigned int i = 0; i < in.size(); i++)
+  {
     is << in[i] << endl;
+  }
   Locality<double> tmp_locality("");
   string temp;
-  while (!is.eof() && in.size() != 0) {
+  while (!is.eof() && in.size() != 0)
+  {
     temp = FileTools::getNextLine(is);
     //		cout << "_parseLocality: " << temp << endl;
-    if (temp.find(">", 0) != string::npos) {
+    if (temp.find(">", 0) != string::npos)
+    {
       tmp_locality.setName(TextTools::removeSurroundingWhiteSpaces(string(temp.begin() + 1, temp.end())));
     }
-    if (temp.find("Coord", 0) != string::npos) {
+    if (temp.find("Coord", 0) != string::npos)
+    {
       vector<string> v = getValues_(temp, "=");
       tmp_locality.setX(TextTools::toDouble(v[0]));
       tmp_locality.setY(TextTools::toDouble(v[1]));
@@ -300,33 +340,40 @@ void PopgenlibIO::parseLocality_(const std::vector<std::string>& in, DataSet& da
     data_set.addLocality(tmp_locality);
 }
 
-void PopgenlibIO::parseSequence_(const std::vector<std::string>& in, VectorSequenceContainer& vsc) 
+void PopgenlibIO::parseSequence_(const std::vector<std::string>& in, VectorSequenceContainer& vsc)
 {
   Fasta ifasta;
   stringstream is;
-  for (unsigned int i = 0 ; i < in.size() ; i++)
+  for (unsigned int i = 0; i < in.size(); i++)
+  {
     is << in[i] << endl;
+  }
   ifasta.readSequences(is, vsc);
 }
 
 void PopgenlibIO::parseLoci_(const std::vector<std::string>& in, std::vector<LocusInfo>& locus_info)
 {
   stringstream is;
-  for (unsigned int i = 0 ; i < in.size() ; i++)
+  for (unsigned int i = 0; i < in.size(); i++)
+  {
     is << in[i] << endl;
+  }
   string locinf_name = "";
   unsigned int locinf_ploidy = LocusInfo::DIPLOID;
   string temp;
-  while (!is.eof()) {
+  while (!is.eof())
+  {
     temp = FileTools::getNextLine(is);
-    if (temp.find(">", 0) != string::npos) {
+    if (temp.find(">", 0) != string::npos)
+    {
       locinf_name = TextTools::removeSurroundingWhiteSpaces(string(temp.begin() + 1, temp.end()));
     }
-    if (temp.find("Ploidy", 0) != string::npos) {
+    if (temp.find("Ploidy", 0) != string::npos)
+    {
       vector<string> v = getValues_(temp, "=");
       string tmp_str_ploidy = TextTools::removeSurroundingWhiteSpaces(v[0]);
       tmp_str_ploidy = TextTools::toUpper(tmp_str_ploidy);
-      //cout << "ploidy : " << tmp_str_ploidy << endl;
+      // cout << "ploidy : " << tmp_str_ploidy << endl;
       if (tmp_str_ploidy == DIPLOID)
         locinf_ploidy = LocusInfo::DIPLOID;
       else if (tmp_str_ploidy == HAPLOID)
@@ -336,7 +383,8 @@ void PopgenlibIO::parseLoci_(const std::vector<std::string>& in, std::vector<Loc
       else if (tmp_str_ploidy == UNKNOWN)
         locinf_ploidy = LocusInfo::UNKNOWN;
     }
-    if (temp.find("NbAlleles", 0) != string::npos) {
+    if (temp.find("NbAlleles", 0) != string::npos)
+    {
       // not used ...
     }
   }
@@ -349,37 +397,47 @@ void PopgenlibIO::parseIndividual_(const std::vector<std::string>& in, DataSet& 
   Individual tmp_indiv;
   unsigned int tmp_group_pos = 0;
   string temp = "";
-  for (unsigned int i = 0 ; i < in.size() ; i++) {
+  for (unsigned int i = 0; i < in.size(); i++)
+  {
     // Get Individual Id
-    if (in[i].find(">", 0) != string::npos) {
+    if (in[i].find(">", 0) != string::npos)
+    {
       tmp_indiv.setId(TextTools::removeSurroundingWhiteSpaces(string(in[i].begin() + 1, in[i].end())));
     }
     // Get the Group
-    if (in[i].find("Group", 0) != string::npos) {
+    if (in[i].find("Group", 0) != string::npos)
+    {
       temp = in[i];
       tmp_group_pos = TextTools::toInt(getValues_(temp, "=")[0]);
-      try {
+      try
+      {
         data_set.addEmptyGroup(tmp_group_pos);
       }
-      catch (...) {}
+      catch (...)
+      {}
     }
     // Find the locality
-    if (in[i].find("Locality", 0) != string::npos) {
+    if (in[i].find("Locality", 0) != string::npos)
+    {
       temp = in[i];
       unsigned int sep_pos = temp.find("=", 0);
-      string loc_name = TextTools::removeSurroundingWhiteSpaces(string(temp.begin()+sep_pos+1, temp.end()));
-      try {
-        tmp_indiv.setLocality(& data_set.getLocalityByName(loc_name));
+      string loc_name = TextTools::removeSurroundingWhiteSpaces(string(temp.begin() + sep_pos + 1, temp.end()));
+      try
+      {
+        tmp_indiv.setLocality(&data_set.getLocalityByName(loc_name));
       }
-      catch (...) {}
+      catch (...)
+      {}
     }
     // Set the coord
-    if (in[i].find("Coord", 0) != string::npos) {
+    if (in[i].find("Coord", 0) != string::npos)
+    {
       temp = in[i];
       tmp_indiv.setCoord(TextTools::toDouble(getValues_(temp, "=")[0]), TextTools::toDouble(getValues_(temp, "=")[1]));
     }
     // And the date
-    if (in[i].find("Date", 0) != string::npos) {
+    if (in[i].find("Date", 0) != string::npos)
+    {
       int d, m, y;
       temp = in[i];
       string tmp_date = getValues_(temp, "=")[0];
@@ -389,16 +447,20 @@ void PopgenlibIO::parseIndividual_(const std::vector<std::string>& in, DataSet& 
       tmp_indiv.setDate(Date(d, m, y));
     }
     // Now the sequences
-    if (in[i].find("SequenceData", 0) != string::npos) {
+    if (in[i].find("SequenceData", 0) != string::npos)
+    {
       i++;
       temp = in[i];
       vector<string> seq_pos_str = getValues_(temp, "");
-      for (unsigned int j = 0 ; j < seq_pos_str.size() ; j++) {
-        try {
+      for (unsigned int j = 0; j < seq_pos_str.size(); j++)
+      {
+        try
+        {
           if (seq_pos_str[j] != getMissingDataSymbol())
-            tmp_indiv.addSequence(j, vsc.getSequence(TextTools::toInt(seq_pos_str[j])-1));
+            tmp_indiv.addSequence(j, vsc.getSequence(TextTools::toInt(seq_pos_str[j]) - 1));
         }
-        catch (...) {}
+        catch (...)
+        {}
       }
     }
     // Finally the loci
@@ -408,46 +470,60 @@ void PopgenlibIO::parseIndividual_(const std::vector<std::string>& in, DataSet& 
       string temp2 = in[++i];
       vector<string> allele_pos_str1 = getValues_(temp1, "");
       vector<string> allele_pos_str2 = getValues_(temp2, "");
-      try {
+      try
+      {
         tmp_indiv.initGenotype(data_set.getNumberOfLoci());
       }
-      catch (...) {}
-      if (allele_pos_str1.size() == allele_pos_str2.size()) {
-        for (unsigned int j = 0 ; j < allele_pos_str1.size() ; j++) {
+      catch (...)
+      {}
+      if (allele_pos_str1.size() == allele_pos_str2.size())
+      {
+        for (unsigned int j = 0; j < allele_pos_str1.size(); j++)
+        {
           const LocusInfo& locus_info = data_set.getLocusInfoAtPosition(j);
           allele_pos_str1[j] = TextTools::removeSurroundingWhiteSpaces(allele_pos_str1[j]);
           vector<string> tmp_alleles_id;
-          if (allele_pos_str1[j] != getMissingDataSymbol()) {
+          if (allele_pos_str1[j] != getMissingDataSymbol())
+          {
             BasicAlleleInfo tmp_allele_info(allele_pos_str1[j]);
-            try {
+            try
+            {
               data_set.addAlleleInfoByLocusPosition(j, tmp_allele_info);
             }
-            catch (...) {}
+            catch (...)
+            {}
             tmp_alleles_id.push_back(allele_pos_str1[j]);
           }
           allele_pos_str2[j] = TextTools::removeSurroundingWhiteSpaces(allele_pos_str2[j]);
-          if (allele_pos_str2[j] != getMissingDataSymbol()) {
+          if (allele_pos_str2[j] != getMissingDataSymbol())
+          {
             BasicAlleleInfo tmp_allele_info(allele_pos_str2[j]);
-            try {
+            try
+            {
               data_set.addAlleleInfoByLocusPosition(j, tmp_allele_info);
             }
-            catch (...) {}
+            catch (...)
+            {}
             tmp_alleles_id.push_back(allele_pos_str2[j]);
           }
-          try {
+          try
+          {
             tmp_indiv.setMonolocusGenotypeByAlleleId(j, tmp_alleles_id, locus_info);
           }
-          catch (...) {}
+          catch (...)
+          {}
         }
       }
     }
   }
   if (tmp_indiv.getId() != "")
   {
-    try {
+    try
+    {
       data_set.addIndividualToGroup(data_set.getGroupPosition(tmp_group_pos), tmp_indiv);
     }
-    catch (...) {}
+    catch (...)
+    {}
   }
 }
 
@@ -473,14 +549,17 @@ void PopgenlibIO::write(std::ostream& os, const DataSet& data_set) const throw (
   os << "[General]" << endl;
   os << "MissingData = " << getMissingDataSymbol() << endl;
   os << "DataSeparator = " << getDataSeparator() << endl;
-  if (data_set.hasSequenceData()) {
+  if (data_set.hasSequenceData())
+  {
     string seq_type = data_set.getAlphabetType();
     os << "SequenceType = " << seq_type << endl;
   }
   // Localities section -----------------------------------
-  if (data_set.hasLocality()) {
+  if (data_set.hasLocality())
+  {
     os << endl << "[Localities]" << endl;
-    for (unsigned int i = 0 ; i < data_set.getNumberOfLocalities() ; i++) {
+    for (unsigned int i = 0; i < data_set.getNumberOfLocalities(); i++)
+    {
       os << ">" << (data_set.getLocalityAtPosition(i)).getName() << endl;
       os << "Coord = " << (data_set.getLocalityAtPosition(i)).getX();
       os << " " << (data_set.getLocalityAtPosition(i)).getY() << endl;
@@ -488,18 +567,25 @@ void PopgenlibIO::write(std::ostream& os, const DataSet& data_set) const throw (
   }
 
   // Sequences section ------------------------------------
-  if (data_set.hasSequenceData()) {
+  if (data_set.hasSequenceData())
+  {
     Fasta fasta(80);
     os << endl << "[Sequences]" << endl;
-    for (unsigned int i = 0 ; i < data_set.getNumberOfGroups() ; i++)
-      for (unsigned int j = 0 ; j < data_set.getNumberOfIndividualsInGroup(i) ; j++)
-        fasta.writeSequences(os, data_set.getIndividualAtPositionFromGroup(i,j)->getSequences());
+    for (unsigned int i = 0; i < data_set.getNumberOfGroups(); i++)
+    {
+      for (unsigned int j = 0; j < data_set.getNumberOfIndividualsInGroup(i); j++)
+      {
+        fasta.writeSequences(os, data_set.getIndividualAtPositionFromGroup(i, j)->getSequences());
+      }
+    }
   }
 
   // AllelicData section ----------------------------------
-  if (data_set.hasAlleleicData()) {
+  if (data_set.hasAlleleicData())
+  {
     os << endl << "[Loci]" << endl;
-    for (unsigned int i = 0 ; i < data_set.getNumberOfLoci() ; i++) {
+    for (unsigned int i = 0; i < data_set.getNumberOfLoci(); i++)
+    {
       const LocusInfo& tmp_locus_info = data_set.getLocusInfoAtPosition(i);
       os << ">" << tmp_locus_info.getName() << endl;
       os << "Ploidy = ";
@@ -518,42 +604,58 @@ void PopgenlibIO::write(std::ostream& os, const DataSet& data_set) const throw (
 
   // Individuals section ----------------------------------
   os << endl << "[Individuals]" << endl;
-  for (unsigned int i = 0 ; i < data_set.getNumberOfGroups() ; i++)
-    for (unsigned int j = 0 ; j < data_set.getNumberOfIndividualsInGroup(i) ; j++) {
-      if (i>0 || j>0) os << endl;
-      const Individual * tmp_ind = data_set.getIndividualAtPositionFromGroup(i,j);
+  for (unsigned int i = 0; i < data_set.getNumberOfGroups(); i++)
+  {
+    for (unsigned int j = 0; j < data_set.getNumberOfIndividualsInGroup(i); j++)
+    {
+      if (i > 0 || j > 0)
+        os << endl;
+      const Individual* tmp_ind = data_set.getIndividualAtPositionFromGroup(i, j);
       os << ">" << tmp_ind->getId() << endl;
       os << "Group = " << TextTools::toString((data_set.getGroupAtPosition(i)).getGroupId()) << endl;
-      if (tmp_ind->hasLocality()) os << "Locality = " << tmp_ind->getLocality()->getName() << endl;
-      if (tmp_ind->hasCoord()) os << "Coord = " << tmp_ind->getX() << " " << tmp_ind->getY() << endl;
-      if (tmp_ind->hasDate()) os << "Date = " << tmp_ind->getDate().getDateStr() << endl;
-      if (tmp_ind->hasSequences()) {
+      if (tmp_ind->hasLocality())
+        os << "Locality = " << tmp_ind->getLocality()->getName() << endl;
+      if (tmp_ind->hasCoord())
+        os << "Coord = " << tmp_ind->getX() << " " << tmp_ind->getY() << endl;
+      if (tmp_ind->hasDate())
+        os << "Date = " << tmp_ind->getDate().getDateStr() << endl;
+      if (tmp_ind->hasSequences())
+      {
         unsigned int nbss = tmp_ind->getNumberOfSequences();
         os << "SequenceData = {" << endl;
-        for (unsigned int k = 0 ; k < nbss ; k++) {
-          try {
+        for (unsigned int k = 0; k < nbss; k++)
+        {
+          try
+          {
             tmp_ind->getSequenceAtPosition(k);
             os << TextTools::toString(seqcpt++);
           }
-          catch (SequenceNotFoundException) {
+          catch (SequenceNotFoundException)
+          {
             os << getMissingDataChar();
           }
-          if (k < nbss-1) os << getDataSeparatorChar();
-          else os << endl;
+          if (k < nbss - 1)
+            os << getDataSeparatorChar();
+          else
+            os << endl;
         }
         os << "}" << endl;
       }
-      if (tmp_ind->hasGenotype()) {
+      if (tmp_ind->hasGenotype())
+      {
         const MultilocusGenotype& tmp_genotype = tmp_ind->getGenotype();
         vector<vector<string> > output(tmp_genotype.size());
         os << "AllelicData = {" << endl;
-        for (unsigned int k = 0 ; k < tmp_genotype.size() ; k++) {
+        for (unsigned int k = 0; k < tmp_genotype.size(); k++)
+        {
           output[k].resize(2);
-          if (tmp_genotype.isMonolocusGenotypeMissing(k)) {
+          if (tmp_genotype.isMonolocusGenotypeMissing(k))
+          {
             output[k][0] = getMissingDataChar();
             output[k][1] = getMissingDataChar();
           }
-          else {
+          else
+          {
             vector<unsigned int> tmp_all_ind = tmp_genotype.getMonolocusGenotype(k).getAlleleIndex();
             output[k][0] = data_set.getLocusInfoAtPosition(k).getAlleleInfoByKey(tmp_all_ind[0]).getId();
             if (tmp_all_ind.size() > 1)
@@ -562,14 +664,16 @@ void PopgenlibIO::write(std::ostream& os, const DataSet& data_set) const throw (
               output[k][1] = getMissingDataChar();
           }
         }
-        for (unsigned int k = 0 ; k < output.size() ; k++) {
+        for (unsigned int k = 0; k < output.size(); k++)
+        {
           os << output[k][0];
           if (k < output.size() - 1)
             os << getDataSeparatorChar();
           else
             os << endl;
         }
-        for (unsigned int k = 0 ; k < output.size() ; k++) {
+        for (unsigned int k = 0; k < output.size(); k++)
+        {
           os << output[k][1];
           if (k < output.size() - 1)
             os << getDataSeparatorChar();
@@ -579,9 +683,10 @@ void PopgenlibIO::write(std::ostream& os, const DataSet& data_set) const throw (
         os << "}" << endl;
       }
     }
+  }
 }
 
-void PopgenlibIO::write(const std::string& path, const DataSet& data_set, bool overwrite) const throw (Exception) 
+void PopgenlibIO::write(const std::string& path, const DataSet& data_set, bool overwrite) const throw (Exception)
 {
   AbstractODataSet::write(path, data_set, overwrite);
 }
@@ -596,7 +701,8 @@ std::vector<std::string> PopgenlibIO::getValues_(std::string& param_line, const 
 
   int bi = 0;
   int bs = param_line.find(getDataSeparatorChar(), bi);
-  while (bs > 0) {
+  while (bs > 0)
+  {
     values.push_back(string(param_line.begin() + bi, param_line.begin() + bs));
     bi = bs + 1;
     bs = param_line.find(getDataSeparatorChar(), bi);

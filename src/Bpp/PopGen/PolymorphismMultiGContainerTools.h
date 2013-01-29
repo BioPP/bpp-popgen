@@ -6,7 +6,7 @@
 //
 
 /*
-   Copyright or © or Copr. CNRS, (November 17, 2004)
+   Copyright or © or Copr. Bio++ Development Team, (November 17, 2004)
 
    This software is a computer program whose purpose is to provide classes
    for population genetics analysis.
@@ -36,7 +36,7 @@
 
    The fact that you are presently reading this means that you have had
    knowledge of the CeCILL license and that you accept its terms.
-   */
+ */
 
 #ifndef _POLYMORPHISMMULTIGCONTAINERTOOLS_H_
 #define _POLYMORPHISMMULTIGCONTAINERTOOLS_H_
@@ -44,82 +44,80 @@
 // From the STL
 #include <set>
 
-//From the PolGenLib library
+// From the PolGenLib library
 #include "PolymorphismMultiGContainer.h"
 
 #include <Bpp/Numeric/Random/RandomTools.h>
 
 namespace bpp
 {
+/**
+ * @brief Tools for PolymorphismMultiGContainer.
+ *
+ * Provides static methods for permutations.
+ *
+ * @author Sylvain Gaillard
+ */
+class PolymorphismMultiGContainerTools
+{
+public:
+  /**
+   * @brief Permut the MultilocusGenotype in the whole PolymorphismMultiGContainer.
+   *
+   * @param pmgc The PolymorphismMultiGContainer to permut.
+   * @return A permuted PolymorphismMultiGContainer.
+   */
+  static PolymorphismMultiGContainer permutMultiG(const PolymorphismMultiGContainer& pmgc);
 
   /**
-   * @brief Tools for PolymorphismMultiGContainer.
+   * @brief Permut the MonolocusGenotype.
    *
-   * Provides static methods for permutations.
+   * Permut the MonolocusGenotypes in one or several groups breaking
+   * the links between them.
    *
-   * @author Sylvain Gaillard
+   * @param pmgc The PolymorphismMultiGContainer to permut.
+   * @param groups The groups ids between which the MonolocusGenotypes will be permuted.
+   * @return A permuted PolymorphismMultiGContainer.
    */
-  class PolymorphismMultiGContainerTools
-  {
-    public:
-      /**
-       * @brief Permut the MultilocusGenotype in the whole PolymorphismMultiGContainer.
-       *
-       * @param pmgc The PolymorphismMultiGContainer to permut.
-       * @return A permuted PolymorphismMultiGContainer.
-       */
-      static PolymorphismMultiGContainer permutMultiG(const PolymorphismMultiGContainer & pmgc);
+  static PolymorphismMultiGContainer permutMonoG(const PolymorphismMultiGContainer& pmgc, const std::set<size_t>& groups);
 
-      /**
-       * @brief Permut the MonolocusGenotype.
-       *
-       * Permut the MonolocusGenotypes in one or several groups breaking
-       * the links between them.
-       *
-       * @param pmgc The PolymorphismMultiGContainer to permut.
-       * @param groups The groups ids between which the MonolocusGenotypes will be permuted.
-       * @return A permuted PolymorphismMultiGContainer.
-       */
-      static PolymorphismMultiGContainer permutMonoG(const PolymorphismMultiGContainer & pmgc, const std::set<unsigned int> & groups);
+  /**
+   * @brief Permut the MonolocusGenotype between individuals in the same group.
+   *
+   * Permut the MonolocusGenotypes for a set of groups. The idiv for the other groups
+   * are kept intact
+   *
+   * @param pmgc The PolymorphismMultiGContainer to permut.
+   * @param groups The groups ids for which the MonolocusGenotypes will be permuted.
+   * @return A permuted PolymorphismMultiGContainer.
+   */
+  static PolymorphismMultiGContainer permutIntraGroupMonoG(const PolymorphismMultiGContainer& pmgc, const std::set<size_t>& groups);
 
-      /**
-       * @brief Permut the MonolocusGenotype between individuals in the same group.
-       *
-       * Permut the MonolocusGenotypes for a set of groups. The idiv for the other groups
-       * are kept intact
-       *
-       * @param pmgc The PolymorphismMultiGContainer to permut.
-       * @param groups The groups ids for which the MonolocusGenotypes will be permuted.
-       * @return A permuted PolymorphismMultiGContainer.
-       */
-      static PolymorphismMultiGContainer permutIntraGroupMonoG(const PolymorphismMultiGContainer & pmgc, const std::set<unsigned int> & groups); 
+  /**
+   * @brief Permut the Alleles.
+   *
+   * Permut the alleles in one or several groups breaking
+   * the links between them.
+   *
+   * @param pmgc The PolymorphismMultiGContainer to permut.
+   * @param groups The groups ids between which the MonolocusGenotypes will be permuted.
+   * @return A permuted PolymorphismMultiGContainer.
+   */
+  static PolymorphismMultiGContainer permutAlleles(const PolymorphismMultiGContainer& pmgc, const std::set<size_t>& groups);
 
-      /**
-       * @brief Permut the Alleles.
-       *
-       * Permut the alleles in one or several groups breaking
-       * the links between them.
-       *
-       * @param pmgc The PolymorphismMultiGContainer to permut.
-       * @param groups The groups ids between which the MonolocusGenotypes will be permuted.
-       * @return A permuted PolymorphismMultiGContainer.
-       */
-      static PolymorphismMultiGContainer permutAlleles(const PolymorphismMultiGContainer & pmgc, const std::set<unsigned int> & groups);
-
-      /**
-       * @brief Permut the Alleles between individuals in the same group.
-       *
-       * Permut the alleles in one or several groups
-       *
-       * @param pmgc The PolymorphismMultiGContainer to permut.
-       * @param groups The groups ids between which the MonolocusGenotypes will be permuted.
-       * @return A permuted PolymorphismMultiGContainer.
-       */
-      static PolymorphismMultiGContainer permutIntraGroupAlleles(const PolymorphismMultiGContainer & pmgc, const std::set<unsigned int> & groups) ;
-      static PolymorphismMultiGContainer extractGroups(const PolymorphismMultiGContainer & pmgc, const std::set<unsigned int> & groups) ;
-  };
-
-} //end of namespace bpp;
+  /**
+   * @brief Permut the Alleles between individuals in the same group.
+   *
+   * Permut the alleles in one or several groups
+   *
+   * @param pmgc The PolymorphismMultiGContainer to permut.
+   * @param groups The groups ids between which the MonolocusGenotypes will be permuted.
+   * @return A permuted PolymorphismMultiGContainer.
+   */
+  static PolymorphismMultiGContainer permutIntraGroupAlleles(const PolymorphismMultiGContainer& pmgc, const std::set<size_t>& groups);
+  static PolymorphismMultiGContainer extractGroups(const PolymorphismMultiGContainer& pmgc, const std::set<size_t>& groups);
+};
+} // end of namespace bpp;
 
 #endif // _POLYMORPHISMMULTIGCONTAINERTOOLS_H_
 
