@@ -539,7 +539,7 @@ map<size_t, MultilocusGenotypeStatistics::VarComp> MultilocusGenotypeStatistics:
   for (set<size_t>::iterator set_it = groups.begin(); set_it != groups.end(); set_it++)
   {
     size_t i  = (*set_it);
-    double ni = (double) pmgc.getLocusGroupSize( i, locus_position);
+    double ni = static_cast<double>(pmgc.getLocusGroupSize( i, locus_position));
     set<size_t> group_id;
     group_id.insert( i );
     map<size_t, double> pi = getAllelesFrqForGroups(pmgc, locus_position, group_id);
@@ -555,7 +555,7 @@ map<size_t, MultilocusGenotypeStatistics::VarComp> MultilocusGenotypeStatistics:
   }
   for (map<size_t, double>::iterator it = s2.begin(); it != s2.end(); it++)
   {
-    it->second = it->second / (((double) r - 1.) * nbar);
+    it->second = it->second / ((r - 1.) * nbar);
   }
 
   // a, b, c computation
@@ -566,7 +566,7 @@ map<size_t, MultilocusGenotypeStatistics::VarComp> MultilocusGenotypeStatistics:
 
   for (map<size_t, MultilocusGenotypeStatistics::VarComp>::iterator it = values.begin(); it != values.end(); it++)
   {
-    it->second.a = (nbar / nc) * (s2[it->first] - ((1. / (nbar - 1.)) * ((pbar[it->first] * (1. - pbar[it->first])) - (s2[it->first] * ((double) r - 1.) / (double) r) - ((1. / 4.) * hbar[it->first]))));
+    it->second.a = (nbar / nc) * (s2[it->first] - ((1. / (nbar - 1.)) * ((pbar[it->first] * (1. - pbar[it->first])) - (s2[it->first] * ((double) r - 1.) / r) - ((1. / 4.) * hbar[it->first]))));
     it->second.b = (nbar / (nbar - 1.)) * ((pbar[it->first] * (1. - pbar[it->first])) - (s2[it->first] * ((double) r - 1.) / (double) r) - ((((2. * nbar) - 1.) / (4. * nbar)) * hbar[it->first]));
     it->second.c = hbar[it->first] / 2.;
   }
@@ -579,9 +579,16 @@ double MultilocusGenotypeStatistics::getWCMultilocusFst(const PolymorphismMultiG
   A = B = C = 0.0;
   for (size_t i = 0; i < locus_positions.size(); i++)
   {
+    //count total number of individuals without missing data  
+    size_t ni = 0;  
+    for (set<size_t>::iterator setIt = groups.begin() ; setIt != groups.end() ; setIt++)
+    {
+      ni += pmgc.getLocusGroupSize( (*setIt), i);
+    }
+
     // reduce computation for polymorphic loci for that groups
     vector<size_t> ids = getAllelesIdsForGroups(pmgc, i, groups);
-    if (ids.size() >= 2)
+    if (ids.size() >= 2 && ni >= 1)
     {
       map<size_t, MultilocusGenotypeStatistics::VarComp> values = getVarianceComponents(pmgc, locus_positions[i], groups);
       for (map<size_t, MultilocusGenotypeStatistics::VarComp>::iterator it = values.begin(); it != values.end(); it++)
@@ -599,18 +606,24 @@ double MultilocusGenotypeStatistics::getWCMultilocusFst(const PolymorphismMultiG
 
 double MultilocusGenotypeStatistics::getWCMultilocusFis(const PolymorphismMultiGContainer& pmgc, vector<size_t> locus_positions, const set<size_t>& groups) throw (Exception)
 {
-  double A, B, C;
-  A = B = C = 0.0;
+  double B, C;
+  B = C = 0.0;
   for (size_t i = 0; i < locus_positions.size(); i++)
   {
+    //count total number of individuals without missing data  
+    size_t ni = 0;  
+    for (set<size_t>::iterator setIt = groups.begin() ; setIt != groups.end() ; setIt++)
+    {
+      ni += pmgc.getLocusGroupSize( (*setIt), i);
+    }
+
     // reduce computation for polymorphic loci for that groups
     vector<size_t> ids = getAllelesIdsForGroups(pmgc, i, groups);
-    if (ids.size() >= 2)
+    if (ids.size() >= 2 && ni >= 1)
     {
       map<size_t, MultilocusGenotypeStatistics::VarComp> values = getVarianceComponents(pmgc, locus_positions[i], groups);
       for (map<size_t, MultilocusGenotypeStatistics::VarComp>::iterator it = values.begin(); it != values.end(); it++)
       {
-        A += it->second.a;
         B += it->second.b;
         C += it->second.c;
       }
