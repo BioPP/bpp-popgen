@@ -130,6 +130,7 @@ Sequence* PolymorphismSequenceContainer::removeSequence(size_t index) throw (Ind
     throw IndexOutOfBoundsException("PolymorphismSequenceContainer::removeSequence: index out of bounds.", index, 0, getNumberOfSequences());
   count_.erase(count_.begin() + index);
   ingroup_.erase(ingroup_.begin() + index);
+  group_.erase(group_.begin() + index);
   return VectorSiteContainer::removeSequence(index);
 }
 
