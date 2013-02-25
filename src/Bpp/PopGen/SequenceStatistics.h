@@ -675,7 +675,7 @@ public:
    *
    * Taken from eq. 3 of  Hudson, Slatkin and Maddison 1992 Genetics 132:153
    *
-   * @[
+   * @f[
    * F_{st} = 1 - \frac{H_w}{H_b}
    * @f]
    * where @f$H_w@f$ is mean number of differences between different
