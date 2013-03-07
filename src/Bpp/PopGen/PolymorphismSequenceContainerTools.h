@@ -48,8 +48,8 @@
 #include <Bpp/Seq/Alphabet/CodonAlphabet.h>
 #include <Bpp/Seq/Io/Mase.h>
 #include <Bpp/Seq/Io/MaseTools.h>
+#include <Bpp/Seq/Container/SiteContainerIterator.h>
 #include <Bpp/Seq/Container/SequenceContainerTools.h>
-#include <Bpp/Seq/Container/SiteIterator.h>
 #include <Bpp/Seq/Container/VectorSiteContainer.h>
 #include <Bpp/Seq/SiteTools.h>
 

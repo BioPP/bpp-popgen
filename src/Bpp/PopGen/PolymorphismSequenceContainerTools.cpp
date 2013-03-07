@@ -222,7 +222,7 @@ PolymorphismSequenceContainer* PolymorphismSequenceContainerTools::getSitesWitho
       noGapCont->setGroupId(i, psc.getGroupId(i));
     }
   }
-  NoGapSiteIterator ngsi(psc);
+  NoGapSiteContainerIterator ngsi(psc);
   while (ngsi.hasMoreSites())
     noGapCont->addSite(*ngsi.nextSite());
   return noGapCont;
@@ -233,8 +233,8 @@ PolymorphismSequenceContainer* PolymorphismSequenceContainerTools::getSitesWitho
 size_t PolymorphismSequenceContainerTools::getNumberOfNonGapSites(const PolymorphismSequenceContainer& psc, bool ingroup) throw (Exception)
 {
   size_t count = psc.getNumberOfSites();
-  PolymorphismSequenceContainer* npsc = NULL;
-  SimpleSiteIterator* ssi;
+  PolymorphismSequenceContainer* npsc = 0;
+  SimpleSiteContainerIterator* ssi;
   if (ingroup)
   {
     try
@@ -247,10 +247,10 @@ size_t PolymorphismSequenceContainerTools::getNumberOfNonGapSites(const Polymorp
         delete npsc;
       throw e;
     }
-    ssi = new SimpleSiteIterator(*npsc);
+    ssi = new SimpleSiteContainerIterator(*npsc);
   }
   else
-    ssi = new SimpleSiteIterator(psc);
+    ssi = new SimpleSiteContainerIterator(psc);
   while (ssi->hasMoreSites())
     if (SiteTools::hasGap(*ssi->nextSite()))
       count--;
@@ -263,8 +263,8 @@ size_t PolymorphismSequenceContainerTools::getNumberOfNonGapSites(const Polymorp
 size_t PolymorphismSequenceContainerTools::getNumberOfCompleteSites(const PolymorphismSequenceContainer& psc, bool ingroup) throw (Exception)
 {
   size_t count = psc.getNumberOfSites();
-  PolymorphismSequenceContainer* npsc = NULL;
-  SimpleSiteIterator* ssi;
+  PolymorphismSequenceContainer* npsc = 0;
+  SimpleSiteContainerIterator* ssi;
   if (ingroup)
   {
     try
@@ -277,10 +277,10 @@ size_t PolymorphismSequenceContainerTools::getNumberOfCompleteSites(const Polymo
         delete npsc;
       throw e;
     }
-    ssi = new SimpleSiteIterator(*npsc);
+    ssi = new SimpleSiteContainerIterator(*npsc);
   }
   else
-    ssi = new SimpleSiteIterator(psc);
+    ssi = new SimpleSiteContainerIterator(psc);
   while (ssi->hasMoreSites())
     if (!SiteTools::isComplete(*ssi->nextSite()))
       count--;
@@ -307,7 +307,7 @@ PolymorphismSequenceContainer* PolymorphismSequenceContainerTools::getCompleteSi
       complete->setGroupId(i, psc.getGroupId(i));
     }
   }
-  CompleteSiteIterator csi(psc);
+  CompleteSiteContainerIterator csi(psc);
   while (csi.hasMoreSites())
     complete->addSite(*csi.nextSite());
   return complete;

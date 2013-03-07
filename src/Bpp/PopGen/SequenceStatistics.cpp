@@ -74,11 +74,11 @@ size_t SequenceStatistics::polymorphicSiteNumber(const PolymorphismSequenceConta
 {
   size_t S = 0;
   const Site* site = 0;
-  SiteIterator* si = 0;
+  ConstSiteIterator* si = 0;
   if (gapflag)
-    si = new CompleteSiteIterator(psc);
+    si = new CompleteSiteContainerIterator(psc);
   else
-    si = new SimpleSiteIterator(psc);
+    si = new SimpleSiteContainerIterator(psc);
   while (si->hasMoreSites())
   {
     site = si->nextSite();
@@ -93,11 +93,11 @@ size_t SequenceStatistics::polymorphicSiteNumber(const PolymorphismSequenceConta
 
 size_t SequenceStatistics::parsimonyInformativeSiteNumber(const PolymorphismSequenceContainer& psc, bool gapflag)
 {
-  SiteIterator* si = 0;
+  ConstSiteIterator* si = 0;
   if (gapflag)
-    si = new CompleteSiteIterator(psc);
+    si = new CompleteSiteContainerIterator(psc);
   else
-    si = new SimpleSiteIterator(psc);
+    si = new SimpleSiteContainerIterator(psc);
   size_t S = 0;
   const Site* site = 0;
   while (si->hasMoreSites())
@@ -116,11 +116,11 @@ size_t SequenceStatistics::countSingleton(const PolymorphismSequenceContainer& p
 {
   size_t nus = 0;
   const Site* site = 0;
-  SiteIterator* si = 0;
+  ConstSiteIterator* si = 0;
   if (gapflag)
-    si = new CompleteSiteIterator(psc);
+    si = new CompleteSiteContainerIterator(psc);
   else
-    si = new SimpleSiteIterator(psc);
+    si = new SimpleSiteContainerIterator(psc);
   while (si->hasMoreSites())
   {
     site = si->nextSite();
@@ -132,11 +132,11 @@ size_t SequenceStatistics::countSingleton(const PolymorphismSequenceContainer& p
 
 size_t SequenceStatistics::tripletNumber(const PolymorphismSequenceContainer& psc, bool gapflag)
 {
-  SiteIterator* si = 0;
+  ConstSiteIterator* si = 0;
   if (gapflag)
-    si = new CompleteSiteIterator(psc);
+    si = new CompleteSiteContainerIterator(psc);
   else
-    si = new SimpleSiteIterator(psc);
+    si = new SimpleSiteContainerIterator(psc);
   int S = 0;
   const Site* site = 0;
   while (si->hasMoreSites())
@@ -156,11 +156,11 @@ size_t SequenceStatistics::totNumberMutations(const PolymorphismSequenceContaine
 {
   size_t tnm = 0;
   const Site* site = 0;
-  SiteIterator* si = 0;
+  ConstSiteIterator* si = 0;
   if (gapflag)
-    si = new CompleteSiteIterator(psc);
+    si = new CompleteSiteContainerIterator(psc);
   else
-    si = new SimpleSiteIterator(psc);
+    si = new SimpleSiteContainerIterator(psc);
   while (si->hasMoreSites())
   {
     site = si->nextSite();
@@ -179,10 +179,10 @@ size_t SequenceStatistics::totMutationsExternalBranchs(
   size_t nmuts = 0;
   const Site* site_in = 0;
   const Site* site_out = 0;
-  SiteIterator* si = 0;
-  SiteIterator* so = 0;
-  si = new SimpleSiteIterator(ing);
-  so = new SimpleSiteIterator(outg);
+  ConstSiteIterator* si = 0;
+  ConstSiteIterator* so = 0;
+  si = new SimpleSiteContainerIterator(ing);
+  so = new SimpleSiteContainerIterator(outg);
   while (si->hasMoreSites())
   {
     site_in = si->nextSite();
@@ -198,12 +198,12 @@ size_t SequenceStatistics::totMutationsExternalBranchs(
 
 double SequenceStatistics::heterozygosity(const PolymorphismSequenceContainer& psc, bool gapflag)
 {
-  SiteIterator* si = 0;
+  ConstSiteIterator* si = 0;
   const Site* site = 0;
   if (gapflag)
-    si = new CompleteSiteIterator(psc);
+    si = new CompleteSiteContainerIterator(psc);
   else
-    si = new SimpleSiteIterator(psc);
+    si = new SimpleSiteContainerIterator(psc);
   double S = 0;
   while (si->hasMoreSites())
   {
@@ -216,12 +216,12 @@ double SequenceStatistics::heterozygosity(const PolymorphismSequenceContainer& p
 
 double SequenceStatistics::squaredHeterozygosity(const PolymorphismSequenceContainer& psc, bool gapflag)
 {
-  SiteIterator* si = 0;
+  ConstSiteIterator* si = 0;
   const Site* site = 0;
   if (gapflag)
-    si = new CompleteSiteIterator(psc);
+    si = new CompleteSiteContainerIterator(psc);
   else
-    si = new SimpleSiteIterator(psc);
+    si = new SimpleSiteContainerIterator(psc);
   double S = 0;
   while (si->hasMoreSites())
   {
@@ -252,11 +252,11 @@ std::vector<size_t> SequenceStatistics::gcPolymorphism(const PolymorphismSequenc
   const size_t nbSeq = psc.getNumberOfSequences();
   vector<size_t> vect(2);
   const Site* site = 0;
-  SiteIterator* si = 0;
+  ConstSiteIterator* si = 0;
   if (gapflag)
-    si = new CompleteSiteIterator(psc);
+    si = new CompleteSiteContainerIterator(psc);
   else
-    si = new NoGapSiteIterator(psc);
+    si = new NoGapSiteContainerIterator(psc);
   while (si->hasMoreSites())
   {
     site = si->nextSite();
@@ -301,12 +301,12 @@ double SequenceStatistics::tajima83(const PolymorphismSequenceContainer& psc, bo
 {
   size_t alphabet_size = (psc.getAlphabet())->getSize();
   const Site* site = 0;
-  SiteIterator* si = 0;
+  ConstSiteIterator* si = 0;
   double value2 = 0.;
   if (gapflag)
-    si = new CompleteSiteIterator(psc);
+    si = new CompleteSiteContainerIterator(psc);
   else
-    si = new SimpleSiteIterator(psc);
+    si = new SimpleSiteContainerIterator(psc);
   while (si->hasMoreSites())
   {
     site = si->nextSite();
@@ -475,7 +475,7 @@ double SequenceStatistics::DVH(const PolymorphismSequenceContainer& psc, bool ga
 size_t SequenceStatistics::getNumberOfTransitions(const PolymorphismSequenceContainer& psc)
 {
   size_t nbT = 0;
-  SiteIterator* si = new CompleteSiteIterator(psc);
+  ConstSiteIterator* si = new CompleteSiteContainerIterator(psc);
   const Site* site = 0;
   while (si->hasMoreSites())
   {
@@ -507,7 +507,7 @@ size_t SequenceStatistics::getNumberOfTransitions(const PolymorphismSequenceCont
 size_t SequenceStatistics::getNumberOfTransversions(const PolymorphismSequenceContainer& psc)
 {
   size_t nbTv = 0;
-  SiteIterator* si = new CompleteSiteIterator(psc);
+  ConstSiteIterator* si = new CompleteSiteContainerIterator(psc);
   const Site* site = 0;
   while (si->hasMoreSites())
   {
@@ -541,7 +541,7 @@ double SequenceStatistics::getTransitionsTransversionsRatio(const PolymorphismSe
   // return (double) getNumberOfTransitions(psc)/getNumberOfTransversions(psc);
   size_t nbT = 0;
   size_t nbTv = 0;
-  SiteIterator* si = new CompleteSiteIterator(psc);
+  ConstSiteIterator* si = new CompleteSiteContainerIterator(psc);
   const Site* site = 0;
   vector< int > state(2);
   while (si->hasMoreSites())
@@ -583,11 +583,11 @@ size_t SequenceStatistics::stopCodonSiteNumber(const PolymorphismSequenceContain
    * Sylvain Gaillard 17/03/2010
    * What if the Alphabet is not a codon alphabet?
    */
-  SiteIterator* si = 0;
+  ConstSiteIterator* si = 0;
   if (gapflag)
-    si = new NoGapSiteIterator(psc);
+    si = new NoGapSiteContainerIterator(psc);
   else
-    si = new SimpleSiteIterator(psc);
+    si = new SimpleSiteContainerIterator(psc);
   size_t S = 0;
   const Site* site = 0;
   while (si->hasMoreSites())
@@ -602,15 +602,15 @@ size_t SequenceStatistics::stopCodonSiteNumber(const PolymorphismSequenceContain
 
 size_t SequenceStatistics::monoSitePolymorphicCodonNumber(const PolymorphismSequenceContainer& psc, bool stopflag, bool gapflag)
 {
-  SiteIterator* si = 0;
+  ConstSiteIterator* si = 0;
   if (stopflag)
-    si = new CompleteSiteIterator(psc);
+    si = new CompleteSiteContainerIterator(psc);
   else
   {
     if (gapflag)
-      si = new NoGapSiteIterator(psc);
+      si = new NoGapSiteContainerIterator(psc);
     else
-      si = new SimpleSiteIterator(psc);
+      si = new SimpleSiteContainerIterator(psc);
   }
   size_t S = 0;
   const Site* site;
@@ -626,7 +626,7 @@ size_t SequenceStatistics::monoSitePolymorphicCodonNumber(const PolymorphismSequ
 
 size_t SequenceStatistics::synonymousPolymorphicCodonNumber(const PolymorphismSequenceContainer& psc, const GeneticCode& gc)
 {
-  SiteIterator* si = new CompleteSiteIterator(psc);
+  ConstSiteIterator* si = new CompleteSiteContainerIterator(psc);
   size_t S = 0;
   const Site* site;
   while (si->hasMoreSites())
@@ -662,7 +662,7 @@ double SequenceStatistics::watterson75NonSynonymous(const PolymorphismSequenceCo
 double SequenceStatistics::piSynonymous(const PolymorphismSequenceContainer& psc, const GeneticCode& gc, bool minchange)
 {
   double S = 0.;
-  SiteIterator* si = new CompleteSiteIterator(psc);
+  ConstSiteIterator* si = new CompleteSiteContainerIterator(psc);
   const Site* site = 0;
   while (si->hasMoreSites())
   {
@@ -676,7 +676,7 @@ double SequenceStatistics::piSynonymous(const PolymorphismSequenceContainer& psc
 double SequenceStatistics::piNonSynonymous(const PolymorphismSequenceContainer& psc, const GeneticCode& gc, bool minchange)
 {
   double S = 0.;
-  SiteIterator* si = new CompleteSiteIterator(psc);
+  ConstSiteIterator* si = new CompleteSiteContainerIterator(psc);
   const Site* site = 0;
   while (si->hasMoreSites())
   {
@@ -690,7 +690,7 @@ double SequenceStatistics::piNonSynonymous(const PolymorphismSequenceContainer& 
 double SequenceStatistics::meanSynonymousSitesNumber(const PolymorphismSequenceContainer& psc, const GeneticCode& gc, double ratio)
 {
   double S = 0.;
-  SiteIterator* si = new CompleteSiteIterator(psc);
+  ConstSiteIterator* si = new CompleteSiteContainerIterator(psc);
   const Site* site = 0;
   while (si->hasMoreSites())
   {
@@ -705,7 +705,7 @@ double SequenceStatistics::meanNonSynonymousSitesNumber(const PolymorphismSequen
 {
   double S = 0.;
   int n = 0;
-  SiteIterator* si = new CompleteSiteIterator(psc);
+  ConstSiteIterator* si = new CompleteSiteContainerIterator(psc);
   const Site* site = 0;
   while (si->hasMoreSites())
   {
@@ -720,7 +720,7 @@ double SequenceStatistics::meanNonSynonymousSitesNumber(const PolymorphismSequen
 size_t SequenceStatistics::synonymousSubstitutionsNumber(const PolymorphismSequenceContainer& psc, const GeneticCode& gc, double freqmin)
 {
   size_t St = 0, Sns = 0;
-  SiteIterator* si = new CompleteSiteIterator(psc);
+  ConstSiteIterator* si = new CompleteSiteContainerIterator(psc);
   const Site* site = 0;
   while (si->hasMoreSites())
   {
@@ -735,7 +735,7 @@ size_t SequenceStatistics::synonymousSubstitutionsNumber(const PolymorphismSeque
 size_t SequenceStatistics::nonSynonymousSubstitutionsNumber(const PolymorphismSequenceContainer& psc, const GeneticCode& gc, double freqmin)
 {
   size_t Sns = 0;
-  SiteIterator* si = new CompleteSiteIterator(psc);
+  ConstSiteIterator* si = new CompleteSiteContainerIterator(psc);
   const Site* site = 0;
   while (si->hasMoreSites())
   {
@@ -748,9 +748,9 @@ size_t SequenceStatistics::nonSynonymousSubstitutionsNumber(const PolymorphismSe
 
 vector<size_t> SequenceStatistics::fixedDifferences(const PolymorphismSequenceContainer& pscin, const PolymorphismSequenceContainer& pscout, PolymorphismSequenceContainer& psccons, const GeneticCode& gc)
 {
-  SiteIterator* siIn = new CompleteSiteIterator(pscin);
-  SiteIterator* siOut = new CompleteSiteIterator(pscout);
-  SiteIterator* siCons = new CompleteSiteIterator(psccons);
+  ConstSiteIterator* siIn = new CompleteSiteContainerIterator(pscin);
+  ConstSiteIterator* siOut = new CompleteSiteContainerIterator(pscout);
+  ConstSiteIterator* siCons = new CompleteSiteContainerIterator(psccons);
   const Site* siteIn = 0;
   const Site* siteOut = 0;
   const Site* siteCons = 0;

@@ -48,7 +48,7 @@
 #include <Bpp/Seq/SymbolListTools.h>
 #include <Bpp/Seq/Alphabet/CodonAlphabet.h>
 #include <Bpp/Seq/GeneticCode/GeneticCode.h>
-#include <Bpp/Seq/Container/SiteIterator.h>
+#include <Bpp/Seq/Container/SiteContainerIterator.h>
 #include <Bpp/Seq/Container/SiteContainer.h>
 #include <Bpp/Seq/Container/SiteContainerTools.h>
 
