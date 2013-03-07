@@ -1,3 +1,9 @@
+libbpp-popgen (2.1.0-1) unstable; urgency=low
+
+  * Bug fixed and warnings removed.
+
+ -- Julien Dutheil <julien.dutheil@univ-montp2.fr>  Thu, 07 Mar 2013 10:51:00 +0100
+
 libbpp-popgen (2.0.3-1) unstable; urgency=low
 
   * Recompilation because of dependencies.
