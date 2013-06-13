@@ -58,8 +58,7 @@ using namespace std;
 #include <Bpp/Seq/StringSequenceTools.h>
 #include <Bpp/Seq/CodonSiteTools.h>
 #include <Bpp/Seq/Alphabet/DNA.h>
-#include <Bpp/Seq/Alphabet/StandardCodonAlphabet.h>
-#include <Bpp/Seq/GeneticCode/StandardGeneticCode.h>
+#include <Bpp/Seq/Alphabet/AlphabetTools.h>
 
 #include <Bpp/Numeric/VectorTools.h>
 #include <Bpp/Numeric/VectorExceptions.h>
@@ -577,12 +576,15 @@ double SequenceStatistics::getTransitionsTransversionsRatio(const PolymorphismSe
 // Synonymous and non-synonymous polymorphism
 // ******************************************************************************
 
-size_t SequenceStatistics::stopCodonSiteNumber(const PolymorphismSequenceContainer& psc, bool gapflag)
+size_t SequenceStatistics::stopCodonSiteNumber(const PolymorphismSequenceContainer& psc, const GeneticCode& gCode, bool gapflag)
 {
   /*
    * Sylvain Gaillard 17/03/2010
    * What if the Alphabet is not a codon alphabet?
    */
+  if (!AlphabetTools::isCodonAlphabet(psc.getAlphabet()))
+    throw AlphabetMismatchException("SequenceStatistics::stopCodonSiteNumber(). PolymorphismSequenceContainer must be with a codon alphabet.", psc.getAlphabet());
+
   ConstSiteIterator* si = 0;
   if (gapflag)
     si = new NoGapSiteContainerIterator(psc);
@@ -593,7 +595,7 @@ size_t SequenceStatistics::stopCodonSiteNumber(const PolymorphismSequenceContain
   while (si->hasMoreSites())
   {
     site = si->nextSite();
-    if (CodonSiteTools::hasStop(*site))
+    if (CodonSiteTools::hasStop(*site, gCode))
       S++;
   }
   delete si;
@@ -725,7 +727,7 @@ size_t SequenceStatistics::synonymousSubstitutionsNumber(const PolymorphismSeque
   while (si->hasMoreSites())
   {
     site = si->nextSite();
-    St += CodonSiteTools::numberOfSubsitutions(*site, freqmin);
+    St += CodonSiteTools::numberOfSubsitutions(*site, gc, freqmin);
     Sns += CodonSiteTools::numberOfNonSynonymousSubstitutions(*site, gc, freqmin);
   }
   delete si;

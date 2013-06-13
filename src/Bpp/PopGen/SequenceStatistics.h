@@ -320,12 +320,14 @@ public:
    * @brief Compute the number of codon sites with stop codon
    *
    * @param psc a PolymorphismSequenceContainer
+   * @param gCode the genetic code to use
    * @param gapflag a boolean set by default to true if you don't want to
    * take gaps into account
    * @author Sylvain Glémin
    */
   static size_t stopCodonSiteNumber(
     const PolymorphismSequenceContainer& psc,
+    const GeneticCode& gCode,
     bool gapflag = true);
 
   /**

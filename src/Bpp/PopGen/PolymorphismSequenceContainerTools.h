@@ -95,7 +95,7 @@ public:
    *
    * @throw Exception if there is no ingroup sequence
    */
-  static PolymorphismSequenceContainer* extractIngroup (const PolymorphismSequenceContainer& psc) throw (Exception);
+  static PolymorphismSequenceContainer* extractIngroup(const PolymorphismSequenceContainer& psc) throw (Exception);
 
   /**
    * @brief Extract outgroup sequences from a PolymorphismSequenceContainer and create a new one.
@@ -104,7 +104,7 @@ public:
    *
    * @throw Exception if there is no outgroup sequence
    */
-  static PolymorphismSequenceContainer* extractOutgroup (const PolymorphismSequenceContainer& psc) throw (Exception);
+  static PolymorphismSequenceContainer* extractOutgroup(const PolymorphismSequenceContainer& psc) throw (Exception);
 
   /**
    * @brief Extract a special group from the PolymorphismSequenceContainer.
@@ -124,7 +124,6 @@ public:
    *
    */
   static PolymorphismSequenceContainer* getSelectedSequences(const PolymorphismSequenceContainer& psc, const SequenceSelection& ss);
-
 
   /**
    * @brief Get a random set of sequences
@@ -221,9 +220,9 @@ public:
    *
    * @param psc a PolymorphismSequenceContainer
    * @param setName name of the CDS site selection
-   * @param ca a codon alphabet
+   * @param gCode The genetic code to use
    */
-  static PolymorphismSequenceContainer* getIntrons(const PolymorphismSequenceContainer& psc, const std::string& setName, const CodonAlphabet* ca );
+  static PolymorphismSequenceContainer* getIntrons(const PolymorphismSequenceContainer& psc, const std::string& setName, const GeneticCode* gCode);
 
   /**
    * @brief Retrieve 5' sites
@@ -238,9 +237,9 @@ public:
    *
    * @param psc a PolymorphismSequenceContainer
    * @param setName name of the CDS site selection
-   * @param ca a codon alphabet
+   * @param gCode The genetic code to use
    */
-  static PolymorphismSequenceContainer* get3Prime(const PolymorphismSequenceContainer& psc, const std::string& setName, const CodonAlphabet* ca );
+  static PolymorphismSequenceContainer* get3Prime(const PolymorphismSequenceContainer& psc, const std::string& setName, const GeneticCode* gCode);
 
   /**
    * @brief Get the species name of the ingroup

@@ -430,7 +430,10 @@ PolymorphismSequenceContainer* PolymorphismSequenceContainerTools::getOnePositio
 
 /******************************************************************************/
 
-PolymorphismSequenceContainer* PolymorphismSequenceContainerTools::getIntrons(const PolymorphismSequenceContainer& psc, const std::string& setName, const CodonAlphabet* ca )
+PolymorphismSequenceContainer* PolymorphismSequenceContainerTools::getIntrons(
+    const PolymorphismSequenceContainer& psc,
+    const std::string& setName,
+    const GeneticCode* gCode)
 {
   Comments maseFileHeader = psc.getGeneralComments();
   SiteSelection ss;
@@ -456,7 +459,7 @@ PolymorphismSequenceContainer* PolymorphismSequenceContainerTools::getIntrons(co
   int c1 = psc.getSite(codss[codss.size() - 3]).getValue(0);
   int c2 = psc.getSite(codss[codss.size() - 2]).getValue(0);
   int c3 = psc.getSite(codss[codss.size() - 1]).getValue(0);
-  if (ca->isStop(ca->getCodon(c1, c2, c3)))
+  if (gCode->isStop(gCode->getSourceAlphabet()->getCodon(c1, c2, c3)))
     last = codss[codss.size() - 1];
   // Keep sites between AUG and STOP
   for (size_t i = first; i < last; i++)
@@ -522,7 +525,10 @@ PolymorphismSequenceContainer* PolymorphismSequenceContainerTools::get5Prime(con
 
 /******************************************************************************/
 
-PolymorphismSequenceContainer* PolymorphismSequenceContainerTools::get3Prime(const PolymorphismSequenceContainer& psc, const std::string& setName, const CodonAlphabet* ca )
+PolymorphismSequenceContainer* PolymorphismSequenceContainerTools::get3Prime(
+    const PolymorphismSequenceContainer& psc,
+    const std::string& setName,
+    const GeneticCode* gCode)
 {
   Comments maseFileHeader = psc.getGeneralComments();
   SiteSelection ss;
@@ -532,7 +538,7 @@ PolymorphismSequenceContainer* PolymorphismSequenceContainerTools::get3Prime(con
   int c1 = psc.getSite(codss[codss.size() - 3]).getValue(0);
   int c2 = psc.getSite(codss[codss.size() - 2]).getValue(0);
   int c3 = psc.getSite(codss[codss.size() - 1]).getValue(0);
-  if (ca->isStop(ca->getCodon(c1, c2, c3)))
+  if (gCode->isStop(gCode->getSourceAlphabet()->getCodon(c1, c2, c3)))
     first = codss[codss.size() - 1];
   for (size_t i = first; i < psc.getNumberOfSites(); i++)
   {
