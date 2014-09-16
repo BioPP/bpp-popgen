@@ -298,7 +298,7 @@ double SequenceStatistics::watterson75(const PolymorphismSequenceContainer& psc,
 
 double SequenceStatistics::tajima83(const PolymorphismSequenceContainer& psc, bool gapflag)
 {
-  size_t alphabet_size = (psc.getAlphabet())->getSize();
+  size_t alphabet_size = psc.getAlphabet()->getSize();
   const Site* site = 0;
   ConstSiteIterator* si = 0;
   double value2 = 0.;

@@ -227,7 +227,7 @@ public:
    * @brief Compute diversity estimator Theta of Tajima (1983, Genetics, 105 pp437-460)
    *
    * @f[
-   * \hat{\theta}_\pi=1-\sum_{i=1}^{S}\sum_{j=1}^{4}\frac{k_{j,i}\times\left(k_{j,i}-1\right)}
+   * \hat{\theta}_\pi=\sum_{i=1}^{S}\left(1-\sum_{j=1}^{4}\frac{k_{j,i}\times\left(k_{j,i}-1\right)\right)}
    * {n_i\times\left(n_i-1\right)} \qquad \textrm{with }k_{j,i}>0
    * @f]
    * where @f$k_{j,i}@f$ is the count of the j<sup>th</sup> state at the
