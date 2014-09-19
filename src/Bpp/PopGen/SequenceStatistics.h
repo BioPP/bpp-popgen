@@ -209,7 +209,7 @@ public:
    * \hat{\theta}_S=\frac{S}{a_1}
    * @f]
    * where @f$S@f$ is the number of polymorphic sites and @f$a_1@f$ is
-   * describe in SequenceStatistics::_getUsefullValues().
+   * describe in SequenceStatistics::getUsefulValues_().
    *
    * @param psc a PolymorphismSequenceContainer
    * @param gapflag flag set by default to true if you don't want to
@@ -1085,12 +1085,12 @@ public:
     double csup = 10000.);
 
   /**
-   * @brief Test usefull values
+   * @brief Test useful values
    * @param s a ostream where write the values
    * @param n then number of observed sequences
    * @author Sylvain Gaillard
    */
-  static void testUsefullValues(
+  static void testUsefulValues(
     std::ostream& s,
     size_t n);
 
@@ -1098,14 +1098,12 @@ private:
   /**
    * @brief Count the number of mutation for a site.
    */
-  static size_t getMutationNumber_(
-    const Site& site);
+  static unsigned int getNumberOfMutations_(const Site& site);
 
   /**
    * @brief Count the number of singleton for a site.
    */
-  static size_t getSingletonNumber_(
-    const Site& site);
+  static unsigned int getNumberOfSingletons_(const Site& site);
 
   /**
    * @brief Count the number of singleton for a site.
@@ -1114,12 +1112,12 @@ private:
    * site_in is a site from an ingroup
    * @author Khalid Belkhir
    */
-  static size_t getDerivedSingletonNumber_(
+  static unsigned getNumberOfDerivedSingletons_(
     const Site& site_in,
     const Site& site_out);
 
   /**
-   * @brief Get usefull values for theta estimators.
+   * @brief Get useful values for theta estimators.
    *
    * @param n the number of observed sequences
    *
@@ -1151,16 +1149,16 @@ private:
    *
    * @author Sylvain Gaillard
    */
-  static std::map<std::string, double> getUsefullValues_(
+  static std::map<std::string, double> getUsefulValues_(
     size_t n);
 
   /**
    * @brief Get the vD value of equation (32) in Fu & Li 1993, Genetics, 133 pp693-709)
    *
    * @param n the number of observed sequences
-   * @param a1 as describe in getUsefullValues
-   * @param a2 as describe in getUsefullValues
-   * @param cn as describe in getUsefullValues
+   * @param a1 as describe in getUsefulValues
+   * @param a2 as describe in getUsefulValues
+   * @param cn as describe in getUsefulValues
    *
    * @return the vD value as double
    *
@@ -1175,7 +1173,7 @@ private:
   /**
    * @brief Get the uD value of equation (32) in Fu & Li 1993, Genetics, 133 pp693-709)
    *
-   * @param a1 as describe in getUsefullValues
+   * @param a1 as describe in getUsefulValues
    * @param vD as provided by getVD_
    *
    * @return the uD value as double
@@ -1190,9 +1188,9 @@ private:
    * @brief Get the vD* value of D* equation in Fu & Li 1993, Genetics, 133 pp693-709)
    *
    * @param n the number of observed sequences
-   * @param a1 as describe in getUsefullValues
-   * @param a2 as describe in getUsefullValues
-   * @param dn as describe in getUsefullValues
+   * @param a1 as describe in getUsefulValues
+   * @param a2 as describe in getUsefulValues
+   * @param dn as describe in getUsefulValues
    *
    * @return the vD* value as double
    *
@@ -1208,7 +1206,7 @@ private:
    * @brief Get the uD* value of D* equation in Fu & Li 1993, Genetics, 133 pp693-709)
    *
    * @param n the number of observed sequences
-   * @param a1 as describe in getUsefullValues
+   * @param a1 as describe in getUsefulValues
    * @param vDs as provided by getVDstar_
    *
    * @return the uD* value as double

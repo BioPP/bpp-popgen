@@ -121,7 +121,7 @@ unsigned int SequenceStatistics::numberOfSingletons(const PolymorphismSequenceCo
   while (si->hasMoreSites())
   {
     site = si->nextSite();
-    nus += getSingletonNumber_(*site);
+    nus += getNumberOfSingletons_(*site);
   }
   return nus;
 }
@@ -158,7 +158,7 @@ unsigned int SequenceStatistics::totalNumberOfMutations(const PolymorphismSequen
   while (si->hasMoreSites())
   {
     site = si->nextSite();
-    tnm += getMutationNumber_(*site);
+    tnm += getNumberOfMutations_(*site);
   }
   return tnm;
 }
@@ -180,7 +180,7 @@ unsigned int SequenceStatistics::totalNumberOfMutationsOnExternalBranches(
     site_out = so->nextSite();
     // use fully resolved sites
     if (SiteTools::isComplete(*site_in) &&  SiteTools::isComplete(*site_out))
-      nmuts += getDerivedSingletonNumber_(*site_in, *site_out);                                                                   // singletons that are not in outgroup
+      nmuts += getNumberOfDerivedSingletons_(*site_in, *site_out);                                                                   // singletons that are not in outgroup
   }
   return nmuts;
 }
@@ -236,7 +236,7 @@ std::vector<unsigned int> SequenceStatistics::gcPolymorphism(const PolymorphismS
 {
   unsigned int nbMut = 0;
   unsigned int nbGC = 0;
-  const size_t nbSeq = psc.getNumberOfSequences();
+  size_t nbSeq = psc.getNumberOfSequences();
   vector<unsigned int> vect(2);
   const Site* site = 0;
   auto_ptr<ConstSiteIterator> si;
@@ -258,9 +258,9 @@ std::vector<unsigned int> SequenceStatistics::gcPolymorphism(const PolymorphismS
        */
       if (freqGC > 0 && freqGC < 1)
       {
-        nbMut += static_cast<size_t>(nbSeq);
+        nbMut += static_cast<unsigned int>(nbSeq);
         long double adGC = freqGC * nbSeq;
-        nbGC += static_cast<size_t>(adGC);
+        nbGC += static_cast<unsigned int>(adGC);
       }
     }
   }
@@ -278,7 +278,7 @@ double SequenceStatistics::watterson75(const PolymorphismSequenceContainer& psc,
   double ThetaW;
   size_t n = psc.getNumberOfSequences();
   unsigned int s = numberOfPolymorphicSites(psc, gapflag, ignoreUnknown);
-  map<string, double> values = getUsefullValues_(n);
+  map<string, double> values = getUsefulValues_(n);
   ThetaW = static_cast<double>(s) / values["a1"];
   return ThetaW;
 }
@@ -625,7 +625,7 @@ double SequenceStatistics::watterson75Synonymous(const PolymorphismSequenceConta
   double ThetaW = 0.;
   size_t n = psc.getNumberOfSequences();
   unsigned int s = numberOfSynonymousSubstitutions(psc, gc);
-  map<string, double> values = getUsefullValues_(n);
+  map<string, double> values = getUsefulValues_(n);
   ThetaW = static_cast<double>(s) / values["a1"];
   return ThetaW;
 }
@@ -635,7 +635,7 @@ double SequenceStatistics::watterson75NonSynonymous(const PolymorphismSequenceCo
   double ThetaW;
   size_t n = psc.getNumberOfSequences();
   unsigned int s = numberOfNonSynonymousSubstitutions(psc, gc);
-  map<string, double> values = getUsefullValues_(n);
+  map<string, double> values = getUsefulValues_(n);
   ThetaW = static_cast<double>(s) / values["a1"];
   return ThetaW;
 }
@@ -700,7 +700,7 @@ double SequenceStatistics::meanNumberOfNonSynonymousSites(const PolymorphismSequ
 
 unsigned int SequenceStatistics::numberOfSynonymousSubstitutions(const PolymorphismSequenceContainer& psc, const GeneticCode& gc, double freqmin)
 {
-  unsigned int st = 0, sns = 0;
+  size_t st = 0, sns = 0;
   auto_ptr<ConstSiteIterator> si(new CompleteSiteContainerIterator(psc));
   const Site* site = 0;
   while (si->hasMoreSites())
@@ -709,7 +709,7 @@ unsigned int SequenceStatistics::numberOfSynonymousSubstitutions(const Polymorph
     st  += CodonSiteTools::numberOfSubsitutions(*site, gc, freqmin);
     sns += CodonSiteTools::numberOfNonSynonymousSubstitutions(*site, gc, freqmin);
   }
-  return st - sns;
+  return static_cast<unsigned int>(st - sns);
 }
 
 unsigned int SequenceStatistics::numberOfNonSynonymousSubstitutions(const PolymorphismSequenceContainer& psc, const GeneticCode& gc, double freqmin)
@@ -720,7 +720,7 @@ unsigned int SequenceStatistics::numberOfNonSynonymousSubstitutions(const Polymo
   while (si->hasMoreSites())
   {
     site = si->nextSite();
-    sns += CodonSiteTools::numberOfNonSynonymousSubstitutions(*site, gc, freqmin);
+    sns += static_cast<unsigned int>(CodonSiteTools::numberOfNonSynonymousSubstitutions(*site, gc, freqmin));
   }
   return sns;
 }
@@ -733,8 +733,8 @@ vector<unsigned int> SequenceStatistics::fixedDifferences(const PolymorphismSequ
   const Site* siteIn = 0;
   const Site* siteOut = 0;
   const Site* siteCons = 0;
-  unsigned int NfixS = 0;
-  unsigned int NfixA = 0;
+  size_t NfixS = 0;
+  size_t NfixA = 0;
   while (siIn->hasMoreSites())
   {
     siteIn = siIn->nextSite();
@@ -745,8 +745,8 @@ vector<unsigned int> SequenceStatistics::fixedDifferences(const PolymorphismSequ
     NfixA += v[1];
   }
   vector<unsigned int> v(2);
-  v[0] = NfixS;
-  v[1] = NfixA;
+  v[0] = static_cast<unsigned int>(NfixS);
+  v[1] = static_cast<unsigned int>(NfixA);
   return v;
 }
 
@@ -797,7 +797,7 @@ double SequenceStatistics::tajimaDss(const PolymorphismSequenceContainer& psc, b
   double tajima = tajima83(psc, gapflag);
   double watterson = watterson75(psc, gapflag);
   size_t n = psc.getNumberOfSequences();
-  map<string, double> values = getUsefullValues_(n);
+  map<string, double> values = getUsefulValues_(n);
   return (tajima - watterson) / sqrt((values["e1"] * S) + (values["e2"] * S * (S - 1)));
 }
 
@@ -809,7 +809,7 @@ double SequenceStatistics::tajimaDtnm(const PolymorphismSequenceContainer& psc, 
   double eta = static_cast<double>(etaP);
   double tajima = tajima83(psc, gapflag);
   size_t n = psc.getNumberOfSequences();
-  map<string, double> values = getUsefullValues_(n);
+  map<string, double> values = getUsefulValues_(n);
   double eta_a1 = eta / values["a1"];
   return (tajima - eta_a1) / sqrt((values["e1"] * eta) + (values["e2"] * eta * (eta - 1)));
 }
@@ -817,7 +817,7 @@ double SequenceStatistics::tajimaDtnm(const PolymorphismSequenceContainer& psc, 
 double SequenceStatistics::fuLiD(const PolymorphismSequenceContainer& ingroup, const PolymorphismSequenceContainer& outgroup, bool original) throw (ZeroDivisionException)
 {
   size_t n = ingroup.getNumberOfSequences();
-  map<string, double> values = getUsefullValues_(n);
+  map<string, double> values = getUsefulValues_(n);
   double vD = getVD_(n, values["a1"], values["a2"], values["cn"]);
   double uD = getUD_(values["a1"], vD);
   unsigned int etaP = totalNumberOfMutations(ingroup);
@@ -837,7 +837,7 @@ double SequenceStatistics::fuLiDStar(const PolymorphismSequenceContainer& group)
   size_t n = group.getNumberOfSequences();
   double nn = static_cast<double>(n);
   double _n = nn / (nn - 1.);
-  map<string, double> values = getUsefullValues_(n);
+  map<string, double> values = getUsefulValues_(n);
   double vDs = getVDstar_(n, values["a1"], values["a2"], values["dn"]);
   double uDs = getUDstar_(n, values["a1"], vDs);
   double eta = static_cast<double>(totalNumberOfMutations(group));
@@ -858,7 +858,7 @@ double SequenceStatistics::fuLiF(const PolymorphismSequenceContainer& ingroup, c
 {
   size_t n = ingroup.getNumberOfSequences();
   double nn = static_cast<double>(n);
-  map<string, double> values = getUsefullValues_(n);
+  map<string, double> values = getUsefulValues_(n);
   double pi = tajima83(ingroup, true);
   double vF = (values["cn"] + values["b2"] - 2. / (nn - 1.)) / (pow(values["a1"], 2) + values["a2"]);
   double uF = ((1. + values["b1"] - (4. * ((nn + 1.) / ((nn - 1.) * (nn - 1.)))) * (values["a1n"] - (2. * nn) / (nn + 1.))) / values["a1"]) - vF;
@@ -876,7 +876,7 @@ double SequenceStatistics::fuLiF(const PolymorphismSequenceContainer& ingroup, c
 double SequenceStatistics::fuLiFStar(const PolymorphismSequenceContainer& group) throw (ZeroDivisionException)
 {
   double n = static_cast<double>(group.getNumberOfSequences());
-  map<string, double> values = getUsefullValues_(group.getNumberOfSequences());
+  map<string, double> values = getUsefulValues_(group.getNumberOfSequences());
   double pi = tajima83(group, true);
 
   // Fu & Li 1993
@@ -1500,9 +1500,9 @@ double SequenceStatistics::hudson87(const PolymorphismSequenceContainer& psc, do
 /* Tests methods */
 /*****************/
 
-void SequenceStatistics::testUsefullValues(std::ostream& s, size_t n)
+void SequenceStatistics::testUsefulValues(std::ostream& s, size_t n)
 {
-  map<string, double> v = getUsefullValues_(n);
+  map<string, double> v = getUsefulValues_(n);
   double vD = getVD_(n, v["a1"], v["a2"], v["cn"]);
   double uD = getUD_(v["a1"], vD);
   double vDs = getVDstar_(n, v["a1"], v["a2"], v["dn"]);
@@ -1530,9 +1530,9 @@ void SequenceStatistics::testUsefullValues(std::ostream& s, size_t n)
 // Private methods
 // ******************************************************************************
 
-size_t SequenceStatistics::getMutationNumber_(const Site& site)
+unsigned int SequenceStatistics::getNumberOfMutations_(const Site& site)
 {
-  size_t tmp_count = 0;
+  unsigned int tmp_count = 0;
   map<int, size_t> states_count;
   SymbolListTools::getCounts(site, states_count);
 
@@ -1546,9 +1546,9 @@ size_t SequenceStatistics::getMutationNumber_(const Site& site)
   return tmp_count;
 }
 
-size_t SequenceStatistics::getSingletonNumber_(const Site& site)
+unsigned int SequenceStatistics::getNumberOfSingletons_(const Site& site)
 {
-  size_t nus = 0;
+  unsigned int nus = 0;
   map<int, size_t> states_count;
   SymbolListTools::getCounts(site, states_count);
   for (map<int, size_t>::iterator it = states_count.begin(); it != states_count.end(); it++)
@@ -1559,9 +1559,9 @@ size_t SequenceStatistics::getSingletonNumber_(const Site& site)
   return nus;
 }
 
-size_t SequenceStatistics::getDerivedSingletonNumber_(const Site& site_in, const Site& site_out)
+unsigned int SequenceStatistics::getNumberOfDerivedSingletons_(const Site& site_in, const Site& site_out)
 {
-  size_t nus = 0;
+  unsigned int nus = 0;
   map<int, size_t> states_count;
   map<int, size_t> outgroup_states_count;
   SymbolListTools::getCounts(site_in, states_count);
@@ -1581,7 +1581,7 @@ size_t SequenceStatistics::getDerivedSingletonNumber_(const Site& site_in, const
   return nus;
 }
 
-std::map<std::string, double> SequenceStatistics::getUsefullValues_(size_t n)
+std::map<std::string, double> SequenceStatistics::getUsefulValues_(size_t n)
 {
   double nn = static_cast<double>(n);
   map<string, double> values;
