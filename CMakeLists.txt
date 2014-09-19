@@ -41,7 +41,7 @@ ELSE(NO_DEP_CHECK)
 #           library implements.
 # In other words, the library implements all the interface numbers in the
 # range from number current - age to current.
-SET(BPPPOPGEN_VERSION_CURRENT "7")
+SET(BPPPOPGEN_VERSION_CURRENT "6")
 SET(BPPPOPGEN_VERSION_REVISION "0")
 SET(BPPPOPGEN_VERSION_AGE "0")
 
