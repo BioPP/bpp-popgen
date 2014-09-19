@@ -44,7 +44,7 @@
 #ifndef _SEQUENCESTATISTICS_H_
 #define _SEQUENCESTATISTICS_H_
 
-// From the SeqLib library
+// From the bpp-seq library
 #include <Bpp/Seq/SymbolListTools.h>
 #include <Bpp/Seq/Alphabet/CodonAlphabet.h>
 #include <Bpp/Seq/GeneticCode/GeneticCode.h>
@@ -84,7 +84,7 @@ public:
    * @param ignoreUnknown a boolean set by default to true to ignore
    * unknown states
    */
-  static size_t polymorphicSiteNumber(
+  static unsigned int numberOfPolymorphicSites(
     const PolymorphismSequenceContainer& psc,
     bool gapflag = true,
     bool ignoreUnknown = true);
@@ -96,7 +96,7 @@ public:
    * @param gapflag a boolean set by default to true if you don't want to
    * take gap into account
    */
-  static size_t parsimonyInformativeSiteNumber(
+  static unsigned int numberOfParsimonyInformativeSites(
     const PolymorphismSequenceContainer& psc,
     bool gapflag = true);
 
@@ -108,7 +108,7 @@ public:
    * take gap into account
    * @author Sylvain Gaillard
    */
-  static size_t countSingleton(
+  static unsigned int numberOfSingletons(
     const PolymorphismSequenceContainer& psc,
     bool gapflag = true);
 
@@ -122,7 +122,7 @@ public:
    * take gap into account
    * @author Sylvain Gaillard
    */
-  static size_t totNumberMutations(
+  static unsigned int totalNumberOfMutations(
     const PolymorphismSequenceContainer& psc,
     bool gapflag = true);
 
@@ -139,7 +139,7 @@ public:
    * @throw Exception if ing and outg are not of the same size (site number)
    * @author Khalid Belkhir
    */
-  static size_t totMutationsExternalBranchs(
+  static unsigned int totalNumberOfMutationsOnExternalBranches(
     const PolymorphismSequenceContainer& ing,
     const PolymorphismSequenceContainer& outg)
   throw (Exception);
@@ -151,7 +151,7 @@ public:
    * @param gapflag a boolean set by default to true if you don't want to take gap into account
    * @author Sylvain Glémin
    */
-  static size_t tripletNumber(
+  static unsigned int numberOfTriplets(
     const PolymorphismSequenceContainer& psc,
     bool gapflag = true);
 
@@ -198,7 +198,7 @@ public:
    * @return A std::vector of size 2 containing the number of GC alleles
    * and the total number of alleles.
    */
-  static std::vector<size_t> gcPolymorphism(
+  static std::vector<unsigned int> gcPolymorphism(
     const PolymorphismSequenceContainer& psc,
     bool gapflag = true);
 
@@ -252,7 +252,7 @@ public:
    * (reconstructed independently) to fold the mutation in the psc SequenceContainer.
      @author Benoit Nabholz
    */
-  static double FayWu2000(
+  static double fayWu2000(
     const PolymorphismSequenceContainer& psc,
     const Sequence& ancestralSites);
 
@@ -266,9 +266,9 @@ public:
    * @author Éric Bazin
    * @todo
    *  - remove unneeded Sequence Container recopy
-   *  - work on Sequence rather on string
+   *  - work on Sequence rather than string
    */
-  static size_t DVK(
+  static unsigned int dvk(
     const PolymorphismSequenceContainer& psc,
     bool gapflag = true);
 
@@ -284,7 +284,7 @@ public:
    *  - remove unneeded Sequence Container recopy
    *  - work on Sequence rather on string
    */
-  static double DVH(
+  static double dvh(
     const PolymorphismSequenceContainer& psc,
     bool gapflag = true);
 
@@ -294,7 +294,7 @@ public:
    * @param psc a PolymorphismSequenceContainer
    * @author Éric Bazin
    */
-  static size_t getNumberOfTransitions(
+  static unsigned int numberOfTransitions(
     const PolymorphismSequenceContainer& psc);
 
   /**
@@ -303,7 +303,7 @@ public:
    * @param psc a PolymorphismSequenceContainer
    * @author Éric Bazin
    */
-  static size_t getNumberOfTransversions(
+  static unsigned int numberOfTransversions(
     const PolymorphismSequenceContainer& psc);
 
   /**
@@ -312,7 +312,7 @@ public:
    * @param psc a PolymorphismSequenceContainer
    * @author Éric Bazin
    */
-  static double getTransitionsTransversionsRatio(
+  static double ratioOfTransitionsTransversions(
     const PolymorphismSequenceContainer& psc )
   throw (Exception);
 
@@ -325,7 +325,7 @@ public:
    * take gaps into account
    * @author Sylvain Glémin
    */
-  static size_t stopCodonSiteNumber(
+  static unsigned int numberOfSitesWithStopCodon(
     const PolymorphismSequenceContainer& psc,
     const GeneticCode& gCode,
     bool gapflag = true);
@@ -342,7 +342,7 @@ public:
    * @bug Sylvain Gaillard 17/03/2010: stopflag don't work as expected
    * because CompleteSiteIterator don't skip stop codon.
    */
-  static size_t monoSitePolymorphicCodonNumber(
+  static unsigned int numberOfMonoSitePolymorphicCodons(
     const PolymorphismSequenceContainer& psc,
     bool stopflag = true,
     bool gapflag = true);
@@ -357,7 +357,7 @@ public:
    * @author Sylvain Glémin
    * @author Éric Bazin
    */
-  static size_t synonymousPolymorphicCodonNumber(
+  static unsigned int numberOfSynonymousPolymorphicCodons(
     const PolymorphismSequenceContainer& psc,
     const GeneticCode& gc);
 
@@ -451,7 +451,7 @@ public:
    * @author Sylvain Glémin
    * @author Éric Bazin
    */
-  static double meanSynonymousSitesNumber(
+  static double meanNumberOfSynonymousSites(
     const PolymorphismSequenceContainer& psc,
     const GeneticCode& gc,
     double ratio = 1.);
@@ -469,7 +469,7 @@ public:
    * @param ratio a double
    * @author Éric Bazin
    */
-  static double meanNonSynonymousSitesNumber(
+  static double meanNumberOfNonSynonymousSites(
     const PolymorphismSequenceContainer& psc,
     const GeneticCode& gc,
     double ratio = 1.);
@@ -489,7 +489,7 @@ public:
    * @param freqmin a double, to exclude snp in frequency strictly lower
    * than freqmin
    */
-  static size_t synonymousSubstitutionsNumber(
+  static unsigned int numberOfSynonymousSubstitutions(
     const PolymorphismSequenceContainer& psc,
     const GeneticCode& gc,
     double freqmin = 0.);
@@ -509,7 +509,7 @@ public:
    * @param freqmin a double, to exclude snp in frequency strictly lower
    * than freqmin
    */
-  static size_t nonSynonymousSubstitutionsNumber(
+  static unsigned int numberOfNonSynonymousSubstitutions(
     const PolymorphismSequenceContainer& psc,
     const GeneticCode& gc,
     double freqmin = 0.);
@@ -531,7 +531,7 @@ public:
    * @bug Sylvain Gaillard 17.03.2010: should throw something if pscin,
    * pscout and psccons have different length (site number).
    */
-  static std::vector<size_t> fixedDifferences(
+  static std::vector<unsigned int> fixedDifferences(
     const PolymorphismSequenceContainer& pscin,
     const PolymorphismSequenceContainer& pscout,
     PolymorphismSequenceContainer& psccons,
@@ -548,7 +548,7 @@ public:
    * than freqmin
    * @author Sylvain Glémin
    */
-  static std::vector<size_t> MKtable(
+  static std::vector<unsigned int> mkTable(
     const PolymorphismSequenceContainer& ingroup,
     const PolymorphismSequenceContainer& outgroup,
     const GeneticCode& gc,
@@ -588,7 +588,7 @@ public:
    * @throw ZeroDivisionException if S == 0
    * @author Sylvain Gaillard
    */
-  static double tajimaDSS(
+  static double tajimaDss(
     const PolymorphismSequenceContainer& psc,
     bool gapflag = true)
   throw (ZeroDivisionException);
@@ -606,7 +606,7 @@ public:
    * @throw ZeroDivisionException if eta == 0
    * @author Sylvain Gaillard
    */
-  static double tajimaDTNM(
+  static double tajimaDtnm(
     const PolymorphismSequenceContainer& psc,
     bool gapflag = true)
   throw (ZeroDivisionException);
@@ -626,7 +626,7 @@ public:
    * If the outgroup contains more than one sequence the sites with more
    * than one variant will not be considered for external branch mutations!
    */
-  static double fuliD(
+  static double fuLiD(
     const PolymorphismSequenceContainer& ingroup,
     const PolymorphismSequenceContainer& outgroup,
     bool original = true)
@@ -638,7 +638,7 @@ public:
    * @param group a PolymorphismSequenceContainer
    * @author Sylvain Gaillard
    */
-  static double fuliDstar(
+  static double fuLiDStar(
     const PolymorphismSequenceContainer& group)
   throw (ZeroDivisionException);
 
@@ -656,7 +656,7 @@ public:
    * If the outgroup contains more than one sequence the sites with more
    * than one variant will not be considered for external branch mutations!
    */
-  static double fuliF(
+  static double fuLiF(
     const PolymorphismSequenceContainer& ingroup,
     const PolymorphismSequenceContainer& outgroup,
     bool original = true)
@@ -668,7 +668,7 @@ public:
    * @param group a PolymorphismSequenceContainer
    * @author Sylvain Gaillard
    */
-  static double fuliFstar(
+  static double fuLiFStar(
     const PolymorphismSequenceContainer& group)
   throw (ZeroDivisionException);
 
@@ -690,7 +690,7 @@ public:
    * @param id2 is the id of the population 2
    * @author Benoit Nabholz
    */
-  double FstHudson92(
+  double fstHudson92(
     const PolymorphismSequenceContainer& psc,
     size_t id1,
     size_t id2);
@@ -722,7 +722,7 @@ public:
    * @todo
    *  - To be moved to PolymorphismSequenceContainerTools.
    */
-  static PolymorphismSequenceContainer* generateLDContainer(
+  static PolymorphismSequenceContainer* generateLdContainer(
     const PolymorphismSequenceContainer& psc,
     bool keepsingleton = true,
     double freqmin = 0.);

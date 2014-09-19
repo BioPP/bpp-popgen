@@ -133,7 +133,7 @@ std::auto_ptr<Individual> Group::removeIndividualById(const std::string& individ
   {
     size_t indPos = getIndividualPosition(individual_id);
     auto_ptr<Individual> ind(individuals_[indPos]);
-    individuals_.erase(individuals_.begin() + indPos);
+    individuals_.erase(individuals_.begin() + static_cast<ptrdiff_t>(indPos));
     return ind;
   }
   catch (IndividualNotFoundException& infe)
@@ -147,7 +147,7 @@ std::auto_ptr<Individual> Group::removeIndividualAtPosition(size_t individual_po
   if (individual_position >= individuals_.size())
     throw IndexOutOfBoundsException("Group::removeIndividualAtPosition.", individual_position, 0, individuals_.size());
   auto_ptr<Individual> ind(individuals_[individual_position]);
-  individuals_.erase(individuals_.begin() + individual_position);
+  individuals_.erase(individuals_.begin() + static_cast<ptrdiff_t>(individual_position));
   return ind;
 }
 

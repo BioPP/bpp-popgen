@@ -124,8 +124,8 @@ MultilocusGenotype* PolymorphismMultiGContainer::removeMultilocusGenotype(size_t
   if (position >= size())
     throw IndexOutOfBoundsException("PolymorphismMultiGContainer::removeMultilocusGenotype: position out of bounds.", position, 0, size() - 1);
   MultilocusGenotype* tmp_mg = multilocusGenotypes_[position];
-  multilocusGenotypes_.erase(multilocusGenotypes_.begin() + position);
-  groups_.erase(groups_.begin() + position);
+  multilocusGenotypes_.erase(multilocusGenotypes_.begin() + static_cast<ptrdiff_t>(position));
+  groups_.erase(groups_.begin() + static_cast<ptrdiff_t>(position));
   return tmp_mg;
 }
 
@@ -136,8 +136,8 @@ void PolymorphismMultiGContainer::deleteMultilocusGenotype(size_t position) thro
   if (position >= size())
     throw IndexOutOfBoundsException("PolymorphismMultiGContainer::deleteMultilocusGenotype: position out of bounds.", position, 0, size() - 1);
   delete multilocusGenotypes_[position];
-  multilocusGenotypes_.erase(multilocusGenotypes_.begin() + position);
-  groups_.erase(groups_.begin() + position);
+  multilocusGenotypes_.erase(multilocusGenotypes_.begin() + static_cast<ptrdiff_t>(position));
+  groups_.erase(groups_.begin() + static_cast<ptrdiff_t>(position));
 }
 
 /******************************************************************************/

@@ -174,7 +174,7 @@ PolymorphismSequenceContainer* PolymorphismSequenceContainerTools::getSelectedSe
   PolymorphismSequenceContainer* newpsc = new PolymorphismSequenceContainer(psc.getAlphabet());
   for (size_t i = 0; i < ss.size(); i++)
   {
-    newpsc->addSequence(psc.getSequence(ss[i]), psc.getSequenceCount(i), false);
+    newpsc->addSequenceWithFrequency(psc.getSequence(ss[i]), psc.getSequenceCount(i), false);
     if (psc.isIngroupMember(i))
       newpsc->setAsIngroupMember(i);
     else

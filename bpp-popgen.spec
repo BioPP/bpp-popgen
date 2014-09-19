@@ -1,5 +1,5 @@
 %define _basename bpp-popgen
-%define _version 2.1.0
+%define _version 2.2.0
 %define _release 1
 %define _prefix /usr
 
@@ -176,6 +176,8 @@ createGeneric() {
 %{_prefix}/include/*
 
 %changelog
+* Fri Sep 19 2014 Julien Dutheil <julien.dutheil@univ-montp2.fr> 2.2.0-1
+- Statistical funcion names rationalized.
 * Thu Mar 07 2013 Julien Dutheil <julien.dutheil@univ-montp2.fr> 2.1.0-1
 - Bug fixed and warnings removed.
 * Thu Feb 09 2012 Julien Dutheil <julien.dutheil@univ-montp2.fr> 2.0.3-1

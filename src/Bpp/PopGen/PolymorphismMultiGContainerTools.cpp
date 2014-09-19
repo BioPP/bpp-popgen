@@ -314,7 +314,7 @@ PolymorphismMultiGContainer PolymorphismMultiGContainerTools::permutIntraGroupAl
       // Build the new PolymorphismMultiGContainer
       vector<size_t> k(loc_num, 0);
 
-      for (int ind = 0; ind < nb_ind_in_group; ind++)
+      for (size_t ind = 0; ind < nb_ind_in_group; ind++)
       {
         MultilocusGenotype tmp_mg(loc_num);
         for (size_t j = 0; j < loc_num; j++)
