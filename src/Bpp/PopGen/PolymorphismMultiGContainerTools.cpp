@@ -269,7 +269,7 @@ PolymorphismMultiGContainer PolymorphismMultiGContainerTools::permutIntraGroupAl
 
   for (set<size_t>::const_iterator g = groups.begin(); g != groups.end(); g++) // for each group
   {
-    int nb_ind_in_group = 0;
+    size_t nb_ind_in_group = 0;
 
     vector< vector<size_t> > nb_alleles_for_inds;
     nb_alleles_for_inds.resize(loc_num);
