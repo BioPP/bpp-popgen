@@ -467,14 +467,13 @@ unsigned int SequenceStatistics::numberOfTransitions(const PolymorphismSequenceC
     // if (SiteTools::isConstant(*site) || SiteTools::isTriplet(*site)) continue;
     if (SiteTools::getNumberOfDistinctCharacters(*site) != 2)
       continue;
-    vector<int> seq = site->getContent();
-    int state1 = seq[0];
-    int state2 = seq[0];
-    for (size_t i = 1; i < seq.size(); i++)
+    int state1 = (*site)[0];
+    int state2 = (*site)[0];
+    for (size_t i = 1; i < site->size(); i++)
     {
-      if (state1 != seq[i])
+      if (state1 != (*site)[i])
       {
-        state2 = seq[i];
+        state2 = (*site)[i];
         break;
       }
     }
@@ -498,14 +497,13 @@ unsigned int SequenceStatistics::numberOfTransversions(const PolymorphismSequenc
     // if (SiteTools::isConstant(*site) || SiteTools::isTriplet(*site)) continue;
     if (SiteTools::getNumberOfDistinctCharacters(*site) != 2)
       continue;
-    vector<int> seq = site->getContent();
-    int state1 = seq[0];
-    int state2 = seq[0];
-    for (size_t i = 1; i < seq.size(); i++)
+    int state1 = (*site)[0];
+    int state2 = (*site)[0];
+    for (size_t i = 1; i < site->size(); i++)
     {
-      if (state1 != seq[i])
+      if (state1 != (*site)[i])
       {
-        state2 = seq[i];
+        state2 = (*site)[i];
         break;
       }
     }
