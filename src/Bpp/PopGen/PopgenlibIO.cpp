@@ -408,7 +408,7 @@ void PopgenlibIO::parseIndividual_(const std::vector<std::string>& in, DataSet& 
     if (in[i].find("Group", 0) != string::npos)
     {
       temp = in[i];
-      tmp_group_pos = TextTools::toInt(getValues_(temp, "=")[0]);
+      tmp_group_pos = TextTools::to<size_t>(getValues_(temp, "=")[0]);
       try
       {
         data_set.addEmptyGroup(tmp_group_pos);
@@ -421,7 +421,7 @@ void PopgenlibIO::parseIndividual_(const std::vector<std::string>& in, DataSet& 
     {
       temp = in[i];
       size_t sep_pos = temp.find("=", 0);
-      string loc_name = TextTools::removeSurroundingWhiteSpaces(string(temp.begin() + sep_pos + 1, temp.end()));
+      string loc_name = TextTools::removeSurroundingWhiteSpaces(string(temp.begin() + static_cast<ptrdiff_t>(sep_pos + 1), temp.end()));
       try
       {
         tmp_indiv.setLocality(&data_set.getLocalityByName(loc_name));
@@ -457,7 +457,7 @@ void PopgenlibIO::parseIndividual_(const std::vector<std::string>& in, DataSet& 
         try
         {
           if (seq_pos_str[j] != getMissingDataSymbol())
-            tmp_indiv.addSequence(j, vsc.getSequence(TextTools::toInt(seq_pos_str[j]) - 1));
+            tmp_indiv.addSequence(j, vsc.getSequence(TextTools::to<size_t>(seq_pos_str[j]) - 1));
         }
         catch (...)
         {}
@@ -695,19 +695,19 @@ std::vector<std::string> PopgenlibIO::getValues_(std::string& param_line, const 
 {
   vector<string> values;
   size_t limit = param_line.find(delim, 0);
-  if (limit >= 0)
-    param_line = string(param_line.begin() + limit + delim.size(), param_line.end());
+  if (limit != string::npos)
+    param_line = string(param_line.begin() + static_cast<ptrdiff_t>(limit + delim.size()), param_line.end());
   param_line = TextTools::removeSurroundingWhiteSpaces(param_line);
 
   size_t bi = 0;
   size_t bs = param_line.find(getDataSeparatorChar(), bi);
   while (bs > 0)
   {
-    values.push_back(string(param_line.begin() + bi, param_line.begin() + bs));
+    values.push_back(string(param_line.begin() + static_cast<ptrdiff_t>(bi), param_line.begin() + static_cast<ptrdiff_t>(bs)));
     bi = bs + 1;
     bs = param_line.find(getDataSeparatorChar(), bi);
   }
-  values.push_back(string(param_line.begin() + bi, param_line.end()));
+  values.push_back(string(param_line.begin() + static_cast<ptrdiff_t>(bi), param_line.end()));
   return values;
 }
 

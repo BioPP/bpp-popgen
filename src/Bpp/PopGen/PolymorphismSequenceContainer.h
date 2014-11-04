@@ -104,7 +104,7 @@ class PolymorphismSequenceContainer :
 {
 private:
   std::vector<bool> ingroup_;
-  std::vector<size_t> count_;
+  std::vector<unsigned int> count_;
   std::vector<size_t> group_;
 
 public:
@@ -189,7 +189,14 @@ public:
    * @throw SequenceException if the sequence's size doesn't match the sequence's size of the container.
    * @throw SequenceException if the sequence's name already exists in the container.
    */
-  void addSequence(const Sequence& sequence, size_t effectif = 1,  bool checkNames = true) throw (Exception);
+  void addSequenceWithFrequency(const Sequence& sequence, unsigned int frequency, bool checkName = true) throw (Exception);
+  void addSequenceWithFrequency(const Sequence& sequence, size_t sequenceIndex, unsigned int frequency, bool checkName = true) throw (Exception);
+  void addSequence(const Sequence& sequence, bool checkName = true) throw (Exception) {
+    addSequenceWithFrequency(sequence, 1, checkName);
+  }
+  void addSequence(const Sequence& sequence, size_t sequenceIndex, bool checkName = true) throw (Exception) {
+    addSequenceWithFrequency(sequence, sequenceIndex, 1, checkName);
+  }
 
   /**
    * @brief Clear the container of all its sequences.
@@ -282,7 +289,7 @@ public:
    * @throw IndexOutOfBoundsException if index excedes the number of sequences in the container.
    * @throw BadIntegerException if count < 1 ... use deleteSequence instead of setting the count to 0.
    */
-  void setSequenceCount(size_t index, size_t count) throw (Exception);
+  void setSequenceCount(size_t index, unsigned int count) throw (Exception);
 
   /**
    * @brief Set the count of a sequence by name.
@@ -290,7 +297,7 @@ public:
    * @throw throw SequenceNotFoundException if name is not found among the sequences' names.
    * @throw BadIntegerException if count < 1 ... use deleteSequence instead of setting the count to 0.
    */
-  void setSequenceCount(const std::string& name, size_t count) throw (Exception);
+  void setSequenceCount(const std::string& name, unsigned int count) throw (Exception);
 
   /**
    * @brief Add 1 to the sequence count.
@@ -302,39 +309,39 @@ public:
   /**
    * @brief Add 1 to the sequence count.
    *
-   * @throw throw SequenceNotFoundException if name is not found among the sequences' names.
+   * @throw SequenceNotFoundException if name is not found among the sequences' names.
    */
   void incrementSequenceCount(const std::string& name) throw (SequenceNotFoundException);
 
-  /**
-   * @brief Remove 1 to the sequence count.
+   /**
+   * @brief Removz 1 to the sequence count.
    *
    * @throw IndexOutOfBoundsException if index excedes the number of sequences in the container.
    * @throw BadIntegerException if count < 1 ... use deleteSequence instead of setting the count to 0.
    */
-  void decrementSequenceCount(size_t index) throw (Exception);
+  void decrementSequenceCount(size_t index) throw(IndexOutOfBoundsException, BadIntegerException);
 
   /**
    * @brief Remove 1 to the sequence count.
    *
-   * @throw throw SequenceNotFoundException if name is not found among the sequences' names.
+   * @throw SequenceNotFoundException if name is not found among the sequences' names.
    * @throw BadIntegerException if count < 1 ... use deleteSequence instead of setting the count to 0.
    */
-  void decrementSequenceCount(const std::string& name) throw (Exception);
+  void decrementSequenceCount(const std::string& name) throw (SequenceNotFoundException, BadIntegerException);
 
   /**
    * @brief Get the count of a sequence by index.
    *
    * @throw IndexOutOfBoundsException if index excedes the number of sequences in the container.
    */
-  size_t getSequenceCount(size_t index) const throw (IndexOutOfBoundsException);
+  unsigned int getSequenceCount(size_t index) const throw (IndexOutOfBoundsException);
 
   /**
    * @brief Get the count of a sequence by name.
    *
    * @throw SequenceNotFoundException if name is not found among the sequences' names.
    */
-  size_t getSequenceCount(const std::string& name) const throw (SequenceNotFoundException);
+  unsigned int getSequenceCount(const std::string& name) const throw (SequenceNotFoundException);
 };
 } // end of namespace bpp;
 

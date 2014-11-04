@@ -111,7 +111,7 @@ std::string AnalyzedSequences::getAlphabetType() const
     return string("---");
   string alpha_type = alphabet_->getAlphabetType();
   size_t bs = alpha_type.find(" ", 0);
-  alpha_type = string(alpha_type.begin(), alpha_type.begin() + bs);
+  alpha_type = string(alpha_type.begin(), alpha_type.begin() + static_cast<ptrdiff_t>(bs));
   if (alpha_type == "Proteic")
     alpha_type = "PROTEIN";
   return alpha_type;

@@ -168,7 +168,7 @@ void DataSet::deleteLocalityAtPosition(size_t locality_position) throw (IndexOut
   if (locality_position >= localities_.size())
     throw IndexOutOfBoundsException("DataSet::deleteLocalityAtPosition: locality_position out of bounds.", locality_position, 0, localities_.size());
   delete localities_[locality_position];
-  localities_.erase(localities_.begin() + locality_position);
+  localities_.erase(localities_.begin() + static_cast<ptrdiff_t>(locality_position));
 }
 
 /******************************************************************************/
@@ -292,7 +292,7 @@ void DataSet::deleteGroupAtPosition(size_t group_position) throw (IndexOutOfBoun
   if (group_position >= groups_.size())
     throw IndexOutOfBoundsException("DataSet::deleteGroup.", group_position, 0, groups_.size());
   delete groups_[group_position];
-  groups_.erase(groups_.begin() + group_position);
+  groups_.erase(groups_.begin() + static_cast<ptrdiff_t>(group_position));
 }
 
 /******************************************************************************/
@@ -1333,9 +1333,9 @@ PolymorphismSequenceContainer* DataSet::getPolymorphismSequenceContainer(const s
       }
       if (tmp_ind->hasSequenceAtPosition(sequence_position))
       {
-        const Sequence* tmp_seq = &tmp_ind->getSequenceAtPosition(sequence_position);
-        psc->addSequence(*tmp_seq, 1, false);
-        psc->setGroupId((const string) (tmp_seq->getName()), it->first);
+        const Sequence& tmp_seq = tmp_ind->getSequenceAtPosition(sequence_position);
+        psc->addSequenceWithFrequency(tmp_seq, 1, false);
+        psc->setGroupId(tmp_seq.getName(), it->first);
       }
     }
   }

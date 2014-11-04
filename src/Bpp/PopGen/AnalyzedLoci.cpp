@@ -79,7 +79,7 @@ void AnalyzedLoci::setLocusInfo(
   const LocusInfo& locus)
 throw (IndexOutOfBoundsException)
 {
-  if (locus_position >= 0 && locus_position < loci_.size())
+  if (locus_position < loci_.size())
     loci_[locus_position] = new LocusInfo(locus);
   else
     throw IndexOutOfBoundsException("AnalyzedLoci::setLocusInfo: locus_position out of bounds",
@@ -163,7 +163,7 @@ void AnalyzedLoci::addAlleleInfoByLocusPosition(size_t locus_position,
                                                 const AlleleInfo& allele)
 throw (Exception)
 {
-  if (locus_position >= 0 && locus_position < loci_.size())
+  if (locus_position < loci_.size())
   {
     try
     {

@@ -54,7 +54,7 @@ const std::string GeneMapperCsvExport::PEAK_AREA_H = "Peak Area ";
 const std::string GeneMapperCsvExport::DAC_H = "DAC";
 const std::string GeneMapperCsvExport::AN_H = "AN";
 
-GeneMapperCsvExport::GeneMapperCsvExport(bool ia) : IndependentAlleles_(ia) {}
+//GeneMapperCsvExport::GeneMapperCsvExport(bool ia) : IndependentAlleles_(ia) {}
 
 GeneMapperCsvExport::~GeneMapperCsvExport() {}
 
@@ -123,22 +123,22 @@ void GeneMapperCsvExport::read(std::istream& is, DataSet& data_set) throw (Excep
   vector<string> col_names = dt.getColumnNames();
 
   // Finds columns containing allele data
-  vector<unsigned int> alleles_cols;
-  for (unsigned int i = 0; i < col_names.size(); i++)
+  vector<size_t> alleles_cols;
+  for (size_t i = 0; i < col_names.size(); i++)
   {
     if (TextTools::startsWith(col_names[i], ALLELE_H))
       alleles_cols.push_back(i);
   }
   // Set LocusInfo
-  vector<vector<unsigned int> > alleles_pos;
-  for (unsigned int i = 0; i < markers.size(); i++)
+  vector<vector<size_t> > alleles_pos;
+  for (size_t i = 0; i < markers.size(); i++)
   {
     al.setLocusInfo(i, LocusInfo(markers[i], LocusInfo::UNKNOWN));
   }
   std::map< std::string, std::set< std::string > > markerAlleles;
-  for (unsigned int i = 0; i < dt.getNumberOfRows(); ++i)
+  for (size_t i = 0; i < dt.getNumberOfRows(); ++i)
   {
-    for (unsigned int j = 0; j < alleles_cols.size(); ++j)
+    for (size_t j = 0; j < alleles_cols.size(); ++j)
     {
       if (dt(i, alleles_cols[j]) != "")
       {
