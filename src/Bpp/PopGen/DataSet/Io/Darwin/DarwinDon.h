@@ -1,11 +1,11 @@
 //
-// File DataSetTools.h
+// File DarwinDon.h
 // Author : Sylvain Gaillard
-// Last modification : Wednesday August 04 2004
+// Last modification : April 7, 2008
 //
 
 /*
-   Copyright or © or Copr. CNRS, (November 17, 2004)
+   Copyright or © or Copr. Bio++ Development Team, (April 7, 2008)
 
    This software is a computer program whose purpose is to provide classes
    for population genetics analysis.
@@ -37,44 +37,60 @@
    knowledge of the CeCILL license and that you accept its terms.
  */
 
-#ifndef _DATASETTOOLS_H_
-#define _DATASETTOOLS_H_
-
-// From STL
-#include <set>
-#include <memory>
+#ifndef _DARWIN_DON_H_
+#define _DARWIN_DON_H_
 
 #include <Bpp/Exceptions.h>
+#include <Bpp/Io/FileTools.h>
 #include <Bpp/Text/TextTools.h>
+#include <Bpp/Text/StringTokenizer.h>
 
-// From SeqLib
-#include <Bpp/Seq/Container/OrderedSequenceContainer.h>
-
-// From local PopGenLib
-#include "DataSet.h"
-#include "PolymorphismSequenceContainer.h"
+// From local Pop
+#include "../AbstractODataSet.h"
 
 namespace bpp
 {
 /**
- * @brief A set of tools for DataSet.
+ * @brief The Darwin .don output format for popgenlib.
  *
  * @author Sylvain Gaillard
  */
-class DataSetTools
+class DarwinDon :
+  public virtual AbstractODataSet
 {
 public:
+  // Constructor and destructor
+  DarwinDon();
+  ~DarwinDon();
+
+public:
   /**
-   * @brief General method to build a DataSet from an OrderedSequenceContainer.
+   * @name The ODataSet interface.
+   * @{
    */
-  static std::auto_ptr<DataSet> buildDataSet(const OrderedSequenceContainer& osc) throw (Exception);
+  void write(std::ostream& os, const DataSet& data_set) const throw (Exception);
+  void write(const std::string& path, const DataSet& data_set, bool overwrite) const throw (Exception);
+  /**
+   * @}
+   */
 
   /**
-   * @brief Specific methode to build a DataSet from a PolymorphismSequenceContainer.
+   * @name The IOFormat interface
+   * @{
    */
-  static std::auto_ptr<DataSet> buildDataSet(const PolymorphismSequenceContainer& psc) throw (Exception);
+  const std::string getFormatName() const
+  {
+    return "Darwin .don";
+  }
+  const std::string getFormatDescription() const
+  {
+    return "Darwin .don file store data identifying individuals.";
+  }
+  /**
+   * @}
+   */
 };
 } // end of namespace bpp;
 
-#endif // _DATASETTOOLS_H_
+#endif // _DARWIN_DON_H_
 

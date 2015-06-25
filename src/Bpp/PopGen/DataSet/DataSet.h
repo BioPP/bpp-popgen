@@ -50,15 +50,14 @@
 #include <Bpp/Graphics/Point2D.h>
 #include <Bpp/Utils/MapTools.h>
 
-// From PopGenLib (local)
 #include "Group.h"
 #include "Individual.h"
 #include "Locality.h"
-#include "GeneralExceptions.h"
+#include "../GeneralExceptions.h"
 #include "AnalyzedLoci.h"
 #include "AnalyzedSequences.h"
-#include "PolymorphismMultiGContainer.h"
-#include "PolymorphismSequenceContainer.h"
+#include "../PolymorphismMultiGContainer.h"
+#include "../PolymorphismSequenceContainer.h"
 
 namespace bpp
 {

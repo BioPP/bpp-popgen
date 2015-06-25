@@ -51,7 +51,7 @@
 // From local Pop
 #include "AbstractIDataSet.h"
 #include "AbstractODataSet.h"
-#include "BasicAlleleInfo.h"
+#include "../../BasicAlleleInfo.h"
 
 namespace bpp
 {

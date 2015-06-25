@@ -1,8 +1,7 @@
 //
-// File Genetix.h
+// File DataSetTools.h
 // Author : Sylvain Gaillard
-//          Khalid Belkhir
-// Last modification : Friday July 30 2004
+// Last modification : Wednesday August 04 2004
 //
 
 /*
@@ -38,63 +37,44 @@
    knowledge of the CeCILL license and that you accept its terms.
  */
 
-#ifndef _GENETIX_H_
-#define _GENETIX_H_
+#ifndef _DATASETTOOLS_H_
+#define _DATASETTOOLS_H_
+
+// From STL
+#include <set>
+#include <memory>
 
 #include <Bpp/Exceptions.h>
-#include <Bpp/Io/FileTools.h>
 #include <Bpp/Text/TextTools.h>
-#include <Bpp/Text/StringTokenizer.h>
 
-// From local Pop
-#include "AbstractIDataSet.h"
-#include "BasicAlleleInfo.h"
+// From SeqLib
+#include <Bpp/Seq/Container/OrderedSequenceContainer.h>
+
+// From local bpp-popgen
+#include "DataSet.h"
+#include "../PolymorphismSequenceContainer.h"
 
 namespace bpp
 {
 /**
- * @brief The Genetix input format for popgenlib.
+ * @brief A set of tools for DataSet.
  *
  * @author Sylvain Gaillard
  */
-class Genetix :
-  public AbstractIDataSet
+class DataSetTools
 {
 public:
-  // Constructor and destructor
-  Genetix();
-  ~Genetix();
-
-public:
   /**
-   * @name The IDataSet interface.
-   * @{
+   * @brief General method to build a DataSet from an OrderedSequenceContainer.
    */
-  void read(std::istream& is, DataSet& data_set) throw (Exception);
-  void read(const std::string& path, DataSet& data_set) throw (Exception);
-  DataSet* read(std::istream& is) throw (Exception);
-  DataSet* read(const std::string& path) throw (Exception);
-  /**
-   * @}
-   */
+  static std::auto_ptr<DataSet> buildDataSet(const OrderedSequenceContainer& osc) throw (Exception);
 
   /**
-   * @name The IOFormat interface
-   * @{
+   * @brief Specific methode to build a DataSet from a PolymorphismSequenceContainer.
    */
-  const std::string getFormatName() const
-  {
-    return "Genetix ver 4.05";
-  }
-  const std::string getFormatDescription() const
-  {
-    return "Genetix is a software for populations genetic for Windows(tm)";
-  }
-  /**
-   * @}
-   */
+  static std::auto_ptr<DataSet> buildDataSet(const PolymorphismSequenceContainer& psc) throw (Exception);
 };
 } // end of namespace bpp;
 
-#endif // _GENETIX_H_
+#endif // _DATASETTOOLS_H_
 

@@ -1,11 +1,12 @@
 //
-// File Genepop.h
+// File Genetix.h
 // Author : Sylvain Gaillard
-// Last modification : Tuesday September 21 2004
+//          Khalid Belkhir
+// Last modification : Friday July 30 2004
 //
 
 /*
-   Copyright or © or Copr. CNRS, (November 17, 2004)
+   Copyright or © or Copr. Bio++ Development Team, (November 17, 2004)
 
    This software is a computer program whose purpose is to provide classes
    for population genetics analysis.
@@ -37,8 +38,8 @@
    knowledge of the CeCILL license and that you accept its terms.
  */
 
-#ifndef _GENEPOP_H_
-#define _GENEPOP_H_
+#ifndef _GENETIX_H_
+#define _GENETIX_H_
 
 #include <Bpp/Exceptions.h>
 #include <Bpp/Io/FileTools.h>
@@ -46,23 +47,23 @@
 #include <Bpp/Text/StringTokenizer.h>
 
 // From local Pop
-#include "AbstractIDataSet.h"
-#include "BasicAlleleInfo.h"
+#include "../AbstractIDataSet.h"
+#include "../../../BasicAlleleInfo.h"
 
 namespace bpp
 {
 /**
- * @brief The Genepop input format for popgenlib.
+ * @brief The Genetix input format for popgenlib.
  *
  * @author Sylvain Gaillard
  */
-class Genepop :
+class Genetix :
   public AbstractIDataSet
 {
 public:
   // Constructor and destructor
-  Genepop();
-  ~Genepop();
+  Genetix();
+  ~Genetix();
 
 public:
   /**
@@ -83,12 +84,11 @@ public:
    */
   const std::string getFormatName() const
   {
-    return "Genepop ver 3.4";
+    return "Genetix ver 4.05";
   }
-
   const std::string getFormatDescription() const
   {
-    return "Genepop is a software for populations genetic for DOS operating system";
+    return "Genetix is a software for populations genetic for Windows(tm)";
   }
   /**
    * @}
@@ -96,4 +96,5 @@ public:
 };
 } // end of namespace bpp;
 
-#endif // _GENEPOP_H_
+#endif // _GENETIX_H_
+

@@ -49,16 +49,16 @@
 #include <Bpp/Exceptions.h>
 #include <Bpp/Graphics/Point2D.h>
 
-// From SeqLib
+// From bpp-seq
 #include <Bpp/Seq/Sequence.h>
 #include <Bpp/Seq/SequenceExceptions.h>
 #include <Bpp/Seq/Container/VectorSequenceContainer.h>
 
-// From PopGenLib
+// From bpp-popgen
 #include "Locality.h"
 #include "Date.h"
-#include "MultilocusGenotype.h"
-#include "GeneralExceptions.h"
+#include "../MultilocusGenotype.h"
+#include "../GeneralExceptions.h"
 
 namespace bpp
 {

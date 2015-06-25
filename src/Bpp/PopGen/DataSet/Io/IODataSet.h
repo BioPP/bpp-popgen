@@ -1,11 +1,11 @@
 //
-// File DarwinVarSingle.h
+// File IODataSet.h
 // Author : Sylvain Gaillard
-// Last modification : April 7, 2008
+// Last modification : Thursday July 29 2004
 //
 
 /*
-   Copyright or © or Copr. Bio++ Development Team, (April 7, 2008)
+   Copyright or © or Copr. Bio++ Development Team, (November 17, 2004)
 
    This software is a computer program whose purpose is to provide classes
    for population genetics analysis.
@@ -36,64 +36,40 @@
    The fact that you are presently reading this means that you have had
    knowledge of the CeCILL license and that you accept its terms.
  */
+// Secured inclusion of header's file
+#ifndef _IODATASET_H_
+#define _IODATASET_H_
 
-#ifndef _DARWIN_VAR_SINGLE_H_
-#define _DARWIN_VAR_SINGLE_H_
+#include "../DataSet.h"
 
-#include <Bpp/Exceptions.h>
-#include <Bpp/Io/FileTools.h>
-#include <Bpp/Text/TextTools.h>
-#include <Bpp/Text/StringTokenizer.h>
+#include <Bpp/Io/IoFormat.h>
 
-// From local Pop
-#include "AbstractODataSet.h"
+// From STL
+#include <iostream>
+#include <fstream>
 
 namespace bpp
 {
 /**
- * @brief The Darwin .don output format for popgenlib.
+ * @brief Interface for input/ouput with DataSet.
+ *
+ * IODataSet is a virtual class.
+ * This is an interface to declare commune methodes for in/out action on DataSet.
  *
  * @author Sylvain Gaillard
  */
-class DarwinVarSingle :
-  public virtual AbstractODataSet
+class IODataSet : public virtual IOFormat
 {
-private:
-  size_t missingData_;
-
-public:
-  // Constructor and destructor
-  DarwinVarSingle(size_t missingData = 999);
-  ~DarwinVarSingle();
-
-public:
   /**
-   * @name The ODataSet interface.
+   * @name The IOFormat interface.
    * @{
    */
-  void write(std::ostream& os, const DataSet& data_set) const throw (Exception);
-  void write(const std::string& path, const DataSet& data_set, bool overwrite) const throw (Exception);
-  /**
-   * @}
-   */
-
-  /**
-   * @name The IOFormat interface
-   * @{
-   */
-  virtual const std::string getFormatName() const
-  {
-    return "Darwin .var single data";
-  }
-  virtual const std::string getFormatDescription() const
-  {
-    return "Darwin .var file store data for each marker in each individual (1 variable per allele).";
-  }
+  const std::string getDataType() const { return "DataSet for population genetics"; }
   /**
    * @}
    */
 };
 } // end of namespace bpp;
 
-#endif // _DARWIN_VAR_SINGLE_H_
+#endif // _IODATASET_H_
 

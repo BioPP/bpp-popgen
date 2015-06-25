@@ -48,14 +48,14 @@
 #include <Bpp/Exceptions.h>
 #include <Bpp/Graphics/Point2D.h>
 
-// From SeqLib
+// From bpp-seq
 #include <Bpp/Seq/Container/VectorSequenceContainer.h>
 #include <Bpp/Seq/Container/VectorSiteContainer.h>
 #include <Bpp/Seq/Container/SequenceContainerTools.h>
 
 // From local
 #include "Individual.h"
-#include "GeneralExceptions.h"
+#include "../GeneralExceptions.h"
 
 namespace bpp
 {

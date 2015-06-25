@@ -1,11 +1,11 @@
 //
-// File DarwinDon.h
+// File Genepop.h
 // Author : Sylvain Gaillard
-// Last modification : April 7, 2008
+// Last modification : Tuesday September 21 2004
 //
 
 /*
-   Copyright or © or Copr. CNRS, (April 7, 2008)
+   Copyright or © or Copr. Bio++ Development Team, (November 17, 2004)
 
    This software is a computer program whose purpose is to provide classes
    for population genetics analysis.
@@ -37,8 +37,8 @@
    knowledge of the CeCILL license and that you accept its terms.
  */
 
-#ifndef _DARWIN_DON_H_
-#define _DARWIN_DON_H_
+#ifndef _GENEPOP_H_
+#define _GENEPOP_H_
 
 #include <Bpp/Exceptions.h>
 #include <Bpp/Io/FileTools.h>
@@ -46,30 +46,33 @@
 #include <Bpp/Text/StringTokenizer.h>
 
 // From local Pop
-#include "AbstractODataSet.h"
+#include "../AbstractIDataSet.h"
+#include "../../../BasicAlleleInfo.h"
 
 namespace bpp
 {
 /**
- * @brief The Darwin .don output format for popgenlib.
+ * @brief The Genepop input format for popgenlib.
  *
  * @author Sylvain Gaillard
  */
-class DarwinDon :
-  public virtual AbstractODataSet
+class Genepop :
+  public AbstractIDataSet
 {
 public:
   // Constructor and destructor
-  DarwinDon();
-  ~DarwinDon();
+  Genepop();
+  ~Genepop();
 
 public:
   /**
-   * @name The ODataSet interface.
+   * @name The IDataSet interface.
    * @{
    */
-  void write(std::ostream& os, const DataSet& data_set) const throw (Exception);
-  void write(const std::string& path, const DataSet& data_set, bool overwrite) const throw (Exception);
+  void read(std::istream& is, DataSet& data_set) throw (Exception);
+  void read(const std::string& path, DataSet& data_set) throw (Exception);
+  DataSet* read(std::istream& is) throw (Exception);
+  DataSet* read(const std::string& path) throw (Exception);
   /**
    * @}
    */
@@ -80,11 +83,12 @@ public:
    */
   const std::string getFormatName() const
   {
-    return "Darwin .don";
+    return "Genepop ver 3.4";
   }
+
   const std::string getFormatDescription() const
   {
-    return "Darwin .don file store data identifying individuals.";
+    return "Genepop is a software for populations genetic for DOS operating system";
   }
   /**
    * @}
@@ -92,5 +96,4 @@ public:
 };
 } // end of namespace bpp;
 
-#endif // _DARWIN_DON_H_
-
+#endif // _GENEPOP_H_

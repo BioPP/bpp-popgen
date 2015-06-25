@@ -47,8 +47,8 @@
 #include <Bpp/Exceptions.h>
 
 // From local
-#include "LocusInfo.h"
-#include "GeneralExceptions.h"
+#include "../LocusInfo.h"
+#include "../GeneralExceptions.h"
 
 namespace bpp
 {

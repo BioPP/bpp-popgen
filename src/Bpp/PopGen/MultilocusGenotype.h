@@ -58,7 +58,7 @@ namespace bpp
 /**
  * @brief The MultilocusGenotype class.
  *
- * This is a MonolocusGenotype containor.
+ * This is a MonolocusGenotype container.
  *
  * @author Sylvain Gaillard
  */

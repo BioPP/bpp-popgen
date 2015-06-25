@@ -47,9 +47,9 @@
 #include <Bpp/Numeric/DataTable.h>
 
 // From local Pop
-#include "AbstractIDataSet.h"
-#include "BasicAlleleInfo.h"
-#include "MultiAlleleMonolocusGenotype.h"
+#include "../AbstractIDataSet.h"
+#include "../../../BasicAlleleInfo.h"
+#include "../../../MultiAlleleMonolocusGenotype.h"
 
 namespace bpp
 {

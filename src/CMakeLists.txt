@@ -4,73 +4,73 @@
 
 # File list
 SET(CPP_FILES
-  Bpp/PopGen/AbstractIDataSet.cpp
-  Bpp/PopGen/AbstractODataSet.cpp
-  Bpp/PopGen/AnalyzedLoci.cpp
-  Bpp/PopGen/AnalyzedSequences.cpp
-  Bpp/PopGen/BasicAlleleInfo.cpp
-  Bpp/PopGen/BiAlleleMonolocusGenotype.cpp
-  Bpp/PopGen/DarwinDon.cpp
-  Bpp/PopGen/DarwinVarSingle.cpp
-  Bpp/PopGen/DataSet.cpp
-  Bpp/PopGen/DataSetTools.cpp
-  Bpp/PopGen/Date.cpp
-  Bpp/PopGen/GeneMapperCsvExport.cpp
-  Bpp/PopGen/Genepop.cpp
-  Bpp/PopGen/GeneralExceptions.cpp
-  Bpp/PopGen/Genetix.cpp
-  Bpp/PopGen/Group.cpp
-  Bpp/PopGen/Individual.cpp
   Bpp/PopGen/LocusInfo.cpp
+  Bpp/PopGen/BasicAlleleInfo.cpp
+  Bpp/PopGen/MultilocusGenotypeStatistics.cpp
+  Bpp/PopGen/MultilocusGenotype.cpp
+  Bpp/PopGen/BiAlleleMonolocusGenotype.cpp
   Bpp/PopGen/MonoAlleleMonolocusGenotype.cpp
   Bpp/PopGen/MonolocusGenotypeTools.cpp
   Bpp/PopGen/MultiAlleleMonolocusGenotype.cpp
-  Bpp/PopGen/MultiSeqIndividual.cpp
-  Bpp/PopGen/MultilocusGenotype.cpp
-  Bpp/PopGen/MultilocusGenotypeStatistics.cpp
+  Bpp/PopGen/DataSet/DataSet.cpp
+  Bpp/PopGen/DataSet/DataSetTools.cpp
+  Bpp/PopGen/DataSet/Group.cpp
+  Bpp/PopGen/DataSet/Individual.cpp
+  Bpp/PopGen/DataSet/MultiSeqIndividual.cpp
+  Bpp/PopGen/DataSet/AnalyzedSequences.cpp
+  Bpp/PopGen/DataSet/AnalyzedLoci.cpp
+  Bpp/PopGen/DataSet/Date.cpp
+  Bpp/PopGen/DataSet/Io/AbstractIDataSet.cpp
+  Bpp/PopGen/DataSet/Io/AbstractODataSet.cpp
+  Bpp/PopGen/DataSet/Io/PopgenlibIO.cpp
+  Bpp/PopGen/DataSet/Io/Darwin/DarwinDon.cpp
+  Bpp/PopGen/DataSet/Io/Darwin/DarwinVarSingle.cpp
+  Bpp/PopGen/DataSet/Io/Genetix/Genetix.cpp
+  Bpp/PopGen/DataSet/Io/Genepop/Genepop.cpp
+  Bpp/PopGen/DataSet/Io/GeneMapper/GeneMapperCsvExport.cpp
+  Bpp/PopGen/GeneralExceptions.cpp
   Bpp/PopGen/PolymorphismMultiGContainer.cpp
   Bpp/PopGen/PolymorphismMultiGContainerTools.cpp
   Bpp/PopGen/PolymorphismSequenceContainer.cpp
   Bpp/PopGen/PolymorphismSequenceContainerTools.cpp
-  Bpp/PopGen/PopgenlibIO.cpp
   Bpp/PopGen/SequenceStatistics.cpp
   )
 SET(H_FILES
-  Bpp/PopGen/AbstractIDataSet.h
-  Bpp/PopGen/AbstractODataSet.h
   Bpp/PopGen/AlleleInfo.h
-  Bpp/PopGen/AnalyzedLoci.h
-  Bpp/PopGen/AnalyzedSequences.h
   Bpp/PopGen/BasicAlleleInfo.h
-  Bpp/PopGen/BiAlleleMonolocusGenotype.h
-  Bpp/PopGen/DarwinDon.h
-  Bpp/PopGen/DarwinVarSingle.h
-  Bpp/PopGen/DataSet.h
-  Bpp/PopGen/DataSetTools.h
-  Bpp/PopGen/Date.h
-  Bpp/PopGen/GeneMapperCsvExport.h
-  Bpp/PopGen/Genepop.h
-  Bpp/PopGen/GeneralExceptions.h
-  Bpp/PopGen/Genetix.h
-  Bpp/PopGen/Group.h
-  Bpp/PopGen/IDataSet.h
-  Bpp/PopGen/IODataSet.h
-  Bpp/PopGen/Individual.h
-  Bpp/PopGen/Locality.h
   Bpp/PopGen/LocusInfo.h
+  Bpp/PopGen/MultilocusGenotypeStatistics.h
   Bpp/PopGen/MonoAlleleMonolocusGenotype.h
   Bpp/PopGen/MonolocusGenotype.h
   Bpp/PopGen/MonolocusGenotypeTools.h
   Bpp/PopGen/MultiAlleleMonolocusGenotype.h
-  Bpp/PopGen/MultiSeqIndividual.h
   Bpp/PopGen/MultilocusGenotype.h
-  Bpp/PopGen/MultilocusGenotypeStatistics.h
-  Bpp/PopGen/ODataSet.h
+  Bpp/PopGen/BiAlleleMonolocusGenotype.h
+  Bpp/PopGen/DataSet/DataSet.h
+  Bpp/PopGen/DataSet/DataSetTools.h
+  Bpp/PopGen/DataSet/Group.h
+  Bpp/PopGen/DataSet/Individual.h
+  Bpp/PopGen/DataSet/MultiSeqIndividual.h
+  Bpp/PopGen/DataSet/Locality.h
+  Bpp/PopGen/DataSet/Date.h
+  Bpp/PopGen/DataSet/AnalyzedSequences.h
+  Bpp/PopGen/DataSet/AnalyzedLoci.h
+  Bpp/PopGen/DataSet/Io/IDataSet.h
+  Bpp/PopGen/DataSet/Io/ODataSet.h
+  Bpp/PopGen/DataSet/Io/IODataSet.h
+  Bpp/PopGen/DataSet/Io/PopgenlibIO.h
+  Bpp/PopGen/DataSet/Io/AbstractIDataSet.h
+  Bpp/PopGen/DataSet/Io/AbstractODataSet.h
+  Bpp/PopGen/DataSet/Io/Darwin/DarwinDon.h
+  Bpp/PopGen/DataSet/Io/Darwin/DarwinVarSingle.h
+  Bpp/PopGen/DataSet/Io/Genepop/Genepop.h
+  Bpp/PopGen/DataSet/Io/Genetix/Genetix.h
+  Bpp/PopGen/DataSet/Io/GeneMapper/GeneMapperCsvExport.h
+  Bpp/PopGen/GeneralExceptions.h
   Bpp/PopGen/PolymorphismMultiGContainer.h
   Bpp/PopGen/PolymorphismMultiGContainerTools.h
   Bpp/PopGen/PolymorphismSequenceContainer.h
   Bpp/PopGen/PolymorphismSequenceContainerTools.h
-  Bpp/PopGen/PopgenlibIO.h
   Bpp/PopGen/SequenceStatistics.h
   )
 

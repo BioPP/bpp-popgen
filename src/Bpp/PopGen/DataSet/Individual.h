@@ -57,8 +57,8 @@
 // From PopGenLib
 #include "Locality.h"
 #include "Date.h"
-#include "MultilocusGenotype.h"
-#include "GeneralExceptions.h"
+#include "../MultilocusGenotype.h"
+#include "../GeneralExceptions.h"
 
 namespace bpp
 {
