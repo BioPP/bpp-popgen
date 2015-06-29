@@ -839,25 +839,35 @@ double SequenceStatistics::tajimaDtnm(const PolymorphismSequenceContainer& psc, 
   return (tajima - eta_a1) / sqrt((values["e1"] * eta) + (values["e2"] * eta * (eta - 1)));
 }
 
-double SequenceStatistics::fuLiD(const PolymorphismSequenceContainer& ingroup, const PolymorphismSequenceContainer& outgroup, bool original) throw (ZeroDivisionException)
+double SequenceStatistics::fuLiD(
+    const PolymorphismSequenceContainer& ingroup,
+    const PolymorphismSequenceContainer& outgroup,
+    bool useNbSingletons,
+    bool useNbSegregatingSites) throw (ZeroDivisionException)
 {
   size_t n = ingroup.getNumberOfSequences();
   map<string, double> values = getUsefulValues_(n);
   double vD = getVD_(n, values["a1"], values["a2"], values["cn"]);
   double uD = getUD_(values["a1"], vD);
-  unsigned int etaP = totalNumberOfMutations(ingroup);
+  unsigned int etaP = 0;
+  if (useNbSegregatingSites)
+    etaP = numberOfPolymorphicSites(ingroup);
+  else
+    etaP = totalNumberOfMutations(ingroup);
   if (etaP == 0)
     throw ZeroDivisionException("SequenceStatistics::fuLiD. Eta should not be 0.");
   double eta = static_cast<double>(etaP);
   double etae = 0.;
-  if (original)
+  if (useNbSingletons)
     etae = static_cast<double>(numberOfSingletons(outgroup));
   else
     etae = static_cast<double>(totalNumberOfMutationsOnExternalBranches(ingroup, outgroup));  // added by Khalid 13/07/2005
   return (eta - (values["a1"] * etae)) / sqrt((uD * eta) + (vD * eta * eta));
 }
 
-double SequenceStatistics::fuLiDStar(const PolymorphismSequenceContainer& group) throw (ZeroDivisionException)
+double SequenceStatistics::fuLiDStar(
+    const PolymorphismSequenceContainer& group,
+    bool useNbSegregatingSites) throw (ZeroDivisionException)
 {
   size_t n = group.getNumberOfSequences();
   double nn = static_cast<double>(n);
@@ -865,11 +875,16 @@ double SequenceStatistics::fuLiDStar(const PolymorphismSequenceContainer& group)
   map<string, double> values = getUsefulValues_(n);
   double vDs = getVDstar_(n, values["a1"], values["a2"], values["dn"]);
   double uDs = getUDstar_(n, values["a1"], vDs);
-  double eta = static_cast<double>(totalNumberOfMutations(group));
-  if (eta == 0.)
+  unsigned int etaP = 0;  
+  if (useNbSegregatingSites)
+    etaP = numberOfPolymorphicSites(group);
+  else 
+    etaP = totalNumberOfMutations(group);
+  if (etaP == 0)
     throw ZeroDivisionException("eta should not be null");
+  double eta = static_cast<double>(etaP);
   double etas = static_cast<double>(numberOfSingletons(group));
-
+ 
   // Fu & Li 1993
   return ((_n * eta) - (values["a1"] * etas)) / sqrt(uDs * eta + vDs * eta * eta);
 
@@ -879,7 +894,11 @@ double SequenceStatistics::fuLiDStar(const PolymorphismSequenceContainer& group)
    */
 }
 
-double SequenceStatistics::fuLiF(const PolymorphismSequenceContainer& ingroup, const PolymorphismSequenceContainer& outgroup, bool original) throw (ZeroDivisionException)
+double SequenceStatistics::fuLiF(
+    const PolymorphismSequenceContainer& ingroup,
+    const PolymorphismSequenceContainer& outgroup,
+    bool useNbSingletons,
+    bool useNbSegregatingSites) throw (ZeroDivisionException)
 {
   size_t n = ingroup.getNumberOfSequences();
   double nn = static_cast<double>(n);
@@ -887,18 +906,25 @@ double SequenceStatistics::fuLiF(const PolymorphismSequenceContainer& ingroup, c
   double pi = tajima83(ingroup, true);
   double vF = (values["cn"] + values["b2"] - 2. / (nn - 1.)) / (pow(values["a1"], 2) + values["a2"]);
   double uF = ((1. + values["b1"] - (4. * ((nn + 1.) / ((nn - 1.) * (nn - 1.)))) * (values["a1n"] - (2. * nn) / (nn + 1.))) / values["a1"]) - vF;
-  double eta = static_cast<double>(totalNumberOfMutations(ingroup));
-  if (eta == 0.)
+  unsigned int etaP = 0;  
+  if (useNbSegregatingSites)
+    etaP = numberOfPolymorphicSites(ingroup);
+  else 
+    etaP = totalNumberOfMutations(ingroup);
+  if (etaP == 0)
     throw ZeroDivisionException("eta should not be null");
+  double eta = static_cast<double>(etaP);
   double etae = 0.;
-  if (original)
+  if (useNbSingletons)
     etae = static_cast<double>(numberOfSingletons(outgroup));
   else
     etae = static_cast<double>(totalNumberOfMutationsOnExternalBranches(ingroup, outgroup));  // added by Khalid 13/07/2005
   return (pi - etae) / sqrt(uF * eta + vF * eta * eta);
 }
 
-double SequenceStatistics::fuLiFStar(const PolymorphismSequenceContainer& group) throw (ZeroDivisionException)
+double SequenceStatistics::fuLiFStar(
+    const PolymorphismSequenceContainer& group,
+    bool useNbSegregatingSites) throw (ZeroDivisionException)
 {
   double n = static_cast<double>(group.getNumberOfSequences());
   map<string, double> values = getUsefulValues_(group.getNumberOfSequences());
@@ -911,9 +937,14 @@ double SequenceStatistics::fuLiFStar(const PolymorphismSequenceContainer& group)
   // Simonsen et al. 1995
   double vFs = (((2 * n * n * n + 110 * n * n - 255 * n + 153) / (9 * n * n * (n - 1))) + ((2 * (n - 1) * values["a1"]) / (n * n)) - 8 * values["a2"] / n) / (pow(values["a1"], 2) + values["a2"]);
   double uFs = (((4 * n * n + 19 * n + 3 - 12 * (n + 1) * values["a1n"]) / (3 * n * (n - 1))) / values["a1"]) - vFs;
-  double eta = static_cast<double>(totalNumberOfMutations(group));
-  if (eta == 0.)
+  unsigned int etaP = 0;  
+  if (useNbSegregatingSites)
+    etaP = numberOfPolymorphicSites(group);
+  else 
+    etaP = totalNumberOfMutations(group);
+  if (etaP == 0)
     throw ZeroDivisionException("eta should not be null");
+  double eta = static_cast<double>(etaP);
   double etas = static_cast<double>(numberOfSingletons(group));
   // Fu & Li 1993
   // Simonsen et al. 1995

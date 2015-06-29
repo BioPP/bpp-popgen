@@ -652,11 +652,14 @@ public:
    *
    * @param ingroup a PolymorphismSequenceContainer
    * @param outgroup a PolymorphismSequenceContainer
-   * @param original true: use the Fu & Li methode, false: use mutations in
-   * external branch.
+   * @param useNbSingletons use the original Fu & Li method based on the number of singletons, otherwise, use the total number of mutations in
+   * external branches.
+   * @param useNbSegregatingSites use the number of seggregating sites, otherwise use the total number of mutations.
+   * These two quantities are identical under the infinite site model, but the number of segregating sites will underestimate the total number of mutations in case of multiple substitutions at the same site.
    * @throw ZeroDivisionException if eta == 0
    * @author Sylvain Gaillard
    * @author Khalid Belkhir
+   * @author Julien Dutheil
    *
    * If one set original=false then the number of mutations will be used.
    * If the outgroup contains more than one sequence the sites with more
@@ -665,17 +668,22 @@ public:
   static double fuLiD(
     const PolymorphismSequenceContainer& ingroup,
     const PolymorphismSequenceContainer& outgroup,
-    bool original = true)
+    bool useNbSingletons = true,
+    bool useNbSegregatingSites = false)
   throw (ZeroDivisionException);
 
   /**
    * @brief Return the Fu and Li D<sup>*</sup> test (Fu & Li 1993, Genetics, 133 pp693-709).
    *
    * @param group a PolymorphismSequenceContainer
+   * @param useNbSegregatingSites use the number of seggregating sites, otherwise use the total number of mutations.
+   * These two quantities are identical under the infinite site model, but the number of segregating sites will underestimate the total number of mutations in case of multiple substitutions at the same site.
    * @author Sylvain Gaillard
+   * @author Julien Dutheil
    */
   static double fuLiDStar(
-    const PolymorphismSequenceContainer& group)
+    const PolymorphismSequenceContainer& group,
+    bool useNbSegregatingSites = false)
   throw (ZeroDivisionException);
 
   /**
@@ -683,10 +691,14 @@ public:
    *
    * @param ingroup a PolymorphismSequenceContainer
    * @param outgroup a PolymorphismSequenceContainer
-   * @param original true: use the Fu & Li methode, false: use mutations in
    * external branch.
+   * @param useNbSingletons use the original Fu & Li method based on the number of singletons, otherwise, use the total number of mutations in
+   * external branches.
+   * @param useNbSegregatingSites use the number of seggregating sites, otherwise use the total number of mutations.
+   * These two quantities are identical under the infinite site model, but the number of segregating sites will underestimate the total number of mutations in case of multiple substitutions at the same site.
    * @author Sylvain Gaillard
    * @author Khalid Belkhir
+   * @author Julien Dutheil
    *
    * If one set original=false then the number of mutations will be used.
    * If the outgroup contains more than one sequence the sites with more
@@ -695,17 +707,22 @@ public:
   static double fuLiF(
     const PolymorphismSequenceContainer& ingroup,
     const PolymorphismSequenceContainer& outgroup,
-    bool original = true)
+    bool useNbSingletons = true,
+    bool useNbSegregatingSites = false)
   throw (ZeroDivisionException);
 
   /**
    * @brief Return the Fu and Li F<sup>*</sup> test (Fu & Li 1993, Genetics, 133 pp693-709).
    *
    * @param group a PolymorphismSequenceContainer
+   * @param useNbSegregatingSites use the number of seggregating sites, otherwise use the total number of mutations.
+   * These two quantities are identical under the infinite site model, but the number of segregating sites will underestimate the total number of mutations in case of multiple substitutions at the same site.
    * @author Sylvain Gaillard
+   * @author Julien Dutheil
    */
   static double fuLiFStar(
-    const PolymorphismSequenceContainer& group)
+    const PolymorphismSequenceContainer& group,
+    bool useNbSegregatingSites)
   throw (ZeroDivisionException);
 
   /**
