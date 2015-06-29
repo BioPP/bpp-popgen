@@ -90,6 +90,27 @@ public:
     bool ignoreUnknown = true);
 
   /**
+   * @brief Compute the frequency of polymorphic site in an alignment
+   *
+   * The number of polymorphic site is also known as the number of
+   * segregating site @f$S@f$. This number is devided by the number
+   * of callable sites, which dependson the gapflag and ignoreUnknown arguments.
+   *
+   * Gaps are consider as mutations so if you want number of
+   * polymorphic site without gap, set the gapflag parameter to true.
+   *
+   * @param psc a PolymorphismSequenceContainer
+   * @param gapflag a boolean set by default to true if you don't want to
+   * take gap into account
+   * @param ignoreUnknown a boolean set by default to true to ignore
+   * unknown states
+   */
+  static double frequencyOfPolymorphicSites(
+    const PolymorphismSequenceContainer& psc,
+    bool gapflag = true,
+    bool ignoreUnknown = true);
+
+  /**
    * @brief Compute the number of parsimony informative sites in an alignment
    *
    * @param psc a PolymorphicSequenceContainer
@@ -216,12 +237,15 @@ public:
    * take gap into account
    * @param ignoreUnknown a boolean set by default to true to ignore
    * unknown states
-   * @author Sylvain Gaillard
+   * @param scaled Tell if theta should be normalized per nucleotide
+   * (divided by the length of the sequence).
+   * @author Sylvain Gaillard, Julien Dutheil
    */
   static double watterson75(
     const PolymorphismSequenceContainer& psc,
     bool gapflag = true,
-    bool ignoreUnknown = true);
+    bool ignoreUnknown = true,
+    bool scaled = false);
 
   /**
    * @brief Compute diversity estimator Theta of Tajima (1983, Genetics, 105 pp437-460)
@@ -238,11 +262,17 @@ public:
    * @param psc a PolymorphismSequenceContainer
    * @param gapflag flag set by default to true if you don't want to
    * take gap into account
-   * @author Sylvain Gaillard
+   * @param ignoreUnknown a boolean set by default to true to ignore
+   * unknown states
+   * @param scaled Tell if theta should be normalized per nucleotide
+   * (divided by the length of the sequence).
+   * @author Sylvain Gaillard, Julien Dutheil
    */
   static double tajima83(
     const PolymorphismSequenceContainer& psc,
-    bool gapflag = true);
+    bool gapflag = true,
+    bool ignoreUnknown = true,
+    bool scaled = false);
 
   /**
    * @brief Compute diversity estimator Theta H (eq. 3) of Fay and Wu (2000, Genetics, 155: 1405-1413)
@@ -585,12 +615,15 @@ public:
    * @param psc a PolymorphismSequenceContainer
    * @param gapflag flag set by default to true if you don't want to
    * take gap into account
+   * @param ignoreUnknown a boolean set by default to true to ignore
+   * unknown states
    * @throw ZeroDivisionException if S == 0
    * @author Sylvain Gaillard
    */
   static double tajimaDss(
     const PolymorphismSequenceContainer& psc,
-    bool gapflag = true)
+    bool gapflag = true,
+    bool ignoreUnknown = true)
   throw (ZeroDivisionException);
 
   /**
@@ -603,12 +636,15 @@ public:
    * @param psc a PolymorphismSequenceContainer
    * @param gapflag flag set by default to true if you don't want to
    * take gap into account
+   * @param ignoreUnknown a boolean set by default to true to ignore
+   * unknown states
    * @throw ZeroDivisionException if eta == 0
    * @author Sylvain Gaillard
    */
   static double tajimaDtnm(
     const PolymorphismSequenceContainer& psc,
-    bool gapflag = true)
+    bool gapflag = true,
+    bool ignoreUnknown = true)
   throw (ZeroDivisionException);
 
   /**

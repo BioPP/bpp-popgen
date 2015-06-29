@@ -89,6 +89,28 @@ unsigned int SequenceStatistics::numberOfPolymorphicSites(const PolymorphismSequ
   return s;
 }
 
+double SequenceStatistics::frequencyOfPolymorphicSites(const PolymorphismSequenceContainer& psc, bool gapflag, bool ignoreUnknown)
+{
+  double s = 0;
+  double n = 0;
+  const Site* site = 0;
+  auto_ptr<ConstSiteIterator> si;
+  if (gapflag)
+    si.reset(new CompleteSiteContainerIterator(psc));
+  else
+    si.reset(new SimpleSiteContainerIterator(psc));
+  while (si->hasMoreSites())
+  {
+    site = si->nextSite();
+    n++;
+    if (!SiteTools::isConstant(*site, ignoreUnknown))
+    {
+      s++;
+    }
+  }
+  return s / n;
+}
+
 unsigned int SequenceStatistics::numberOfParsimonyInformativeSites(const PolymorphismSequenceContainer& psc, bool gapflag)
 {
   auto_ptr<ConstSiteIterator> si;
@@ -273,31 +295,37 @@ std::vector<unsigned int> SequenceStatistics::gcPolymorphism(const PolymorphismS
 // Diversity statistics
 // ******************************************************************************
 
-double SequenceStatistics::watterson75(const PolymorphismSequenceContainer& psc, bool gapflag, bool ignoreUnknown)
+double SequenceStatistics::watterson75(const PolymorphismSequenceContainer& psc, bool gapflag, bool ignoreUnknown, bool scaled)
 {
   double ThetaW;
   size_t n = psc.getNumberOfSequences();
-  unsigned int s = numberOfPolymorphicSites(psc, gapflag, ignoreUnknown);
   map<string, double> values = getUsefulValues_(n);
-  ThetaW = static_cast<double>(s) / values["a1"];
+  double s = 0;
+  if (scaled)
+    s = frequencyOfPolymorphicSites(psc, gapflag, ignoreUnknown);
+  else
+    s = static_cast<double>(numberOfPolymorphicSites(psc, gapflag, ignoreUnknown));
+  ThetaW = s / values["a1"];
   return ThetaW;
 }
 
-double SequenceStatistics::tajima83(const PolymorphismSequenceContainer& psc, bool gapflag)
+double SequenceStatistics::tajima83(const PolymorphismSequenceContainer& psc, bool gapflag, bool ignoreUnknown, bool scaled)
 {
   size_t alphabet_size = psc.getAlphabet()->getSize();
   const Site* site = 0;
-  ConstSiteIterator* si = 0;
+  auto_ptr<ConstSiteIterator> si;
   double value2 = 0.;
+  double l = 0;
   if (gapflag)
-    si = new CompleteSiteContainerIterator(psc);
+    si.reset(new CompleteSiteContainerIterator(psc));
   else
-    si = new SimpleSiteContainerIterator(psc);
+    si.reset(new SimpleSiteContainerIterator(psc));
   while (si->hasMoreSites())
   {
     site = si->nextSite();
-    if (!SiteTools::isConstant(*site))
+    if (!SiteTools::isConstant(*site, ignoreUnknown))
     {
+      l++;
       double value = 0.;
       map<int, size_t> count;
       SymbolListTools::getCounts(*site, count);
@@ -320,8 +348,7 @@ double SequenceStatistics::tajima83(const PolymorphismSequenceContainer& psc, bo
       value2 += 1. - value;
     }
   }
-  delete si;
-  return value2;
+  return (scaled ? value2 / l : value2);
 }
 
 double SequenceStatistics::fayWu2000(const PolymorphismSequenceContainer& psc, const Sequence& ancestralSites)
@@ -786,26 +813,26 @@ double SequenceStatistics::neutralityIndex(const PolymorphismSequenceContainer& 
 // Statistical tests
 // ******************************************************************************
 
-double SequenceStatistics::tajimaDss(const PolymorphismSequenceContainer& psc, bool gapflag) throw (ZeroDivisionException)
+double SequenceStatistics::tajimaDss(const PolymorphismSequenceContainer& psc, bool gapflag, bool ignoreUnknown) throw (ZeroDivisionException)
 {
-  unsigned int Sp = numberOfPolymorphicSites(psc, gapflag);
+  unsigned int Sp = numberOfPolymorphicSites(psc, gapflag, ignoreUnknown);
   if (Sp == 0)
     throw ZeroDivisionException("SequenceStatistics::tajimaDss. S should not be 0.");
   double S = static_cast<double>(Sp);
-  double tajima = tajima83(psc, gapflag);
-  double watterson = watterson75(psc, gapflag);
+  double tajima = tajima83(psc, gapflag, ignoreUnknown);
+  double watterson = watterson75(psc, gapflag, ignoreUnknown);
   size_t n = psc.getNumberOfSequences();
   map<string, double> values = getUsefulValues_(n);
   return (tajima - watterson) / sqrt((values["e1"] * S) + (values["e2"] * S * (S - 1)));
 }
 
-double SequenceStatistics::tajimaDtnm(const PolymorphismSequenceContainer& psc, bool gapflag) throw (ZeroDivisionException)
+double SequenceStatistics::tajimaDtnm(const PolymorphismSequenceContainer& psc, bool gapflag, bool ignoreUnknown) throw (ZeroDivisionException)
 {
   unsigned int etaP = totalNumberOfMutations(psc, gapflag);
   if (etaP == 0)
     throw ZeroDivisionException("SequenceStatistics::tajimaDtnm. Eta should not be 0.");
   double eta = static_cast<double>(etaP);
-  double tajima = tajima83(psc, gapflag);
+  double tajima = tajima83(psc, gapflag, ignoreUnknown);
   size_t n = psc.getNumberOfSequences();
   map<string, double> values = getUsefulValues_(n);
   double eta_a1 = eta / values["a1"];
@@ -1530,6 +1557,7 @@ void SequenceStatistics::testUsefulValues(std::ostream& s, size_t n)
 
 unsigned int SequenceStatistics::getNumberOfMutations_(const Site& site)
 {
+  //jdutheil 27/06/15: does not work if gaps and unknown!!!
   unsigned int tmp_count = 0;
   map<int, size_t> states_count;
   SymbolListTools::getCounts(site, states_count);
