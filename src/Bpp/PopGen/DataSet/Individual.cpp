@@ -46,19 +46,19 @@ using namespace std;
 // ** Class constructor: *******************************************************/
 Individual::Individual() : id_(""),
   sex_(0),
-  date_(0),
-  coord_(0),
+  date_(),
+  coord_(),
   locality_(0),
-  sequences_(0),
-  genotype_(0) {}
+  sequences_(),
+  genotype_() {}
 
 Individual::Individual(const std::string& id) : id_(id),
   sex_(0),
-  date_(0),
-  coord_(0),
+  date_(),
+  coord_(),
   locality_(0),
-  sequences_(0),
-  genotype_(0) {}
+  sequences_(),
+  genotype_() {}
 
 Individual::Individual(const string& id,
                        const Date& date,
@@ -70,16 +70,16 @@ Individual::Individual(const string& id,
   date_(new Date(date)),
   coord_(new Point2D<double>(coord)),
   locality_(locality),
-  sequences_(0),
-  genotype_(0) {}
+  sequences_(),
+  genotype_() {}
 
 Individual::Individual(const Individual& ind) : id_(ind.getId()),
   sex_(ind.getSex()),
-  date_(0),
-  coord_(0),
+  date_(),
+  coord_(),
   locality_(0),
-  sequences_(0),
-  genotype_(0)
+  sequences_(),
+  genotype_()
 {
   try
   {

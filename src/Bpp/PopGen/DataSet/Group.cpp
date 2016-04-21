@@ -127,12 +127,12 @@ size_t Group::getIndividualPosition(const std::string& individual_id) const thro
   throw IndividualNotFoundException("Group::getIndividualPosition: individual_id not found.", individual_id);
 }
 
-std::auto_ptr<Individual> Group::removeIndividualById(const std::string& individual_id) throw (IndividualNotFoundException)
+std::unique_ptr<Individual> Group::removeIndividualById(const std::string& individual_id) throw (IndividualNotFoundException)
 {
   try
   {
     size_t indPos = getIndividualPosition(individual_id);
-    auto_ptr<Individual> ind(individuals_[indPos]);
+    unique_ptr<Individual> ind(individuals_[indPos]);
     individuals_.erase(individuals_.begin() + static_cast<ptrdiff_t>(indPos));
     return ind;
   }
@@ -142,11 +142,11 @@ std::auto_ptr<Individual> Group::removeIndividualById(const std::string& individ
   }
 }
 
-std::auto_ptr<Individual> Group::removeIndividualAtPosition(size_t individual_position) throw (IndexOutOfBoundsException)
+std::unique_ptr<Individual> Group::removeIndividualAtPosition(size_t individual_position) throw (IndexOutOfBoundsException)
 {
   if (individual_position >= individuals_.size())
     throw IndexOutOfBoundsException("Group::removeIndividualAtPosition.", individual_position, 0, individuals_.size());
-  auto_ptr<Individual> ind(individuals_[individual_position]);
+  unique_ptr<Individual> ind(individuals_[individual_position]);
   individuals_.erase(individuals_.begin() + static_cast<ptrdiff_t>(individual_position));
   return ind;
 }

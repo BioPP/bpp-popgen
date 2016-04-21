@@ -204,7 +204,7 @@ public:
    * Search an Individual in the Group by cheking the id and remove it
    * if it is found then return a pointer to this Individual.
    */
-  std::auto_ptr<Individual> removeIndividualById(const std::string& individual_id) throw (IndividualNotFoundException);
+  std::unique_ptr<Individual> removeIndividualById(const std::string& individual_id) throw (IndividualNotFoundException);
 
   /**
    * @brief Remove an Individual from the Group.
@@ -216,7 +216,7 @@ public:
    * Remove the individual at the specified position and return a pointer
    * to this Individual.
    */
-  std::auto_ptr<Individual> removeIndividualAtPosition(size_t individual_position) throw (IndexOutOfBoundsException);
+  std::unique_ptr<Individual> removeIndividualAtPosition(size_t individual_position) throw (IndexOutOfBoundsException);
 
   /**
    * @brief Delete an Individual from the Group.

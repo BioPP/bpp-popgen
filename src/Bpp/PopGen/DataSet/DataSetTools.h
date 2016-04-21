@@ -67,12 +67,12 @@ public:
   /**
    * @brief General method to build a DataSet from an OrderedSequenceContainer.
    */
-  static std::auto_ptr<DataSet> buildDataSet(const OrderedSequenceContainer& osc) throw (Exception);
+  static std::unique_ptr<DataSet> buildDataSet(const OrderedSequenceContainer& osc) throw (Exception);
 
   /**
    * @brief Specific methode to build a DataSet from a PolymorphismSequenceContainer.
    */
-  static std::auto_ptr<DataSet> buildDataSet(const PolymorphismSequenceContainer& psc) throw (Exception);
+  static std::unique_ptr<DataSet> buildDataSet(const PolymorphismSequenceContainer& psc) throw (Exception);
 };
 } // end of namespace bpp;
 

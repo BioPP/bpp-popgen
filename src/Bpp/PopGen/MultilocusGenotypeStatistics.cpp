@@ -732,7 +732,7 @@ double MultilocusGenotypeStatistics::getRHMultilocusFst(const PolymorphismMultiG
   return RH / double(total_alleles);
 }
 
-std::auto_ptr<DistanceMatrix> MultilocusGenotypeStatistics::getDistanceMatrix(const PolymorphismMultiGContainer& pmgc, vector<size_t> locus_positions, const set<size_t>& groups, string distance_methode) throw (Exception)
+std::unique_ptr<DistanceMatrix> MultilocusGenotypeStatistics::getDistanceMatrix(const PolymorphismMultiGContainer& pmgc, vector<size_t> locus_positions, const set<size_t>& groups, string distance_methode) throw (Exception)
 {
   vector<string> names = pmgc.getAllGroupsNames();
   vector<size_t> grp_ids_vect;
@@ -741,7 +741,7 @@ std::auto_ptr<DistanceMatrix> MultilocusGenotypeStatistics::getDistanceMatrix(co
     grp_ids_vect.push_back(*i);
   }
 
-  auto_ptr<DistanceMatrix> _dist(new DistanceMatrix(names));
+  unique_ptr<DistanceMatrix> _dist(new DistanceMatrix(names));
   for (size_t i = 0; i < groups.size(); i++)
   {
     (*_dist)(i, i) = 0;

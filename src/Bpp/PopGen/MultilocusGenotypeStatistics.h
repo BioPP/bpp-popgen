@@ -286,7 +286,7 @@ public:
    * distance is either Nei72, Nei78, Fst W&C or Fst Robertson & Hill, Nm,
    * D=-ln(1-Fst) of Reynolds et al. 1983, Rousset 1997 Fst/(1-Fst)
    */
-  static std::auto_ptr<DistanceMatrix> getDistanceMatrix(const PolymorphismMultiGContainer& pmgc, std::vector<size_t> locus_positions, const std::set<size_t>& groups, std::string distance_methode) throw (Exception);
+  static std::unique_ptr<DistanceMatrix> getDistanceMatrix(const PolymorphismMultiGContainer& pmgc, std::vector<size_t> locus_positions, const std::set<size_t>& groups, std::string distance_methode) throw (Exception);
 };
 } // end of namespace bpp;
 

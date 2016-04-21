@@ -77,11 +77,11 @@ class Individual
 protected:
   std::string id_;
   unsigned short sex_;
-  std::auto_ptr<Date> date_;
-  std::auto_ptr< Point2D<double> > coord_;
+  std::unique_ptr<Date> date_;
+  std::unique_ptr< Point2D<double> > coord_;
   const Locality<double>* locality_;
-  std::auto_ptr<MapSequenceContainer> sequences_;
-  std::auto_ptr<MultilocusGenotype> genotype_;
+  std::unique_ptr<MapSequenceContainer> sequences_;
+  std::unique_ptr<MultilocusGenotype> genotype_;
 
 public:
   // Constructors and destructor :
