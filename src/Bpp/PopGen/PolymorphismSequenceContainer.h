@@ -55,8 +55,8 @@
  * @mainpage
  *
  * @par
- * The PopGenLib library provides classes for population genetics analysis.
- * It makes intensive use of the SeqLib library, and adds a dedicated container
+ * The bpp-popgen library provides classes for population genetics analysis.
+ * It makes intensive use of the bpp-seq library, and adds a dedicated container
  * named bpp::PolymorphismSequenceContainer, which associates frequencies to the
  * sequences in the set. The bpp::PolymorphismSequenceContainerTools and
  * bpp::SequenceStatistics static classes provide several tools for data analysis,
@@ -121,13 +121,39 @@ public:
 
   /**
    * @brief Build a PolymorphismSequenceContainer by copying data from an OrderedSequenceContainer.
+   *
+   * @param sc Sequence container to convert.
    */
   PolymorphismSequenceContainer(const OrderedSequenceContainer& sc);
 
   /**
+   * @brief Build a PolymorphismSequenceContainer by copying data from an OrderedSequenceContainer.
+   *
+   * @note In case of count = false, the constructor with additional argument will be more efficient.
+   *
+   * @param sc Sequence container to convert.
+   * @param count Tell if identical sequences should be collapsed and counted.
+   *              If not (the historical behavior), sequences are duplicated and stored with a frequency of 1.
+   */
+  PolymorphismSequenceContainer(const OrderedSequenceContainer& sc, bool count);
+
+  /**
    * @brief Build a PolymorphismSequenceContainer by copying data from a SiteContainer.
+   *
+   * @param sc Sequence container to convert.
    */
   PolymorphismSequenceContainer(const SiteContainer& sc);
+
+  /**
+   * @brief Build a PolymorphismSequenceContainer by copying data from a SiteContainer.
+   *
+   * @note In case of count = false, the constructor with additional argument will be more efficient.
+   *
+   * @param sc Sequence container to convert.
+   * @param count Tell if identical sequences should be collapsed and counted.
+   *              If not (the historical behavior), sequences are duplicated and stored with a frequency of 1.
+   */
+  PolymorphismSequenceContainer(const SiteContainer& sc, bool count);
 
   /**
    * @brief Copy constructor.
@@ -242,6 +268,11 @@ public:
   size_t getNumberOfGroups() const;
 
   /**
+   * @return True is the container contains at least one outgroup sequence.
+   */
+  bool hasOutgroup() const;
+
+  /**
    * @brief Tell if the sequence is ingroup by index.
    *
    * @throw IndexOutOfBoundsException if index excedes the number of sequences in the container.
@@ -342,6 +373,14 @@ public:
    * @throw SequenceNotFoundException if name is not found among the sequences' names.
    */
   unsigned int getSequenceCount(const std::string& name) const throw (SequenceNotFoundException);
+
+  /**
+   * @brief convert the container to a site container, with sequences dulicated according to their respective frequencies.
+   *
+   * @return A SiteContainer object, eventually with duplicated sequences. Names of duplicated sequences are happended with _1, _2, etc.
+   */
+  SiteContainer* toSiteContainer() const;
+  
 };
 } // end of namespace bpp;
 

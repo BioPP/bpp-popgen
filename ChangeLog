@@ -1,3 +1,8 @@
+17/12/16 Julien Dutheil
+* Improved PolymorphismSequenceContainer to count sequences when copying from a "standard" container
+* Added conversion function betwenn PSC to "standard" SiteContainer objects.
+* Added "hasOutgroup" function in PSC.
+
 25/06/15 Julien Dutheil
 * Sorted files in subdirectories
 
