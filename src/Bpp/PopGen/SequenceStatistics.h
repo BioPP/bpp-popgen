@@ -157,13 +157,11 @@ public:
    *
    * @param ing a PolymorphismSequenceContainer the ingroup alignement
    * @param outg a PolymorphismSequenceContainer the outgroup alignement
-   * @throw Exception if ing and outg are not of the same size (site number)
    * @author Khalid Belkhir
    */
   static unsigned int totalNumberOfMutationsOnExternalBranches(
     const PolymorphismSequenceContainer& ing,
-    const PolymorphismSequenceContainer& outg)
-  throw (Exception);
+    const PolymorphismSequenceContainer& outg);
 
   /**
    * @brief Compute the number of triplet in an alignment
@@ -343,8 +341,7 @@ public:
    * @author Éric Bazin
    */
   static double ratioOfTransitionsTransversions(
-    const PolymorphismSequenceContainer& psc )
-  throw (Exception);
+    const PolymorphismSequenceContainer& psc);
 
   /**
    * @brief Compute the number of codon sites with stop codon
@@ -623,8 +620,7 @@ public:
   static double tajimaDss(
     const PolymorphismSequenceContainer& psc,
     bool gapflag = true,
-    bool ignoreUnknown = true)
-  throw (ZeroDivisionException);
+    bool ignoreUnknown = true);
 
   /**
    * @brief Return the Tajima's D test (Tajima 1989, Genetics 123 pp 585-595).
@@ -644,8 +640,7 @@ public:
   static double tajimaDtnm(
     const PolymorphismSequenceContainer& psc,
     bool gapflag = true,
-    bool ignoreUnknown = true)
-  throw (ZeroDivisionException);
+    bool ignoreUnknown = true);
 
   /**
    * @brief Return the Fu and Li D test (Fu & Li 1993, Genetics, 133 pp693-709).
@@ -669,8 +664,7 @@ public:
     const PolymorphismSequenceContainer& ingroup,
     const PolymorphismSequenceContainer& outgroup,
     bool useNbSingletons = true,
-    bool useNbSegregatingSites = false)
-  throw (ZeroDivisionException);
+    bool useNbSegregatingSites = false);
 
   /**
    * @brief Return the Fu and Li D<sup>*</sup> test (Fu & Li 1993, Genetics, 133 pp693-709).
@@ -683,8 +677,7 @@ public:
    */
   static double fuLiDStar(
     const PolymorphismSequenceContainer& group,
-    bool useNbSegregatingSites = false)
-  throw (ZeroDivisionException);
+    bool useNbSegregatingSites = false);
 
   /**
    * @brief Return the Fu and Li F test (Fu & Li 1993, Genetics, 133 pp693-709).
@@ -708,8 +701,7 @@ public:
     const PolymorphismSequenceContainer& ingroup,
     const PolymorphismSequenceContainer& outgroup,
     bool useNbSingletons = true,
-    bool useNbSegregatingSites = false)
-  throw (ZeroDivisionException);
+    bool useNbSegregatingSites = false);
 
   /**
    * @brief Return the Fu and Li F<sup>*</sup> test (Fu & Li 1993, Genetics, 133 pp693-709).
@@ -722,8 +714,7 @@ public:
    */
   static double fuLiFStar(
     const PolymorphismSequenceContainer& group,
-    bool useNbSegregatingSites)
-  throw (ZeroDivisionException);
+    bool useNbSegregatingSites);
 
   /**
    * Fst of Hudson, Slatkin and Maddison
@@ -796,8 +787,7 @@ public:
   static Vdouble pairwiseDistances1(
     const PolymorphismSequenceContainer& psc,
     bool keepsingleton = true,
-    double freqmin = 0.)
-  throw (DimensionException);
+    double freqmin = 0.);
 
   /**
    * @brief give the vector of all mean pairwise distance between two sites to a LD SequencePolymorphismContainer
@@ -816,8 +806,7 @@ public:
   static Vdouble pairwiseDistances2(
     const PolymorphismSequenceContainer& psc,
     bool keepsingleton = true,
-    double freqmin = 0.)
-  throw (DimensionException);
+    double freqmin = 0.);
 
   /**
    * @brief give the vector of all mean pairwise D value between two sites (Lewontin & Kojima 1964, Evolution 14 pp458-472)
@@ -834,8 +823,7 @@ public:
   static Vdouble pairwiseD(
     const PolymorphismSequenceContainer& psc,
     bool keepsingleton = true,
-    double freqmin = 0.)
-  throw (DimensionException);
+    double freqmin = 0.);
 
   /**
    * @brief give the vector of all mean pairwise D' value between two sites (Lewontin 1964, Genetics 49 pp49-67))
@@ -852,8 +840,7 @@ public:
   static Vdouble pairwiseDprime(
     const PolymorphismSequenceContainer& psc,
     bool keepsingleton = true,
-    double freqmin = 0.)
-  throw (DimensionException);
+    double freqmin = 0.);
 
   /**
    * @brief give the vector of all mean pairwise R² value between two sites (Hill & Robertson 1968, Theor. Appl. Genet., 38 pp226-231)
@@ -870,8 +857,7 @@ public:
   static Vdouble pairwiseR2(
     const PolymorphismSequenceContainer& psc,
     bool keepsingleton = true,
-    double freqmin = 0.)
-  throw (DimensionException);
+    double freqmin = 0.);
 
   /**
    * @brief give mean D over all pairwise comparisons
@@ -888,8 +874,7 @@ public:
   static double meanD(
     const PolymorphismSequenceContainer& psc,
     bool keepsingleton = true,
-    double freqmin = 0.)
-  throw (DimensionException);
+    double freqmin = 0.);
 
   /**
    * @brief give mean D' over all pairwise comparisons
@@ -906,8 +891,7 @@ public:
   static double meanDprime(
     const PolymorphismSequenceContainer& psc,
     bool keepsingleton = true,
-    double freqmin = 0.)
-  throw (DimensionException);
+    double freqmin = 0.);
 
   /**
    * @brief give mean R² over all pairwise comparisons
@@ -924,8 +908,7 @@ public:
   static double meanR2(
     const PolymorphismSequenceContainer& psc,
     bool keepsingleton = true,
-    double freqmin = 0.)
-  throw (DimensionException);
+    double freqmin = 0.);
 
   /**
    * @brief give mean pairwise distances between sites / method 1: differences between sequences are not taken into account
@@ -941,8 +924,7 @@ public:
   static double meanDistance1(
     const PolymorphismSequenceContainer& psc,
     bool keepsingleton = true,
-    double freqmin = 0.)
-  throw (DimensionException);
+    double freqmin = 0.);
 
   /**
    * @brief give mean pairwise distances between sites / method 2: differences between sequences are taken into account
@@ -958,8 +940,7 @@ public:
   static double meanDistance2(
     const PolymorphismSequenceContainer& psc,
     bool keepsingleton = true,
-    double freqmin = 0.)
-  throw (DimensionException);
+    double freqmin = 0.);
 
   /**
    * @brief give the slope of the regression |D| = 1+a*distance
@@ -981,8 +962,7 @@ public:
     const PolymorphismSequenceContainer& psc,
     bool distance1 = false,
     bool keepsingleton = true,
-    double freqmin = 0.)
-  throw (DimensionException);
+    double freqmin = 0.);
 
   /**
    * @brief give the slope of the regression |D'| = 1+a*distance
@@ -1004,8 +984,7 @@ public:
     const PolymorphismSequenceContainer& psc,
     bool distance1 = false,
     bool keepsingleton = true,
-    double freqmin = 0.)
-  throw (DimensionException);
+    double freqmin = 0.);
 
   /**
    * @brief give the slope of the regression R² = 1+a*distance
@@ -1027,8 +1006,7 @@ public:
     const PolymorphismSequenceContainer& psc,
     bool distance1 = false,
     bool keepsingleton = true,
-    double freqmin = 0.)
-  throw (DimensionException);
+    double freqmin = 0.);
 
   /**
    * @brief give the slope and the origin of the regression |D| = a*distance+b
@@ -1050,8 +1028,7 @@ public:
     const PolymorphismSequenceContainer& psc,
     bool distance1 = false,
     bool keepsingleton = true,
-    double freqmin = 0.)
-  throw (DimensionException);
+    double freqmin = 0.);
 
   /**
    * @brief give the slope and the origin of the regression |D'| = a*distance+b
@@ -1073,7 +1050,7 @@ public:
     const PolymorphismSequenceContainer& psc,
     bool distance1 = false,
     bool keepsingleton = true,
-    double freqmin = 0.) throw (DimensionException);
+    double freqmin = 0.);
 
   /**
    * @brief give the slope and the origin of the regression R² = a*distance+b
@@ -1095,8 +1072,7 @@ public:
     const PolymorphismSequenceContainer& psc,
     bool distance1 = false,
     bool keepsingleton = true,
-    double freqmin = 0.)
-  throw (DimensionException);
+    double freqmin = 0.);
 
   /**
    * @brief give the slope of the regression R² = 1/(1+a*distance)
@@ -1119,8 +1095,7 @@ public:
     const PolymorphismSequenceContainer& psc,
     bool distance1 = false,
     bool keepsingleton = true,
-    double freqmin = 0.)
-  throw (DimensionException);
+    double freqmin = 0.);
 
   /**
    * @brief give estimate of C=4Nr using Hudson method (Hudson 1987, Genet. Res., 50 pp245-250)
