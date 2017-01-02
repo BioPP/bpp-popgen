@@ -120,6 +120,11 @@ public:
   PolymorphismSequenceContainer(size_t size, const Alphabet* alpha);
 
   /**
+   * @brief Build a new empty PolymorphismSequenceContainer with given sequence names.
+   */
+  PolymorphismSequenceContainer(const std::vector<std::string>& names, const Alphabet* alpha);
+
+  /**
    * @brief Build a PolymorphismSequenceContainer by copying data from an OrderedSequenceContainer.
    *
    * @param sc Sequence container to convert.

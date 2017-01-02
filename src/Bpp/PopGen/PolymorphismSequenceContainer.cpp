@@ -64,6 +64,14 @@ PolymorphismSequenceContainer::PolymorphismSequenceContainer(size_t size, const 
 
 /******************************************************************************/
 
+PolymorphismSequenceContainer::PolymorphismSequenceContainer(const vector<string>& names, const Alphabet* alpha) :
+  VectorSiteContainer(names, alpha),
+  ingroup_(names.size()),
+  count_(names.size()),
+  group_(names.size()) {}
+
+/******************************************************************************/
+
 PolymorphismSequenceContainer::PolymorphismSequenceContainer(const OrderedSequenceContainer& sc) :
   VectorSiteContainer(sc),
   ingroup_(sc.getNumberOfSequences(), true),

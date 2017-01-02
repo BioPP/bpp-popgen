@@ -591,11 +591,22 @@ string PolymorphismSequenceContainerTools::getIngroupSpeciesName(const Polymorph
 
 PolymorphismSequenceContainer* PolymorphismSequenceContainerTools::getSynonymousSites(const PolymorphismSequenceContainer& psc, const GeneticCode& gCode)
 {
-  unique_ptr<PolymorphismSequenceContainer> psco(new PolymorphismSequenceContainer(psc.getAlphabet()));
+  unique_ptr<PolymorphismSequenceContainer> psco(new PolymorphismSequenceContainer(psc.getSequencesNames(), psc.getAlphabet()));
   for (size_t i = 0; i < psc.getNumberOfSites(); ++i) {
     const Site& site = psc.getSite(i);
     if (CodonSiteTools::isSynonymousPolymorphic(site, gCode)) {
       psco->addSite(site);
+    }
+  }
+  for (size_t i = 0; i < psc.getNumberOfSequences(); i++)
+  {
+    psco->setSequenceCount(i, psc.getSequenceCount(i));
+    if (psc.isIngroupMember(i))
+      psco->setAsIngroupMember(i);
+    else
+    {
+      psco->setAsOutgroupMember(i);
+      psco->setGroupId(i, psc.getGroupId(i));
     }
   }
   return psco.release();
@@ -605,11 +616,22 @@ PolymorphismSequenceContainer* PolymorphismSequenceContainerTools::getSynonymous
 
 PolymorphismSequenceContainer* PolymorphismSequenceContainerTools::getNonSynonymousSites(const PolymorphismSequenceContainer& psc, const GeneticCode& gCode)
 {
-  unique_ptr<PolymorphismSequenceContainer> psco(new PolymorphismSequenceContainer(psc.getAlphabet()));
+  unique_ptr<PolymorphismSequenceContainer> psco(new PolymorphismSequenceContainer(psc.getSequencesNames(), psc.getAlphabet()));
   for (size_t i = 0; i < psc.getNumberOfSites(); ++i) {
     const Site& site = psc.getSite(i);
     if (!CodonSiteTools::isSynonymousPolymorphic(site, gCode)) {
       psco->addSite(site);
+    }
+  }
+  for (size_t i = 0; i < psc.getNumberOfSequences(); i++)
+  {
+    psco->setSequenceCount(i, psc.getSequenceCount(i));
+    if (psc.isIngroupMember(i))
+      psco->setAsIngroupMember(i);
+    else
+    {
+      psco->setAsOutgroupMember(i);
+      psco->setGroupId(i, psc.getGroupId(i));
     }
   }
   return psco.release();
