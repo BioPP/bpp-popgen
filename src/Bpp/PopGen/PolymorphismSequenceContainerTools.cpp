@@ -40,6 +40,8 @@
 
 #include "PolymorphismSequenceContainerTools.h"
 
+#include <Bpp/Seq/CodonSiteTools.h>
+
 using namespace bpp;
 using namespace std;
 
@@ -586,3 +588,32 @@ string PolymorphismSequenceContainerTools::getIngroupSpeciesName(const Polymorph
 }
 
 /******************************************************************************/
+
+PolymorphismSequenceContainer* PolymorphismSequenceContainerTools::getSynonymousSites(const PolymorphismSequenceContainer& psc, const GeneticCode& gCode)
+{
+  unique_ptr<PolymorphismSequenceContainer> psco(new PolymorphismSequenceContainer(psc.getAlphabet()));
+  for (size_t i = 0; i < psc.getNumberOfSites(); ++i) {
+    const Site& site = psc.getSite(i);
+    if (CodonSiteTools::isSynonymousPolymorphic(site, gCode)) {
+      psco->addSite(site);
+    }
+  }
+  return psco.release();
+}
+
+/******************************************************************************/
+
+PolymorphismSequenceContainer* PolymorphismSequenceContainerTools::getNonSynonymousSites(const PolymorphismSequenceContainer& psc, const GeneticCode& gCode)
+{
+  unique_ptr<PolymorphismSequenceContainer> psco(new PolymorphismSequenceContainer(psc.getAlphabet()));
+  for (size_t i = 0; i < psc.getNumberOfSites(); ++i) {
+    const Site& site = psc.getSite(i);
+    if (!CodonSiteTools::isSynonymousPolymorphic(site, gCode)) {
+      psco->addSite(site);
+    }
+  }
+  return psco.release();
+}
+
+/******************************************************************************/
+

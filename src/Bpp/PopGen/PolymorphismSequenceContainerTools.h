@@ -44,7 +44,7 @@
 #include <Bpp/Numeric/Random/RandomTools.h>
 #include <Bpp/Text/StringTokenizer.h>
 
-// from SeqLib
+// from bpp-seq
 #include <Bpp/Seq/Alphabet/CodonAlphabet.h>
 #include <Bpp/Seq/Io/Mase.h>
 #include <Bpp/Seq/Io/MaseTools.h>
@@ -139,7 +139,7 @@ public:
    *
    * @param psc a PolymorphismSequenceContainer reference
    */
-  static PolymorphismSequenceContainer* getSitesWithoutGaps (const PolymorphismSequenceContainer& psc);
+  static PolymorphismSequenceContainer* getSitesWithoutGaps(const PolymorphismSequenceContainer& psc);
 
   /**
    * @brief Return number of sites without gaps in a PolymorphismSequenceContainer.
@@ -247,6 +247,25 @@ public:
    * @param psc a PolymorphismSequenceContainer.
    */
   static std::string getIngroupSpeciesName(const PolymorphismSequenceContainer& psc);
+
+  /**
+   * @brief Retrieve synonymous codon sites
+   *
+   * @param psc a PolymorphismSequenceContainer.
+   *
+   * @return A new PolymorphismSequenceContainer with only synonymous sites. 
+   */ 
+  static PolymorphismSequenceContainer* getSynonymousSites(const PolymorphismSequenceContainer& psc, const GeneticCode& gCode);
+
+  /**
+   * @brief Retrieve non-synonymous codon sites
+   *
+   * @param psc a PolymorphismSequenceContainer.
+   *
+   * @return A new PolymorphismSequenceContainer with only non-synonymous sites. 
+   */ 
+  static PolymorphismSequenceContainer* getNonSynonymousSites(const PolymorphismSequenceContainer& psc, const GeneticCode& gCode);
+
 };
 } // end of namespace bpp;
 
