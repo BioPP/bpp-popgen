@@ -252,6 +252,7 @@ public:
    * @brief Retrieve synonymous codon sites
    *
    * @param psc a PolymorphismSequenceContainer.
+   * @param gCode The genetic code to use
    *
    * @return A new PolymorphismSequenceContainer with only synonymous sites. 
    */ 
@@ -261,6 +262,7 @@ public:
    * @brief Retrieve non-synonymous codon sites
    *
    * @param psc a PolymorphismSequenceContainer.
+   * @param gCode The genetic code to use
    *
    * @return A new PolymorphismSequenceContainer with only non-synonymous sites. 
    */ 
