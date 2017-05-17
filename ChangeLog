@@ -1,3 +1,5 @@
+10/05/17 -*- Version 2.3.0 -*-
+
 17/12/16 Julien Dutheil
 * Improved PolymorphismSequenceContainer to count sequences when copying from a "standard" container
 * Added conversion function betwenn PSC to "standard" SiteContainer objects.
