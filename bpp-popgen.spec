@@ -1,5 +1,5 @@
 %define _basename bpp-popgen
-%define _version 2.3.0
+%define _version 2.3.1
 %define _release 1
 %define _prefix /usr
 
@@ -19,9 +19,9 @@ Requires: bpp-seq = %{_version}
 BuildRoot: %{_builddir}/%{_basename}-root
 BuildRequires: cmake >= 2.8.11
 BuildRequires: gcc-c++ >= 4.7.0
-BuildRequires: libbpp-core2 = %{_version}
+BuildRequires: libbpp-core3 = %{_version}
 BuildRequires: libbpp-core-devel = %{_version}
-BuildRequires: libbpp-seq9 = %{_version}
+BuildRequires: libbpp-seq11 = %{_version}
 BuildRequires: libbpp-seq-devel = %{_version}
 
 AutoReq: yes
@@ -31,21 +31,21 @@ AutoProv: yes
 This library contains utilitary and classes for population genetics analysis. 
 It is part of the Bio++ project.
 
-%package -n libbpp-popgen6
+%package -n libbpp-popgen7
 Summary: Bio++ Population Genetics library
 Group: Development/Libraries/C and C++
 
-%description -n libbpp-popgen6
+%description -n libbpp-popgen7
 This library contains utilitary and classes for population genetics and molecular evolution analysis.
 It is part of the Bio++ project.
 
 %package -n libbpp-popgen-devel
 Summary: Libraries, includes to develop applications with %{_basename}
 Group: Development/Libraries/C and C++
-Requires: libbpp-popgen6 = %{_version}
-Requires: libbpp-seq9 = %{_version}
+Requires: libbpp-popgen7 = %{_version}
+Requires: libbpp-seq11 = %{_version}
 Requires: libbpp-seq-devel = %{_version}
-Requires: libbpp-core2 = %{_version}
+Requires: libbpp-core3 = %{_version}
 Requires: libbpp-core-devel = %{_version}
 
 %description -n libbpp-popgen-devel
@@ -70,11 +70,11 @@ make DESTDIR=$RPM_BUILD_ROOT install
 %clean
 rm -rf $RPM_BUILD_ROOT
 
-%post -n libbpp-popgen6 -p /sbin/ldconfig
+%post -n libbpp-popgen7 -p /sbin/ldconfig
 
-%postun -n libbpp-popgen6 -p /sbin/ldconfig
+%postun -n libbpp-popgen7 -p /sbin/ldconfig
 
-%files -n libbpp-popgen6
+%files -n libbpp-popgen7
 %defattr(-,root,root)
 %doc AUTHORS.txt COPYING.txt INSTALL.txt ChangeLog
 %{_prefix}/%{_lib}/lib*.so.*
@@ -90,6 +90,8 @@ rm -rf $RPM_BUILD_ROOT
 %{_prefix}/include/*
 
 %changelog
+* Tue Jun 06 2017 Julien Dutheil <julien.dutheil@univ-montp2.fr> 2.3.1-1
+- Increased interface number
 * Wed May 10 2017 Julien Dutheil <julien.dutheil@univ-montp2.fr> 2.3.0-1
 - Several bugs fixed and performance improvements
 - Improved PolymorphismSequenceContainer
