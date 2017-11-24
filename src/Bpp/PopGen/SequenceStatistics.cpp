@@ -323,9 +323,9 @@ double SequenceStatistics::tajima83(const PolymorphismSequenceContainer& psc, bo
   while (si->hasMoreSites())
   {
     site = si->nextSite();
+    l++;
     if (!SiteTools::isConstant(*site, ignoreUnknown))
     {
-      l++;
       double value = 0.;
       map<int, size_t> count;
       SymbolListTools::getCounts(*site, count);
