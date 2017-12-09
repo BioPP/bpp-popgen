@@ -731,7 +731,7 @@ unsigned int SequenceStatistics::numberOfSynonymousSubstitutions(const Polymorph
   while (si->hasMoreSites())
   {
     site = si->nextSite();
-    st  += CodonSiteTools::numberOfSubsitutions(*site, gc, freqmin);
+    st  += CodonSiteTools::numberOfSubstitutions(*site, gc, freqmin);
     sns += CodonSiteTools::numberOfNonSynonymousSubstitutions(*site, gc, freqmin);
   }
   return static_cast<unsigned int>(st - sns);
