@@ -1,5 +1,5 @@
 %define _basename bpp-popgen
-%define _version 2.3.1
+%define _version 2.4.0
 %define _release 1
 %define _prefix /usr
 
@@ -19,9 +19,9 @@ Requires: bpp-seq = %{_version}
 BuildRoot: %{_builddir}/%{_basename}-root
 BuildRequires: cmake >= 2.8.11
 BuildRequires: gcc-c++ >= 4.7.0
-BuildRequires: libbpp-core3 = %{_version}
+BuildRequires: libbpp-core4 = %{_version}
 BuildRequires: libbpp-core-devel = %{_version}
-BuildRequires: libbpp-seq11 = %{_version}
+BuildRequires: libbpp-seq12 = %{_version}
 BuildRequires: libbpp-seq-devel = %{_version}
 
 AutoReq: yes
@@ -43,9 +43,9 @@ It is part of the Bio++ project.
 Summary: Libraries, includes to develop applications with %{_basename}
 Group: Development/Libraries/C and C++
 Requires: libbpp-popgen7 = %{_version}
-Requires: libbpp-seq11 = %{_version}
+Requires: libbpp-seq12 = %{_version}
 Requires: libbpp-seq-devel = %{_version}
-Requires: libbpp-core3 = %{_version}
+Requires: libbpp-core4 = %{_version}
 Requires: libbpp-core-devel = %{_version}
 
 %description -n libbpp-popgen-devel
@@ -87,6 +87,8 @@ rm -rf $RPM_BUILD_ROOT
 %{_prefix}/include/*
 
 %changelog
+* Wed Feb 22 2018 Julien Dutheil <julien.dutheil@univ-montp2.fr> 2.4.0-1
+- Compatibility update
 * Tue Jun 06 2017 Julien Dutheil <julien.dutheil@univ-montp2.fr> 2.3.1-1
 - Increased interface number
 * Wed May 10 2017 Julien Dutheil <julien.dutheil@univ-montp2.fr> 2.3.0-1
