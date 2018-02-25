@@ -53,7 +53,7 @@ if (CMAKE_INSTALL_PREFIX)
 endif (CMAKE_INSTALL_PREFIX)
 
 include (GNUInstallDirs)
-find_package (bpp-seq 11.0.0 REQUIRED)
+find_package (bpp-seq 12.0.0 REQUIRED)
 
 # CMake package
 set (cmake-package-location ${CMAKE_INSTALL_LIBDIR}/cmake/${PROJECT_NAME})
