@@ -95,7 +95,7 @@ public:
   /**
    * @brief Set the alphabet used for the sequences by alphabet type.
    */
-  void setAlphabet(const std::string& alpha_type) throw (Exception);
+  void setAlphabet(const std::string& alpha_type);
 
   /**
    * @brief Get the alphabet.

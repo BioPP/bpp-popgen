@@ -104,21 +104,21 @@ public:
    *
    * @throw IndexOutOfBoundsException if position excedes the size of the container.
    */
-  const MultilocusGenotype* getMultilocusGenotype(size_t position) const throw (IndexOutOfBoundsException);
+  const MultilocusGenotype* getMultilocusGenotype(size_t position) const;
 
   /**
    * @brief Remove a MultilocusGenotype.
    *
    * @throw IndexOutOfBoundsException if position excedes the size of the container.
    */
-  MultilocusGenotype* removeMultilocusGenotype(size_t position) throw (IndexOutOfBoundsException);
+  MultilocusGenotype* removeMultilocusGenotype(size_t position);
 
   /**
    * @brief Delete a MultilocusGenotype.
    *
    * @throw IndexOutOfBoundsException if position excedes the size of the container.
    */
-  void deleteMultilocusGenotype(size_t position) throw (IndexOutOfBoundsException);
+  void deleteMultilocusGenotype(size_t position);
 
   /**
    * @brief Tell if the MultilocusGenotypes are aligned (i.e. same size).
@@ -130,21 +130,21 @@ public:
    *
    * @throw Exception if MultilocusGenotypes are not aligned.
    */
-  size_t getNumberOfLoci() const throw (Exception);
+  size_t getNumberOfLoci() const;
 
   /**
    * @brief Get the Group id of a MultilocusGenotype.
    *
    * @throw IndexOutOfBoundsException if position excedes the size of the container.
    */
-  size_t getGroupId(size_t position) const throw (IndexOutOfBoundsException);
+  size_t getGroupId(size_t position) const;
 
   /**
    * @brief Set the Group id of a MultilocusGenotype.
    *
    * @throw IndexOutOfBoundsException if position excedes the size of the container.
    */
-  void setGroupId(size_t position, size_t group_id) throw (IndexOutOfBoundsException);
+  void setGroupId(size_t position, size_t group_id);
 
   /**
    * @brief Get the groups' ids.
@@ -174,12 +174,12 @@ public:
   /**
    * @brief Get the group name for a given group id or just the id if not available juste return it's id
    */
-  std::string getGroupName(size_t group_id) const throw (GroupNotFoundException);
+  std::string getGroupName(size_t group_id) const;
 
   /**
    * @brief Set the name for the given group id.
    */
-  void setGroupName(size_t group_id, std::string name)  throw (GroupNotFoundException);
+  void setGroupName(size_t group_id, std::string name);
 
   /**
    * @brief Inserts a name for the given group id.

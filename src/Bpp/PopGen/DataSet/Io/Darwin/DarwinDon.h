@@ -68,8 +68,8 @@ public:
    * @name The ODataSet interface.
    * @{
    */
-  void write(std::ostream& os, const DataSet& data_set) const throw (Exception);
-  void write(const std::string& path, const DataSet& data_set, bool overwrite) const throw (Exception);
+  void write(std::ostream& os, const DataSet& data_set) const;
+  void write(const std::string& path, const DataSet& data_set, bool overwrite) const;
   /**
    * @}
    */

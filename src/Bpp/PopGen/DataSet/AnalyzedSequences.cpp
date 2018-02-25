@@ -90,7 +90,7 @@ void AnalyzedSequences::setAlphabet(const Alphabet* alpha)
   autoset_ = false;
 }
 
-void AnalyzedSequences::setAlphabet(const std::string& alpha_type) throw (Exception)
+void AnalyzedSequences::setAlphabet(const std::string& alpha_type)
 {
   if (alpha_type != string("DNA") && alpha_type != string("RNA") && alpha_type != string("PROTEIN"))
     throw Exception(string("AnalyzedSequences::setAlphabet: bad alphabet type. (") + alpha_type + string(")."));

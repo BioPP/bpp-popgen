@@ -70,10 +70,10 @@ public:
    * @name The IDataSet interface.
    * @{
    */
-  void read(std::istream& is, DataSet& data_set) throw (Exception);
-  void read(const std::string& path, DataSet& data_set) throw (Exception);
-  DataSet* read(std::istream& is) throw (Exception);
-  DataSet* read(const std::string& path) throw (Exception);
+  void read(std::istream& is, DataSet& data_set);
+  void read(const std::string& path, DataSet& data_set);
+  DataSet* read(std::istream& is);
+  DataSet* read(const std::string& path);
   /**
    * @}
    */

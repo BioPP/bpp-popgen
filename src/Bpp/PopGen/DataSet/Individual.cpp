@@ -180,7 +180,7 @@ void Individual::setDate(const Date& date)
 
 /******************************************************************************/
 
-const Date& Individual::getDate() const throw (NullPointerException)
+const Date& Individual::getDate() const
 {
   if (hasDate())
     return *date_.get();
@@ -212,7 +212,7 @@ void Individual::setCoord(const double x, const double y)
 
 /******************************************************************************/
 
-const Point2D<double>& Individual::getCoord() const throw (NullPointerException)
+const Point2D<double>& Individual::getCoord() const
 {
   if (hasCoord())
     return *coord_.get();
@@ -229,7 +229,7 @@ bool Individual::hasCoord() const
 
 /******************************************************************************/
 
-void Individual::setX(const double x) throw (NullPointerException)
+void Individual::setX(const double x)
 {
   if (hasCoord())
     coord_->setX(x);
@@ -239,7 +239,7 @@ void Individual::setX(const double x) throw (NullPointerException)
 
 /******************************************************************************/
 
-void Individual::setY(const double y) throw (NullPointerException)
+void Individual::setY(const double y)
 {
   if (hasCoord())
     coord_->setY(y);
@@ -249,7 +249,7 @@ void Individual::setY(const double y) throw (NullPointerException)
 
 /******************************************************************************/
 
-double Individual::getX() const throw (NullPointerException)
+double Individual::getX() const
 {
   if (hasCoord())
     return coord_->getX();
@@ -259,7 +259,7 @@ double Individual::getX() const throw (NullPointerException)
 
 /******************************************************************************/
 
-double Individual::getY() const throw (NullPointerException)
+double Individual::getY() const
 {
   if (hasCoord())
     return coord_->getY();
@@ -277,7 +277,7 @@ void Individual::setLocality(const Locality<double>* locality)
 
 /******************************************************************************/
 
-const Locality<double>* Individual::getLocality() const throw (NullPointerException)
+const Locality<double>* Individual::getLocality() const
 {
   if (hasLocality())
     return locality_;
@@ -296,7 +296,6 @@ bool Individual::hasLocality() const
 
 // Sequences
 void Individual::addSequence(size_t sequence_key, const Sequence& sequence)
-throw (Exception)
 {
   if (sequences_.get() == 0)
     sequences_.reset(new MapSequenceContainer(sequence.getAlphabet()));
@@ -320,8 +319,7 @@ throw (Exception)
 
 /******************************************************************************/
 
-const Sequence& Individual::getSequenceByName(const std::string& sequence_name)
-const throw (Exception)
+const Sequence& Individual::getSequenceByName(const std::string& sequence_name) const
 {
   if (sequences_.get() == 0)
     throw NullPointerException("Individual::getSequenceByName: no sequence data.");
@@ -337,8 +335,7 @@ const throw (Exception)
 
 /******************************************************************************/
 
-const Sequence& Individual::getSequenceAtPosition(size_t sequence_position)
-const throw (Exception)
+const Sequence& Individual::getSequenceAtPosition(size_t sequence_position) const
 {
   if (sequences_.get() == 0)
     throw NullPointerException("Individual::getSequenceAtPosition: no sequence data.");
@@ -354,7 +351,7 @@ const throw (Exception)
 
 /******************************************************************************/
 
-void Individual::deleteSequenceByName(const std::string& sequence_name) throw (Exception)
+void Individual::deleteSequenceByName(const std::string& sequence_name)
 {
   if (sequences_.get() == 0)
     throw NullPointerException("Individual::deleteSequenceByName: no sequence data.");
@@ -370,7 +367,7 @@ void Individual::deleteSequenceByName(const std::string& sequence_name) throw (E
 
 /******************************************************************************/
 
-void Individual::deleteSequenceAtPosition(size_t sequence_position) throw (Exception)
+void Individual::deleteSequenceAtPosition(size_t sequence_position)
 {
   if (sequences_.get() == 0)
     throw NullPointerException("Individual::deleteSequenceAtPosition: no sequence data.");
@@ -386,7 +383,7 @@ void Individual::deleteSequenceAtPosition(size_t sequence_position) throw (Excep
 
 /******************************************************************************/
 
-std::vector<std::string> Individual::getSequencesNames() const throw (NullPointerException)
+std::vector<std::string> Individual::getSequencesNames() const
 {
   if (sequences_.get() == 0)
     throw NullPointerException("Individual::getSequencesNames: no sequence data.");
@@ -395,7 +392,7 @@ std::vector<std::string> Individual::getSequencesNames() const throw (NullPointe
 
 /******************************************************************************/
 
-std::vector<size_t> Individual::getSequencesPositions() const throw (NullPointerException)
+std::vector<size_t> Individual::getSequencesPositions() const
 {
   if (sequences_.get() == 0)
     throw NullPointerException("Individual::getSequencesPositions: no sequence data.");
@@ -410,7 +407,7 @@ std::vector<size_t> Individual::getSequencesPositions() const throw (NullPointer
 
 /******************************************************************************/
 
-size_t Individual::getSequencePosition(const std::string& sequence_name) const throw (Exception)
+size_t Individual::getSequencePosition(const std::string& sequence_name) const
 {
   if (sequences_.get() == 0)
     throw NullPointerException("Individual::getSequencePosition: no sequence data.");
@@ -449,7 +446,7 @@ bool Individual::hasSequenceAtPosition(size_t position) const
 
 /******************************************************************************/
 
-const Alphabet* Individual::getSequenceAlphabet() const throw (NullPointerException)
+const Alphabet* Individual::getSequenceAlphabet() const
 {
   if (sequences_.get() == 0)
     throw NullPointerException("Individual::getSequenceAlphabet: no sequence data.");
@@ -474,7 +471,7 @@ void Individual::setSequences(const MapSequenceContainer& msc)
 
 /******************************************************************************/
 
-const OrderedSequenceContainer& Individual::getSequences() const throw (NullPointerException)
+const OrderedSequenceContainer& Individual::getSequences() const
 {
   if (sequences_.get() == 0)
     throw NullPointerException("Individual::getSequences: no sequence data.");
@@ -492,7 +489,7 @@ void Individual::setGenotype(const MultilocusGenotype& genotype)
 
 /******************************************************************************/
 
-void Individual::initGenotype(size_t loci_number) throw (Exception)
+void Individual::initGenotype(size_t loci_number)
 {
   if (hasGenotype())
     throw Exception("Individual::initGenotype: individual already has a genotype.");
@@ -508,7 +505,7 @@ void Individual::initGenotype(size_t loci_number) throw (Exception)
 
 /******************************************************************************/
 
-const MultilocusGenotype& Individual::getGenotype() const throw (NullPointerException)
+const MultilocusGenotype& Individual::getGenotype() const
 {
   if (!hasGenotype())
     throw NullPointerException("Individual::getGenotype: individual has no genotype.");
@@ -531,7 +528,7 @@ bool Individual::hasGenotype() const
 
 /******************************************************************************/
 
-void Individual::setMonolocusGenotype(size_t locus_position, const MonolocusGenotype& monogen) throw (Exception)
+void Individual::setMonolocusGenotype(size_t locus_position, const MonolocusGenotype& monogen)
 {
   if (!hasGenotype())
     throw NullPointerException("Individual::setMonolocusGenotype: individual has no genotype.");
@@ -547,7 +544,7 @@ void Individual::setMonolocusGenotype(size_t locus_position, const MonolocusGeno
 
 /******************************************************************************/
 
-void Individual::setMonolocusGenotypeByAlleleKey(size_t locus_position, const std::vector<size_t> allele_keys) throw (Exception)
+void Individual::setMonolocusGenotypeByAlleleKey(size_t locus_position, const std::vector<size_t> allele_keys)
 {
   if (!hasGenotype())
     throw NullPointerException("Individual::setMonolocusGenotypeByAlleleKey: individual has no genotype.");
@@ -567,7 +564,7 @@ void Individual::setMonolocusGenotypeByAlleleKey(size_t locus_position, const st
 
 /******************************************************************************/
 
-void Individual::setMonolocusGenotypeByAlleleId(size_t locus_position, const std::vector<std::string> allele_id, const LocusInfo& locus_info) throw (Exception)
+void Individual::setMonolocusGenotypeByAlleleId(size_t locus_position, const std::vector<std::string> allele_id, const LocusInfo& locus_info)
 {
   if (!hasGenotype())
     throw NullPointerException("Individual::setMonolocusGenotypeByAlleleId: individual has no genotype.");
@@ -587,7 +584,7 @@ void Individual::setMonolocusGenotypeByAlleleId(size_t locus_position, const std
 
 /******************************************************************************/
 
-const MonolocusGenotype& Individual::getMonolocusGenotype(size_t locus_position) throw (Exception)
+const MonolocusGenotype& Individual::getMonolocusGenotype(size_t locus_position)
 {
   if (!hasGenotype())
     throw NullPointerException("Individual::getMonolocusGenotype: individual has no genotype.");
@@ -603,7 +600,7 @@ const MonolocusGenotype& Individual::getMonolocusGenotype(size_t locus_position)
 
 /******************************************************************************/
 
-size_t Individual::countNonMissingLoci() const throw (NullPointerException)
+size_t Individual::countNonMissingLoci() const
 {
   if (!hasGenotype())
     throw NullPointerException("Individual::countNonMissingLoci: individual has no genotype.");
@@ -612,7 +609,7 @@ size_t Individual::countNonMissingLoci() const throw (NullPointerException)
 
 /******************************************************************************/
 
-size_t Individual::countHomozygousLoci() const throw (NullPointerException)
+size_t Individual::countHomozygousLoci() const
 {
   if (!hasGenotype())
     throw NullPointerException("Individual::countHomozygousLoci: individual has no genotype.");
@@ -621,7 +618,7 @@ size_t Individual::countHomozygousLoci() const throw (NullPointerException)
 
 /******************************************************************************/
 
-size_t Individual::countHeterozygousLoci() const throw (NullPointerException)
+size_t Individual::countHeterozygousLoci() const
 {
   if (!hasGenotype())
     throw NullPointerException("Individual::countHeterozygousLoci: individual has no genotype.");

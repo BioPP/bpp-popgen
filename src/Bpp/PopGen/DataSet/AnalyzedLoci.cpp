@@ -77,7 +77,6 @@ AnalyzedLoci::~AnalyzedLoci()
 void AnalyzedLoci::setLocusInfo(
   size_t locus_position,
   const LocusInfo& locus)
-throw (IndexOutOfBoundsException)
 {
   if (locus_position < loci_.size())
     loci_[locus_position] = new LocusInfo(locus);
@@ -90,7 +89,6 @@ throw (IndexOutOfBoundsException)
 
 size_t AnalyzedLoci::getLocusInfoPosition(
   const std::string& locus_name) const
-throw (BadIdentifierException)
 {
   for (size_t i = 0; i < loci_.size(); i++)
   {
@@ -104,7 +102,6 @@ throw (BadIdentifierException)
 
 const LocusInfo& AnalyzedLoci::getLocusInfoByName(
   const std::string& locus_name) const
-throw (BadIdentifierException)
 {
   for (size_t i = 0; i < loci_.size(); i++)
   {
@@ -119,7 +116,6 @@ throw (BadIdentifierException)
 
 const LocusInfo& AnalyzedLoci::getLocusInfoAtPosition(
   size_t locus_position) const
-throw (Exception)
 {
   if (locus_position >= loci_.size())
     throw IndexOutOfBoundsException("AnalyzedLoci::getLocusInfoAtPosition: locus_position out of bounds.", locus_position, 0, loci_.size());
@@ -134,7 +130,6 @@ throw (Exception)
 // AlleleInfo
 void AnalyzedLoci::addAlleleInfoByLocusName(const std::string& locus_name,
                                             const AlleleInfo& allele)
-throw (Exception)
 {
   bool locus_found = false;
   for (vector<LocusInfo*>::iterator it = loci_.begin(); it != loci_.end(); it++)
@@ -161,7 +156,6 @@ throw (Exception)
 
 void AnalyzedLoci::addAlleleInfoByLocusPosition(size_t locus_position,
                                                 const AlleleInfo& allele)
-throw (Exception)
 {
   if (locus_position < loci_.size())
   {
@@ -194,7 +188,6 @@ std::vector<size_t> AnalyzedLoci::getNumberOfAlleles() const
 /******************************************************************************/
 
 unsigned int AnalyzedLoci::getPloidyByLocusName(const std::string& locus_name) const
-throw (LocusNotFoundException)
 {
   for (size_t i = 0; i < loci_.size(); i++)
   {
@@ -208,7 +201,6 @@ throw (LocusNotFoundException)
 /******************************************************************************/
 
 unsigned int AnalyzedLoci::getPloidyByLocusPosition(size_t locus_position) const
-throw (IndexOutOfBoundsException)
 {
   if (locus_position >= loci_.size())
     throw IndexOutOfBoundsException("AnalyzedLoci::getPloidyByLocusPosition: locus_position out of bounds.", locus_position, 0, loci_.size());

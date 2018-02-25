@@ -72,7 +72,7 @@ public:
    * @param month The month between 1 and 12.
    * @param year The year as a signed int.
    */
-  Date(const int day = 1, const int month = 1, const int year = 2000) throw (BadIntegerException);
+  Date(const int day = 1, const int month = 1, const int year = 2000);
 
   /**
    * @brief The Date copy constructor.
@@ -100,7 +100,7 @@ public:
    * @param month The month as an integer between 1 and 12.
    * @param year The year as an integer.
    */
-  void setDate(const int day, const int month, const int year) throw (BadIntegerException);
+  void setDate(const int day, const int month, const int year);
 
   /**
    * @brief Set the year.
@@ -114,14 +114,14 @@ public:
    *
    * @param month The month as an integer between 1 and 12.
    */
-  void setMonth(const int month) throw (BadIntegerException);
+  void setMonth(const int month);
 
   /**
    * @brief Set the day.
    *
    * @param day The day as an integer between 1 and 31.
    */
-  void setDay(const int day) throw (BadIntegerException);
+  void setDay(const int day);
 
   /**
    * @brief Get the Date as a string.

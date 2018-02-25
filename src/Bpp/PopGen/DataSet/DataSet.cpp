@@ -116,7 +116,7 @@ DataSet::~DataSet()
 // ** Other methodes: *********************************************************/
 
 // Dealing with Localities ---------------------------------
-void DataSet::addLocality(Locality<double>& locality) throw (BadIdentifierException)
+void DataSet::addLocality(Locality<double>& locality)
 {
   for (size_t i = 0; i < localities_.size(); i++)
   {
@@ -128,7 +128,7 @@ void DataSet::addLocality(Locality<double>& locality) throw (BadIdentifierExcept
 
 /******************************************************************************/
 
-size_t DataSet::getLocalityPosition(const std::string& name) const throw (LocalityNotFoundException)
+size_t DataSet::getLocalityPosition(const std::string& name) const
 {
   for (size_t i = 0; i < localities_.size(); i++)
   {
@@ -140,7 +140,7 @@ size_t DataSet::getLocalityPosition(const std::string& name) const throw (Locali
 
 /******************************************************************************/
 
-const Locality<double>& DataSet::getLocalityAtPosition(size_t locality_position) const throw (IndexOutOfBoundsException)
+const Locality<double>& DataSet::getLocalityAtPosition(size_t locality_position) const
 {
   if (locality_position >= localities_.size())
     throw IndexOutOfBoundsException("DataSet::getLocalityAtPosition: locality_position out of bounds.", locality_position, 0, localities_.size());
@@ -149,7 +149,7 @@ const Locality<double>& DataSet::getLocalityAtPosition(size_t locality_position)
 
 /******************************************************************************/
 
-const Locality<double>& DataSet::getLocalityByName(const std::string& name) const throw (LocalityNotFoundException)
+const Locality<double>& DataSet::getLocalityByName(const std::string& name) const
 {
   try
   {
@@ -163,7 +163,7 @@ const Locality<double>& DataSet::getLocalityByName(const std::string& name) cons
 
 /******************************************************************************/
 
-void DataSet::deleteLocalityAtPosition(size_t locality_position) throw (IndexOutOfBoundsException)
+void DataSet::deleteLocalityAtPosition(size_t locality_position)
 {
   if (locality_position >= localities_.size())
     throw IndexOutOfBoundsException("DataSet::deleteLocalityAtPosition: locality_position out of bounds.", locality_position, 0, localities_.size());
@@ -173,7 +173,7 @@ void DataSet::deleteLocalityAtPosition(size_t locality_position) throw (IndexOut
 
 /******************************************************************************/
 
-void DataSet::deleteLocalityByName(const std::string& name) throw (LocalityNotFoundException)
+void DataSet::deleteLocalityByName(const std::string& name)
 {
   try
   {
@@ -202,7 +202,7 @@ bool DataSet::hasLocality() const
 /******************************************************************************/
 
 // Dealing with groups -------------------------------------
-void DataSet::addGroup(const Group& group) throw (BadIdentifierException)
+void DataSet::addGroup(const Group& group)
 {
   for (size_t i = 0; i < groups_.size(); i++)
   {
@@ -214,7 +214,7 @@ void DataSet::addGroup(const Group& group) throw (BadIdentifierException)
 
 /******************************************************************************/
 
-void DataSet::addEmptyGroup(size_t group_id) throw (BadIdentifierException)
+void DataSet::addEmptyGroup(size_t group_id)
 {
   for (size_t i = 0; i < groups_.size(); i++)
   {
@@ -226,7 +226,7 @@ void DataSet::addEmptyGroup(size_t group_id) throw (BadIdentifierException)
 
 /******************************************************************************/
 
-const Group& DataSet::getGroupById(size_t group_id) const throw (GroupNotFoundException)
+const Group& DataSet::getGroupById(size_t group_id) const
 {
   for (size_t i = 0; i < groups_.size(); i++)
   {
@@ -238,7 +238,7 @@ const Group& DataSet::getGroupById(size_t group_id) const throw (GroupNotFoundEx
 
 /******************************************************************************/
 
-string DataSet::getGroupName(size_t group_id) const throw (GroupNotFoundException)
+string DataSet::getGroupName(size_t group_id) const
 {
   string name;
   name = getGroupById(group_id).getGroupName();
@@ -251,7 +251,7 @@ string DataSet::getGroupName(size_t group_id) const throw (GroupNotFoundExceptio
 
 /******************************************************************************/
 
-void DataSet::setGroupName(size_t group_id, const std::string& group_name) const throw (GroupNotFoundException)
+void DataSet::setGroupName(size_t group_id, const std::string& group_name) const
 {
   for (size_t i = 0; i < groups_.size(); i++)
   {
@@ -266,7 +266,7 @@ void DataSet::setGroupName(size_t group_id, const std::string& group_name) const
 
 /******************************************************************************/
 
-size_t DataSet::getGroupPosition(size_t group_id) const throw (GroupNotFoundException)
+size_t DataSet::getGroupPosition(size_t group_id) const
 {
   for (size_t i = 0; i < groups_.size(); i++)
   {
@@ -278,7 +278,7 @@ size_t DataSet::getGroupPosition(size_t group_id) const throw (GroupNotFoundExce
 
 /******************************************************************************/
 
-const Group& DataSet::getGroupAtPosition(size_t group_position) const throw (IndexOutOfBoundsException)
+const Group& DataSet::getGroupAtPosition(size_t group_position) const
 {
   if (group_position >= groups_.size())
     throw IndexOutOfBoundsException("DataSet::getGroup.", group_position, 0, groups_.size());
@@ -287,7 +287,7 @@ const Group& DataSet::getGroupAtPosition(size_t group_position) const throw (Ind
 
 /******************************************************************************/
 
-void DataSet::deleteGroupAtPosition(size_t group_position) throw (IndexOutOfBoundsException)
+void DataSet::deleteGroupAtPosition(size_t group_position)
 {
   if (group_position >= groups_.size())
     throw IndexOutOfBoundsException("DataSet::deleteGroup.", group_position, 0, groups_.size());
@@ -304,7 +304,7 @@ size_t DataSet::getNumberOfGroups() const
 
 /******************************************************************************/
 
-void DataSet::mergeTwoGroups(size_t source_id, size_t target_id) throw (GroupNotFoundException)
+void DataSet::mergeTwoGroups(size_t source_id, size_t target_id)
 {
   // Test the existance of the two groups.
   try
@@ -335,7 +335,7 @@ void DataSet::mergeTwoGroups(size_t source_id, size_t target_id) throw (GroupNot
 
 /******************************************************************************/
 
-void DataSet::mergeGroups(std::vector<size_t>& group_ids) throw (GroupNotFoundException)
+void DataSet::mergeGroups(std::vector<size_t>& group_ids)
 {
   // Test if all group id exists in the DataSet
   for (size_t i = 0; i < group_ids.size(); i++)
@@ -366,7 +366,7 @@ void DataSet::mergeGroups(std::vector<size_t>& group_ids) throw (GroupNotFoundEx
 
 /******************************************************************************/
 
-void DataSet::splitGroup(size_t group_id, std::vector<size_t> individuals_selection) throw (Exception)
+void DataSet::splitGroup(size_t group_id, std::vector<size_t> individuals_selection)
 {
   size_t source_pos;
   try
@@ -402,7 +402,7 @@ void DataSet::splitGroup(size_t group_id, std::vector<size_t> individuals_select
 
 // Dealing with individuals -------------------------------
 
-void DataSet::addIndividualToGroup(size_t group, const Individual& individual) throw (Exception)
+void DataSet::addIndividualToGroup(size_t group, const Individual& individual)
 {
   if (group >= getNumberOfGroups())
     throw IndexOutOfBoundsException("DataSet::addIndividualToGroup: group out of bounds.", group, 0, getNumberOfGroups());
@@ -420,7 +420,7 @@ void DataSet::addIndividualToGroup(size_t group, const Individual& individual) t
 
 /******************************************************************************/
 
-void DataSet::addEmptyIndividualToGroup(size_t group, const std::string& individual_id) throw (Exception)
+void DataSet::addEmptyIndividualToGroup(size_t group, const std::string& individual_id)
 {
   if (group >= getNumberOfGroups())
     throw IndexOutOfBoundsException("DataSet::addEmptyIndividual: group out of bounds.", group, 0, getNumberOfGroups());
@@ -436,7 +436,7 @@ void DataSet::addEmptyIndividualToGroup(size_t group, const std::string& individ
 
 /******************************************************************************/
 
-size_t DataSet::getNumberOfIndividualsInGroup(size_t group_position) const throw (IndexOutOfBoundsException)
+size_t DataSet::getNumberOfIndividualsInGroup(size_t group_position) const
 {
   if (group_position >= getNumberOfGroups())
     throw IndexOutOfBoundsException("DataSet::getNumberOfIndividualsInGroup: group_position out of bounds.", group_position, 0, getNumberOfGroups());
@@ -445,7 +445,7 @@ size_t DataSet::getNumberOfIndividualsInGroup(size_t group_position) const throw
 
 /******************************************************************************/
 
-size_t DataSet::getIndividualPositionInGroup(size_t group_position, const std::string& individual_id) const throw (Exception)
+size_t DataSet::getIndividualPositionInGroup(size_t group_position, const std::string& individual_id) const
 {
   if (group_position >= getNumberOfGroups())
     throw IndexOutOfBoundsException("DataSet::getIndividualPositionFromGroup: group_position out of bounds.", group_position, 0, getNumberOfGroups());
@@ -461,7 +461,7 @@ size_t DataSet::getIndividualPositionInGroup(size_t group_position, const std::s
 
 /******************************************************************************/
 
-const Individual* DataSet::getIndividualAtPositionFromGroup(size_t group_position, size_t individual_position) const throw (IndexOutOfBoundsException)
+const Individual* DataSet::getIndividualAtPositionFromGroup(size_t group_position, size_t individual_position) const
 {
   if (group_position >= getNumberOfGroups())
     throw IndexOutOfBoundsException("DataSet::getIndividualAtPositionFromGroup: group_position out of bounds.", group_position, 0, getNumberOfGroups());
@@ -477,7 +477,7 @@ const Individual* DataSet::getIndividualAtPositionFromGroup(size_t group_positio
 
 /******************************************************************************/
 
-const Individual* DataSet::getIndividualByIdFromGroup(size_t group_position, const std::string& individual_id) const throw (Exception)
+const Individual* DataSet::getIndividualByIdFromGroup(size_t group_position, const std::string& individual_id) const
 {
   if (group_position >= getNumberOfGroups())
     throw IndexOutOfBoundsException("DataSet::getIndividualByIdFromGroup: group_position out of bounds.", group_position, 0, getNumberOfGroups());
@@ -493,7 +493,7 @@ const Individual* DataSet::getIndividualByIdFromGroup(size_t group_position, con
 
 /******************************************************************************/
 
-void DataSet::deleteIndividualAtPositionFromGroup(size_t group_position, size_t individual_position) throw (IndexOutOfBoundsException)
+void DataSet::deleteIndividualAtPositionFromGroup(size_t group_position, size_t individual_position)
 {
   if (group_position >= getNumberOfGroups())
     throw IndexOutOfBoundsException("DataSet::deleteIndividualAtPositionFromGroup: group_position out of bounds.", group_position, 0, getNumberOfGroups());
@@ -509,7 +509,7 @@ void DataSet::deleteIndividualAtPositionFromGroup(size_t group_position, size_t 
 
 /******************************************************************************/
 
-void DataSet::deleteIndividualByIdFromGroup(size_t group_position, const std::string& individual_id) throw (Exception)
+void DataSet::deleteIndividualByIdFromGroup(size_t group_position, const std::string& individual_id)
 {
   if (group_position >= getNumberOfGroups())
     throw IndexOutOfBoundsException("DataSet::deleteIndividualByIdFromGroup: group_position out of bounds.", group_position, 0, getNumberOfGroups());
@@ -525,7 +525,7 @@ void DataSet::deleteIndividualByIdFromGroup(size_t group_position, const std::st
 
 /******************************************************************************/
 
-void DataSet::setIndividualSexInGroup(size_t group_position, size_t individual_position, const unsigned short sex) throw (IndexOutOfBoundsException)
+void DataSet::setIndividualSexInGroup(size_t group_position, size_t individual_position, const unsigned short sex)
 {
   if (group_position >= getNumberOfGroups())
     throw IndexOutOfBoundsException("DataSet::setIndividualSexInGroup: group_position out of bounds.", group_position, 0, getNumberOfGroups());
@@ -541,7 +541,7 @@ void DataSet::setIndividualSexInGroup(size_t group_position, size_t individual_p
 
 /******************************************************************************/
 
-unsigned short DataSet::getIndividualSexInGroup(size_t group_position, size_t individual_position) const throw (IndexOutOfBoundsException)
+unsigned short DataSet::getIndividualSexInGroup(size_t group_position, size_t individual_position) const
 {
   if (group_position >= getNumberOfGroups())
     throw IndexOutOfBoundsException("DataSet::getIndividualSexInGroup: group_position out of bounds.", group_position, 0, getNumberOfGroups());
@@ -557,7 +557,7 @@ unsigned short DataSet::getIndividualSexInGroup(size_t group_position, size_t in
 
 /******************************************************************************/
 
-void DataSet::setIndividualDateInGroup(size_t group_position, size_t individual_position, const Date& date) throw (IndexOutOfBoundsException)
+void DataSet::setIndividualDateInGroup(size_t group_position, size_t individual_position, const Date& date)
 {
   if (group_position >= getNumberOfGroups())
     throw IndexOutOfBoundsException("DataSet::setIndividualDateInGroup: group_position out of bounds.", group_position, 0, getNumberOfGroups());
@@ -573,7 +573,7 @@ void DataSet::setIndividualDateInGroup(size_t group_position, size_t individual_
 
 /******************************************************************************/
 
-const Date* DataSet::getIndividualDateInGroup(size_t group_position, size_t individual_position) const throw (Exception)
+const Date* DataSet::getIndividualDateInGroup(size_t group_position, size_t individual_position) const
 {
   if (group_position >= getNumberOfGroups())
     throw IndexOutOfBoundsException("DataSet::getIndividualDateInGroup: group_position out of bounds.", group_position, 0, getNumberOfGroups());
@@ -593,7 +593,7 @@ const Date* DataSet::getIndividualDateInGroup(size_t group_position, size_t indi
 
 /******************************************************************************/
 
-void DataSet::setIndividualCoordInGroup(size_t group_position, size_t individual_position, const Point2D<double>& coord) throw (IndexOutOfBoundsException)
+void DataSet::setIndividualCoordInGroup(size_t group_position, size_t individual_position, const Point2D<double>& coord)
 {
   if (group_position >= getNumberOfGroups())
     throw IndexOutOfBoundsException("DataSet::setIndividualCoordInGroup: group_position out of bounds.", group_position, 0, getNumberOfGroups());
@@ -609,7 +609,7 @@ void DataSet::setIndividualCoordInGroup(size_t group_position, size_t individual
 
 /******************************************************************************/
 
-const Point2D<double>* DataSet::getIndividualCoordInGroup(size_t group_position, size_t individual_position) const throw (Exception)
+const Point2D<double>* DataSet::getIndividualCoordInGroup(size_t group_position, size_t individual_position) const
 {
   if (group_position >= getNumberOfGroups())
     throw IndexOutOfBoundsException("DataSet::getIndividualCoordInGroup: group_position out of bounds.", group_position, 0, getNumberOfGroups());
@@ -629,7 +629,7 @@ const Point2D<double>* DataSet::getIndividualCoordInGroup(size_t group_position,
 
 /******************************************************************************/
 
-void DataSet::setIndividualLocalityInGroupByName(size_t group_position, size_t individual_position, const std::string& locality_name) throw (Exception)
+void DataSet::setIndividualLocalityInGroupByName(size_t group_position, size_t individual_position, const std::string& locality_name)
 {
   if (group_position >= getNumberOfGroups())
     throw IndexOutOfBoundsException("DataSet::setIndividualLocalityInGroup: group_position out of bounds.", group_position, 0, getNumberOfGroups());
@@ -649,7 +649,7 @@ void DataSet::setIndividualLocalityInGroupByName(size_t group_position, size_t i
 
 /******************************************************************************/
 
-const Locality<double>* DataSet::getIndividualLocalityInGroup(size_t group_position, size_t individual_position) const throw (Exception)
+const Locality<double>* DataSet::getIndividualLocalityInGroup(size_t group_position, size_t individual_position) const
 {
   if (group_position >= getNumberOfGroups())
     throw IndexOutOfBoundsException("DataSet::getIndividualLocalityInGroup: group_position out of bounds.", group_position, 0, getNumberOfGroups());
@@ -669,7 +669,7 @@ const Locality<double>* DataSet::getIndividualLocalityInGroup(size_t group_posit
 
 /******************************************************************************/
 
-void DataSet::addIndividualSequenceInGroup(size_t group_position, size_t individual_position, size_t sequence_position, const Sequence& sequence) throw (Exception)
+void DataSet::addIndividualSequenceInGroup(size_t group_position, size_t individual_position, size_t sequence_position, const Sequence& sequence)
 {
   if (group_position >= getNumberOfGroups())
     throw IndexOutOfBoundsException("DataSet::addIndividualSequenceInGroup: group_position out of bounds.", group_position, 0, getNumberOfGroups());
@@ -698,7 +698,7 @@ void DataSet::addIndividualSequenceInGroup(size_t group_position, size_t individ
 
 /******************************************************************************/
 
-const Sequence& DataSet::getIndividualSequenceByNameInGroup(size_t group_position, size_t individual_position, const std::string& sequence_name) const throw (Exception)
+const Sequence& DataSet::getIndividualSequenceByNameInGroup(size_t group_position, size_t individual_position, const std::string& sequence_name) const
 {
   if (group_position >= getNumberOfGroups())
     throw IndexOutOfBoundsException("DataSet::getIndividualSequenceByNameInGroup: group_position out of bounds.", group_position, 0, getNumberOfGroups());
@@ -722,7 +722,7 @@ const Sequence& DataSet::getIndividualSequenceByNameInGroup(size_t group_positio
 
 /******************************************************************************/
 
-const Sequence& DataSet::getIndividualSequenceAtPositionInGroup(size_t group_position, size_t individual_position, size_t sequence_position) const throw (Exception)
+const Sequence& DataSet::getIndividualSequenceAtPositionInGroup(size_t group_position, size_t individual_position, size_t sequence_position) const
 {
   if (group_position >= getNumberOfGroups())
     throw IndexOutOfBoundsException("DataSet::getIndividualSequenceAtPositionInGroup: group_position out of bounds.", group_position, 0, getNumberOfGroups());
@@ -746,7 +746,7 @@ const Sequence& DataSet::getIndividualSequenceAtPositionInGroup(size_t group_pos
 
 /******************************************************************************/
 
-void DataSet::deleteIndividualSequenceByNameInGroup(size_t group_position, size_t individual_position, const std::string& sequence_name) throw (Exception)
+void DataSet::deleteIndividualSequenceByNameInGroup(size_t group_position, size_t individual_position, const std::string& sequence_name)
 {
   if (group_position >= getNumberOfGroups())
     throw IndexOutOfBoundsException("DataSet::deleteIndividualSequenceByNameInGroup: group_position out of bounds.", group_position, 0, getNumberOfGroups());
@@ -770,7 +770,7 @@ void DataSet::deleteIndividualSequenceByNameInGroup(size_t group_position, size_
 
 /******************************************************************************/
 
-void DataSet::deleteIndividualSequenceAtPositionInGroup(size_t group_position, size_t individual_position, size_t sequence_position) throw (Exception)
+void DataSet::deleteIndividualSequenceAtPositionInGroup(size_t group_position, size_t individual_position, size_t sequence_position)
 {
   if (group_position >= getNumberOfGroups())
     throw IndexOutOfBoundsException("DataSet::deleteIndividualSequenceAtPositionInGroup: group_position out of bounds.", group_position, 0, getNumberOfGroups());
@@ -794,7 +794,7 @@ void DataSet::deleteIndividualSequenceAtPositionInGroup(size_t group_position, s
 
 /******************************************************************************/
 
-std::vector<std::string> DataSet::getIndividualSequencesNamesInGroup(size_t group_position, size_t individual_position) const throw (Exception)
+std::vector<std::string> DataSet::getIndividualSequencesNamesInGroup(size_t group_position, size_t individual_position) const
 {
   if (group_position >= getNumberOfGroups())
     throw IndexOutOfBoundsException("DataSet::getIndividualSequencesNamesInGroup: group_position out of bounds.", group_position, 0, getNumberOfGroups());
@@ -814,7 +814,7 @@ std::vector<std::string> DataSet::getIndividualSequencesNamesInGroup(size_t grou
 
 /******************************************************************************/
 
-size_t DataSet::getIndividualSequencePositionInGroup(size_t group_position, size_t individual_position, const std::string& sequence_name) const throw (Exception)
+size_t DataSet::getIndividualSequencePositionInGroup(size_t group_position, size_t individual_position, const std::string& sequence_name) const
 {
   if (group_position >= getNumberOfGroups())
     throw IndexOutOfBoundsException("DataSet::getIndividualSequencePositionInGroup: group_position out of bounds.", group_position, 0, getNumberOfGroups());
@@ -838,7 +838,7 @@ size_t DataSet::getIndividualSequencePositionInGroup(size_t group_position, size
 
 /******************************************************************************/
 
-size_t DataSet::getIndividualNumberOfSequencesInGroup(size_t group_position, size_t individual_position) const throw (Exception)
+size_t DataSet::getIndividualNumberOfSequencesInGroup(size_t group_position, size_t individual_position) const
 {
   if (group_position >= getNumberOfGroups())
     throw IndexOutOfBoundsException("DataSet::getIndividualNumberOfSequencesInGroup: group_position out of bounds.", group_position, 0, getNumberOfGroups());
@@ -858,7 +858,7 @@ size_t DataSet::getIndividualNumberOfSequencesInGroup(size_t group_position, siz
 
 /******************************************************************************/
 
-void DataSet::setIndividualGenotypeInGroup(size_t group_position, size_t individual_position, const MultilocusGenotype& genotype) throw (Exception)
+void DataSet::setIndividualGenotypeInGroup(size_t group_position, size_t individual_position, const MultilocusGenotype& genotype)
 {
   if (group_position >= getNumberOfGroups())
     throw IndexOutOfBoundsException("DataSet::setIndividualGenotypeInGroup: group_position out of bounds.", group_position, 0, getNumberOfGroups());
@@ -874,7 +874,7 @@ void DataSet::setIndividualGenotypeInGroup(size_t group_position, size_t individ
 
 /******************************************************************************/
 
-void DataSet::initIndividualGenotypeInGroup(size_t group_position, size_t individual_position) throw (Exception)
+void DataSet::initIndividualGenotypeInGroup(size_t group_position, size_t individual_position)
 {
   if (group_position >= getNumberOfGroups())
     throw IndexOutOfBoundsException("DataSet::initIndividualGenotypeInGroup: group_position out of bounds.", group_position, 0, getNumberOfGroups());
@@ -902,7 +902,7 @@ void DataSet::initIndividualGenotypeInGroup(size_t group_position, size_t indivi
 
 /******************************************************************************/
 
-void DataSet::deleteIndividualGenotypeInGroup(size_t group_position, size_t individual_position) throw (IndexOutOfBoundsException)
+void DataSet::deleteIndividualGenotypeInGroup(size_t group_position, size_t individual_position)
 {
   if (group_position >= getNumberOfGroups())
     throw IndexOutOfBoundsException("DataSet::deleteIndividualGenotypeInGroup: group_position out of bounds.", group_position, 0, getNumberOfGroups());
@@ -918,7 +918,7 @@ void DataSet::deleteIndividualGenotypeInGroup(size_t group_position, size_t indi
 
 /******************************************************************************/
 
-void DataSet::setIndividualMonolocusGenotypeInGroup(size_t group_position, size_t individual_position, size_t locus_position, const MonolocusGenotype& monogen) throw (Exception)
+void DataSet::setIndividualMonolocusGenotypeInGroup(size_t group_position, size_t individual_position, size_t locus_position, const MonolocusGenotype& monogen)
 {
   if (group_position >= getNumberOfGroups())
     throw IndexOutOfBoundsException("DataSet::setIndividualMonolocusGenotypeInGroup: group_position out of bounds.", group_position, 0, getNumberOfGroups());
@@ -942,7 +942,7 @@ void DataSet::setIndividualMonolocusGenotypeInGroup(size_t group_position, size_
 
 /******************************************************************************/
 
-void DataSet::setIndividualMonolocusGenotypeByAlleleKeyInGroup(size_t group_position, size_t individual_position, size_t locus_position, const std::vector<size_t> allele_keys) throw (Exception)
+void DataSet::setIndividualMonolocusGenotypeByAlleleKeyInGroup(size_t group_position, size_t individual_position, size_t locus_position, const std::vector<size_t> allele_keys)
 {
   if (group_position >= getNumberOfGroups())
     throw IndexOutOfBoundsException("DataSet::setIndividualMonolocusGenotypeByAlleleKeyInGroup: group_position out of bounds.", group_position, 0, getNumberOfGroups());
@@ -970,7 +970,7 @@ void DataSet::setIndividualMonolocusGenotypeByAlleleKeyInGroup(size_t group_posi
 
 /******************************************************************************/
 
-void DataSet::setIndividualMonolocusGenotypeByAlleleIdInGroup(size_t group_position, size_t individual_position, size_t locus_position, const std::vector<std::string> allele_id) throw (Exception)
+void DataSet::setIndividualMonolocusGenotypeByAlleleIdInGroup(size_t group_position, size_t individual_position, size_t locus_position, const std::vector<std::string> allele_id)
 {
   if (group_position >= getNumberOfGroups())
     throw IndexOutOfBoundsException("DataSet::setIndividualMonolocusGenotypeByAlleleIdInGroup: group_position out of bounds.", group_position, 0, getNumberOfGroups());
@@ -999,7 +999,7 @@ void DataSet::setIndividualMonolocusGenotypeByAlleleIdInGroup(size_t group_posit
 
 /******************************************************************************/
 
-const MonolocusGenotype* DataSet::getIndividualMonolocusGenotypeInGroup(size_t group_position, size_t individual_position, size_t locus_position) const throw (Exception)
+const MonolocusGenotype* DataSet::getIndividualMonolocusGenotypeInGroup(size_t group_position, size_t individual_position, size_t locus_position) const
 {
   if (group_position >= getNumberOfGroups())
     throw IndexOutOfBoundsException("DataSet::getIndividualMonolocusGenotypeInGroup: group_position out of bounds.", group_position, 0, getNumberOfGroups());
@@ -1043,7 +1043,7 @@ void DataSet::setAlphabet(const std::string& alpha_type)
 
 /******************************************************************************/
 
-const Alphabet* DataSet::getAlphabet() const throw (NullPointerException)
+const Alphabet* DataSet::getAlphabet() const
 {
   if (analyzedSequences_ != 0)
     return analyzedSequences_->getAlphabet();
@@ -1052,7 +1052,7 @@ const Alphabet* DataSet::getAlphabet() const throw (NullPointerException)
 
 /******************************************************************************/
 
-std::string DataSet::getAlphabetType() const throw (NullPointerException)
+std::string DataSet::getAlphabetType() const
 {
   if (analyzedSequences_ != 0)
     return analyzedSequences_->getAlphabetType();
@@ -1063,7 +1063,7 @@ std::string DataSet::getAlphabetType() const throw (NullPointerException)
 
 // Dealing with AnalyzedLoci -------------------------------
 
-void DataSet::setAnalyzedLoci(const AnalyzedLoci& analyzedLoci) throw (Exception)
+void DataSet::setAnalyzedLoci(const AnalyzedLoci& analyzedLoci)
 {
   if (analyzedLoci_ != 0)
   {
@@ -1081,7 +1081,7 @@ void DataSet::setAnalyzedLoci(const AnalyzedLoci& analyzedLoci) throw (Exception
 
 /******************************************************************************/
 
-void DataSet::initAnalyzedLoci(size_t number_of_loci) throw (Exception)
+void DataSet::initAnalyzedLoci(size_t number_of_loci)
 {
   if (analyzedLoci_ != 0)
     throw Exception("DataSet::initAnalyzedLoci: analyzedLoci_ already initialyzed.");
@@ -1090,7 +1090,7 @@ void DataSet::initAnalyzedLoci(size_t number_of_loci) throw (Exception)
 
 /******************************************************************************/
 
-const AnalyzedLoci* DataSet::getAnalyzedLoci() const throw (NullPointerException)
+const AnalyzedLoci* DataSet::getAnalyzedLoci() const
 {
   if (analyzedLoci_ != 0)
     return analyzedLoci_;
@@ -1107,7 +1107,7 @@ void DataSet::deleteAnalyzedLoci()
 
 /******************************************************************************/
 
-void DataSet::setLocusInfo(size_t locus_position, const LocusInfo& locus) throw (Exception)
+void DataSet::setLocusInfo(size_t locus_position, const LocusInfo& locus)
 {
   if (analyzedLoci_ == 0)
     throw NullPointerException("DataSet::setLocusInfo: there's no AnalyzedLoci to setup.");
@@ -1123,7 +1123,7 @@ void DataSet::setLocusInfo(size_t locus_position, const LocusInfo& locus) throw 
 
 /******************************************************************************/
 
-const LocusInfo& DataSet::getLocusInfoByName(const std::string& locus_name) const throw (Exception)
+const LocusInfo& DataSet::getLocusInfoByName(const std::string& locus_name) const
 {
   if (analyzedLoci_ == 0)
     throw NullPointerException("DataSet::getLocusInfoByName: there's no AnalyzedLoci.");
@@ -1139,7 +1139,7 @@ const LocusInfo& DataSet::getLocusInfoByName(const std::string& locus_name) cons
 
 /******************************************************************************/
 
-const LocusInfo& DataSet::getLocusInfoAtPosition(size_t locus_position) const throw (Exception)
+const LocusInfo& DataSet::getLocusInfoAtPosition(size_t locus_position) const
 {
   if (analyzedLoci_ == 0)
     throw NullPointerException("DataSet::getLocusInfoAtPosition: there's no AnalyzedLoci.");
@@ -1159,7 +1159,7 @@ const LocusInfo& DataSet::getLocusInfoAtPosition(size_t locus_position) const th
 
 /******************************************************************************/
 
-void DataSet::addAlleleInfoByLocusName(const std::string& locus_name, const AlleleInfo& allele) throw (Exception)
+void DataSet::addAlleleInfoByLocusName(const std::string& locus_name, const AlleleInfo& allele)
 {
   if (analyzedLoci_ == 0)
     throw NullPointerException("DataSet::addAlleleInfoByLocusName: there's no AnalyzedLoci.");
@@ -1179,7 +1179,7 @@ void DataSet::addAlleleInfoByLocusName(const std::string& locus_name, const Alle
 
 /******************************************************************************/
 
-void DataSet::addAlleleInfoByLocusPosition(size_t locus_position, const AlleleInfo& allele) throw (Exception)
+void DataSet::addAlleleInfoByLocusPosition(size_t locus_position, const AlleleInfo& allele)
 {
   if (analyzedLoci_ == 0)
     throw NullPointerException("DataSet::addAlleleInfoByLocusPosition: there's no AnalyzedLoci.");
@@ -1199,7 +1199,7 @@ void DataSet::addAlleleInfoByLocusPosition(size_t locus_position, const AlleleIn
 
 /******************************************************************************/
 
-size_t DataSet::getNumberOfLoci() const throw (NullPointerException)
+size_t DataSet::getNumberOfLoci() const
 {
   if (analyzedLoci_ == 0)
     throw NullPointerException("DataSet::getNumberOfLoci: there's no AnalyzedLoci.");
@@ -1208,7 +1208,7 @@ size_t DataSet::getNumberOfLoci() const throw (NullPointerException)
 
 /******************************************************************************/
 
-size_t DataSet::getPloidyByLocusName(const std::string& locus_name) const throw (Exception)
+size_t DataSet::getPloidyByLocusName(const std::string& locus_name) const
 {
   if (analyzedLoci_ == 0)
     throw NullPointerException("DataSet::getPloidyByLocusName: there's no AnalyzedLoci.");
@@ -1224,7 +1224,7 @@ size_t DataSet::getPloidyByLocusName(const std::string& locus_name) const throw 
 
 /******************************************************************************/
 
-size_t DataSet::getPloidyByLocusPosition(size_t locus_position) const throw (Exception)
+size_t DataSet::getPloidyByLocusPosition(size_t locus_position) const
 {
   if (analyzedLoci_ == 0)
     throw NullPointerException("DataSet::getPloidyByLocusPosition: there's no AnalyzedLoci.");
@@ -1265,7 +1265,7 @@ PolymorphismMultiGContainer* DataSet::getPolymorphismMultiGContainer() const
 
 /******************************************************************************/
 
-PolymorphismMultiGContainer* DataSet::getPolymorphismMultiGContainer(const std::map<size_t, std::vector<size_t> >& selection) const throw (Exception)
+PolymorphismMultiGContainer* DataSet::getPolymorphismMultiGContainer(const std::map<size_t, std::vector<size_t> >& selection) const
 {
   PolymorphismMultiGContainer* pmgc = new PolymorphismMultiGContainer();
   for (map<size_t, vector<size_t> >::const_iterator it = selection.begin(); it != selection.end(); it++)
@@ -1304,7 +1304,7 @@ PolymorphismMultiGContainer* DataSet::getPolymorphismMultiGContainer(const std::
 
 /******************************************************************************/
 
-PolymorphismSequenceContainer* DataSet::getPolymorphismSequenceContainer(const std::map<size_t, std::vector<size_t> >& selection, size_t sequence_position) const throw (Exception)
+PolymorphismSequenceContainer* DataSet::getPolymorphismSequenceContainer(const std::map<size_t, std::vector<size_t> >& selection, size_t sequence_position) const
 {
   PolymorphismSequenceContainer* psc = new PolymorphismSequenceContainer(getAlphabet());
   for (map<size_t, vector<size_t> >::const_iterator it = selection.begin(); it != selection.end(); it++)

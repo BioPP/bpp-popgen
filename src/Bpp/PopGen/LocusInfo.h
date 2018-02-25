@@ -112,32 +112,28 @@ public:
    *
    * @throw BadIdentifierException if the AlleleInfo's id already exists.
    */
-  void addAlleleInfo(const AlleleInfo& allele)
-  throw (BadIdentifierException);
+  void addAlleleInfo(const AlleleInfo& allele);
 
   /**
    * @brief Retrieve an AlleleInfo object of the LocusInfo.
    *
    * @throw AlleleNotFoundException if the id is not found.
    */
-  const AlleleInfo& getAlleleInfoById(const std::string& id) const
-  throw (AlleleNotFoundException);
+  const AlleleInfo& getAlleleInfoById(const std::string& id) const;
 
   /**
    * @brief Retrieve an AlleleInfo object of the LocusInfo.
    *
    * @throw IndexOutOfBoundsException if key excedes the number of alleles.
    */
-  const AlleleInfo& getAlleleInfoByKey(size_t key) const
-  throw (IndexOutOfBoundsException);
+  const AlleleInfo& getAlleleInfoByKey(size_t key) const;
 
   /**
    * @brief Get the position of an AlleleInfo.
    *
    * @throw AlleleNotFoundException if the AlleleInfo's id is not found.
    */
-  unsigned int getAlleleInfoKey(const std::string& id) const
-  throw (AlleleNotFoundException);
+  unsigned int getAlleleInfoKey(const std::string& id) const;
 
   /**
    * @brief Get the number of alleles at this locus.

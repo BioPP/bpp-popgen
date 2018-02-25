@@ -49,7 +49,7 @@ using namespace std;
 
 AbstractODataSet::~AbstractODataSet() {}
 
-void AbstractODataSet::write(const string& path, const DataSet& data_set, bool overwrite) const throw (Exception)
+void AbstractODataSet::write(const string& path, const DataSet& data_set, bool overwrite) const
 {
   ofstream output(path.c_str(), overwrite ? (ios::out) : (ios::out | ios::app));
   write(output, data_set);

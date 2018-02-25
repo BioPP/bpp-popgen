@@ -58,7 +58,7 @@ const std::string GeneMapperCsvExport::AN_H = "AN";
 
 GeneMapperCsvExport::~GeneMapperCsvExport() {}
 
-void GeneMapperCsvExport::read(std::istream& is, DataSet& data_set) throw (Exception)
+void GeneMapperCsvExport::read(std::istream& is, DataSet& data_set)
 {
   if (!is)
     throw IOException("GeneMapperCsvExport::read: fail to open stream.");
@@ -182,17 +182,17 @@ void GeneMapperCsvExport::read(std::istream& is, DataSet& data_set) throw (Excep
   delete dtp;
 }
 
-void GeneMapperCsvExport::read(const std::string& path, DataSet& data_set) throw (Exception)
+void GeneMapperCsvExport::read(const std::string& path, DataSet& data_set)
 {
   AbstractIDataSet::read(path, data_set);
 }
 
-DataSet* GeneMapperCsvExport::read(std::istream& is) throw (Exception)
+DataSet* GeneMapperCsvExport::read(std::istream& is)
 {
   return AbstractIDataSet::read(is);
 }
 
-DataSet* GeneMapperCsvExport::read(const std::string& path) throw (Exception)
+DataSet* GeneMapperCsvExport::read(const std::string& path)
 {
   return AbstractIDataSet::read(path);
 }

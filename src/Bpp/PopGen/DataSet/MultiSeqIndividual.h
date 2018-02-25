@@ -174,7 +174,7 @@ public:
    * @return A pointer toward a Date object if the MultiSeqIndividual has a date.
    * Otherwise throw a NullPointerException.
    */
-  const Date* getDate() const throw (NullPointerException);
+  const Date* getDate() const;
 
   /**
    * @brief Tell if this MultiSeqIndividual has a date.
@@ -202,7 +202,7 @@ public:
    * @return A pointer toward a Point2D object if the MultiSeqIndividual has
    * coordinates. Otherwise throw a NullPointerException.
    */
-  const Point2D<double>* getCoord() const throw (NullPointerException);
+  const Point2D<double>* getCoord() const;
 
   /**
    * @brief Tell if this MultiSeqIndividual has coordinates.
@@ -217,7 +217,7 @@ public:
    * Set the X coordinate if the MultiSeqIndividual has coordinates.
    * Otherwise throw a NullPointerException.
    */
-  void setX(const double x) throw (NullPointerException);
+  void setX(const double x);
 
   /**
    * @brief Set the Y coordinate of th MultiSeqIndividual.
@@ -227,7 +227,7 @@ public:
    * Set the Y coordinate if the MultiSeqIndividual has coordinates.
    * Otherwise throw a NullPointerException.
    */
-  void setY(const double y) throw (NullPointerException);
+  void setY(const double y);
 
   /**
    * @brief Get the X coordinate of the MultiSeqIndividual.
@@ -235,7 +235,7 @@ public:
    * @return The X coordinate as a double if the MultiSeqIndividual has coordinates.
    * Otherwise throw a NullPointerException.
    */
-  double getX() const throw (NullPointerException);
+  double getX() const;
 
   /**
    * @brief Get the Y coordinate of the MultiSeqIndividual.
@@ -243,7 +243,7 @@ public:
    * @return The Y coordinate as a double if the MultiSeqIndividual has coordinates.
    * Otherwise throw a NullPointerException.
    */
-  double getY() const throw (NullPointerException);
+  double getY() const;
 
   /**
    * @brief Set the locality of the MultiSeqIndividual.
@@ -257,7 +257,7 @@ public:
    *
    * @return A pointer to the Locality of the MultiSeqIndividual.
    */
-  const Locality<double>* getLocality() const throw (NullPointerException);
+  const Locality<double>* getLocality() const;
 
   /**
    * @brief Tell if this MultiSeqIndividual has a locality.
@@ -269,8 +269,7 @@ public:
    *
    * @param id The id of the sequence set (i.e. locus).
    */
-  const VectorSequenceContainer* getVectorSequenceContainer(const std::string& id) const
-  throw (Exception);
+  const VectorSequenceContainer* getVectorSequenceContainer(const std::string& id) const;
 
   /**
    * @brief Add a sequence in a named sequence set.
@@ -280,8 +279,7 @@ public:
    * @throw AlphabetMismatchException if the sequence's alphabet doesn't match the container's alphabet.
    * @throw BadIdentifierException if sequence's name is already in use.
    */
-  void addSequence(const std::string& id, const Sequence& sequence)
-  throw (Exception);
+  void addSequence(const std::string& id, const Sequence& sequence);
 
   /**
    * @brief Get a named sequence from a named sequence set.
@@ -291,8 +289,7 @@ public:
    *
    * @return A reference to the sequence.
    */
-  const Sequence& getSequence(const std::string& id, const std::string& name)
-  const throw (Exception);
+  const Sequence& getSequence(const std::string& id, const std::string& name) const;
 
   /**
    * @brief Get an indexed sequence from a named sequence set.
@@ -302,8 +299,7 @@ public:
    *
    * @return A reference to the sequence.
    */
-  const Sequence& getSequence(const std::string& id, const size_t i)
-  const throw (Exception);
+  const Sequence& getSequence(const std::string& id, const size_t i) const;
 
   /**
    * @brief Get the sequence set ids.
@@ -343,8 +339,7 @@ public:
   /**
    * @brief Get the number of sequences in a sequence set.
    */
-  size_t getNumberOfSequences(const std::string& id) const
-  throw (Exception);
+  size_t getNumberOfSequences(const std::string& id) const;
 
   /**
    * @brief Add a genotype.
@@ -356,7 +351,7 @@ public:
   /**
    * @brief Get the genotype.
    */
-  const MultilocusGenotype* getGenotype() const throw (NullPointerException);
+  const MultilocusGenotype* getGenotype() const;
 
   /**
    * @brief Tell if the MultiSeqIndividual has a MultilocusGenotype.

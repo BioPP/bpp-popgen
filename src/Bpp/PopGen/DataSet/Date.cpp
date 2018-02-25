@@ -47,7 +47,7 @@ using namespace std;
 
 // ** Class constructor: *******************************************************/
 
-Date::Date(const int day, const int month, const int year) throw (BadIntegerException) : day_(day),
+Date::Date(const int day, const int month, const int year) : day_(day),
   month_(month),
   year_(year)
 {
@@ -75,7 +75,7 @@ Date& Date::operator=(const Date& date)
   return *this;
 }
 
-void Date::setDate(const int day, const int month, const int year) throw (BadIntegerException)
+void Date::setDate(const int day, const int month, const int year)
 {
   if (day >= 1 && day <= 31)
     day_ = day;
@@ -93,7 +93,7 @@ void Date::setYear(const int year)
   year_ = year;
 }
 
-void Date::setMonth(const int month) throw (BadIntegerException)
+void Date::setMonth(const int month)
 {
   if (month >= 1 && month <= 12)
     month_ = month;
@@ -101,7 +101,7 @@ void Date::setMonth(const int month) throw (BadIntegerException)
     throw (BadIntegerException("Date::Date: month must be in [1;12].", month));
 }
 
-void Date::setDay(const int day) throw (BadIntegerException)
+void Date::setDay(const int day)
 {
   if (day >= 1 && day <= 31)
     day_ = day;

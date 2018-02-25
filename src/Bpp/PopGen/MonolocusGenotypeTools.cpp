@@ -47,7 +47,7 @@
 using namespace bpp;
 using namespace std;
 
-std::unique_ptr<MonolocusGenotype> MonolocusGenotypeTools::buildMonolocusGenotypeByAlleleKey(const std::vector<size_t> allele_keys) throw (Exception)
+std::unique_ptr<MonolocusGenotype> MonolocusGenotypeTools::buildMonolocusGenotypeByAlleleKey(const std::vector<size_t> allele_keys)
 {
   if (allele_keys.size() < 1)
     throw Exception("MonolocusGenotypeTools::buildMonolocusGenotypeByAlleleKey: no key in allele_keys.");

@@ -90,24 +90,21 @@ public:
    *
    * @throw IndexOutOfBoundsException if locus_position is out of bounds.
    */
-  void setLocusInfo(size_t locus_position, const LocusInfo& locus)
-  throw (IndexOutOfBoundsException);
+  void setLocusInfo(size_t locus_position, const LocusInfo& locus);
 
   /**
    * @brief Get the position of a LocusInfo.
    *
    * @throw BadIdentifierException if locus_name is not found.
    */
-  size_t getLocusInfoPosition(const std::string& locus_name) const
-  throw (BadIdentifierException);
+  size_t getLocusInfoPosition(const std::string& locus_name) const;
 
   /**
    * @brief Get a LocusInfo by name.
    *
    * @throw BadIdentifierException if locus_name is not found.
    */
-  const LocusInfo& getLocusInfoByName(const std::string& locus_name) const
-  throw (BadIdentifierException);
+  const LocusInfo& getLocusInfoByName(const std::string& locus_name) const;
 
   /**
    * @brief Get a LocusInfo by its position.
@@ -115,8 +112,7 @@ public:
    * @throw NullPointerException if the LocusInfo is not difined.
    * @throw IndexOutOfBoundsException if locus_position is out of bounds.
    */
-  const LocusInfo& getLocusInfoAtPosition(size_t locus_position) const
-  throw (Exception);
+  const LocusInfo& getLocusInfoAtPosition(size_t locus_position) const;
 
   /**
    * @brief Add an AlleleInfo to a LocusInfo by LocusInfo name.
@@ -125,8 +121,7 @@ public:
    * @throw LocusNotFoundException if locus_name is not found.
    */
   void addAlleleInfoByLocusName(const std::string& locus_name,
-                                const AlleleInfo& allele)
-  throw (Exception);
+                                const AlleleInfo& allele);
 
   /**
    * @brief Add an AlleleInfo to a LocusInfo by its position.
@@ -135,8 +130,7 @@ public:
    * @throw IndexOutOfBoundsException if locus_position is out of bounds.
    */
   void addAlleleInfoByLocusPosition(size_t locus_position,
-                                    const AlleleInfo& allele)
-  throw (Exception);
+                                    const AlleleInfo& allele);
 
   /**
    * @brief Get the number of loci.
@@ -153,16 +147,14 @@ public:
    *
    * @throw LocusNotFoundException if locus_name is not found.
    */
-  unsigned int getPloidyByLocusName(const std::string& locus_name) const
-  throw (LocusNotFoundException);
+  unsigned int getPloidyByLocusName(const std::string& locus_name) const;
 
   /**
    * @brief Get the ploidy of a locus by its position.
    *
    * @throw IndexOutOfBoundsException if locus_position is out of bounds.
    */
-  unsigned int getPloidyByLocusPosition(size_t locus_position) const
-  throw (IndexOutOfBoundsException);
+  unsigned int getPloidyByLocusPosition(size_t locus_position) const;
 };
 } // end of namespace bpp;
 

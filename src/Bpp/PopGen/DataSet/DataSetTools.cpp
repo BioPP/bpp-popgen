@@ -42,7 +42,7 @@
 using namespace bpp;
 using namespace std;
 
-std::unique_ptr<DataSet> DataSetTools::buildDataSet(const OrderedSequenceContainer& osc) throw (Exception)
+std::unique_ptr<DataSet> DataSetTools::buildDataSet(const OrderedSequenceContainer& osc)
 {
   unique_ptr<DataSet> d_s(new DataSet());
   d_s->addEmptyGroup(0);
@@ -61,7 +61,7 @@ std::unique_ptr<DataSet> DataSetTools::buildDataSet(const OrderedSequenceContain
   return d_s;
 }
 
-std::unique_ptr<DataSet> DataSetTools::buildDataSet(const PolymorphismSequenceContainer& psc) throw (Exception)
+std::unique_ptr<DataSet> DataSetTools::buildDataSet(const PolymorphismSequenceContainer& psc)
 {
   unique_ptr<DataSet> d_s(new DataSet());
   set<size_t> grp_ids = psc.getAllGroupsIds();

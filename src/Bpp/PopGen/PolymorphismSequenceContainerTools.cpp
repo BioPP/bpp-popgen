@@ -49,7 +49,7 @@ PolymorphismSequenceContainerTools::~PolymorphismSequenceContainerTools() {}
 
 /******************************************************************************/
 
-PolymorphismSequenceContainer* PolymorphismSequenceContainerTools::read(const std::string& path, const Alphabet* alpha) throw (Exception)
+PolymorphismSequenceContainer* PolymorphismSequenceContainerTools::read(const std::string& path, const Alphabet* alpha)
 {
   Mase ms;
   string key;
@@ -102,7 +102,7 @@ PolymorphismSequenceContainer* PolymorphismSequenceContainerTools::read(const st
 
 /******************************************************************************/
 
-PolymorphismSequenceContainer* PolymorphismSequenceContainerTools::extractIngroup (const PolymorphismSequenceContainer& psc) throw (Exception)
+PolymorphismSequenceContainer* PolymorphismSequenceContainerTools::extractIngroup (const PolymorphismSequenceContainer& psc)
 {
   SequenceSelection ss;
   PolymorphismSequenceContainer* psci = dynamic_cast<PolymorphismSequenceContainer*>(psc.clone());
@@ -125,7 +125,7 @@ PolymorphismSequenceContainer* PolymorphismSequenceContainerTools::extractIngrou
 
 /******************************************************************************/
 
-PolymorphismSequenceContainer* PolymorphismSequenceContainerTools::extractOutgroup(const PolymorphismSequenceContainer& psc) throw (Exception)
+PolymorphismSequenceContainer* PolymorphismSequenceContainerTools::extractOutgroup(const PolymorphismSequenceContainer& psc)
 {
   SequenceSelection ss;
   PolymorphismSequenceContainer* psci = dynamic_cast<PolymorphismSequenceContainer*>(psc.clone());
@@ -148,7 +148,7 @@ PolymorphismSequenceContainer* PolymorphismSequenceContainerTools::extractOutgro
 
 /******************************************************************************/
 
-PolymorphismSequenceContainer* PolymorphismSequenceContainerTools::extractGroup(const PolymorphismSequenceContainer& psc, size_t group_id) throw (Exception)
+PolymorphismSequenceContainer* PolymorphismSequenceContainerTools::extractGroup(const PolymorphismSequenceContainer& psc, size_t group_id)
 {
   SequenceSelection ss;
   PolymorphismSequenceContainer* psci = dynamic_cast<PolymorphismSequenceContainer*>(psc.clone());
@@ -232,7 +232,7 @@ PolymorphismSequenceContainer* PolymorphismSequenceContainerTools::getSitesWitho
 
 /******************************************************************************/
 
-size_t PolymorphismSequenceContainerTools::getNumberOfNonGapSites(const PolymorphismSequenceContainer& psc, bool ingroup) throw (Exception)
+size_t PolymorphismSequenceContainerTools::getNumberOfNonGapSites(const PolymorphismSequenceContainer& psc, bool ingroup)
 {
   size_t count = psc.getNumberOfSites();
   PolymorphismSequenceContainer* npsc = 0;
@@ -262,7 +262,7 @@ size_t PolymorphismSequenceContainerTools::getNumberOfNonGapSites(const Polymorp
 
 /******************************************************************************/
 
-size_t PolymorphismSequenceContainerTools::getNumberOfCompleteSites(const PolymorphismSequenceContainer& psc, bool ingroup) throw (Exception)
+size_t PolymorphismSequenceContainerTools::getNumberOfCompleteSites(const PolymorphismSequenceContainer& psc, bool ingroup)
 {
   size_t count = psc.getNumberOfSites();
   PolymorphismSequenceContainer* npsc = 0;

@@ -48,7 +48,7 @@ DarwinDon::DarwinDon() {}
 
 DarwinDon::~DarwinDon() {}
 
-void DarwinDon::write(ostream& os, const DataSet& data_set) const throw (Exception)
+void DarwinDon::write(ostream& os, const DataSet& data_set) const
 {
   if (!os)
     throw IOException("DarwinDon::write: fail to open stream.");
@@ -75,7 +75,7 @@ void DarwinDon::write(ostream& os, const DataSet& data_set) const throw (Excepti
   }
 }
 
-void DarwinDon::write(const string& path, const DataSet& data_set, bool overwrite) const throw (Exception)
+void DarwinDon::write(const string& path, const DataSet& data_set, bool overwrite) const
 {
   AbstractODataSet::write(path, data_set, overwrite);
 }

@@ -68,7 +68,7 @@ public:
   /**
    * @brief Build a monolocus genotype containing one allele.
    */
-  MonoAlleleMonolocusGenotype(std::vector<size_t> allele_index) throw (BadSizeException);
+  MonoAlleleMonolocusGenotype(std::vector<size_t> allele_index);
 
   /**
    * @brief Copy constructor.

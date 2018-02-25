@@ -64,13 +64,13 @@ public:
    * @name The IDataSet interface.
    * @{
    */
-  virtual void read(std::istream& is, DataSet& data_set) throw (Exception) = 0;
+  virtual void read(std::istream& is, DataSet& data_set) = 0;
 
-  virtual void read(const std::string& path, DataSet& data_set) throw (Exception);
+  virtual void read(const std::string& path, DataSet& data_set);
 
-  virtual DataSet* read(std::istream& is) throw (Exception);
+  virtual DataSet* read(std::istream& is);
 
-  virtual DataSet* read(const std::string& path) throw (Exception);
+  virtual DataSet* read(const std::string& path);
   /**
    * @}
    */

@@ -46,7 +46,7 @@ DarwinVarSingle::DarwinVarSingle(size_t missingData) : missingData_(missingData)
 
 DarwinVarSingle::~DarwinVarSingle() {}
 
-void DarwinVarSingle::write(ostream& os, const DataSet& data_set) const throw (Exception)
+void DarwinVarSingle::write(ostream& os, const DataSet& data_set) const
 {
   if (!os)
     throw IOException("DarwinVarSingle::write: fail to open stream.");
@@ -107,7 +107,7 @@ void DarwinVarSingle::write(ostream& os, const DataSet& data_set) const throw (E
   }
 }
 
-void DarwinVarSingle::write(const string& path, const DataSet& data_set, bool overwrite) const throw (Exception)
+void DarwinVarSingle::write(const string& path, const DataSet& data_set, bool overwrite) const
 {
   AbstractODataSet::write(path, data_set, overwrite);
 }

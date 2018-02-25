@@ -56,9 +56,9 @@ PopgenlibIO::PopgenlibIO() : data_separator_(' '),
   missing_data_symbol_('$') {}
 
 PopgenlibIO::PopgenlibIO(const std::string& missing_data_symbol,
-                         const std::string& data_separator)
-throw (Exception) : data_separator_(' '),
-  missing_data_symbol_('$')
+                         const std::string& data_separator) :
+       	data_separator_(' '),
+        missing_data_symbol_('$')
 {
   try
   {
@@ -73,7 +73,7 @@ throw (Exception) : data_separator_(' '),
 
 PopgenlibIO::~PopgenlibIO() {}
 
-void PopgenlibIO::setMissingDataSymbol(const std::string& missing_data_symbol) throw (Exception)
+void PopgenlibIO::setMissingDataSymbol(const std::string& missing_data_symbol)
 {
   if (missing_data_symbol.size() != 1 || isdigit(missing_data_symbol[0])
       || TextTools::isWhiteSpaceCharacter(missing_data_symbol[0])
@@ -84,7 +84,7 @@ void PopgenlibIO::setMissingDataSymbol(const std::string& missing_data_symbol) t
   missing_data_symbol_ = missing_data_symbol[0];
 }
 
-void PopgenlibIO::setDataSeparator(const std::string& data_separator) throw (Exception)
+void PopgenlibIO::setDataSeparator(const std::string& data_separator)
 {
   if (data_separator == WHITESPACE)
     data_separator_ = ' ';
@@ -131,7 +131,7 @@ char PopgenlibIO::getDataSeparatorChar() const
   return data_separator_;
 }
 
-void PopgenlibIO::read(std::istream& is, DataSet& data_set) throw (Exception)
+void PopgenlibIO::read(std::istream& is, DataSet& data_set)
 {
   if (!is)
     throw IOException("PopgenlibIO::read: fail to open stream.");
@@ -527,22 +527,22 @@ void PopgenlibIO::parseIndividual_(const std::vector<std::string>& in, DataSet& 
   }
 }
 
-void PopgenlibIO::read(const std::string& path, DataSet& data_set) throw (Exception)
+void PopgenlibIO::read(const std::string& path, DataSet& data_set)
 {
   AbstractIDataSet::read(path, data_set);
 }
 
-DataSet* PopgenlibIO::read(std::istream& is) throw (Exception)
+DataSet* PopgenlibIO::read(std::istream& is)
 {
   return AbstractIDataSet::read(is);
 }
 
-DataSet* PopgenlibIO::read(const std::string& path) throw (Exception)
+DataSet* PopgenlibIO::read(const std::string& path)
 {
   return AbstractIDataSet::read(path);
 }
 
-void PopgenlibIO::write(std::ostream& os, const DataSet& data_set) const throw (Exception)
+void PopgenlibIO::write(std::ostream& os, const DataSet& data_set) const
 {
   size_t seqcpt = 1;
   // General section --------------------------------------
@@ -686,7 +686,7 @@ void PopgenlibIO::write(std::ostream& os, const DataSet& data_set) const throw (
   }
 }
 
-void PopgenlibIO::write(const std::string& path, const DataSet& data_set, bool overwrite) const throw (Exception)
+void PopgenlibIO::write(const std::string& path, const DataSet& data_set, bool overwrite) const
 {
   AbstractODataSet::write(path, data_set, overwrite);
 }

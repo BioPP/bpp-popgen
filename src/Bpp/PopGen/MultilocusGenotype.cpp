@@ -44,7 +44,7 @@ using namespace std;
 
 // ** Class constructor: *******************************************************/
 
-MultilocusGenotype::MultilocusGenotype(size_t loci_number) throw (BadIntegerException) : loci_(vector<MonolocusGenotype*>(loci_number))
+MultilocusGenotype::MultilocusGenotype(size_t loci_number) : loci_(vector<MonolocusGenotype*>(loci_number))
 {
   if (loci_number < 1)
     throw BadIntegerException("MultilocusGenotype::MultilocusGenotype: loci_number must be > 0.", static_cast<int>(loci_number));
@@ -81,7 +81,7 @@ MultilocusGenotype::~MultilocusGenotype()
 // ** Other methodes: *********************************************************/
 
 void MultilocusGenotype::setMonolocusGenotype(size_t locus_position,
-                                              const MonolocusGenotype& monogen) throw (IndexOutOfBoundsException)
+                                              const MonolocusGenotype& monogen)
 {
   if (locus_position < loci_.size())
     loci_[locus_position] = dynamic_cast<MonolocusGenotype*>(monogen.clone());
@@ -91,7 +91,7 @@ void MultilocusGenotype::setMonolocusGenotype(size_t locus_position,
 }
 
 void MultilocusGenotype::setMonolocusGenotypeByAlleleKey(size_t locus_position,
-                                                         const std::vector<size_t>& allele_keys) throw (Exception)
+                                                         const std::vector<size_t>& allele_keys)
 {
   if (allele_keys.size() < 1)
     throw Exception("MultilocusGenotype::setMonolocusGenotypeByAlleleKey: no key in allele_keys.");
@@ -106,7 +106,7 @@ void MultilocusGenotype::setMonolocusGenotypeByAlleleKey(size_t locus_position,
 }
 
 void MultilocusGenotype::setMonolocusGenotypeByAlleleId(size_t locus_position,
-                                                        const std::vector<std::string>& allele_id, const LocusInfo& locus_info) throw (Exception)
+                                                        const std::vector<std::string>& allele_id, const LocusInfo& locus_info)
 {
   vector<size_t> allele_keys;
   for (size_t i = 0; i < allele_id.size(); i++)
@@ -130,7 +130,7 @@ void MultilocusGenotype::setMonolocusGenotypeByAlleleId(size_t locus_position,
   }
 }
 
-void MultilocusGenotype::setMonolocusGenotypeAsMissing(size_t locus_position) throw (IndexOutOfBoundsException)
+void MultilocusGenotype::setMonolocusGenotypeAsMissing(size_t locus_position)
 {
   if (locus_position >= loci_.size())
     throw IndexOutOfBoundsException("MultilocusGenotype::setMonolocusGenotypeAsMissing: locus_position out of bounds.", locus_position, 0, loci_.size());
@@ -139,14 +139,14 @@ void MultilocusGenotype::setMonolocusGenotypeAsMissing(size_t locus_position) th
   loci_[locus_position] = NULL;
 }
 
-bool MultilocusGenotype::isMonolocusGenotypeMissing(size_t locus_position) const throw (IndexOutOfBoundsException)
+bool MultilocusGenotype::isMonolocusGenotypeMissing(size_t locus_position) const
 {
   if (locus_position >= loci_.size())
     throw IndexOutOfBoundsException("MultilocusGenotype::isMonolocusGenotypeMissing: locus_position out of bounds.", locus_position, 0, loci_.size());
   return loci_[locus_position] == NULL;
 }
 
-const MonolocusGenotype& MultilocusGenotype::getMonolocusGenotype(size_t locus_position) const throw (IndexOutOfBoundsException)
+const MonolocusGenotype& MultilocusGenotype::getMonolocusGenotype(size_t locus_position) const
 {
   if (locus_position >= loci_.size())
     throw IndexOutOfBoundsException("MultilocusGenotype::getMonolocusGenotype: locus_position out of bounds", locus_position, 0, loci_.size());

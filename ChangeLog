@@ -1,4 +1,7 @@
-22/02/18 -*- Version 2.4.0 -*-
+26/02/18 -*- Version 2.4.0 -*-
+
+25/02/18 Julien Dutheil
+* Removed all dynamic exception specification (gcc 7)
 
 24/11/17 Julien Dutheil
 * Fixed error in tajima83.

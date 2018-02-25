@@ -215,7 +215,7 @@ void MultiSeqIndividual::setDate(const Date& date)
 
 /******************************************************************************/
 
-const Date* MultiSeqIndividual::getDate() const throw (NullPointerException)
+const Date* MultiSeqIndividual::getDate() const
 {
   if (hasDate())
     return new Date(*date_);
@@ -263,7 +263,7 @@ void MultiSeqIndividual::setCoord(const double x, const double y)
 
 /******************************************************************************/
 
-const Point2D<double>* MultiSeqIndividual::getCoord() const throw (NullPointerException)
+const Point2D<double>* MultiSeqIndividual::getCoord() const
 {
   if (hasCoord())
     return new Point2D<double>(*coord_);
@@ -280,7 +280,7 @@ bool MultiSeqIndividual::hasCoord() const
 
 /******************************************************************************/
 
-void MultiSeqIndividual::setX(const double x) throw (NullPointerException)
+void MultiSeqIndividual::setX(const double x)
 {
   if (hasCoord())
     coord_->setX(x);
@@ -290,7 +290,7 @@ void MultiSeqIndividual::setX(const double x) throw (NullPointerException)
 
 /******************************************************************************/
 
-void MultiSeqIndividual::setY(const double y) throw (NullPointerException)
+void MultiSeqIndividual::setY(const double y)
 {
   if (hasCoord())
     coord_->setY(y);
@@ -300,7 +300,7 @@ void MultiSeqIndividual::setY(const double y) throw (NullPointerException)
 
 /******************************************************************************/
 
-double MultiSeqIndividual::getX() const throw (NullPointerException)
+double MultiSeqIndividual::getX() const
 {
   if (hasCoord())
     return coord_->getX();
@@ -310,7 +310,7 @@ double MultiSeqIndividual::getX() const throw (NullPointerException)
 
 /******************************************************************************/
 
-double MultiSeqIndividual::getY() const throw (NullPointerException)
+double MultiSeqIndividual::getY() const
 {
   if (hasCoord())
     return coord_->getY();
@@ -328,7 +328,7 @@ void MultiSeqIndividual::setLocality(const Locality<double>* locality)
 
 /******************************************************************************/
 
-const Locality<double>* MultiSeqIndividual::getLocality() const throw (NullPointerException)
+const Locality<double>* MultiSeqIndividual::getLocality() const
 {
   if (hasLocality())
     return locality_;
@@ -346,7 +346,7 @@ bool MultiSeqIndividual::hasLocality() const
 /******************************************************************************/
 
 // Sequences
-const VectorSequenceContainer* MultiSeqIndividual::getVectorSequenceContainer(const std::string& id) const throw (Exception)
+const VectorSequenceContainer* MultiSeqIndividual::getVectorSequenceContainer(const std::string& id) const
 {
   map<string, VectorSequenceContainer*>::const_iterator it;
   it = sequences_.find(id);
@@ -363,7 +363,6 @@ const VectorSequenceContainer* MultiSeqIndividual::getVectorSequenceContainer(co
 /******************************************************************************/
 
 void MultiSeqIndividual::addSequence(const std::string& id, const Sequence& sequence)
-throw (Exception)
 {
   try
   {
@@ -381,8 +380,7 @@ throw (Exception)
 
 /******************************************************************************/
 
-const Sequence& MultiSeqIndividual::getSequence(const std::string& id, const std::string& name)
-const throw (Exception)
+const Sequence& MultiSeqIndividual::getSequence(const std::string& id, const std::string& name) const
 {
   map<string, VectorSequenceContainer*>::const_iterator it;
   it = sequences_.find(id);
@@ -405,8 +403,7 @@ const throw (Exception)
 
 /******************************************************************************/
 
-const Sequence& MultiSeqIndividual::getSequence(const std::string& id, size_t i)
-const throw (Exception)
+const Sequence& MultiSeqIndividual::getSequence(const std::string& id, size_t i) const
 {
   map<string, VectorSequenceContainer*>::const_iterator it;
   it = sequences_.find(id);
@@ -457,7 +454,6 @@ size_t MultiSeqIndividual::getNumberOfSequenceSet() const
 /******************************************************************************/
 
 size_t MultiSeqIndividual::getNumberOfSequences(const std::string& id) const
-throw (Exception)
 {
   map<string, VectorSequenceContainer*>::const_iterator it;
   it = sequences_.find(id);
@@ -483,7 +479,7 @@ void MultiSeqIndividual::addGenotype(const MultilocusGenotype& genotype)
 
 /******************************************************************************/
 
-const MultilocusGenotype* MultiSeqIndividual::getGenotype() const throw (NullPointerException)
+const MultilocusGenotype* MultiSeqIndividual::getGenotype() const
 {
   return genotype_;
 }

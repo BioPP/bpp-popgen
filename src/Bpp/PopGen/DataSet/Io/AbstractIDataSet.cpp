@@ -49,21 +49,21 @@ using namespace std;
 
 AbstractIDataSet::~AbstractIDataSet() {}
 
-void AbstractIDataSet::read(const std::string& path, DataSet& data_set) throw (Exception)
+void AbstractIDataSet::read(const std::string& path, DataSet& data_set)
 {
   ifstream input(path.c_str(), ios::in);
   read(input, data_set);
   input.close();
 }
 
-DataSet* AbstractIDataSet::read(std::istream& is) throw (Exception)
+DataSet* AbstractIDataSet::read(std::istream& is)
 {
   DataSet* data_set = new DataSet();
   read(is, *data_set);
   return data_set;
 }
 
-DataSet* AbstractIDataSet::read(const std::string& path) throw (Exception)
+DataSet* AbstractIDataSet::read(const std::string& path)
 {
   DataSet* data_set = new DataSet();
   read(path, *data_set);

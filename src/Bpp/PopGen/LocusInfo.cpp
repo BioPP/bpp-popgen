@@ -80,7 +80,7 @@ LocusInfo::~LocusInfo()
 // ** Other methodes: *********************************************************/
 
 // AlleleInfos
-void LocusInfo::addAlleleInfo(const AlleleInfo& allele) throw (BadIdentifierException)
+void LocusInfo::addAlleleInfo(const AlleleInfo& allele)
 {
   // Check if the allele id is not already in use
   for (unsigned int i = 0; i < alleles_.size(); i++)
@@ -91,7 +91,7 @@ void LocusInfo::addAlleleInfo(const AlleleInfo& allele) throw (BadIdentifierExce
   alleles_.push_back(allele.clone());
 }
 
-const AlleleInfo& LocusInfo::getAlleleInfoById(const std::string& id) const throw (AlleleNotFoundException)
+const AlleleInfo& LocusInfo::getAlleleInfoById(const std::string& id) const
 {
   for (unsigned int i = 0; i < alleles_.size(); i++)
   {
@@ -101,7 +101,7 @@ const AlleleInfo& LocusInfo::getAlleleInfoById(const std::string& id) const thro
   throw AlleleNotFoundException("LocusInfo::getAlleleInfoById: AlleleInfo id unknown.", id);
 }
 
-const AlleleInfo& LocusInfo::getAlleleInfoByKey(size_t key) const throw (IndexOutOfBoundsException)
+const AlleleInfo& LocusInfo::getAlleleInfoByKey(size_t key) const
 {
   if (key >= alleles_.size())
     throw IndexOutOfBoundsException("LocusInfo::getAlleleInfoByKey: key out of bounds.", key, 0, alleles_.size());
@@ -109,7 +109,6 @@ const AlleleInfo& LocusInfo::getAlleleInfoByKey(size_t key) const throw (IndexOu
 }
 
 unsigned int LocusInfo::getAlleleInfoKey(const std::string& id) const
-throw (AlleleNotFoundException)
 {
   for (unsigned int i = 0; i < alleles_.size(); i++)
   {

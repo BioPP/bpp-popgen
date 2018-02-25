@@ -62,12 +62,12 @@ public:
   /**
    * @brief Write a DataSet on ostream.
    */
-  virtual void write(std::ostream& os, const DataSet& data_set) const throw (Exception) = 0;
+  virtual void write(std::ostream& os, const DataSet& data_set) const = 0;
 
   /**
    * @brief Write a DataSet in a text file.
    */
-  virtual void write(const std::string& path, const DataSet& data_set, bool overwrite) const throw (Exception) = 0;
+  virtual void write(const std::string& path, const DataSet& data_set, bool overwrite) const = 0;
 };
 } // end of namespace bpp;
 

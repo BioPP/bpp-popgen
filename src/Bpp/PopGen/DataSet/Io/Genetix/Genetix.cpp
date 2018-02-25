@@ -47,7 +47,7 @@ Genetix::Genetix() {}
 
 Genetix::~Genetix() {}
 
-void Genetix::read(istream& is, DataSet& data_set) throw (Exception)
+void Genetix::read(istream& is, DataSet& data_set)
 {
   if (!is)
     throw IOException("Genetix::read: fail to open stream.");
@@ -118,17 +118,17 @@ void Genetix::read(istream& is, DataSet& data_set) throw (Exception)
   }
 }
 
-void Genetix::read(const string& path, DataSet& data_set) throw (Exception)
+void Genetix::read(const string& path, DataSet& data_set)
 {
   AbstractIDataSet::read(path, data_set);
 }
 
-DataSet* Genetix::read(istream& is) throw (Exception)
+DataSet* Genetix::read(istream& is)
 {
   return AbstractIDataSet::read(is);
 }
 
-DataSet* Genetix::read(const string& path) throw (Exception)
+DataSet* Genetix::read(const string& path)
 {
   return AbstractIDataSet::read(path);
 }

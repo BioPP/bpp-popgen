@@ -105,7 +105,7 @@ public:
    * @param locality A Locality object.
    * @throw BadIdentifierException if the locality's name already exists.
    */
-  void addLocality(Locality<double>& locality) throw (BadIdentifierException);
+  void addLocality(Locality<double>& locality);
 
   /**
    * @brief Get the position of a locality in the container.
@@ -114,7 +114,7 @@ public:
    * @param name The locality's name to find.
    * @throw LocalityNotFoundException if the locality's name doesn't match any name in the DataSet.
    */
-  size_t getLocalityPosition(const std::string& name) const throw (LocalityNotFoundException);
+  size_t getLocalityPosition(const std::string& name) const;
 
   /**
    * @brief Get a Locality by locality_position.
@@ -123,28 +123,28 @@ public:
    * @param locality_position The position of the Locality in the DataSet.
    * @throw IndexOutOfBoundsException if locality_position excedes the number of locality of the DataSet.
    */
-  const Locality<double>& getLocalityAtPosition(size_t locality_position) const throw (IndexOutOfBoundsException);
+  const Locality<double>& getLocalityAtPosition(size_t locality_position) const;
 
   /**
    * @brief Get a Locality by name.
    *
    * @throw LocalityNotFoundException if the locality's name is not found.
    */
-  const Locality<double>& getLocalityByName(const std::string& name) const throw (LocalityNotFoundException);
+  const Locality<double>& getLocalityByName(const std::string& name) const;
 
   /**
    * @brief Delete a Locality from the DataSet.
    *
    * @throw IndexOutOfBoundsException if locality_position excedes the number of Locality.
    */
-  void deleteLocalityAtPosition(size_t locality_position) throw (IndexOutOfBoundsException);
+  void deleteLocalityAtPosition(size_t locality_position);
 
   /**
    * @brief Delete a Locality from the DataSet.
    *
    * @throw LocalityNotFoundException if the locality's name is not found.
    */
-  void deleteLocalityByName(const std::string& name) throw (LocalityNotFoundException);
+  void deleteLocalityByName(const std::string& name);
 
   /**
    * @brief Get the number of Localities.
@@ -164,51 +164,51 @@ public:
    *
    * @param group A pointer to the Group to add.
    */
-  void addGroup(const Group& group) throw (BadIdentifierException);
+  void addGroup(const Group& group);
 
   /**
    * @brief Add an empty Group to the DataSet.
    */
-  void addEmptyGroup(size_t group_id) throw (BadIdentifierException);
+  void addEmptyGroup(size_t group_id);
 
   /**
    * @brief Get a group by identifier.
    */
-  const Group& getGroupById(size_t group_id) const throw (GroupNotFoundException);
+  const Group& getGroupById(size_t group_id) const;
 
   /**
    * @brief Get the position of a Group.
    *
    * @throw GroupNotFoundException if the group_id is not found.
    */
-  size_t getGroupPosition(size_t group_id) const throw (GroupNotFoundException);
+  size_t getGroupPosition(size_t group_id) const;
 
   /**
    * @brief Get the name of a Group. If the name is an empty string it just returns the group_id
    *
    * @throw GroupNotFoundException if the group_id is not found.
    */
-  std::string getGroupName(size_t group_id) const throw (GroupNotFoundException);
+  std::string getGroupName(size_t group_id) const;
   /**
    * @brief set the name of a Group.
    *
    * @throw GroupNotFoundException if the group_id is not found.
    */
-  void setGroupName(size_t group_id, const std::string& group_name) const throw (GroupNotFoundException);
+  void setGroupName(size_t group_id, const std::string& group_name) const;
 
   /**
    * @brief Get a group by position.
    *
    * @throw IndexOutOfBoundsException if group_position excedes the number of groups.
    */
-  const Group& getGroupAtPosition(size_t group_position) const throw (IndexOutOfBoundsException);
+  const Group& getGroupAtPosition(size_t group_position) const;
 
   /**
    * @brief Delete a Group from the DataSet.
    *
    * @throw IndexOutOfBoundsException if group_position excedes the number of groups.
    */
-  void deleteGroupAtPosition(size_t group_position) throw (IndexOutOfBoundsException);
+  void deleteGroupAtPosition(size_t group_position);
 
   /**
    * @brief Get the number of Groups.
@@ -221,7 +221,7 @@ public:
    * This methode merge two groups. The source group is emptied into the target
    * and then is deleted.
    */
-  void mergeTwoGroups(size_t source_id, size_t target_id) throw (GroupNotFoundException);
+  void mergeTwoGroups(size_t source_id, size_t target_id);
 
   /**
    * @brief Merge some Groups in one.
@@ -233,7 +233,7 @@ public:
    * @param group_ids A vector size_t listing the id of groups to merge.
    * @throw IndexOutOfBoundsException if one of the int in groups excedes the number of groups.
    */
-  void mergeGroups(std::vector<size_t>& group_ids) throw (GroupNotFoundException);
+  void mergeGroups(std::vector<size_t>& group_ids);
 
   /**
    * @brief Split a group in two.
@@ -243,7 +243,7 @@ public:
    * @throw GroupNotFoundException if the group_id is not found.
    * @throw IndexOutOfBoundsException if one position of the selection excedes the number of individuals of the group.
    */
-  void splitGroup(size_t group_id, std::vector<size_t> individuals_selection) throw (Exception);
+  void splitGroup(size_t group_id, std::vector<size_t> individuals_selection);
 
   // ** Individuals manipulation ************************************************/
   /**
@@ -252,7 +252,7 @@ public:
    * @throw IndexOutOfBoundsException if group_position excedes the number of groups.
    * @throw BadIdentifierException if the individual's id is already in use.
    */
-  void addIndividualToGroup(size_t group_position, const Individual& individual) throw (Exception);
+  void addIndividualToGroup(size_t group_position, const Individual& individual);
 
   /**
    * @brief Add an empty Individual to a Group.
@@ -260,15 +260,14 @@ public:
    * @throw IndexOutOfBoundsException if group_position excedes the number of groups.
    * @throw BadIdentifierException if the individual's id is already in use.
    */
-  void addEmptyIndividualToGroup(size_t group_position, const std::string& individual_id) throw (Exception);
+  void addEmptyIndividualToGroup(size_t group_position, const std::string& individual_id);
 
   /**
    * @brief Get the number of Individuals in a Group.
    *
    * @throw IndexOutOfBoundsException if group_position excedes the number of groups.
    */
-  size_t getNumberOfIndividualsInGroup(size_t group_position) const
-  throw (IndexOutOfBoundsException);
+  size_t getNumberOfIndividualsInGroup(size_t group_position) const;
 
   /**
    * @brief Get the position of an Individual in a Group.
@@ -276,16 +275,15 @@ public:
    * @throw IndexOutOfBoundsException if group_position excedes the number of groups.
    * @throw IndividualNotFoundException if individual_id is not found.
    */
-  size_t getIndividualPositionInGroup(size_t group_position, const std::string& individual_id) const
-  throw (Exception);
+  size_t getIndividualPositionInGroup(size_t group_position, const std::string& individual_id) const;
+  
   /**
    * @brief Get an Individual from a Group.
    *
    * @throw IndexOutOfBoundsException if group_position excedes the number of groups.
    * @throw IndexOutOfBoundsException if individual_position excedes the number of individual in the group.
    */
-  const Individual* getIndividualAtPositionFromGroup(size_t group_position, size_t individual_position) const
-  throw (IndexOutOfBoundsException);
+  const Individual* getIndividualAtPositionFromGroup(size_t group_position, size_t individual_position) const;
 
   /**
    * @brief Get an Individual from a Group.
@@ -293,8 +291,7 @@ public:
    * @throw IndexOutOfBoundsException if group_position excedes the number of groups.
    * @throw IndividualNotFoundException if individual_id is not found.
    */
-  const Individual* getIndividualByIdFromGroup(size_t group_position, const std::string& individual_id) const
-  throw (Exception);
+  const Individual* getIndividualByIdFromGroup(size_t group_position, const std::string& individual_id) const;
 
   /**
    * @brief Delete an Individual from a group.
@@ -302,8 +299,7 @@ public:
    * @throw IndexOutOfBoundsException if group_position excedes the number of groups.
    * @throw IndexOutOfBoundsException if individual_position excedes the number of individual in the group.
    */
-  void deleteIndividualAtPositionFromGroup(size_t group_position, size_t individual_position)
-  throw (IndexOutOfBoundsException);
+  void deleteIndividualAtPositionFromGroup(size_t group_position, size_t individual_position);
 
   /**
    * @brief Delete an Individual from a group.
@@ -311,8 +307,7 @@ public:
    * @throw IndexOutOfBoundsException if group_position excedes the number of groups.
    * @throw IndividualNotFoundException if individual_id is not found.
    */
-  void deleteIndividualByIdFromGroup(size_t group_position, const std::string& individual_id)
-  throw (Exception);
+  void deleteIndividualByIdFromGroup(size_t group_position, const std::string& individual_id);
 
   /**
    * @brief Set the sex of an Individual in a Group.
@@ -320,8 +315,7 @@ public:
    * @throw IndexOutOfBoundsException if group_position excedes the number of groups.
    * @throw IndexOutOfBoundsException if individual_position excedes the number of individual in the group.
    */
-  void setIndividualSexInGroup(size_t group_position, size_t individual_position, const unsigned short sex)
-  throw (IndexOutOfBoundsException);
+  void setIndividualSexInGroup(size_t group_position, size_t individual_position, const unsigned short sex);
 
   /**
    * @brief Get the sex of an Individual in a Group.
@@ -329,8 +323,7 @@ public:
    * @throw IndexOutOfBoundsException if group_position excedes the number of groups.
    * @throw IndexOutOfBoundsException if individual_position excedes the number of individual in the group.
    */
-  unsigned short getIndividualSexInGroup(size_t group_position, size_t individual_position) const
-  throw (IndexOutOfBoundsException);
+  unsigned short getIndividualSexInGroup(size_t group_position, size_t individual_position) const;
 
   /**
    * @brief Set the Date of an Individual in a Group.
@@ -338,8 +331,7 @@ public:
    * @throw IndexOutOfBoundsException if group_position excedes the number of groups.
    * @throw IndexOutOfBoundsException if individual_position excedes the number of individual in the group.
    */
-  void setIndividualDateInGroup(size_t group_position, size_t individual_position, const Date& date)
-  throw (IndexOutOfBoundsException);
+  void setIndividualDateInGroup(size_t group_position, size_t individual_position, const Date& date);
 
   /**
    * @brief Get the Date of an Individual in a Group.
@@ -348,8 +340,7 @@ public:
    * @throw IndexOutOfBoundsException if individual_position excedes the number of individual in the group.
    * @throw NullPointerException if the individual has no date.
    */
-  const Date* getIndividualDateInGroup(size_t group_position, size_t individual_position) const
-  throw (Exception);
+  const Date* getIndividualDateInGroup(size_t group_position, size_t individual_position) const;
 
   /**
    * @brief Set the coordinates of an Individual in a Group.
@@ -357,8 +348,7 @@ public:
    * @throw IndexOutOfBoundsException if group_position excedes the number of groups.
    * @throw IndexOutOfBoundsException if individual_position excedes the number of individual in the group.
    */
-  void setIndividualCoordInGroup(size_t group_position, size_t individual_position, const Point2D<double>& coord)
-  throw (IndexOutOfBoundsException);
+  void setIndividualCoordInGroup(size_t group_position, size_t individual_position, const Point2D<double>& coord);
 
   /**
    * @brief Get the coordinate of an Individual in a Group.
@@ -367,8 +357,7 @@ public:
    * @throw IndexOutOfBoundsException if individual_position excedes the number of individual in the group.
    * @throw NullPointerException if the individual has no coordinate.
    */
-  const Point2D<double>* getIndividualCoordInGroup(size_t group_position, size_t individual_position) const
-  throw (Exception);
+  const Point2D<double>* getIndividualCoordInGroup(size_t group_position, size_t individual_position) const;
 
   /**
    * @brief Set the Locality of an Individual in a Group.
@@ -377,8 +366,7 @@ public:
    * @throw IndexOutOfBoundsException if individual_position excedes the number of individual in the group.
    * @throw LocalityNotFoundException if locality_name is not found.
    */
-  void setIndividualLocalityInGroupByName(size_t group_position, size_t individual_position, const std::string& locality_name)
-  throw (Exception);
+  void setIndividualLocalityInGroupByName(size_t group_position, size_t individual_position, const std::string& locality_name);
 
   /**
    * @brief Get the Locality of an Individual in a Group.
@@ -387,8 +375,7 @@ public:
    * @throw IndexOutOfBoundsException if individual_position excedes the number of individual in the group.
    * @throw NullPointerException if the individual has no locality.
    */
-  const Locality<double>* getIndividualLocalityInGroup(size_t group_position, size_t individual_position) const
-  throw (Exception);
+  const Locality<double>* getIndividualLocalityInGroup(size_t group_position, size_t individual_position) const;
 
   /**
    * @brief Add a Sequence to an Individual in a Group.
@@ -399,8 +386,7 @@ public:
    * @throw BadIdentifierException if the sequence's name is already in use.
    */
   void addIndividualSequenceInGroup(size_t group_position, size_t individual_position,
-                                    size_t sequence_position, const Sequence& sequence)
-  throw (Exception);
+                                    size_t sequence_position, const Sequence& sequence);
 
   /**
    * @brief Get a Sequence from an Individual of a Group.
@@ -411,8 +397,7 @@ public:
    * @throw SequenceNotFoundException if sequence_name is not found.
    * @throw BadIntegerException if sequence_position is already in use.
    */
-  const Sequence& getIndividualSequenceByNameInGroup(size_t group_position, size_t individual_position, const std::string& sequence_name) const
-  throw (Exception);
+  const Sequence& getIndividualSequenceByNameInGroup(size_t group_position, size_t individual_position, const std::string& sequence_name) const;
 
   /**
    * @brief Get a Sequence from an Individual of a Group.
@@ -422,8 +407,7 @@ public:
    * @throw NullPointerException if the individual has no sequences.
    * @throw SequenceNotFoundException if sequence_position is not found.
    */
-  const Sequence& getIndividualSequenceAtPositionInGroup(size_t group_position, size_t individual_position, size_t sequence_position) const
-  throw (Exception);
+  const Sequence& getIndividualSequenceAtPositionInGroup(size_t group_position, size_t individual_position, size_t sequence_position) const;
 
   /**
    * @brief Delete a Sequence of an Individual of a Group.
@@ -433,8 +417,7 @@ public:
    * @throw NullPointerException if the individual has no sequences.
    * @throw SequenceNotFoundException if sequence_name is not found.
    */
-  void deleteIndividualSequenceByNameInGroup(size_t group_position, size_t individual_position, const std::string& sequence_name)
-  throw (Exception);
+  void deleteIndividualSequenceByNameInGroup(size_t group_position, size_t individual_position, const std::string& sequence_name);
 
   /**
    * @brief Delete a Sequence of an Individual of a Group.
@@ -444,8 +427,7 @@ public:
    * @throw NullPointerException if the individual has no sequences.
    * @throw SequenceNotFoundException if sequence_position is not found.
    */
-  void deleteIndividualSequenceAtPositionInGroup(size_t group_position, size_t individual_position, size_t sequence_position)
-  throw (Exception);
+  void deleteIndividualSequenceAtPositionInGroup(size_t group_position, size_t individual_position, size_t sequence_position);
 
   /**
    * @brief Get the Sequences' names from an Individual of a Group.
@@ -454,8 +436,7 @@ public:
    * @throw IndexOutOfBoundsException if individual_position excedes the number of individual in the group.
    * @throw NullPointerException if the individual has no sequences.
    */
-  std::vector<std::string> getIndividualSequencesNamesInGroup(size_t group_position, size_t individual_position) const
-  throw (Exception);
+  std::vector<std::string> getIndividualSequencesNamesInGroup(size_t group_position, size_t individual_position) const;
 
   /**
    * @brief Get the position of a Sequence in an Individual of a Group.
@@ -465,8 +446,7 @@ public:
    * @throw NullPointerException if the individual has no sequences.
    * @throw SequenceNotFoundException if sequence_name is not found.
    */
-  size_t getIndividualSequencePositionInGroup(size_t group_position, size_t individual_position, const std::string& sequence_name) const
-  throw (Exception);
+  size_t getIndividualSequencePositionInGroup(size_t group_position, size_t individual_position, const std::string& sequence_name) const;
 
   /**
    * @brief Get the number of Sequences in an Individual of a Group.
@@ -475,8 +455,7 @@ public:
    * @throw IndexOutOfBoundsException if individual_position excedes the number of individual in the group.
    * @throw NullPointerException if the individual has no sequences.
    */
-  size_t getIndividualNumberOfSequencesInGroup(size_t group_position, size_t individual_position) const
-  throw (Exception);
+  size_t getIndividualNumberOfSequencesInGroup(size_t group_position, size_t individual_position) const;
 
   /**
    * @brief Set the MultilocusGenotype of an Individual in a Group.
@@ -484,8 +463,7 @@ public:
    * @throw IndexOutOfBoundsException if group_position excedes the number of groups.
    * @throw IndexOutOfBoundsException if individual_position excedes the number of individual in the group.
    */
-  void setIndividualGenotypeInGroup(size_t group_position, size_t individual_position, const MultilocusGenotype& genotype)
-  throw (Exception);
+  void setIndividualGenotypeInGroup(size_t group_position, size_t individual_position, const MultilocusGenotype& genotype);
 
   /**
    * @brief Initialyze the genotype of an Individual in a Group.
@@ -496,8 +474,7 @@ public:
    * @throw NullPointerException if analyzed_loci is NULL.
    * @throw Exception if the individual already has a genotype.
    */
-  void initIndividualGenotypeInGroup(size_t group_position, size_t individual_position)
-  throw (Exception);
+  void initIndividualGenotypeInGroup(size_t group_position, size_t individual_position);
 
   /**
    * @brief Delete the MultilocusGenotype of an Individual from a Group.
@@ -505,8 +482,7 @@ public:
    * @throw IndexOutOfBoundsException if group_position excedes the number of groups.
    * @throw IndexOutOfBoundsException if individual_position excedes the number of individual in the group.
    */
-  void deleteIndividualGenotypeInGroup(size_t group_position, size_t individual_position)
-  throw (IndexOutOfBoundsException);
+  void deleteIndividualGenotypeInGroup(size_t group_position, size_t individual_position);
 
   /**
    * @brief Set a MonolocusGenotype of an Individual from a group.
@@ -516,8 +492,7 @@ public:
    * @throw NullPointerException if the individual has no genotype.
    * @throw IndexOutOfBoundsException if locus_position excedes the number of locus.
    */
-  void setIndividualMonolocusGenotypeInGroup(size_t group_position, size_t individual_position, size_t locus_position, const MonolocusGenotype& monogen)
-  throw (Exception);
+  void setIndividualMonolocusGenotypeInGroup(size_t group_position, size_t individual_position, size_t locus_position, const MonolocusGenotype& monogen);
 
   /**
    * @brief Set a MonolocusGenotype of an Individual from a group.
@@ -528,8 +503,7 @@ public:
    * @throw IndexOutOfBoundsException if locus_position excedes the number of locus.
    * @throw Exception if the ploidy doesn't match.
    */
-  void setIndividualMonolocusGenotypeByAlleleKeyInGroup(size_t group_position, size_t individual_position, size_t locus_position, const std::vector<size_t> allele_keys)
-  throw (Exception);
+  void setIndividualMonolocusGenotypeByAlleleKeyInGroup(size_t group_position, size_t individual_position, size_t locus_position, const std::vector<size_t> allele_keys);
 
   /**
    * @brief Set a MonolocusGenotype of an Individual from a group.
@@ -540,8 +514,7 @@ public:
    * @throw IndexOutOfBoundsException if locus_position excedes the number of locus.
    * @throw Exception if there is no key in allele_keys.
    */
-  void setIndividualMonolocusGenotypeByAlleleIdInGroup(size_t group_position, size_t individual_position, size_t locus_position, const std::vector<std::string> allele_id)
-  throw (Exception);
+  void setIndividualMonolocusGenotypeByAlleleIdInGroup(size_t group_position, size_t individual_position, size_t locus_position, const std::vector<std::string> allele_id);
 
   /**
    * @brief Get a MonolocusGenotype from an Individual of a Group.
@@ -552,8 +525,7 @@ public:
    * @throw IndexOutOfBoundsException if locus_position excedes the number of locus.
    * @throw AlleleNotFoundException if at least one of the id is not found.
    */
-  const MonolocusGenotype* getIndividualMonolocusGenotypeInGroup(size_t group_position, size_t individual_position, size_t locus_position) const
-  throw (Exception);
+  const MonolocusGenotype* getIndividualMonolocusGenotypeInGroup(size_t group_position, size_t individual_position, size_t locus_position) const;
 
   // ** AnalyzedSequences manipulation ******************************************/
   /**
@@ -571,14 +543,14 @@ public:
    *
    * @throw NullPointerException if there is no sequence data.
    */
-  const Alphabet* getAlphabet() const throw (NullPointerException);
+  const Alphabet* getAlphabet() const;
 
   /**
    * @brief Get the alphabet type as a string.
    *
    * @throw NullPointerException if there is no sequence data.
    */
-  std::string getAlphabetType() const throw (NullPointerException);
+  std::string getAlphabetType() const;
 
   // ** AnalyzedLoci manipulation ***********************************************/
   /**
@@ -586,21 +558,21 @@ public:
    *
    * @throw Exception if at least one Individual has a genotype refering to the actual AnalyzedLoci.
    */
-  void setAnalyzedLoci(const AnalyzedLoci& analyzedLoci) throw (Exception);
+  void setAnalyzedLoci(const AnalyzedLoci& analyzedLoci);
 
   /**
    * @brief Initialize the AnalyzedLoci for number of loci.
    *
    * @throw Exception if the AnalyzedLoci has already been initialyzed.
    */
-  void initAnalyzedLoci(size_t number_of_loci) throw (Exception);
+  void initAnalyzedLoci(size_t number_of_loci);
 
   /**
    * @brief Get the AnalyzedLoci if there is one.
    *
    * @throw NullPointerException if there is no AnalyzedLoci.
    */
-  const AnalyzedLoci* getAnalyzedLoci() const throw (NullPointerException);
+  const AnalyzedLoci* getAnalyzedLoci() const;
 
   /**
    * @brief Delete the AnalyzedLoci.
@@ -613,47 +585,42 @@ public:
    * @throw NullPointerException if there is no AnalyzedLoci to setup.
    * @throw IndexOutOfBoundsException if locus_position excedes the total of LocusInfo of the DataSet.
    */
-  void setLocusInfo(size_t locus_position, const LocusInfo& locus)
-  throw (Exception);
+  void setLocusInfo(size_t locus_position, const LocusInfo& locus);
 
   /**
    * @brief Get a LocusInfo by its name.
    */
-  const LocusInfo& getLocusInfoByName(const std::string& locus_name) const
-  throw (Exception);
+  const LocusInfo& getLocusInfoByName(const std::string& locus_name) const;
 
   /**
    * @brief Get a LocusInfo by its position.
    */
-  const LocusInfo& getLocusInfoAtPosition(size_t locus_position) const
-  throw (Exception);
+  const LocusInfo& getLocusInfoAtPosition(size_t locus_position) const;
 
   /**
    * @brief Add an AlleleInfo to a LocusInfo.
    */
-  void addAlleleInfoByLocusName(const std::string& locus_name, const AlleleInfo& allele)
-  throw (Exception);
+  void addAlleleInfoByLocusName(const std::string& locus_name, const AlleleInfo& allele);
 
   /**
    * @brief Add an AlleleInfo to a LocusInfo.
    */
-  void addAlleleInfoByLocusPosition(size_t locus_position, const AlleleInfo& allele)
-  throw (Exception);
+  void addAlleleInfoByLocusPosition(size_t locus_position, const AlleleInfo& allele);
 
   /**
    * @brief Get the number of loci.
    */
-  size_t getNumberOfLoci() const throw (NullPointerException);
+  size_t getNumberOfLoci() const;
 
   /**
    * @brief Get the ploidy of a locus.
    */
-  size_t getPloidyByLocusName(const std::string& locus_name) const throw (Exception);
+  size_t getPloidyByLocusName(const std::string& locus_name) const;
 
   /**
    * @brief Get the ploidy of a locus.
    */
-  size_t getPloidyByLocusPosition(size_t locus_position) const throw (Exception);
+  size_t getPloidyByLocusPosition(size_t locus_position) const;
 
   // ** Container extraction ***************************************************/
   /**
@@ -666,7 +633,7 @@ public:
    *
    * @param selection A map with groups id as keys and vector of individuals position in each group as values.
    */
-  PolymorphismMultiGContainer* getPolymorphismMultiGContainer(const std::map<size_t, std::vector<size_t> >& selection) const throw (Exception);
+  PolymorphismMultiGContainer* getPolymorphismMultiGContainer(const std::map<size_t, std::vector<size_t> >& selection) const;
 
   /**
    * @brief Get a PolymorphismSequenceContainer from a selection of groups and individuals.
@@ -675,7 +642,10 @@ public:
    * @param selection A map with groups id as keys and vector of individuals position in each group as values.
    * @param sequence_position The position of the sequence in the individuals;
    */
-  PolymorphismSequenceContainer* getPolymorphismSequenceContainer(const std::map<size_t, std::vector<size_t> >& selection, size_t sequence_position) const throw (Exception);
+  PolymorphismSequenceContainer* getPolymorphismSequenceContainer(
+		  const std::map<size_t,
+		  std::vector<size_t> >& selection,
+		  size_t sequence_position) const;
 
   // ** General tests **********************************************************/
   /**

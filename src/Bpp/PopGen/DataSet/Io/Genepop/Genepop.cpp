@@ -46,7 +46,7 @@ Genepop::Genepop() {}
 
 Genepop::~Genepop() {}
 
-void Genepop::read(istream& is, DataSet& data_set) throw (Exception)
+void Genepop::read(istream& is, DataSet& data_set)
 {
   if (!is)
     throw IOException("Genepop::read: fail to open stream.");
@@ -191,17 +191,17 @@ void Genepop::read(istream& is, DataSet& data_set) throw (Exception)
   }
 }
 
-void Genepop::read(const string& path, DataSet& data_set) throw (Exception)
+void Genepop::read(const string& path, DataSet& data_set)
 {
   AbstractIDataSet::read(path, data_set);
 }
 
-DataSet* Genepop::read(istream& is) throw (Exception)
+DataSet* Genepop::read(istream& is)
 {
   return AbstractIDataSet::read(is);
 }
 
-DataSet* Genepop::read(const string& path) throw (Exception)
+DataSet* Genepop::read(const string& path)
 {
   return AbstractIDataSet::read(path);
 }

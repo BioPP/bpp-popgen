@@ -90,7 +90,7 @@ private:
 public:
   // Constructor and destructor
   PopgenlibIO();
-  PopgenlibIO(const std::string& missing_data_symbol, const std::string& data_separator) throw (Exception);
+  PopgenlibIO(const std::string& missing_data_symbol, const std::string& data_separator);
   ~PopgenlibIO();
 
 public:
@@ -125,8 +125,7 @@ public:
    * @throw Excpetion if missing_data_symbol is a not allowed character.
    * @throw Exception if missing_data_symbol contains more than one character.
    */
-  void setMissingDataSymbol(const std::string& missing_data_symbol)
-  throw (Exception);
+  void setMissingDataSymbol(const std::string& missing_data_symbol);
 
   /**
    * @brief Set the code for data separator.
@@ -143,17 +142,16 @@ public:
    * @throw Exception if data_separator is a not allowed character.
    * @throw Exception if data_separator containes more than one character other than the two codes defined upper.
    */
-  void setDataSeparator(const std::string& data_separator)
-  throw (Exception);
+  void setDataSeparator(const std::string& data_separator);
 
   /**
    * @name The IDataSet interface.
    * @{
    */
-  void read(std::istream& is, DataSet& data_set) throw (Exception);
-  void read(const std::string& path, DataSet& data_set) throw (Exception);
-  DataSet* read(std::istream& is) throw (Exception);
-  DataSet* read(const std::string& path) throw (Exception);
+  void read(std::istream& is, DataSet& data_set);
+  void read(const std::string& path, DataSet& data_set);
+  DataSet* read(std::istream& is);
+  DataSet* read(const std::string& path);
   /**
    * @}
    */
@@ -162,9 +160,9 @@ public:
    * @name The ODataSet interface.
    * @{
    */
-  void write(std::ostream& os, const DataSet& data_set) const throw (Exception);
+  void write(std::ostream& os, const DataSet& data_set) const;
 
-  void write(const std::string& path, const DataSet& data_set, bool overwrite) const throw (Exception);
+  void write(const std::string& path, const DataSet& data_set, bool overwrite) const;
   /**
    * @}
    */

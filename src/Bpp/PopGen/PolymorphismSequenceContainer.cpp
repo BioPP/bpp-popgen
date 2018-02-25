@@ -194,7 +194,7 @@ PolymorphismSequenceContainer::~PolymorphismSequenceContainer()
 
 // ** Other methodes: *********************************************************/
 
-Sequence* PolymorphismSequenceContainer::removeSequence(size_t index) throw (IndexOutOfBoundsException)
+Sequence* PolymorphismSequenceContainer::removeSequence(size_t index)
 {
   if (index >= getNumberOfSequences())
     throw IndexOutOfBoundsException("PolymorphismSequenceContainer::removeSequence: index out of bounds.", index, 0, getNumberOfSequences());
@@ -206,7 +206,7 @@ Sequence* PolymorphismSequenceContainer::removeSequence(size_t index) throw (Ind
 
 /******************************************************************************/
 
-Sequence* PolymorphismSequenceContainer::removeSequence(const std::string& name) throw (SequenceNotFoundException)
+Sequence* PolymorphismSequenceContainer::removeSequence(const std::string& name)
 {
   try
   {
@@ -220,7 +220,7 @@ Sequence* PolymorphismSequenceContainer::removeSequence(const std::string& name)
 
 /******************************************************************************/
 
-void PolymorphismSequenceContainer::deleteSequence(size_t index) throw (IndexOutOfBoundsException)
+void PolymorphismSequenceContainer::deleteSequence(size_t index)
 {
   try
   {
@@ -234,7 +234,7 @@ void PolymorphismSequenceContainer::deleteSequence(size_t index) throw (IndexOut
 
 /******************************************************************************/
 
-void PolymorphismSequenceContainer::deleteSequence(const std::string& name) throw (SequenceNotFoundException)
+void PolymorphismSequenceContainer::deleteSequence(const std::string& name)
 {
   try
   {
@@ -248,7 +248,7 @@ void PolymorphismSequenceContainer::deleteSequence(const std::string& name) thro
 
 /******************************************************************************/
 
-void PolymorphismSequenceContainer::addSequenceWithFrequency(const Sequence& sequence, unsigned int frequency, bool checkName) throw (Exception)
+void PolymorphismSequenceContainer::addSequenceWithFrequency(const Sequence& sequence, unsigned int frequency, bool checkName)
 {
   try
   {
@@ -265,7 +265,7 @@ void PolymorphismSequenceContainer::addSequenceWithFrequency(const Sequence& seq
 
 /******************************************************************************/
 
-void PolymorphismSequenceContainer::addSequenceWithFrequency(const Sequence& sequence, size_t sequenceIndex, unsigned int frequency, bool checkName) throw (Exception)
+void PolymorphismSequenceContainer::addSequenceWithFrequency(const Sequence& sequence, size_t sequenceIndex, unsigned int frequency, bool checkName)
 {
   try
   {
@@ -292,7 +292,7 @@ void PolymorphismSequenceContainer::clear()
 
 /******************************************************************************/
 
-size_t PolymorphismSequenceContainer::getGroupId(size_t index) const throw (IndexOutOfBoundsException)
+size_t PolymorphismSequenceContainer::getGroupId(size_t index) const
 {
   if (index >= getNumberOfSequences())
     throw IndexOutOfBoundsException("PolymorphismSequenceContainer::getGroupId: index out of bounds.", index, 0, getNumberOfSequences());
@@ -301,7 +301,7 @@ size_t PolymorphismSequenceContainer::getGroupId(size_t index) const throw (Inde
 
 /******************************************************************************/
 
-size_t PolymorphismSequenceContainer::getGroupId(const std::string& name) const throw (SequenceNotFoundException)
+size_t PolymorphismSequenceContainer::getGroupId(const std::string& name) const
 {
   try
   {
@@ -327,7 +327,7 @@ std::set<size_t> PolymorphismSequenceContainer::getAllGroupsIds() const
 
 /******************************************************************************/
 
-void PolymorphismSequenceContainer::setGroupId(size_t index, size_t group_id) throw (IndexOutOfBoundsException)
+void PolymorphismSequenceContainer::setGroupId(size_t index, size_t group_id)
 {
   if (index >= getNumberOfSequences())
     throw IndexOutOfBoundsException("PolymorphismSequenceContainer::setGroupId: index out of bounds.", index, 0, getNumberOfSequences());
@@ -336,7 +336,7 @@ void PolymorphismSequenceContainer::setGroupId(size_t index, size_t group_id) th
 
 /******************************************************************************/
 
-void PolymorphismSequenceContainer::setGroupId(const std::string& name, size_t group_id) throw (SequenceNotFoundException)
+void PolymorphismSequenceContainer::setGroupId(const std::string& name, size_t group_id)
 {
   try
   {
@@ -367,7 +367,7 @@ bool PolymorphismSequenceContainer::hasOutgroup() const
 
 /******************************************************************************/
 
-bool PolymorphismSequenceContainer::isIngroupMember(size_t index) const throw (IndexOutOfBoundsException)
+bool PolymorphismSequenceContainer::isIngroupMember(size_t index) const
 {
   if (index >= getNumberOfSequences())
     throw IndexOutOfBoundsException("PolymorphismSequenceContainer::isIngroupMember: index out of bounds.", index, 0, getNumberOfSequences());
@@ -376,7 +376,7 @@ bool PolymorphismSequenceContainer::isIngroupMember(size_t index) const throw (I
 
 /******************************************************************************/
 
-bool PolymorphismSequenceContainer::isIngroupMember(const std::string& name) const throw (SequenceNotFoundException)
+bool PolymorphismSequenceContainer::isIngroupMember(const std::string& name) const
 {
   try
   {
@@ -390,7 +390,7 @@ bool PolymorphismSequenceContainer::isIngroupMember(const std::string& name) con
 
 /******************************************************************************/
 
-void PolymorphismSequenceContainer::setAsIngroupMember(size_t index) throw (IndexOutOfBoundsException)
+void PolymorphismSequenceContainer::setAsIngroupMember(size_t index)
 {
   if (index >= getNumberOfSequences())
     throw IndexOutOfBoundsException("PolymorphismSequenceContainer::setAsIngroupMember.", index, 0, getNumberOfSequences());
@@ -399,7 +399,7 @@ void PolymorphismSequenceContainer::setAsIngroupMember(size_t index) throw (Inde
 
 /******************************************************************************/
 
-void PolymorphismSequenceContainer::setAsIngroupMember(const std::string& name) throw (SequenceNotFoundException)
+void PolymorphismSequenceContainer::setAsIngroupMember(const std::string& name)
 {
   try
   {
@@ -414,7 +414,7 @@ void PolymorphismSequenceContainer::setAsIngroupMember(const std::string& name) 
 
 /******************************************************************************/
 
-void PolymorphismSequenceContainer::setAsOutgroupMember(size_t index) throw (IndexOutOfBoundsException)
+void PolymorphismSequenceContainer::setAsOutgroupMember(size_t index)
 {
   if (index >= getNumberOfSequences())
     throw IndexOutOfBoundsException("PolymorphismSequenceContainer::setAsOutgroupMember.", index, 0, getNumberOfSequences());
@@ -423,7 +423,7 @@ void PolymorphismSequenceContainer::setAsOutgroupMember(size_t index) throw (Ind
 
 /******************************************************************************/
 
-void PolymorphismSequenceContainer::setAsOutgroupMember(const std::string& name) throw (SequenceNotFoundException)
+void PolymorphismSequenceContainer::setAsOutgroupMember(const std::string& name)
 {
   try
   {
@@ -438,7 +438,7 @@ void PolymorphismSequenceContainer::setAsOutgroupMember(const std::string& name)
 
 /******************************************************************************/
 
-void PolymorphismSequenceContainer::setSequenceCount(size_t index, unsigned int count) throw (Exception)
+void PolymorphismSequenceContainer::setSequenceCount(size_t index, unsigned int count)
 {
   if (index >= getNumberOfSequences())
     throw IndexOutOfBoundsException("PolymorphismSequenceContainer::setSequenceCount.", index, 0, getNumberOfSequences());
@@ -449,7 +449,7 @@ void PolymorphismSequenceContainer::setSequenceCount(size_t index, unsigned int 
 
 /******************************************************************************/
 
-void PolymorphismSequenceContainer::setSequenceCount(const std::string& name, unsigned int count) throw (Exception)
+void PolymorphismSequenceContainer::setSequenceCount(const std::string& name, unsigned int count)
 {
   try
   {
@@ -467,7 +467,7 @@ void PolymorphismSequenceContainer::setSequenceCount(const std::string& name, un
 
 /******************************************************************************/
 
-void PolymorphismSequenceContainer::incrementSequenceCount(size_t index) throw (IndexOutOfBoundsException)
+void PolymorphismSequenceContainer::incrementSequenceCount(size_t index)
 {
   if (index >= getNumberOfSequences())
     throw IndexOutOfBoundsException("PolymorphismSequenceContainer::incrementSequenceCount.", index, 0, getNumberOfSequences());
@@ -476,7 +476,7 @@ void PolymorphismSequenceContainer::incrementSequenceCount(size_t index) throw (
 
 /******************************************************************************/
 
-void PolymorphismSequenceContainer::incrementSequenceCount(const std::string& name) throw (SequenceNotFoundException)
+void PolymorphismSequenceContainer::incrementSequenceCount(const std::string& name)
 {
   try
   {
@@ -490,7 +490,7 @@ void PolymorphismSequenceContainer::incrementSequenceCount(const std::string& na
 
 /******************************************************************************/
 
-void PolymorphismSequenceContainer::decrementSequenceCount(size_t index) throw (IndexOutOfBoundsException, BadIntegerException)
+void PolymorphismSequenceContainer::decrementSequenceCount(size_t index)
 {
   if (index >= getNumberOfSequences())
     throw IndexOutOfBoundsException("PolymorphismSequenceContainer::decrementSequenceCount.", index, 0, getNumberOfSequences());
@@ -501,7 +501,7 @@ void PolymorphismSequenceContainer::decrementSequenceCount(size_t index) throw (
 
 /******************************************************************************/
 
-void PolymorphismSequenceContainer::decrementSequenceCount(const std::string& name) throw (SequenceNotFoundException, BadIntegerException)
+void PolymorphismSequenceContainer::decrementSequenceCount(const std::string& name)
 {
   try
   {
@@ -519,7 +519,7 @@ void PolymorphismSequenceContainer::decrementSequenceCount(const std::string& na
 
 /******************************************************************************/
 
-unsigned int PolymorphismSequenceContainer::getSequenceCount(size_t index) const throw (IndexOutOfBoundsException)
+unsigned int PolymorphismSequenceContainer::getSequenceCount(size_t index) const
 {
   if (index >= getNumberOfSequences())
     throw IndexOutOfBoundsException("PolymorphismSequenceContainer::getSequenceCount.", index, 0, getNumberOfSequences());
@@ -528,7 +528,7 @@ unsigned int PolymorphismSequenceContainer::getSequenceCount(size_t index) const
 
 /******************************************************************************/
 
-unsigned int PolymorphismSequenceContainer::getSequenceCount(const std::string& name) const throw (SequenceNotFoundException)
+unsigned int PolymorphismSequenceContainer::getSequenceCount(const std::string& name) const
 {
   try
   {

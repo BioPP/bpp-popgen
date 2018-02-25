@@ -53,7 +53,7 @@ using namespace bpp;
 
 using namespace std;
 
-vector<size_t> MultilocusGenotypeStatistics::getAllelesIdsForGroups(const PolymorphismMultiGContainer& pmgc, size_t locus_position, const set<size_t>& groups) throw (IndexOutOfBoundsException)
+vector<size_t> MultilocusGenotypeStatistics::getAllelesIdsForGroups(const PolymorphismMultiGContainer& pmgc, size_t locus_position, const set<size_t>& groups)
 {
   map<size_t, size_t> tmp_alleles;
   try
@@ -67,7 +67,7 @@ vector<size_t> MultilocusGenotypeStatistics::getAllelesIdsForGroups(const Polymo
   return MapTools::getKeys(tmp_alleles);
 }
 
-size_t MultilocusGenotypeStatistics::countGametesForGroups(const PolymorphismMultiGContainer& pmgc, size_t locus_position, const set<size_t>& groups) throw (IndexOutOfBoundsException)
+size_t MultilocusGenotypeStatistics::countGametesForGroups(const PolymorphismMultiGContainer& pmgc, size_t locus_position, const set<size_t>& groups)
 {
   map<size_t, size_t> allele_count;
   size_t nb_tot_allele = 0;
@@ -87,7 +87,7 @@ size_t MultilocusGenotypeStatistics::countGametesForGroups(const PolymorphismMul
   return nb_tot_allele;
 }
 
-map<size_t, size_t> MultilocusGenotypeStatistics::getAllelesMapForGroups(const PolymorphismMultiGContainer& pmgc, size_t locus_position, const set<size_t>& groups) throw (IndexOutOfBoundsException)
+map<size_t, size_t> MultilocusGenotypeStatistics::getAllelesMapForGroups(const PolymorphismMultiGContainer& pmgc, size_t locus_position, const set<size_t>& groups)
 {
   map<size_t, size_t> alleles_count;
   for (size_t i = 0; i < pmgc.size(); i++)
@@ -112,7 +112,7 @@ map<size_t, size_t> MultilocusGenotypeStatistics::getAllelesMapForGroups(const P
   return alleles_count;
 }
 
-map<size_t, double> MultilocusGenotypeStatistics::getAllelesFrqForGroups(const PolymorphismMultiGContainer& pmgc, size_t locus_position, const set<size_t>& groups) throw (Exception)
+map<size_t, double> MultilocusGenotypeStatistics::getAllelesFrqForGroups(const PolymorphismMultiGContainer& pmgc, size_t locus_position, const set<size_t>& groups)
 {
   map<size_t, double> alleles_frq;
   size_t nb_tot_allele = 0;
@@ -139,7 +139,7 @@ map<size_t, double> MultilocusGenotypeStatistics::getAllelesFrqForGroups(const P
   return alleles_frq;
 }
 
-size_t MultilocusGenotypeStatistics::countNonMissingForGroups(const PolymorphismMultiGContainer& pmgc, size_t locus_position, const set<size_t>& groups) throw (IndexOutOfBoundsException)
+size_t MultilocusGenotypeStatistics::countNonMissingForGroups(const PolymorphismMultiGContainer& pmgc, size_t locus_position, const set<size_t>& groups)
 {
   size_t counter = 0;
   for (size_t i = 0; i < pmgc.size(); i++)
@@ -158,7 +158,7 @@ size_t MultilocusGenotypeStatistics::countNonMissingForGroups(const Polymorphism
   return counter;
 }
 
-size_t MultilocusGenotypeStatistics::countBiAllelicForGroups(const PolymorphismMultiGContainer& pmgc, size_t locus_position, const set<size_t>& groups) throw (IndexOutOfBoundsException)
+size_t MultilocusGenotypeStatistics::countBiAllelicForGroups(const PolymorphismMultiGContainer& pmgc, size_t locus_position, const set<size_t>& groups)
 {
   size_t counter = 0;
   for (size_t i = 0; i < pmgc.size(); i++)
@@ -178,7 +178,7 @@ size_t MultilocusGenotypeStatistics::countBiAllelicForGroups(const PolymorphismM
   return counter;
 }
 
-map<size_t, size_t> MultilocusGenotypeStatistics::countHeterozygousForGroups(const PolymorphismMultiGContainer& pmgc, size_t locus_position, const set<size_t>& groups) throw (IndexOutOfBoundsException)
+map<size_t, size_t> MultilocusGenotypeStatistics::countHeterozygousForGroups(const PolymorphismMultiGContainer& pmgc, size_t locus_position, const set<size_t>& groups)
 {
   map<size_t, size_t> counter;
   for (size_t i = 0; i < pmgc.size(); i++)
@@ -209,7 +209,7 @@ map<size_t, size_t> MultilocusGenotypeStatistics::countHeterozygousForGroups(con
   return counter;
 }
 
-map<size_t, double> MultilocusGenotypeStatistics::getHeterozygousFrqForGroups(const PolymorphismMultiGContainer& pmgc, size_t locus_position, const set<size_t>& groups) throw (Exception)
+map<size_t, double> MultilocusGenotypeStatistics::getHeterozygousFrqForGroups(const PolymorphismMultiGContainer& pmgc, size_t locus_position, const set<size_t>& groups)
 {
   map<size_t, double> freq;
   size_t counter = 0;
@@ -248,7 +248,7 @@ map<size_t, double> MultilocusGenotypeStatistics::getHeterozygousFrqForGroups(co
   return freq;
 }
 
-double MultilocusGenotypeStatistics::getHobsForGroups(const PolymorphismMultiGContainer& pmgc, size_t locus_position, const set<size_t>& groups) throw (Exception)
+double MultilocusGenotypeStatistics::getHobsForGroups(const PolymorphismMultiGContainer& pmgc, size_t locus_position, const set<size_t>& groups)
 {
   map<size_t, double> heterozygous_frq;
   double frq = 0.;
@@ -271,7 +271,7 @@ double MultilocusGenotypeStatistics::getHobsForGroups(const PolymorphismMultiGCo
   return frq / static_cast<double>(heterozygous_frq.size());
 }
 
-double MultilocusGenotypeStatistics::getHexpForGroups(const PolymorphismMultiGContainer& pmgc, size_t locus_position, const set<size_t>& groups) throw (Exception)
+double MultilocusGenotypeStatistics::getHexpForGroups(const PolymorphismMultiGContainer& pmgc, size_t locus_position, const set<size_t>& groups)
 {
   map<size_t, double> allele_frq;
   double frqsqr = 0.;
@@ -294,7 +294,7 @@ double MultilocusGenotypeStatistics::getHexpForGroups(const PolymorphismMultiGCo
   return 1 - frqsqr;
 }
 
-double MultilocusGenotypeStatistics::getHnbForGroups(const PolymorphismMultiGContainer& pmgc, size_t locus_position, const set<size_t>& groups) throw (Exception)
+double MultilocusGenotypeStatistics::getHnbForGroups(const PolymorphismMultiGContainer& pmgc, size_t locus_position, const set<size_t>& groups)
 {
   size_t nb_alleles;
   double Hexp;
@@ -314,7 +314,7 @@ double MultilocusGenotypeStatistics::getHnbForGroups(const PolymorphismMultiGCon
   return 2 * static_cast<double>(nb_alleles) * Hexp  / static_cast<double>((2 * nb_alleles) - 1);
 }
 
-double MultilocusGenotypeStatistics::getDnei72(const PolymorphismMultiGContainer& pmgc, vector<size_t> locus_positions, size_t grp1, size_t grp2) throw (Exception)
+double MultilocusGenotypeStatistics::getDnei72(const PolymorphismMultiGContainer& pmgc, vector<size_t> locus_positions, size_t grp1, size_t grp2)
 {
   map<size_t, double> allele_frq1, allele_frq2;
   vector<size_t> allele_ids;
@@ -359,7 +359,7 @@ double MultilocusGenotypeStatistics::getDnei72(const PolymorphismMultiGContainer
   return -log(Jxy / sqrt(Jx * Jy));
 }
 
-double MultilocusGenotypeStatistics::getDnei78(const PolymorphismMultiGContainer& pmgc, vector<size_t> locus_positions, size_t grp1, size_t grp2) throw (Exception)
+double MultilocusGenotypeStatistics::getDnei78(const PolymorphismMultiGContainer& pmgc, vector<size_t> locus_positions, size_t grp1, size_t grp2)
 {
   map<size_t, double> allele_frq1, allele_frq2;
   vector<size_t> allele_ids;
@@ -412,7 +412,7 @@ double MultilocusGenotypeStatistics::getDnei78(const PolymorphismMultiGContainer
   return -log(Jxy / sqrt(denom));
 }
 
-map<size_t, MultilocusGenotypeStatistics::Fstats> MultilocusGenotypeStatistics::getAllelesFstats(const PolymorphismMultiGContainer& pmgc, size_t locus_position, const set<size_t>& groups) throw (Exception)
+map<size_t, MultilocusGenotypeStatistics::Fstats> MultilocusGenotypeStatistics::getAllelesFstats(const PolymorphismMultiGContainer& pmgc, size_t locus_position, const set<size_t>& groups)
 {
   map<size_t, MultilocusGenotypeStatistics::VarComp> vc = getVarianceComponents(pmgc, locus_position, groups);
   map<size_t, MultilocusGenotypeStatistics::Fstats> f_stats;
@@ -438,7 +438,7 @@ map<size_t, MultilocusGenotypeStatistics::Fstats> MultilocusGenotypeStatistics::
   return f_stats;
 }
 
-map<size_t, double> MultilocusGenotypeStatistics::getAllelesFit(const PolymorphismMultiGContainer& pmgc, size_t locus_position, const set<size_t>& groups) throw (Exception)
+map<size_t, double> MultilocusGenotypeStatistics::getAllelesFit(const PolymorphismMultiGContainer& pmgc, size_t locus_position, const set<size_t>& groups)
 {
   map<size_t, MultilocusGenotypeStatistics::VarComp> values = getVarianceComponents(pmgc, locus_position, groups);
   map<size_t, double> Fit;
@@ -452,7 +452,7 @@ map<size_t, double> MultilocusGenotypeStatistics::getAllelesFit(const Polymorphi
   return Fit;
 }
 
-map<size_t, double> MultilocusGenotypeStatistics::getAllelesFst(const PolymorphismMultiGContainer& pmgc, size_t locus_position, const set<size_t>& groups) throw (Exception)
+map<size_t, double> MultilocusGenotypeStatistics::getAllelesFst(const PolymorphismMultiGContainer& pmgc, size_t locus_position, const set<size_t>& groups)
 {
   if (groups.size() <= 1)
     throw BadIntegerException("MultilocusGenotypeStatistics::getAllelesFst: groups must be >= 2.", static_cast<int>(groups.size()));
@@ -468,7 +468,7 @@ map<size_t, double> MultilocusGenotypeStatistics::getAllelesFst(const Polymorphi
   return Fst;
 }
 
-map<size_t, double> MultilocusGenotypeStatistics::getAllelesFis(const PolymorphismMultiGContainer& pmgc, size_t locus_position, const set<size_t>& groups) throw (Exception)
+map<size_t, double> MultilocusGenotypeStatistics::getAllelesFis(const PolymorphismMultiGContainer& pmgc, size_t locus_position, const set<size_t>& groups)
 {
   map<size_t, MultilocusGenotypeStatistics::VarComp> values = getVarianceComponents(pmgc, locus_position, groups);
   map<size_t, double> Fis;
@@ -482,7 +482,7 @@ map<size_t, double> MultilocusGenotypeStatistics::getAllelesFis(const Polymorphi
   return Fis;
 }
 
-map<size_t, MultilocusGenotypeStatistics::VarComp> MultilocusGenotypeStatistics::getVarianceComponents(const PolymorphismMultiGContainer& pmgc, size_t locus_position, const set<size_t>& groups) throw (ZeroDivisionException)
+map<size_t, MultilocusGenotypeStatistics::VarComp> MultilocusGenotypeStatistics::getVarianceComponents(const PolymorphismMultiGContainer& pmgc, size_t locus_position, const set<size_t>& groups)
 {
   map<size_t, MultilocusGenotypeStatistics::VarComp> values;
   // Base values computation
@@ -573,7 +573,7 @@ map<size_t, MultilocusGenotypeStatistics::VarComp> MultilocusGenotypeStatistics:
   return values;
 }
 
-double MultilocusGenotypeStatistics::getWCMultilocusFst(const PolymorphismMultiGContainer& pmgc, vector<size_t> locus_positions, const set<size_t>& groups) throw (Exception)
+double MultilocusGenotypeStatistics::getWCMultilocusFst(const PolymorphismMultiGContainer& pmgc, vector<size_t> locus_positions, const set<size_t>& groups)
 {
   double A, B, C;
   A = B = C = 0.0;
@@ -604,7 +604,7 @@ double MultilocusGenotypeStatistics::getWCMultilocusFst(const PolymorphismMultiG
   return A / (A + B + C);
 }
 
-double MultilocusGenotypeStatistics::getWCMultilocusFis(const PolymorphismMultiGContainer& pmgc, vector<size_t> locus_positions, const set<size_t>& groups) throw (Exception)
+double MultilocusGenotypeStatistics::getWCMultilocusFis(const PolymorphismMultiGContainer& pmgc, vector<size_t> locus_positions, const set<size_t>& groups)
 {
   double B, C;
   B = C = 0.0;
@@ -634,7 +634,7 @@ double MultilocusGenotypeStatistics::getWCMultilocusFis(const PolymorphismMultiG
   return 1.0 - C / (B + C);
 }
 
-MultilocusGenotypeStatistics::PermResults MultilocusGenotypeStatistics::getWCMultilocusFstAndPerm(const PolymorphismMultiGContainer& pmgc, vector<size_t> locus_positions, set<size_t> groups, int nb_perm) throw (Exception)
+MultilocusGenotypeStatistics::PermResults MultilocusGenotypeStatistics::getWCMultilocusFstAndPerm(const PolymorphismMultiGContainer& pmgc, vector<size_t> locus_positions, set<size_t> groups, int nb_perm)
 {
   // extract a PolymorphismMultiGContainer with only those groups
   PolymorphismMultiGContainer sub_pmgc =  PolymorphismMultiGContainerTools::extractGroups(pmgc, groups);
@@ -664,7 +664,7 @@ MultilocusGenotypeStatistics::PermResults MultilocusGenotypeStatistics::getWCMul
   return results;
 }
 
-MultilocusGenotypeStatistics::PermResults MultilocusGenotypeStatistics::getWCMultilocusFisAndPerm(const PolymorphismMultiGContainer& pmgc, vector<size_t> locus_positions, set<size_t> groups, int nb_perm) throw (Exception)
+MultilocusGenotypeStatistics::PermResults MultilocusGenotypeStatistics::getWCMultilocusFisAndPerm(const PolymorphismMultiGContainer& pmgc, vector<size_t> locus_positions, set<size_t> groups, int nb_perm)
 {
   // extract a PolymorphismMultiGContainer with only those groups
   PolymorphismMultiGContainer sub_pmgc =  PolymorphismMultiGContainerTools::extractGroups(pmgc, groups);
@@ -694,7 +694,7 @@ MultilocusGenotypeStatistics::PermResults MultilocusGenotypeStatistics::getWCMul
   return results;
 }
 
-double MultilocusGenotypeStatistics::getRHMultilocusFst(const PolymorphismMultiGContainer& pmgc, vector<size_t> locus_positions, const set<size_t>& groups) throw (Exception)
+double MultilocusGenotypeStatistics::getRHMultilocusFst(const PolymorphismMultiGContainer& pmgc, vector<size_t> locus_positions, const set<size_t>& groups)
 {
   double Au, Bu, Cu;
   double RH = 0.0;
@@ -732,7 +732,7 @@ double MultilocusGenotypeStatistics::getRHMultilocusFst(const PolymorphismMultiG
   return RH / double(total_alleles);
 }
 
-std::unique_ptr<DistanceMatrix> MultilocusGenotypeStatistics::getDistanceMatrix(const PolymorphismMultiGContainer& pmgc, vector<size_t> locus_positions, const set<size_t>& groups, string distance_methode) throw (Exception)
+std::unique_ptr<DistanceMatrix> MultilocusGenotypeStatistics::getDistanceMatrix(const PolymorphismMultiGContainer& pmgc, vector<size_t> locus_positions, const set<size_t>& groups, string distance_methode)
 {
   vector<string> names = pmgc.getAllGroupsNames();
   vector<size_t> grp_ids_vect;

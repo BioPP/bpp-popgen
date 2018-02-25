@@ -74,7 +74,7 @@ public:
    *
    * @throw BadIntegerException if loci_number < 1.
    */
-  MultilocusGenotype(size_t loci_number) throw (BadIntegerException);
+  MultilocusGenotype(size_t loci_number);
 
   /**
    * @brief Copy constructor.
@@ -91,7 +91,7 @@ public:
    * @brief Set a MonolocusGenotype.
    */
   void setMonolocusGenotype(size_t locus_position,
-                            const MonolocusGenotype& monogen) throw (IndexOutOfBoundsException);
+                            const MonolocusGenotype& monogen);
 
   /**
    * @brief Set a MonolocusGenotype by allele keys.
@@ -100,7 +100,7 @@ public:
    * @throw Exception if there is no key in allele_keys.
    */
   void setMonolocusGenotypeByAlleleKey(size_t locus_position,
-                                       const std::vector<size_t>& allele_keys) throw (Exception);
+                                       const std::vector<size_t>& allele_keys);
 
   /**
    * @brief Set a MonolocusGenotype by allele id.
@@ -109,27 +109,27 @@ public:
    * @throw AlleleNotFoundException if at least one of the id is not found in the LocusInfo.
    */
   void setMonolocusGenotypeByAlleleId(size_t locus_position,
-                                      const std::vector<std::string>& allele_id, const LocusInfo& locus_info) throw (Exception);
+                                      const std::vector<std::string>& allele_id,
+				      const LocusInfo& locus_info);
 
   /**
    * @brief Set a MonolocusGenotype as missing data.
    *
    * @throw IndexOutOfBoundsException if locus_position excedes the number of loci.
    */
-  void setMonolocusGenotypeAsMissing(size_t locus_position) throw (IndexOutOfBoundsException);
+  void setMonolocusGenotypeAsMissing(size_t locus_position);
 
   /**
    * @brief Tell if a MonolocusGenotype is a missing data.
    *
    * @throw IndexOutOfBoundsException if locus_position excedes the number of loci.
    */
-  bool isMonolocusGenotypeMissing(size_t locus_position) const throw (IndexOutOfBoundsException);
+  bool isMonolocusGenotypeMissing(size_t locus_position) const;
 
   /**
    * @brief Get a MonolocusGenotype.
    */
-  const MonolocusGenotype& getMonolocusGenotype(size_t locus_position) const
-  throw (IndexOutOfBoundsException);
+  const MonolocusGenotype& getMonolocusGenotype(size_t locus_position) const;
 
   /**
    * @brief Count the number of loci.

@@ -46,14 +46,15 @@ using namespace std;
 
 MonoAlleleMonolocusGenotype::MonoAlleleMonolocusGenotype(size_t allele_index) : allele_index_(allele_index) {}
 
-MonoAlleleMonolocusGenotype::MonoAlleleMonolocusGenotype(std::vector<size_t> allele_index) throw (BadSizeException) : allele_index_(0)
+MonoAlleleMonolocusGenotype::MonoAlleleMonolocusGenotype(std::vector<size_t> allele_index) : allele_index_(0)
 {
   if (allele_index.size() != 1)
     throw BadSizeException("MonoAlleleMonolocusGenotype::MonoAlleleMonolocusGenotype: allele_index must conain one value.", allele_index.size(), 1);
   allele_index_ = allele_index[0];
 }
 
-MonoAlleleMonolocusGenotype::MonoAlleleMonolocusGenotype(const MonoAlleleMonolocusGenotype& mmg) : allele_index_(mmg.getAlleleIndex()[0]) {}
+MonoAlleleMonolocusGenotype::MonoAlleleMonolocusGenotype(const MonoAlleleMonolocusGenotype& mmg) :
+       	allele_index_(mmg.getAlleleIndex()[0]) {}
 
 // ** Class destructor: ********************************************************/
 

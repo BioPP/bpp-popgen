@@ -110,7 +110,7 @@ void PolymorphismMultiGContainer::addMultilocusGenotype(const MultilocusGenotype
 
 /******************************************************************************/
 
-const MultilocusGenotype* PolymorphismMultiGContainer::getMultilocusGenotype(size_t position) const throw (IndexOutOfBoundsException)
+const MultilocusGenotype* PolymorphismMultiGContainer::getMultilocusGenotype(size_t position) const
 {
   if (position >= size())
     throw IndexOutOfBoundsException("PolymorphismMultiGContainer::getMultilocusGenotype: position out of bounds.", position, 0, size() - 1);
@@ -119,7 +119,7 @@ const MultilocusGenotype* PolymorphismMultiGContainer::getMultilocusGenotype(siz
 
 /******************************************************************************/
 
-MultilocusGenotype* PolymorphismMultiGContainer::removeMultilocusGenotype(size_t position) throw (IndexOutOfBoundsException)
+MultilocusGenotype* PolymorphismMultiGContainer::removeMultilocusGenotype(size_t position)
 {
   if (position >= size())
     throw IndexOutOfBoundsException("PolymorphismMultiGContainer::removeMultilocusGenotype: position out of bounds.", position, 0, size() - 1);
@@ -131,7 +131,7 @@ MultilocusGenotype* PolymorphismMultiGContainer::removeMultilocusGenotype(size_t
 
 /******************************************************************************/
 
-void PolymorphismMultiGContainer::deleteMultilocusGenotype(size_t position) throw (IndexOutOfBoundsException)
+void PolymorphismMultiGContainer::deleteMultilocusGenotype(size_t position)
 {
   if (position >= size())
     throw IndexOutOfBoundsException("PolymorphismMultiGContainer::deleteMultilocusGenotype: position out of bounds.", position, 0, size() - 1);
@@ -157,7 +157,7 @@ bool PolymorphismMultiGContainer::isAligned() const
 
 /******************************************************************************/
 
-size_t PolymorphismMultiGContainer::getNumberOfLoci() const throw (Exception)
+size_t PolymorphismMultiGContainer::getNumberOfLoci() const
 {
   if (!isAligned())
     throw Exception("MultilocusGenotypes are not aligned.");
@@ -168,7 +168,7 @@ size_t PolymorphismMultiGContainer::getNumberOfLoci() const throw (Exception)
 
 /******************************************************************************/
 
-size_t PolymorphismMultiGContainer::getGroupId(size_t position) const throw (IndexOutOfBoundsException)
+size_t PolymorphismMultiGContainer::getGroupId(size_t position) const
 {
   if (position >= size())
     throw IndexOutOfBoundsException("PolymorphismMultiGContainer::getGroupId: position out of bounds.", position, 0, size() - 1);
@@ -177,7 +177,7 @@ size_t PolymorphismMultiGContainer::getGroupId(size_t position) const throw (Ind
 
 /******************************************************************************/
 
-void PolymorphismMultiGContainer::setGroupId(size_t position, size_t group_id) throw (IndexOutOfBoundsException)
+void PolymorphismMultiGContainer::setGroupId(size_t position, size_t group_id)
 {
   if (position >= size())
     throw IndexOutOfBoundsException("PolymorphismMultiGContainer::setGroupId: position out of bounds.", position, 0, size() - 1);
@@ -248,7 +248,7 @@ size_t PolymorphismMultiGContainer::getGroupSize(size_t group) const
 
 /******************************************************************************/
 
-std::string PolymorphismMultiGContainer::getGroupName(size_t group_id) const throw (GroupNotFoundException)
+std::string PolymorphismMultiGContainer::getGroupName(size_t group_id) const
 {
   string name = TextTools::toString(group_id); // par defaut on retourne le n° de groupe
   map<size_t, string>::const_iterator it = groups_names_.find(group_id);
@@ -261,7 +261,7 @@ std::string PolymorphismMultiGContainer::getGroupName(size_t group_id) const thr
 
 /******************************************************************************/
 
-void PolymorphismMultiGContainer::setGroupName(size_t group_id, std::string name)  throw (GroupNotFoundException)
+void PolymorphismMultiGContainer::setGroupName(size_t group_id, std::string name)
 {
   map<size_t, string>::iterator it = groups_names_.find(group_id);
   if (it != groups_names_.end() )

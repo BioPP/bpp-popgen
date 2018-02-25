@@ -86,7 +86,7 @@ public:
    *
    * @throw Exception if the file is not in the specified format
    */
-  static PolymorphismSequenceContainer* read(const std::string& path, const Alphabet* alpha) throw (Exception);
+  static PolymorphismSequenceContainer* read(const std::string& path, const Alphabet* alpha);
 
   /**
    * @brief Extract ingroup sequences from a PolymorphismSequenceContainer and create a new one.
@@ -95,7 +95,7 @@ public:
    *
    * @throw Exception if there is no ingroup sequence
    */
-  static PolymorphismSequenceContainer* extractIngroup(const PolymorphismSequenceContainer& psc) throw (Exception);
+  static PolymorphismSequenceContainer* extractIngroup(const PolymorphismSequenceContainer& psc);
 
   /**
    * @brief Extract outgroup sequences from a PolymorphismSequenceContainer and create a new one.
@@ -104,7 +104,7 @@ public:
    *
    * @throw Exception if there is no outgroup sequence
    */
-  static PolymorphismSequenceContainer* extractOutgroup(const PolymorphismSequenceContainer& psc) throw (Exception);
+  static PolymorphismSequenceContainer* extractOutgroup(const PolymorphismSequenceContainer& psc);
 
   /**
    * @brief Extract a special group from the PolymorphismSequenceContainer.
@@ -114,7 +114,7 @@ public:
    *
    * @throw GroupNotFoundException if group_id is not found.
    */
-  static PolymorphismSequenceContainer* extractGroup(const PolymorphismSequenceContainer& psc, size_t group_id) throw (Exception);
+  static PolymorphismSequenceContainer* extractGroup(const PolymorphismSequenceContainer& psc, size_t group_id);
 
   /**
    * @brief Extract selected sequences
@@ -149,7 +149,7 @@ public:
    *
    * @throw Exception if there is no ingroup sequence
    */
-  static size_t getNumberOfNonGapSites(const PolymorphismSequenceContainer& psc, bool ingroup) throw (Exception);
+  static size_t getNumberOfNonGapSites(const PolymorphismSequenceContainer& psc, bool ingroup);
 
   /**
    * @brief Return number of completely resolved sites in a PolymorphismSequenceContainer.
@@ -160,7 +160,7 @@ public:
    *
    * @throw Exception if there is no ingroup sequence
    */
-  static size_t getNumberOfCompleteSites(const PolymorphismSequenceContainer& psc, bool ingroup) throw (Exception);
+  static size_t getNumberOfCompleteSites(const PolymorphismSequenceContainer& psc, bool ingroup);
 
 
   /**

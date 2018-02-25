@@ -52,7 +52,7 @@ BiAlleleMonolocusGenotype::BiAlleleMonolocusGenotype(
   allele_index_[1] = second_allele_index;
 }
 
-BiAlleleMonolocusGenotype::BiAlleleMonolocusGenotype(std::vector<size_t> allele_index) throw (BadSizeException) : allele_index_(vector<size_t>(2))
+BiAlleleMonolocusGenotype::BiAlleleMonolocusGenotype(std::vector<size_t> allele_index) : allele_index_(vector<size_t>(2))
 {
   if (allele_index.size() != 2)
     throw BadSizeException("BiAlleleMonolocusGenotype::BiAlleleMonolocusGenotype: allele_index must contain two values.", allele_index.size(), 2);

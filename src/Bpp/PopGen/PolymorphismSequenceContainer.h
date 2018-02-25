@@ -190,28 +190,28 @@ public:
    *
    * @throw IndexOutOfBoundsException if index excedes the number of sequences.
    */
-  Sequence* removeSequence(size_t index) throw (IndexOutOfBoundsException);
+  Sequence* removeSequence(size_t index);
 
   /**
    * @brief Remove a sequence by name and return a pointer to this removed sequence.
    *
    * @throw SequenceNotFoundException if name is not found among the sequences' names.
    */
-  Sequence* removeSequence(const std::string& name) throw (SequenceNotFoundException);
+  Sequence* removeSequence(const std::string& name);
 
   /**
    * @brief Delete a sequence by index.
    *
    * @throw IndexOutOfBoundsException if index excedes the number of sequences.
    */
-  void deleteSequence(size_t index) throw (IndexOutOfBoundsException);
+  void deleteSequence(size_t index);
 
   /**
    * @brief Delete a sequence by name.
    *
    * @throw SequenceNotFoundException if name is not found among the sequences' names.
    */
-  void deleteSequence(const std::string& name) throw (SequenceNotFoundException);
+  void deleteSequence(const std::string& name);
 
   /**
    * @brief Add a sequence to the container.
@@ -220,12 +220,12 @@ public:
    * @throw SequenceException if the sequence's size doesn't match the sequence's size of the container.
    * @throw SequenceException if the sequence's name already exists in the container.
    */
-  void addSequenceWithFrequency(const Sequence& sequence, unsigned int frequency, bool checkName = true) throw (Exception);
-  void addSequenceWithFrequency(const Sequence& sequence, size_t sequenceIndex, unsigned int frequency, bool checkName = true) throw (Exception);
-  void addSequence(const Sequence& sequence, bool checkName = true) throw (Exception) {
+  void addSequenceWithFrequency(const Sequence& sequence, unsigned int frequency, bool checkName = true);
+  void addSequenceWithFrequency(const Sequence& sequence, size_t sequenceIndex, unsigned int frequency, bool checkName = true);
+  void addSequence(const Sequence& sequence, bool checkName = true) {
     addSequenceWithFrequency(sequence, 1, checkName);
   }
-  void addSequence(const Sequence& sequence, size_t sequenceIndex, bool checkName = true) throw (Exception) {
+  void addSequence(const Sequence& sequence, size_t sequenceIndex, bool checkName = true) {
     addSequenceWithFrequency(sequence, sequenceIndex, 1, checkName);
   }
 
@@ -239,14 +239,14 @@ public:
    *
    * @throw IndexOutOfBoundsException if index excedes the number of sequences in the container.
    */
-  size_t getGroupId(size_t index) const throw (IndexOutOfBoundsException);
+  size_t getGroupId(size_t index) const;
 
   /**
    * @brief Get the group identifier of a sequence.
    *
    * @throw SequenceNotFoundException if name is not found among the sequences' names.
    */
-  size_t getGroupId(const std::string& name) const throw (SequenceNotFoundException);
+  size_t getGroupId(const std::string& name) const;
 
   /**
    * @brief Get all the groups identifiers.
@@ -258,14 +258,14 @@ public:
    *
    * @throw IndexOutOfBoundsException if index excedes the number of sequences in the container.
    */
-  void setGroupId(size_t index, size_t group_id) throw (IndexOutOfBoundsException);
+  void setGroupId(size_t index, size_t group_id);
 
   /**
    * @brief Set the group identifier of a sequence.
    *
    * @throw SequenceNotFoundException if name is not found among the sequences' names.
    */
-  void setGroupId(const std::string& name, size_t group_id) throw (SequenceNotFoundException);
+  void setGroupId(const std::string& name, size_t group_id);
 
   /**
    * @brief Get the number of groups.
@@ -282,42 +282,42 @@ public:
    *
    * @throw IndexOutOfBoundsException if index excedes the number of sequences in the container.
    */
-  bool isIngroupMember(size_t index) const throw (IndexOutOfBoundsException);
+  bool isIngroupMember(size_t index) const;
 
   /**
    * @brief Tell if a sequence is ingroup by name.
    *
    * @throw SequenceNotFoundException if name is not found among the sequences' names.
    */
-  bool isIngroupMember(const std::string& name) const throw (SequenceNotFoundException);
+  bool isIngroupMember(const std::string& name) const;
 
   /**
    * @brief Set a sequence as ingroup member by index.
    *
    * @throw IndexOutOfBoundsException if index excedes the number of sequences in the container.
    */
-  void setAsIngroupMember(size_t index) throw (IndexOutOfBoundsException);
+  void setAsIngroupMember(size_t index);
 
   /**
    * @brief Set a sequence as ingroup member by name.
    *
    * @throw SequenceNotFoundException if name is not found among the sequences' names.
    */
-  void setAsIngroupMember(const std::string& name) throw (SequenceNotFoundException);
+  void setAsIngroupMember(const std::string& name);
 
   /**
    * @brief Set a sequence as outgroup member by index.
    *
    * @throw IndexOutOfBoundsException if index excedes the number of sequences in the container.
    */
-  void setAsOutgroupMember(size_t index) throw (IndexOutOfBoundsException);
+  void setAsOutgroupMember(size_t index);
 
   /**
    * @brief Set a sequence as outgroup member by name.
    *
    * @throw SequenceNotFoundException if name is not found among the sequences' names.
    */
-  void setAsOutgroupMember(const std::string& name) throw (SequenceNotFoundException);
+  void setAsOutgroupMember(const std::string& name);
 
   /**
    * @brief Set the count of a sequence by index.
@@ -325,7 +325,7 @@ public:
    * @throw IndexOutOfBoundsException if index excedes the number of sequences in the container.
    * @throw BadIntegerException if count < 1 ... use deleteSequence instead of setting the count to 0.
    */
-  void setSequenceCount(size_t index, unsigned int count) throw (Exception);
+  void setSequenceCount(size_t index, unsigned int count);
 
   /**
    * @brief Set the count of a sequence by name.
@@ -333,21 +333,21 @@ public:
    * @throw throw SequenceNotFoundException if name is not found among the sequences' names.
    * @throw BadIntegerException if count < 1 ... use deleteSequence instead of setting the count to 0.
    */
-  void setSequenceCount(const std::string& name, unsigned int count) throw (Exception);
+  void setSequenceCount(const std::string& name, unsigned int count);
 
   /**
    * @brief Add 1 to the sequence count.
    *
    * @throw IndexOutOfBoundsException if index excedes the number of sequences in the container.
    */
-  void incrementSequenceCount(size_t index) throw (IndexOutOfBoundsException);
+  void incrementSequenceCount(size_t index);
 
   /**
    * @brief Add 1 to the sequence count.
    *
    * @throw SequenceNotFoundException if name is not found among the sequences' names.
    */
-  void incrementSequenceCount(const std::string& name) throw (SequenceNotFoundException);
+  void incrementSequenceCount(const std::string& name);
 
    /**
    * @brief Removz 1 to the sequence count.
@@ -355,7 +355,7 @@ public:
    * @throw IndexOutOfBoundsException if index excedes the number of sequences in the container.
    * @throw BadIntegerException if count < 1 ... use deleteSequence instead of setting the count to 0.
    */
-  void decrementSequenceCount(size_t index) throw(IndexOutOfBoundsException, BadIntegerException);
+  void decrementSequenceCount(size_t index);
 
   /**
    * @brief Remove 1 to the sequence count.
@@ -363,21 +363,21 @@ public:
    * @throw SequenceNotFoundException if name is not found among the sequences' names.
    * @throw BadIntegerException if count < 1 ... use deleteSequence instead of setting the count to 0.
    */
-  void decrementSequenceCount(const std::string& name) throw (SequenceNotFoundException, BadIntegerException);
+  void decrementSequenceCount(const std::string& name);
 
   /**
    * @brief Get the count of a sequence by index.
    *
    * @throw IndexOutOfBoundsException if index excedes the number of sequences in the container.
    */
-  unsigned int getSequenceCount(size_t index) const throw (IndexOutOfBoundsException);
+  unsigned int getSequenceCount(size_t index) const;
 
   /**
    * @brief Get the count of a sequence by name.
    *
    * @throw SequenceNotFoundException if name is not found among the sequences' names.
    */
-  unsigned int getSequenceCount(const std::string& name) const throw (SequenceNotFoundException);
+  unsigned int getSequenceCount(const std::string& name) const;
 
   /**
    * @brief convert the container to a site container, with sequences dulicated according to their respective frequencies.
