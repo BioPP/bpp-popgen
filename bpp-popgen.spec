@@ -42,7 +42,7 @@ It is part of the Bio++ project.
 %package -n libbpp-popgen-devel
 Summary: Libraries, includes to develop applications with %{_basename}
 Group: Development/Libraries/C and C++
-Requires: libbpp-popgen7 = %{_version}
+Requires: libbpp-popgen8 = %{_version}
 Requires: libbpp-seq12 = %{_version}
 Requires: libbpp-seq-devel = %{_version}
 Requires: libbpp-core4 = %{_version}
