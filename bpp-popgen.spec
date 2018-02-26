@@ -31,11 +31,11 @@ AutoProv: yes
 This library contains utilitary and classes for population genetics analysis. 
 It is part of the Bio++ project.
 
-%package -n libbpp-popgen7
+%package -n libbpp-popgen8
 Summary: Bio++ Population Genetics library
 Group: Development/Libraries/C and C++
 
-%description -n libbpp-popgen7
+%description -n libbpp-popgen8
 This library contains utilitary and classes for population genetics and molecular evolution analysis.
 It is part of the Bio++ project.
 
@@ -67,11 +67,11 @@ make DESTDIR=$RPM_BUILD_ROOT install
 %clean
 rm -rf $RPM_BUILD_ROOT
 
-%post -n libbpp-popgen7 -p /sbin/ldconfig
+%post -n libbpp-popgen8 -p /sbin/ldconfig
 
-%postun -n libbpp-popgen7 -p /sbin/ldconfig
+%postun -n libbpp-popgen8 -p /sbin/ldconfig
 
-%files -n libbpp-popgen7
+%files -n libbpp-popgen8
 %defattr(-,root,root)
 %doc AUTHORS.txt COPYING.txt INSTALL.txt ChangeLog
 %{_prefix}/%{_lib}/lib*.so.*
@@ -87,8 +87,9 @@ rm -rf $RPM_BUILD_ROOT
 %{_prefix}/include/*
 
 %changelog
-* Wed Feb 22 2018 Julien Dutheil <julien.dutheil@univ-montp2.fr> 2.4.0-1
-- Compatibility update
+* Mon Feb 26 2018 Julien Dutheil <julien.dutheil@univ-montp2.fr> 2.4.0-1
+- Remove deprecated dynamic exception specifications
+- Increased interface number
 * Tue Jun 06 2017 Julien Dutheil <julien.dutheil@univ-montp2.fr> 2.3.1-1
 - Increased interface number
 * Wed May 10 2017 Julien Dutheil <julien.dutheil@univ-montp2.fr> 2.3.0-1
