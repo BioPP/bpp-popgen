@@ -1,28 +1,25 @@
-%define _basename bpp-popgen
-%define _version 2.4.0
-%define _release 1
 %define _prefix /usr
 
-URL: http://biopp.univ-montp2.fr/
+URL: https://github.com/BioPP/bpp-seq
 
-Name: %{_basename}
-Version: %{_version}
-Release: %{_release}
+Name: bpp-popgen
+Version: 2.4.0
+Release: 1%{?dist}
 License: CECILL-2.0
 Vendor: The Bio++ Project
-Source: http://biopp.univ-montp2.fr/repos/sources/%{_basename}-%{_version}.tar.gz
+Source: %{name}-%{version}.tar.gz
 Summary: Bio++ Population Genetics library
 Group: Development/Libraries/C and C++
-Requires: bpp-core = %{_version}
-Requires: bpp-seq = %{_version}
+Requires: bpp-core = %{version}
+Requires: bpp-seq = %{version}
 
-BuildRoot: %{_builddir}/%{_basename}-root
+BuildRoot: %{_builddir}/%{name}-root
 BuildRequires: cmake >= 2.8.11
 BuildRequires: gcc-c++ >= 4.7.0
-BuildRequires: libbpp-core4 = %{_version}
-BuildRequires: libbpp-core-devel = %{_version}
-BuildRequires: libbpp-seq12 = %{_version}
-BuildRequires: libbpp-seq-devel = %{_version}
+BuildRequires: libbpp-core4 = %{version}
+BuildRequires: libbpp-core-devel = %{version}
+BuildRequires: libbpp-seq12 = %{version}
+BuildRequires: libbpp-seq-devel = %{version}
 
 AutoReq: yes
 AutoProv: yes
@@ -42,15 +39,15 @@ It is part of the Bio++ project.
 %package -n libbpp-popgen-devel
 Summary: Libraries, includes to develop applications with %{_basename}
 Group: Development/Libraries/C and C++
-Requires: libbpp-popgen8 = %{_version}
-Requires: libbpp-seq12 = %{_version}
-Requires: libbpp-seq-devel = %{_version}
-Requires: libbpp-core4 = %{_version}
-Requires: libbpp-core-devel = %{_version}
+Requires: libbpp-popgen8 = %{version}
+Requires: libbpp-seq12 = %{version}
+Requires: libbpp-seq-devel = %{version}
+Requires: libbpp-core4 = %{version}
+Requires: libbpp-core-devel = %{version}
 
 %description -n libbpp-popgen-devel
 The libbpp-popgen-devel package contains the header files and static libraries for
-building applications which use %{_basename}.
+building applications which use %{name}.
 
 %prep
 %setup -q
@@ -87,7 +84,7 @@ rm -rf $RPM_BUILD_ROOT
 %{_prefix}/include/*
 
 %changelog
-* Mon Feb 26 2018 Julien Dutheil <julien.dutheil@univ-montp2.fr> 2.4.0-1
+* Mon Mar 12 2018 Julien Dutheil <julien.dutheil@univ-montp2.fr> 2.4.0-1
 - Remove deprecated dynamic exception specifications
 - Increased interface number
 * Tue Jun 06 2017 Julien Dutheil <julien.dutheil@univ-montp2.fr> 2.3.1-1
