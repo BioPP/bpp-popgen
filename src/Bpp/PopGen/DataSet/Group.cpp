@@ -5,7 +5,7 @@
 //
 
 /*
-   Copyright or © or Copr. CNRS, (November 17, 2004)
+   Copyright or © or Copr. Bio++ Development Team, (November 17, 2004)
 
 
    This software is a computer program whose purpose is to provide classes
@@ -473,7 +473,7 @@ void Group::initIndividualGenotype(size_t individual_position, size_t loci_numbe
   {
     throw BadIntegerException("Group::initIndividualGenotype: loci_number must be > 0.", bie.getBadInteger());
   }
-  catch (Exception)
+  catch (Exception&)
   {
     throw Exception("Group::initIndividualGenotype: individual already has a genotype.");
   }
@@ -527,7 +527,7 @@ void Group::setIndividualMonolocusGenotypeByAlleleKey(size_t individual_position
   {
     throw IndexOutOfBoundsException("Group::setIndividualMonolocusGenotypeByAlleleKey: locus_position excedes the number of locus.", ioobe.getBadIndex(), ioobe.getBounds()[0], ioobe.getBounds()[1]);
   }
-  catch (Exception)
+  catch (Exception&)
   {
     throw Exception("Group::setIndividualMonolocusGenotypeByAlleleKey: no key in allele_keys.");
   }

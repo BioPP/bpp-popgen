@@ -86,7 +86,7 @@ MultiSeqIndividual::MultiSeqIndividual(const MultiSeqIndividual& ind) : id_(ind.
   {
     setDate(*ind.getDate());
   }
-  catch (NullPointerException)
+  catch (NullPointerException&)
   {
     date_ = 0;
   }
@@ -94,7 +94,7 @@ MultiSeqIndividual::MultiSeqIndividual(const MultiSeqIndividual& ind) : id_(ind.
   {
     setCoord(*ind.getCoord());
   }
-  catch (NullPointerException)
+  catch (NullPointerException&)
   {
     coord_ = 0;
   }
@@ -102,7 +102,7 @@ MultiSeqIndividual::MultiSeqIndividual(const MultiSeqIndividual& ind) : id_(ind.
   {
     setLocality(ind.getLocality());
   }
-  catch (NullPointerException)
+  catch (NullPointerException&)
   {
     locality_ = 0;
   }
@@ -135,7 +135,7 @@ MultiSeqIndividual& MultiSeqIndividual::operator=(const MultiSeqIndividual& ind)
   {
     setDate(*ind.getDate());
   }
-  catch (NullPointerException)
+  catch (NullPointerException&)
   {
     date_ = 0;
   }
@@ -143,7 +143,7 @@ MultiSeqIndividual& MultiSeqIndividual::operator=(const MultiSeqIndividual& ind)
   {
     setCoord(*ind.getCoord());
   }
-  catch (NullPointerException)
+  catch (NullPointerException&)
   {
     coord_ = 0;
   }
@@ -151,7 +151,7 @@ MultiSeqIndividual& MultiSeqIndividual::operator=(const MultiSeqIndividual& ind)
   {
     setLocality(ind.getLocality());
   }
-  catch (NullPointerException)
+  catch (NullPointerException&)
   {
     locality_ = 0;
   }

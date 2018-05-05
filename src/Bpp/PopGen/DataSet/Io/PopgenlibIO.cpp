@@ -630,7 +630,7 @@ void PopgenlibIO::write(std::ostream& os, const DataSet& data_set) const
             tmp_ind->getSequenceAtPosition(k);
             os << TextTools::toString(seqcpt++);
           }
-          catch (SequenceNotFoundException)
+          catch (SequenceNotFoundException&)
           {
             os << getMissingDataChar();
           }

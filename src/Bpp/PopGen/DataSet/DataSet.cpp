@@ -6,7 +6,7 @@
 //
 
 /*
-   Copyright or © or Copr. CNRS, (November 17, 2004)
+   Copyright or © or Copr. Bio++ Development Team, (November 17, 2004)
 
    This software is a computer program whose purpose is to provide classes
    for population genetics analysis.
@@ -453,7 +453,7 @@ size_t DataSet::getIndividualPositionInGroup(size_t group_position, const std::s
   {
     return groups_[group_position]->getIndividualPosition(individual_id);
   }
-  catch (IndividualNotFoundException infe)
+  catch (IndividualNotFoundException& infe)
   {
     throw IndividualNotFoundException("DataSet::getIndividualPositionFromGroup: individual_id not found.", infe.getIdentifier());
   }
@@ -469,7 +469,7 @@ const Individual* DataSet::getIndividualAtPositionFromGroup(size_t group_positio
   {
     return &groups_[group_position]->getIndividualAtPosition(individual_position);
   }
-  catch (IndexOutOfBoundsException ioobe)
+  catch (IndexOutOfBoundsException& ioobe)
   {
     throw IndexOutOfBoundsException("DataSet::getIndividualAtPositionFromGroup: individual_position out of bouds.", ioobe.getBadIndex(), ioobe.getBounds()[0], ioobe.getBounds()[1]);
   }
@@ -485,7 +485,7 @@ const Individual* DataSet::getIndividualByIdFromGroup(size_t group_position, con
   {
     return &groups_[group_position]->getIndividualById(individual_id);
   }
-  catch (IndividualNotFoundException infe)
+  catch (IndividualNotFoundException& infe)
   {
     throw IndividualNotFoundException("DataSet::getIndividualByIdFromGroup: individual_id not found.", infe.getIdentifier());
   }
@@ -501,7 +501,7 @@ void DataSet::deleteIndividualAtPositionFromGroup(size_t group_position, size_t 
   {
     groups_[group_position]->deleteIndividualAtPosition(individual_position);
   }
-  catch (IndexOutOfBoundsException ioobe)
+  catch (IndexOutOfBoundsException& ioobe)
   {
     throw IndexOutOfBoundsException("DataSet::deleteIndividualAtPositionFromGroup: individual_position out of bounds.", ioobe.getBadIndex(), ioobe.getBounds()[0], ioobe.getBounds()[1]);
   }
@@ -517,7 +517,7 @@ void DataSet::deleteIndividualByIdFromGroup(size_t group_position, const std::st
   {
     groups_[group_position]->deleteIndividualById(individual_id);
   }
-  catch (IndividualNotFoundException infe)
+  catch (IndividualNotFoundException& infe)
   {
     throw IndividualNotFoundException("DataSet::deleteIndividualByIdFromGroup: individual_id not found.", infe.getIdentifier());
   }
@@ -585,7 +585,7 @@ const Date* DataSet::getIndividualDateInGroup(size_t group_position, size_t indi
   {
     throw IndexOutOfBoundsException("DataSet::getIndividualDateInGroup: individual_position out of bounds.", ioobe.getBadIndex(), ioobe.getBounds()[0], ioobe.getBounds()[1]);
   }
-  catch (NullPointerException)
+  catch (NullPointerException&)
   {
     throw NullPointerException("DataSet::getIndividualDateInGroup: individual has no date.");
   }
@@ -621,7 +621,7 @@ const Point2D<double>* DataSet::getIndividualCoordInGroup(size_t group_position,
   {
     throw IndexOutOfBoundsException("DataSet::getIndividualCoordAtPosition: individual_position out of bounds.", ioobe.getBadIndex(), ioobe.getBounds()[0], ioobe.getBounds()[1]);
   }
-  catch (NullPointerException)
+  catch (NullPointerException&)
   {
     throw NullPointerException("DataSet::getIndividualCoordInGroup: individual has no coordinate.");
   }
@@ -661,7 +661,7 @@ const Locality<double>* DataSet::getIndividualLocalityInGroup(size_t group_posit
   {
     throw IndexOutOfBoundsException("DataSet::getIndividualLocalityInGroup: individual_position out of bounds.", ioobe.getBadIndex(), ioobe.getBounds()[0], ioobe.getBounds()[1]);
   }
-  catch (NullPointerException)
+  catch (NullPointerException&)
   {
     throw NullPointerException("DataSet::getIndividualLocalityInGroup: individual has no locality.");
   }
@@ -710,7 +710,7 @@ const Sequence& DataSet::getIndividualSequenceByNameInGroup(size_t group_positio
   {
     throw IndexOutOfBoundsException("DataSet::getIndividualSequenceByNameInGroup: individual_position out of bounds.", ioobe.getBadIndex(), ioobe.getBounds()[0], ioobe.getBounds()[1]);
   }
-  catch (NullPointerException)
+  catch (NullPointerException&)
   {
     throw NullPointerException("DataSet::getIndividualSequenceByNameInGroup: individual has no sequences.");
   }
@@ -738,7 +738,7 @@ const Sequence& DataSet::getIndividualSequenceAtPositionInGroup(size_t group_pos
     else
       throw IndexOutOfBoundsException("DataSet::getIndividualSequenceAtPositionInGroup: sequence_position out of bounds.", ioobe.getBadIndex(), ioobe.getBounds()[0], ioobe.getBounds()[1]);
   }
-  catch (NullPointerException)
+  catch (NullPointerException&)
   {
     throw NullPointerException("DataSet::getIndividualSequenceAtPositionInGroup: individual has no sequences.");
   }
@@ -758,7 +758,7 @@ void DataSet::deleteIndividualSequenceByNameInGroup(size_t group_position, size_
   {
     throw IndexOutOfBoundsException("DataSet::deleteIndividualSequenceByNameInGroup: individual_position out of bounds.", ioobe.getBadIndex(), ioobe.getBounds()[0], ioobe.getBounds()[1]);
   }
-  catch (NullPointerException)
+  catch (NullPointerException&)
   {
     throw NullPointerException("DataSet::deleteIndividualSequenceByNameInGroup: individual has no sequences.");
   }
@@ -786,7 +786,7 @@ void DataSet::deleteIndividualSequenceAtPositionInGroup(size_t group_position, s
     else
       throw IndexOutOfBoundsException("DataSet::deleteIndividualSequenceAtPositionInGroup: sequence_position out of bounds.", ioobe.getBadIndex(), ioobe.getBounds()[0], ioobe.getBounds()[1]);
   }
-  catch (NullPointerException)
+  catch (NullPointerException&)
   {
     throw NullPointerException("DataSet::deleteIndividualSequenceAtPositionInGroup: individual has no sequences.");
   }
@@ -806,7 +806,7 @@ std::vector<std::string> DataSet::getIndividualSequencesNamesInGroup(size_t grou
   {
     throw IndexOutOfBoundsException("DataSet::getIndividualSequencesNamesInGroup: individual_position out of bounds.", ioobe.getBadIndex(), ioobe.getBounds()[0], ioobe.getBounds()[1]);
   }
-  catch (NullPointerException)
+  catch (NullPointerException&)
   {
     throw NullPointerException("DataSet::getIndividualSequencesNamesInGroup: individual has no sequences.");
   }
@@ -826,7 +826,7 @@ size_t DataSet::getIndividualSequencePositionInGroup(size_t group_position, size
   {
     throw IndexOutOfBoundsException("DataSet::getIndividualSequencePositionInGroup: individual_position out of bounds.", ioobe.getBadIndex(), ioobe.getBounds()[0], ioobe.getBounds()[1]);
   }
-  catch (NullPointerException)
+  catch (NullPointerException&)
   {
     throw NullPointerException("DataSet::getIndividualSequencePositionInGroup: individual has no sequences.");
   }
@@ -850,7 +850,7 @@ size_t DataSet::getIndividualNumberOfSequencesInGroup(size_t group_position, siz
   {
     throw IndexOutOfBoundsException("DataSet::getIndividualNumberOfSequencesInGroup: individual_position out of bounds.", ioobe.getBadIndex(), ioobe.getBounds()[0], ioobe.getBounds()[1]);
   }
-  catch (NullPointerException)
+  catch (NullPointerException&)
   {
     throw NullPointerException("DataSet::getIndividualNumberOfSequencesInGroup: individual has no sequences.");
   }
@@ -890,11 +890,11 @@ void DataSet::initIndividualGenotypeInGroup(size_t group_position, size_t indivi
   {
     throw BadIntegerException("DataSet::initIndividualGenotypeInGroup: number of loci must be > 0.", bie.getBadInteger());
   }
-  catch (NullPointerException)
+  catch (NullPointerException&)
   {
     throw NullPointerException("DataSet::initIndividualGenotypeInGroup: analyzed_loci is NULL.");
   }
-  catch (Exception)
+  catch (Exception&)
   {
     throw Exception("DataSet::initIndividualGenotypeInGroup: individual already has a genotype.");
   }
@@ -934,7 +934,7 @@ void DataSet::setIndividualMonolocusGenotypeInGroup(size_t group_position, size_
     else
       throw IndexOutOfBoundsException("DataSet::setIndividualMonolocusGenotypeInGroup: locus_position out of bounds.", ioobe.getBadIndex(), ioobe.getBounds()[0], ioobe.getBounds()[1]);
   }
-  catch (NullPointerException)
+  catch (NullPointerException&)
   {
     throw NullPointerException("DataSet::setIndividualMonolocusGenotypeInGroup: individual has no genotype.");
   }
@@ -958,11 +958,11 @@ void DataSet::setIndividualMonolocusGenotypeByAlleleKeyInGroup(size_t group_posi
     else
       throw IndexOutOfBoundsException("DataSet::setIndividualMonolocusGenotypeByAlleleKeyInGroup: locus_position out of bounds.", ioobe.getBadIndex(), ioobe.getBounds()[0], ioobe.getBounds()[1]);
   }
-  catch (NullPointerException)
+  catch (NullPointerException&)
   {
     throw NullPointerException("DataSet::setIndividualMonolocusGenotypeByAlleleKeyInGroup: individual has no genotype.");
   }
-  catch (Exception)
+  catch (Exception&)
   {
     throw Exception("DataSet::setIndividualMonolocusGenotypeByAlleleKeyInGroup: no key in allele_keys.");
   }
@@ -987,7 +987,7 @@ void DataSet::setIndividualMonolocusGenotypeByAlleleIdInGroup(size_t group_posit
     else
       throw IndexOutOfBoundsException("DataSet::setIndividualMonolocusGenotypeByAlleleIdInGroup: locus_position out of bounds.", ioobe.getBadIndex(), ioobe.getBounds()[0], ioobe.getBounds()[1]);
   }
-  catch (NullPointerException)
+  catch (NullPointerException&)
   {
     throw NullPointerException("DataSet::setIndividualMonolocusGenotypeByAlleleIdInGroup: individual has no genotype.");
   }
@@ -1015,7 +1015,7 @@ const MonolocusGenotype* DataSet::getIndividualMonolocusGenotypeInGroup(size_t g
     else
       throw IndexOutOfBoundsException("DataSet::getIndividualMonolocusGenotypeInGroup: locus_position out of bounds.", ioobe.getBadIndex(), ioobe.getBounds()[0], ioobe.getBounds()[1]);
   }
-  catch (NullPointerException)
+  catch (NullPointerException&)
   {
     throw NullPointerException("DataSet::getIndividualMonolocusGenotypeInGroup: individual has no genotype.");
   }

@@ -5,7 +5,7 @@
 //
 
 /*
-   Copyright or © or Copr. CNRS, (November 17, 2004)
+   Copyright or © or Copr. Bio++ Development Team, (November 17, 2004)
 
    This software is a computer program whose purpose is to provide classes
    for population genetics analysis.
@@ -122,7 +122,7 @@ Individual& Individual::operator=(const Individual& ind)
   {
     setDate(ind.getDate());
   }
-  catch (NullPointerException)
+  catch (NullPointerException&)
   {
     date_.reset();
   }
@@ -130,7 +130,7 @@ Individual& Individual::operator=(const Individual& ind)
   {
     setCoord(ind.getCoord());
   }
-  catch (NullPointerException)
+  catch (NullPointerException&)
   {
     coord_.reset();
   }
@@ -138,7 +138,7 @@ Individual& Individual::operator=(const Individual& ind)
   {
     setLocality(ind.getLocality());
   }
-  catch (NullPointerException)
+  catch (NullPointerException&)
   {
     locality_ = 0;
   }
@@ -146,7 +146,7 @@ Individual& Individual::operator=(const Individual& ind)
   {
     setSequences(dynamic_cast<const MapSequenceContainer&>(ind.getSequences()));
   }
-  catch (NullPointerException)
+  catch (NullPointerException&)
   {
     sequences_.reset();
   }
@@ -556,7 +556,7 @@ void Individual::setMonolocusGenotypeByAlleleKey(size_t locus_position, const st
   {
     throw IndexOutOfBoundsException("Individual::setMonolocusGenotypeByAlleleKey: locus_position out of bounds.", ioobe.getBadIndex(), ioobe.getBounds()[0], ioobe.getBounds()[1]);
   }
-  catch (Exception)
+  catch (Exception&)
   {
     throw Exception("Individual::setMonolocusGenotypeByAlleleKey: no key in allele_keys.");
   }
