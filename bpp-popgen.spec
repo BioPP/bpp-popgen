@@ -3,7 +3,7 @@
 URL: https://github.com/BioPP/bpp-seq
 
 Name: bpp-popgen
-Version: 2.4.0
+Version: 2.4.1
 Release: 1%{?dist}
 License: CECILL-2.0
 Vendor: The Bio++ Project
@@ -84,6 +84,8 @@ rm -rf $RPM_BUILD_ROOT
 %{_prefix}/include/*
 
 %changelog
+* Mon Aug 13 2018 Julien Dutheil <julien.dutheil@univ-montp2.fr> 2.4.1-1
+- Compatibility update gcc8.
 * Mon Mar 12 2018 Julien Dutheil <julien.dutheil@univ-montp2.fr> 2.4.0-1
 - Remove deprecated dynamic exception specifications
 - Increased interface number
