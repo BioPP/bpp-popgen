@@ -734,7 +734,7 @@ public:
    * @param id2 is the id of the population 2
    * @author Benoit Nabholz
    */
-  double fstHudson92(
+  static double fstHudson92(
     const PolymorphismSequenceContainer& psc,
     size_t id1,
     size_t id2);
