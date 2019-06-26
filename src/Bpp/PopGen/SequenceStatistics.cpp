@@ -959,8 +959,8 @@ double SequenceStatistics::fstHudson92(const PolymorphismSequenceContainer& psc,
   PolymorphismSequenceContainer* Pop1 = PolymorphismSequenceContainerTools::extractGroup(psc, id1);
   PolymorphismSequenceContainer* Pop2 = PolymorphismSequenceContainerTools::extractGroup(psc, id2);
 
-  piIntra1 = SequenceStatistics::tajima83(*Pop1, false);
-  piIntra2 = SequenceStatistics::tajima83(*Pop2, false);
+  piIntra1 = SequenceStatistics::tajima83(*Pop1, true);
+  piIntra2 = SequenceStatistics::tajima83(*Pop2, true);
 
   meanPiIntra = (piIntra1 + piIntra2) / 2;
 
