@@ -115,5 +115,4 @@ private:
 };
 } // end of namespace bpp;
 
-#endif // _ANALYZEDSEQUENCES_H_
-
+#endif// _ANALYZEDSEQUENCES_H_

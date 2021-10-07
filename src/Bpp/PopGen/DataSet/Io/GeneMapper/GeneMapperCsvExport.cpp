@@ -54,7 +54,7 @@ const std::string GeneMapperCsvExport::PEAK_AREA_H = "Peak Area ";
 const std::string GeneMapperCsvExport::DAC_H = "DAC";
 const std::string GeneMapperCsvExport::AN_H = "AN";
 
-//GeneMapperCsvExport::GeneMapperCsvExport(bool ia) : IndependentAlleles_(ia) {}
+// GeneMapperCsvExport::GeneMapperCsvExport(bool ia) : IndependentAlleles_(ia) {}
 
 GeneMapperCsvExport::~GeneMapperCsvExport() {}
 

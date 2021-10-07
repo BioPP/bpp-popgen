@@ -86,21 +86,26 @@ PolymorphismSequenceContainer::PolymorphismSequenceContainer(const OrderedSequen
   count_(),
   group_()
 {
-  if (sc.getNumberOfSequences() == 0) return; //done.
+  if (sc.getNumberOfSequences() == 0)
+    return; // done.
 
   // Add first sequence:
   addSequenceWithFrequency(sc.getSequence(0), 1);
-  for (size_t i = 1; i < sc.getNumberOfSequences(); ++i) {
+  for (size_t i = 1; i < sc.getNumberOfSequences(); ++i)
+  {
     const Sequence& seq = sc.getSequence(i);
-    //Check if this sequence already exists in this container:
+    // Check if this sequence already exists in this container:
     bool exists = false;
-    for (size_t j = 0; !exists && j < getNumberOfSequences(); ++j) {
-      if (SequenceTools::areSequencesIdentical(getSequence(j), seq)) {
-        incrementSequenceCount(j); //We increase frequency, meaning that we discard this sequence name.
+    for (size_t j = 0; !exists && j < getNumberOfSequences(); ++j)
+    {
+      if (SequenceTools::areSequencesIdentical(getSequence(j), seq))
+      {
+        incrementSequenceCount(j); // We increase frequency, meaning that we discard this sequence name.
         exists = true;
       }
     }
-    if (!exists) {
+    if (!exists)
+    {
       addSequenceWithFrequency(seq, 1);
     }
   }
@@ -124,21 +129,26 @@ PolymorphismSequenceContainer::PolymorphismSequenceContainer(const SiteContainer
   count_(),
   group_()
 {
-  if (sc.getNumberOfSequences() == 0) return; //done.
-  
+  if (sc.getNumberOfSequences() == 0)
+    return; // done.
+
   // Add first sequence:
   addSequenceWithFrequency(sc.getSequence(0), 1);
-  for (size_t i = 1; i < sc.getNumberOfSequences(); ++i) {
+  for (size_t i = 1; i < sc.getNumberOfSequences(); ++i)
+  {
     const Sequence& seq = sc.getSequence(i);
-    //Check if this sequence already exists in this container:
+    // Check if this sequence already exists in this container:
     bool exists = false;
-    for (size_t j = 0; !exists && j < getNumberOfSequences(); ++j) {
-      if (SequenceTools::areSequencesIdentical(getSequence(j), seq)) {
-        incrementSequenceCount(j); //We increase frequency, meaning that we discard this sequence name.
+    for (size_t j = 0; !exists && j < getNumberOfSequences(); ++j)
+    {
+      if (SequenceTools::areSequencesIdentical(getSequence(j), seq))
+      {
+        incrementSequenceCount(j); // We increase frequency, meaning that we discard this sequence name.
         exists = true;
       }
     }
-    if (!exists) {
+    if (!exists)
+    {
       addSequenceWithFrequency(seq, 1);
     }
   }
@@ -359,8 +369,10 @@ size_t PolymorphismSequenceContainer::getNumberOfGroups() const
 
 bool PolymorphismSequenceContainer::hasOutgroup() const
 {
-  for (auto i: ingroup_) {
-    if (!i) return true;
+  for (auto i: ingroup_)
+  {
+    if (!i)
+      return true;
   }
   return false;
 }
@@ -542,24 +554,29 @@ unsigned int PolymorphismSequenceContainer::getSequenceCount(const std::string& 
 
 /******************************************************************************/
 
-SiteContainer* PolymorphismSequenceContainer::toSiteContainer() const {
+SiteContainer* PolymorphismSequenceContainer::toSiteContainer() const
+{
   unique_ptr<VectorSiteContainer> sites(new VectorSiteContainer(getAlphabet()));
-  for (size_t i = 0; i < getNumberOfSequences(); ++i) {
+  for (size_t i = 0; i < getNumberOfSequences(); ++i)
+  {
     const Sequence& seq = getSequence(i);
     unsigned int freq = getSequenceCount(i);
-    if (freq > 1) {
-      for (unsigned int j = 0; j < freq; ++j) {
+    if (freq > 1)
+    {
+      for (unsigned int j = 0; j < freq; ++j)
+      {
         unique_ptr<Sequence> seqdup(seq.clone());
         seqdup->setName(seq.getName() + "_" + TextTools::toString(j + 1));
         sites->addSequence(*seqdup);
       }
-    } else {
+    }
+    else
+    {
       sites->addSequence(seq);
     }
   }
   sites->setSitePositions(getSitePositions());
   return sites.release();
 }
- 
-/******************************************************************************/
 
+/******************************************************************************/

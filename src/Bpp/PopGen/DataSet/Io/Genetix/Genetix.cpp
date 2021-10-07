@@ -132,4 +132,3 @@ DataSet* Genetix::read(const string& path)
 {
   return AbstractIDataSet::read(path);
 }
-

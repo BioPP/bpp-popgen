@@ -314,7 +314,7 @@ public:
    */
   void addIndividualSequenceAtPosition(size_t individual_position,
                                        size_t sequence_position,
-				       const Sequence& sequence);
+                                       const Sequence& sequence);
 
   /**
    * @brief Get a sequence of an Individual.
@@ -324,8 +324,8 @@ public:
    * @throw SequenceNotFoundException if sequence_name is not found.
    */
   const Sequence& getIndividualSequenceByName(
-		  size_t individual_position,
-		  const std::string& sequence_name) const;
+    size_t individual_position,
+    const std::string& sequence_name) const;
 
   /**
    * @brief Get a sequence of an Individual.
@@ -335,8 +335,8 @@ public:
    * @throw SequenceNotFoundException if sequence_position is not found.
    */
   const Sequence& getIndividualSequenceAtPosition(
-		  size_t individual_position,
-		  size_t sequence_position) const;
+    size_t individual_position,
+    size_t sequence_position) const;
 
   /**
    * @brief Delete a sequence of an Individual.
@@ -379,8 +379,8 @@ public:
    * @throw SequenceNotFoundException if sequence_name is not found.
    */
   size_t getIndividualSequencePosition(
-		  size_t individual_position,
-		  const std::string& sequence_name) const;
+    size_t individual_position,
+    const std::string& sequence_name) const;
 
   /**
    * @brief Get the number of sequences in an Individual.
@@ -491,5 +491,4 @@ public:
 };
 } // end of namespace bpp;
 
-#endif // _GROUP_H_
-
+#endif// _GROUP_H_

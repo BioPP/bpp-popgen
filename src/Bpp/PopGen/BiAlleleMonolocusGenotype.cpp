@@ -116,4 +116,3 @@ BiAlleleMonolocusGenotype* BiAlleleMonolocusGenotype::clone() const
 {
   return new BiAlleleMonolocusGenotype(*this);
 }
-

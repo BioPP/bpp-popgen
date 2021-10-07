@@ -135,4 +135,3 @@ bool Date::operator<(const Date& date) const
   else
     return false;
 }
-

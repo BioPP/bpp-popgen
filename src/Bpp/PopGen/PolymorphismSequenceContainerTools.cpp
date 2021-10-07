@@ -433,9 +433,9 @@ PolymorphismSequenceContainer* PolymorphismSequenceContainerTools::getOnePositio
 /******************************************************************************/
 
 PolymorphismSequenceContainer* PolymorphismSequenceContainerTools::getIntrons(
-    const PolymorphismSequenceContainer& psc,
-    const std::string& setName,
-    const GeneticCode* gCode)
+  const PolymorphismSequenceContainer& psc,
+  const std::string& setName,
+  const GeneticCode* gCode)
 {
   Comments maseFileHeader = psc.getGeneralComments();
   SiteSelection ss;
@@ -528,9 +528,9 @@ PolymorphismSequenceContainer* PolymorphismSequenceContainerTools::get5Prime(con
 /******************************************************************************/
 
 PolymorphismSequenceContainer* PolymorphismSequenceContainerTools::get3Prime(
-    const PolymorphismSequenceContainer& psc,
-    const std::string& setName,
-    const GeneticCode* gCode)
+  const PolymorphismSequenceContainer& psc,
+  const std::string& setName,
+  const GeneticCode* gCode)
 {
   Comments maseFileHeader = psc.getGeneralComments();
   SiteSelection ss;
@@ -592,9 +592,11 @@ string PolymorphismSequenceContainerTools::getIngroupSpeciesName(const Polymorph
 PolymorphismSequenceContainer* PolymorphismSequenceContainerTools::getSynonymousSites(const PolymorphismSequenceContainer& psc, const GeneticCode& gCode)
 {
   unique_ptr<PolymorphismSequenceContainer> psco(new PolymorphismSequenceContainer(psc.getSequencesNames(), psc.getAlphabet()));
-  for (size_t i = 0; i < psc.getNumberOfSites(); ++i) {
+  for (size_t i = 0; i < psc.getNumberOfSites(); ++i)
+  {
     const Site& site = psc.getSite(i);
-    if (CodonSiteTools::isSynonymousPolymorphic(site, gCode)) {
+    if (CodonSiteTools::isSynonymousPolymorphic(site, gCode))
+    {
       psco->addSite(site);
     }
   }
@@ -617,9 +619,11 @@ PolymorphismSequenceContainer* PolymorphismSequenceContainerTools::getSynonymous
 PolymorphismSequenceContainer* PolymorphismSequenceContainerTools::getNonSynonymousSites(const PolymorphismSequenceContainer& psc, const GeneticCode& gCode)
 {
   unique_ptr<PolymorphismSequenceContainer> psco(new PolymorphismSequenceContainer(psc.getSequencesNames(), psc.getAlphabet()));
-  for (size_t i = 0; i < psc.getNumberOfSites(); ++i) {
+  for (size_t i = 0; i < psc.getNumberOfSites(); ++i)
+  {
     const Site& site = psc.getSite(i);
-    if (!CodonSiteTools::isSynonymousPolymorphic(site, gCode)) {
+    if (!CodonSiteTools::isSynonymousPolymorphic(site, gCode))
+    {
       psco->addSite(site);
     }
   }
@@ -638,4 +642,3 @@ PolymorphismSequenceContainer* PolymorphismSequenceContainerTools::getNonSynonym
 }
 
 /******************************************************************************/
-

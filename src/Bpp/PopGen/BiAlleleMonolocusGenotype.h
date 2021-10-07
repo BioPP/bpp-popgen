@@ -129,5 +129,4 @@ public:
 };
 } // end of namespace bpp;
 
-#endif // _BIALLELEMONOLOCUSGENOTYPE_H_
-
+#endif// _BIALLELEMONOLOCUSGENOTYPE_H_

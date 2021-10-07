@@ -202,7 +202,7 @@ unsigned int SequenceStatistics::totalNumberOfMutationsOnExternalBranches(
     site_out = so->nextSite();
     // use fully resolved sites
     if (SiteTools::isComplete(*site_in) &&  SiteTools::isComplete(*site_out))
-      nmuts += getNumberOfDerivedSingletons_(*site_in, *site_out);                                                                   // singletons that are not in outgroup
+      nmuts += getNumberOfDerivedSingletons_(*site_in, *site_out);                                                                                                                                       // singletons that are not in outgroup
   }
   return nmuts;
 }
@@ -348,7 +348,7 @@ double SequenceStatistics::tajima83(const PolymorphismSequenceContainer& psc, bo
       value2 += 1. - value;
     }
   }
-  return (scaled ? value2 / l : value2);
+  return scaled ? value2 / l : value2;
 }
 
 double SequenceStatistics::fayWu2000(const PolymorphismSequenceContainer& psc, const Sequence& ancestralSites)
@@ -840,10 +840,10 @@ double SequenceStatistics::tajimaDtnm(const PolymorphismSequenceContainer& psc, 
 }
 
 double SequenceStatistics::fuLiD(
-    const PolymorphismSequenceContainer& ingroup,
-    const PolymorphismSequenceContainer& outgroup,
-    bool useNbSingletons,
-    bool useNbSegregatingSites)
+  const PolymorphismSequenceContainer& ingroup,
+  const PolymorphismSequenceContainer& outgroup,
+  bool useNbSingletons,
+  bool useNbSegregatingSites)
 {
   size_t n = ingroup.getNumberOfSequences();
   map<string, double> values = getUsefulValues_(n);
@@ -861,13 +861,13 @@ double SequenceStatistics::fuLiD(
   if (useNbSingletons)
     etae = static_cast<double>(numberOfSingletons(outgroup));
   else
-    etae = static_cast<double>(totalNumberOfMutationsOnExternalBranches(ingroup, outgroup));  // added by Khalid 13/07/2005
+    etae = static_cast<double>(totalNumberOfMutationsOnExternalBranches(ingroup, outgroup));                                                                                                // added by Khalid 13/07/2005
   return (eta - (values["a1"] * etae)) / sqrt((uD * eta) + (vD * eta * eta));
 }
 
 double SequenceStatistics::fuLiDStar(
-    const PolymorphismSequenceContainer& group,
-    bool useNbSegregatingSites)
+  const PolymorphismSequenceContainer& group,
+  bool useNbSegregatingSites)
 {
   size_t n = group.getNumberOfSequences();
   double nn = static_cast<double>(n);
@@ -875,16 +875,16 @@ double SequenceStatistics::fuLiDStar(
   map<string, double> values = getUsefulValues_(n);
   double vDs = getVDstar_(n, values["a1"], values["a2"], values["dn"]);
   double uDs = getUDstar_(n, values["a1"], vDs);
-  unsigned int etaP = 0;  
+  unsigned int etaP = 0;
   if (useNbSegregatingSites)
     etaP = numberOfPolymorphicSites(group);
-  else 
+  else
     etaP = totalNumberOfMutations(group);
   if (etaP == 0)
     throw ZeroDivisionException("eta should not be null");
   double eta = static_cast<double>(etaP);
   double etas = static_cast<double>(numberOfSingletons(group));
- 
+
   // Fu & Li 1993
   return ((_n * eta) - (values["a1"] * etas)) / sqrt(uDs * eta + vDs * eta * eta);
 
@@ -895,10 +895,10 @@ double SequenceStatistics::fuLiDStar(
 }
 
 double SequenceStatistics::fuLiF(
-    const PolymorphismSequenceContainer& ingroup,
-    const PolymorphismSequenceContainer& outgroup,
-    bool useNbSingletons,
-    bool useNbSegregatingSites)
+  const PolymorphismSequenceContainer& ingroup,
+  const PolymorphismSequenceContainer& outgroup,
+  bool useNbSingletons,
+  bool useNbSegregatingSites)
 {
   size_t n = ingroup.getNumberOfSequences();
   double nn = static_cast<double>(n);
@@ -906,10 +906,10 @@ double SequenceStatistics::fuLiF(
   double pi = tajima83(ingroup, true);
   double vF = (values["cn"] + values["b2"] - 2. / (nn - 1.)) / (pow(values["a1"], 2) + values["a2"]);
   double uF = ((1. + values["b1"] - (4. * ((nn + 1.) / ((nn - 1.) * (nn - 1.)))) * (values["a1n"] - (2. * nn) / (nn + 1.))) / values["a1"]) - vF;
-  unsigned int etaP = 0;  
+  unsigned int etaP = 0;
   if (useNbSegregatingSites)
     etaP = numberOfPolymorphicSites(ingroup);
-  else 
+  else
     etaP = totalNumberOfMutations(ingroup);
   if (etaP == 0)
     throw ZeroDivisionException("eta should not be null");
@@ -918,13 +918,13 @@ double SequenceStatistics::fuLiF(
   if (useNbSingletons)
     etae = static_cast<double>(numberOfSingletons(outgroup));
   else
-    etae = static_cast<double>(totalNumberOfMutationsOnExternalBranches(ingroup, outgroup));  // added by Khalid 13/07/2005
+    etae = static_cast<double>(totalNumberOfMutationsOnExternalBranches(ingroup, outgroup));                                                                                                // added by Khalid 13/07/2005
   return (pi - etae) / sqrt(uF * eta + vF * eta * eta);
 }
 
 double SequenceStatistics::fuLiFStar(
-    const PolymorphismSequenceContainer& group,
-    bool useNbSegregatingSites)
+  const PolymorphismSequenceContainer& group,
+  bool useNbSegregatingSites)
 {
   double n = static_cast<double>(group.getNumberOfSequences());
   map<string, double> values = getUsefulValues_(group.getNumberOfSequences());
@@ -937,10 +937,10 @@ double SequenceStatistics::fuLiFStar(
   // Simonsen et al. 1995
   double vFs = (((2 * n * n * n + 110 * n * n - 255 * n + 153) / (9 * n * n * (n - 1))) + ((2 * (n - 1) * values["a1"]) / (n * n)) - 8 * values["a2"] / n) / (pow(values["a1"], 2) + values["a2"]);
   double uFs = (((4 * n * n + 19 * n + 3 - 12 * (n + 1) * values["a1n"]) / (3 * n * (n - 1))) / values["a1"]) - vFs;
-  unsigned int etaP = 0;  
+  unsigned int etaP = 0;
   if (useNbSegregatingSites)
     etaP = numberOfPolymorphicSites(group);
-  else 
+  else
     etaP = totalNumberOfMutations(group);
   if (etaP == 0)
     throw ZeroDivisionException("eta should not be null");
@@ -1375,7 +1375,7 @@ double SequenceStatistics::originRegressionDprime(const PolymorphismSequenceCont
   Vdouble Dprime = pairwiseDprime(psc, keepsingleton, freqmin) - 1;
   Vdouble dist;
   if (distance1)
-   dist = pairwiseDistances1(psc, keepsingleton, freqmin) / 1000;
+    dist = pairwiseDistances1(psc, keepsingleton, freqmin) / 1000;
   else
     dist = pairwiseDistances2(psc, keepsingleton, freqmin) / 1000;
   return VectorTools::sum(Dprime * dist) / VectorTools::sum(dist * dist);
@@ -1511,7 +1511,7 @@ void SequenceStatistics::testUsefulValues(std::ostream& s, size_t n)
 
 unsigned int SequenceStatistics::getNumberOfMutations_(const Site& site)
 {
-  //jdutheil 27/06/15: does not work if gaps and unknown!!!
+  // jdutheil 27/06/15: does not work if gaps and unknown!!!
   unsigned int tmp_count = 0;
   map<int, size_t> states_count;
   SymbolListTools::getCounts(site, states_count);
@@ -1696,4 +1696,3 @@ double SequenceStatistics::rightHandHudson_(double c, size_t n)
   double nn = static_cast<double>(n);
   return 1. / (97. * pow(c, 2.) * pow(nn, 3.)) * ((nn - 1.) * (97. * (c * (4. + (c - 2. * nn) * nn) + (-2. * (7. + c) + 4. * nn + (c - 1.) * pow(nn, 2.)) * log((18. + c * (13. + c)) / 18.)) + sqrt(97.) * (110. + nn * (49. * nn - 52.) + c * (2. + nn * (15. * nn - 8.))) * log(-1. + (72. + 26. * c) / (36. + 13. * c - c * sqrt(97.)))));
 }
-

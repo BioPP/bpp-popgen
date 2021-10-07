@@ -55,4 +55,3 @@ void AbstractODataSet::write(const string& path, const DataSet& data_set, bool o
   write(output, data_set);
   output.close();
 }
-

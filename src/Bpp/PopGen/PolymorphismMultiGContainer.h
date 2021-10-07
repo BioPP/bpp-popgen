@@ -203,4 +203,4 @@ public:
 };
 } // end of namespace bpp;
 
-#endif // _POLYMORPHYSMMULTIGCONTAINER_H_
+#endif// _POLYMORPHYSMMULTIGCONTAINER_H_

@@ -103,4 +103,3 @@ MultiAlleleMonolocusGenotype* MultiAlleleMonolocusGenotype::clone() const
 {
   return new MultiAlleleMonolocusGenotype(*this);
 }
-

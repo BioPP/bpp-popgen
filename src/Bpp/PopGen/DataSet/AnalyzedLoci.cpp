@@ -208,4 +208,3 @@ unsigned int AnalyzedLoci::getPloidyByLocusPosition(size_t locus_position) const
 }
 
 /******************************************************************************/
-

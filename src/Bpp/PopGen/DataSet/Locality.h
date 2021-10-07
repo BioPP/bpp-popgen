@@ -80,7 +80,7 @@ public:
    * @param name The name of the locality.
    * @param coord The coordinates of the locality.
    */
-  Locality<T>(const std::string name, const bpp::Point2D<T> &coord) :
+  Locality<T>(const std::string name, const bpp::Point2D<T>& coord) :
     bpp::Point2D<T>(coord),
     name_(name) {}
 
@@ -126,5 +126,4 @@ public:
 };
 } // end of namespace bpp;
 
-#endif // _LOCALITY_H_
-
+#endif// _LOCALITY_H_

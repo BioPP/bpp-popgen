@@ -200,4 +200,3 @@ size_t MultilocusGenotype::countHeterozygousLoci() const
   }
   return count;
 }
-

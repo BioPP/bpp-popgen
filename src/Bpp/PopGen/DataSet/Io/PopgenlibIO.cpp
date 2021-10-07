@@ -57,8 +57,8 @@ PopgenlibIO::PopgenlibIO() : data_separator_(' '),
 
 PopgenlibIO::PopgenlibIO(const std::string& missing_data_symbol,
                          const std::string& data_separator) :
-       	data_separator_(' '),
-        missing_data_symbol_('$')
+  data_separator_(' '),
+  missing_data_symbol_('$')
 {
   try
   {
@@ -710,4 +710,3 @@ std::vector<std::string> PopgenlibIO::getValues_(std::string& param_line, const 
   values.push_back(string(param_line.begin() + static_cast<ptrdiff_t>(bi), param_line.end()));
   return values;
 }
-

@@ -76,5 +76,4 @@ public:
 };
 } // end of namespace bpp;
 
-#endif // _DATASETTOOLS_H_
-
+#endif// _DATASETTOOLS_H_

@@ -111,4 +111,3 @@ void DarwinVarSingle::write(const string& path, const DataSet& data_set, bool ov
 {
   AbstractODataSet::write(path, data_set, overwrite);
 }
-

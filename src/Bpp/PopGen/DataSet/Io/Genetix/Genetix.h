@@ -96,5 +96,4 @@ public:
 };
 } // end of namespace bpp;
 
-#endif // _GENETIX_H_
-
+#endif// _GENETIX_H_

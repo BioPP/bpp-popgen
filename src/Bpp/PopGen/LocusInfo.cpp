@@ -131,4 +131,3 @@ void LocusInfo::clear()
   }
   alleles_.clear();
 }
-

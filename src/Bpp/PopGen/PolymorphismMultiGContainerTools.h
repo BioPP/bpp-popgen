@@ -119,5 +119,4 @@ public:
 };
 } // end of namespace bpp;
 
-#endif // _POLYMORPHISMMULTIGCONTAINERTOOLS_H_
-
+#endif// _POLYMORPHISMMULTIGCONTAINERTOOLS_H_

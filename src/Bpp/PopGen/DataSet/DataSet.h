@@ -276,7 +276,7 @@ public:
    * @throw IndividualNotFoundException if individual_id is not found.
    */
   size_t getIndividualPositionInGroup(size_t group_position, const std::string& individual_id) const;
-  
+
   /**
    * @brief Get an Individual from a Group.
    *
@@ -643,9 +643,9 @@ public:
    * @param sequence_position The position of the sequence in the individuals;
    */
   PolymorphismSequenceContainer* getPolymorphismSequenceContainer(
-		  const std::map<size_t,
-		  std::vector<size_t> >& selection,
-		  size_t sequence_position) const;
+    const std::map<size_t,
+                   std::vector<size_t> >& selection,
+    size_t sequence_position) const;
 
   // ** General tests **********************************************************/
   /**
@@ -660,5 +660,4 @@ public:
 };
 } // end of namespace bpp;
 
-#endif // _DATASET_H_
-
+#endif// _DATASET_H_

@@ -110,7 +110,7 @@ public:
    */
   void setMonolocusGenotypeByAlleleId(size_t locus_position,
                                       const std::vector<std::string>& allele_id,
-				      const LocusInfo& locus_info);
+                                      const LocusInfo& locus_info);
 
   /**
    * @brief Set a MonolocusGenotype as missing data.
@@ -155,5 +155,4 @@ public:
 };
 } // end of namespace bpp;
 
-#endif // _MULTILOCUSGENOTYPE_H_
-
+#endif// _MULTILOCUSGENOTYPE_H_

@@ -76,11 +76,11 @@ public:
   static const std::string AN_H;
 
 private:
-  //bool IndependentAlleles_; //jdutheilon 19/09/14: this does not seem to be used anywhere!
+  // bool IndependentAlleles_; //jdutheilon 19/09/14: this does not seem to be used anywhere!
 
 public:
   // Constructor and destructor
-  //GeneMapperCsvExport(bool ia = false);
+  // GeneMapperCsvExport(bool ia = false);
   GeneMapperCsvExport() {}
   ~GeneMapperCsvExport();
 
@@ -210,5 +210,4 @@ public:
 };
 } // end of namespace bpp;
 
-#endif // _BPP_POPGEN_GENEMAPPERCSVEXPORT_H_
-
+#endif// _BPP_POPGEN_GENEMAPPERCSVEXPORT_H_

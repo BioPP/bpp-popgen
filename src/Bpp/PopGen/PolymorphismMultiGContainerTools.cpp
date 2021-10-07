@@ -377,4 +377,3 @@ PolymorphismMultiGContainer PolymorphismMultiGContainerTools::extractGroups(cons
 }
 
 /******************************************************************************/
-

@@ -622,4 +622,3 @@ size_t Group::getGroupSizeForSequence(size_t sequence_position) const
   }
   return count;
 }
-

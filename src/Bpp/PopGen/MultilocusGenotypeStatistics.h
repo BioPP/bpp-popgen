@@ -290,5 +290,4 @@ public:
 };
 } // end of namespace bpp;
 
-#endif // _MULTILOCUSGENOTYPESTATISTICS_H_
-
+#endif// _MULTILOCUSGENOTYPESTATISTICS_H_

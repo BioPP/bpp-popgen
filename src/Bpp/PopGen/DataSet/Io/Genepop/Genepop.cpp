@@ -205,4 +205,3 @@ DataSet* Genepop::read(const string& path)
 {
   return AbstractIDataSet::read(path);
 }
-

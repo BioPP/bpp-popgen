@@ -579,9 +579,9 @@ double MultilocusGenotypeStatistics::getWCMultilocusFst(const PolymorphismMultiG
   A = B = C = 0.0;
   for (size_t i = 0; i < locus_positions.size(); i++)
   {
-    //count total number of individuals without missing data  
-    size_t ni = 0;  
-    for (set<size_t>::iterator setIt = groups.begin() ; setIt != groups.end() ; setIt++)
+    // count total number of individuals without missing data
+    size_t ni = 0;
+    for (set<size_t>::iterator setIt = groups.begin(); setIt != groups.end(); setIt++)
     {
       ni += pmgc.getLocusGroupSize( (*setIt), i);
     }
@@ -610,9 +610,9 @@ double MultilocusGenotypeStatistics::getWCMultilocusFis(const PolymorphismMultiG
   B = C = 0.0;
   for (size_t i = 0; i < locus_positions.size(); i++)
   {
-    //count total number of individuals without missing data  
-    size_t ni = 0;  
-    for (set<size_t>::iterator setIt = groups.begin() ; setIt != groups.end() ; setIt++)
+    // count total number of individuals without missing data
+    size_t ni = 0;
+    for (set<size_t>::iterator setIt = groups.begin(); setIt != groups.end(); setIt++)
     {
       ni += pmgc.getLocusGroupSize( (*setIt), i);
     }
@@ -813,4 +813,3 @@ std::unique_ptr<DistanceMatrix> MultilocusGenotypeStatistics::getDistanceMatrix(
 
   return _dist;
 }
-

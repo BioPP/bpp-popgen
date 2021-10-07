@@ -360,5 +360,4 @@ public:
 };
 } // end of namespace bpp;
 
-#endif // _MULTISEQINDIVIDUAL_H_
-
+#endif// _MULTISEQINDIVIDUAL_H_

@@ -1266,5 +1266,4 @@ private:
 };
 } // end of namespace bpp;
 
-#endif // _SEQUENCESTATISTICS_H_
-
+#endif// _SEQUENCESTATISTICS_H_

@@ -421,8 +421,8 @@ public:
    * @throw Exception if there is no key in allele_keys.
    */
   void setMonolocusGenotypeByAlleleKey(
-		  size_t locus_position,
-		  const std::vector<size_t> allele_keys);
+    size_t locus_position,
+    const std::vector<size_t> allele_keys);
 
   /**
    * @brief Set a MonolocusGenotype.
@@ -432,9 +432,9 @@ public:
    * @throw AlleleNotFoundException if at least one the id is not found in the LocusInfo.
    */
   void setMonolocusGenotypeByAlleleId(
-		  size_t locus_position,
-		  const std::vector<std::string> allele_id,
-		  const LocusInfo& locus_info);
+    size_t locus_position,
+    const std::vector<std::string> allele_id,
+    const LocusInfo& locus_info);
 
   /**
    * @brief Get a MonolocusGenotype.
@@ -467,5 +467,4 @@ public:
 };
 } // end of namespace bpp;
 
-#endif // _INDIVIDUAL_H_
-
+#endif// _INDIVIDUAL_H_

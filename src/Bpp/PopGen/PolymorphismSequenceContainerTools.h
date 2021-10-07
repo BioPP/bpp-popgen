@@ -254,8 +254,8 @@ public:
    * @param psc a PolymorphismSequenceContainer.
    * @param gCode The genetic code to use
    *
-   * @return A new PolymorphismSequenceContainer with only synonymous sites. 
-   */ 
+   * @return A new PolymorphismSequenceContainer with only synonymous sites.
+   */
   static PolymorphismSequenceContainer* getSynonymousSites(const PolymorphismSequenceContainer& psc, const GeneticCode& gCode);
 
   /**
@@ -264,12 +264,10 @@ public:
    * @param psc a PolymorphismSequenceContainer.
    * @param gCode The genetic code to use
    *
-   * @return A new PolymorphismSequenceContainer with only non-synonymous sites. 
-   */ 
+   * @return A new PolymorphismSequenceContainer with only non-synonymous sites.
+   */
   static PolymorphismSequenceContainer* getNonSynonymousSites(const PolymorphismSequenceContainer& psc, const GeneticCode& gCode);
-
 };
 } // end of namespace bpp;
 
-#endif // _POLYMORPHISMSEQUENCECONTAINERTOOL_H_
-
+#endif// _POLYMORPHISMSEQUENCECONTAINERTOOL_H_

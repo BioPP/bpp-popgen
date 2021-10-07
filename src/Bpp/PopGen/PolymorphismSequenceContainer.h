@@ -222,10 +222,12 @@ public:
    */
   void addSequenceWithFrequency(const Sequence& sequence, unsigned int frequency, bool checkName = true);
   void addSequenceWithFrequency(const Sequence& sequence, size_t sequenceIndex, unsigned int frequency, bool checkName = true);
-  void addSequence(const Sequence& sequence, bool checkName = true) {
+  void addSequence(const Sequence& sequence, bool checkName = true)
+  {
     addSequenceWithFrequency(sequence, 1, checkName);
   }
-  void addSequence(const Sequence& sequence, size_t sequenceIndex, bool checkName = true) {
+  void addSequence(const Sequence& sequence, size_t sequenceIndex, bool checkName = true)
+  {
     addSequenceWithFrequency(sequence, sequenceIndex, 1, checkName);
   }
 
@@ -349,7 +351,7 @@ public:
    */
   void incrementSequenceCount(const std::string& name);
 
-   /**
+  /**
    * @brief Removz 1 to the sequence count.
    *
    * @throw IndexOutOfBoundsException if index excedes the number of sequences in the container.
@@ -385,9 +387,7 @@ public:
    * @return A SiteContainer object, eventually with duplicated sequences. Names of duplicated sequences are happended with _1, _2, etc.
    */
   SiteContainer* toSiteContainer() const;
-  
 };
 } // end of namespace bpp;
 
-#endif  // _POLYMORPHISMSEQUENCECONTAINER_H_
-
+#endif// _POLYMORPHISMSEQUENCECONTAINER_H_

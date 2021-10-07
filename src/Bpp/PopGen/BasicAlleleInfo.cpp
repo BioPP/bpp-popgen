@@ -78,4 +78,3 @@ const std::string& BasicAlleleInfo::getId() const
 {
   return id_;
 }
-

@@ -95,5 +95,4 @@ public:
 };
 } // end of namespace bpp;
 
-#endif // _DARWIN_VAR_SINGLE_H_
-
+#endif// _DARWIN_VAR_SINGLE_H_

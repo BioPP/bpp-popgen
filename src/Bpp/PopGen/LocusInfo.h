@@ -147,5 +147,4 @@ public:
 };
 } // end of namespace bpp;
 
-#endif // _LOCUSINFO_H_
-
+#endif// _LOCUSINFO_H_

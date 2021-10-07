@@ -87,4 +87,3 @@ std::unique_ptr<DataSet> DataSetTools::buildDataSet(const PolymorphismSequenceCo
   }
   return d_s;
 }
-

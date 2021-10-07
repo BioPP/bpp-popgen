@@ -54,7 +54,7 @@ MonoAlleleMonolocusGenotype::MonoAlleleMonolocusGenotype(std::vector<size_t> all
 }
 
 MonoAlleleMonolocusGenotype::MonoAlleleMonolocusGenotype(const MonoAlleleMonolocusGenotype& mmg) :
-       	allele_index_(mmg.getAlleleIndex()[0]) {}
+  allele_index_(mmg.getAlleleIndex()[0]) {}
 
 // ** Class destructor: ********************************************************/
 
@@ -84,4 +84,3 @@ MonoAlleleMonolocusGenotype* MonoAlleleMonolocusGenotype::clone() const
 {
   return new MonoAlleleMonolocusGenotype(*this);
 }
-

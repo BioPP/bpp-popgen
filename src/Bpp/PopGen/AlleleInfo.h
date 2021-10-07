@@ -84,10 +84,9 @@ public:
 #else
   AlleleInfo*
 #endif
-  clone() const  = 0;
+  clone() const = 0;
   /** @} */
 };
 } // end of namespace bpp;
 
-#endif // _ALLELEINFO_H_
-
+#endif// _ALLELEINFO_H_

@@ -82,5 +82,4 @@ public:
 };
 } // end of namespace bpp;
 
-#endif // _MONOLOCUSGENOTYPE_H_
-
+#endif// _MONOLOCUSGENOTYPE_H_

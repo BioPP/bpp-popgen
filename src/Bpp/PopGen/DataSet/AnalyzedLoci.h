@@ -158,5 +158,4 @@ public:
 };
 } // end of namespace bpp;
 
-#endif // _ANALYZEDLOCI_H_
-
+#endif// _ANALYZEDLOCI_H_

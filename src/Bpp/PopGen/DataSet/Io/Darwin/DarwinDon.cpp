@@ -79,4 +79,3 @@ void DarwinDon::write(const string& path, const DataSet& data_set, bool overwrit
 {
   AbstractODataSet::write(path, data_set, overwrite);
 }
-
