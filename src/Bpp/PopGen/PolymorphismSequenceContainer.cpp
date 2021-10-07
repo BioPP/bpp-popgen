@@ -557,6 +557,7 @@ SiteContainer* PolymorphismSequenceContainer::toSiteContainer() const {
       sites->addSequence(seq);
     }
   }
+  sites->setSitePositions(getSitePositions());
   return sites.release();
 }
  
