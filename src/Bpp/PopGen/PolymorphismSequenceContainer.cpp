@@ -200,11 +200,11 @@ PolymorphismSequenceContainer::~PolymorphismSequenceContainer()
   clear();
 }
 
-/******************************************************************************/
+/*****************************************************************************/
 
-// ** Other methodes: *********************************************************/
+// ** Other methods: *********************************************************/
 
-Sequence* PolymorphismSequenceContainer::removeSequence(size_t index)
+std::shared_ptr<Sequence> PolymorphismSequenceContainer::removeSequence(size_t index)
 {
   if (index >= getNumberOfSequences())
     throw IndexOutOfBoundsException("PolymorphismSequenceContainer::removeSequence: index out of bounds.", index, 0, getNumberOfSequences());
@@ -216,7 +216,7 @@ Sequence* PolymorphismSequenceContainer::removeSequence(size_t index)
 
 /******************************************************************************/
 
-Sequence* PolymorphismSequenceContainer::removeSequence(const std::string& name)
+std::shared_ptr<Sequence> PolymorphismSequenceContainer::removeSequence(const std::string& name)
 {
   try
   {
@@ -234,7 +234,7 @@ void PolymorphismSequenceContainer::deleteSequence(size_t index)
 {
   try
   {
-    delete removeSequence(index);
+    removeSequence(index); //This returns a smart pointer, which automatically deletes the object.
   }
   catch (IndexOutOfBoundsException& ioobe)
   {
@@ -248,7 +248,7 @@ void PolymorphismSequenceContainer::deleteSequence(const std::string& name)
 {
   try
   {
-    delete removeSequence(name);
+    removeSequence(name); //This returns a smart pointer, which automatically deletes the object.
   }
   catch (SequenceNotFoundException& snfe)
   {

@@ -190,14 +190,14 @@ public:
    *
    * @throw IndexOutOfBoundsException if index excedes the number of sequences.
    */
-  Sequence* removeSequence(size_t index);
+  std::shared_ptr<Sequence> removeSequence(size_t index);
 
   /**
    * @brief Remove a sequence by name and return a pointer to this removed sequence.
    *
    * @throw SequenceNotFoundException if name is not found among the sequences' names.
    */
-  Sequence* removeSequence(const std::string& name);
+  std::shared_ptr<Sequence> removeSequence(const std::string& name);
 
   /**
    * @brief Delete a sequence by index.
