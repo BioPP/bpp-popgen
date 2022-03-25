@@ -52,7 +52,7 @@
 #include <Bpp/Seq/Sequence.h>
 #include <Bpp/Seq/SequenceExceptions.h>
 #include <Bpp/Seq/Container/OrderedSequenceContainer.h>
-#include <Bpp/Seq/Container/MapSequenceContainer.h>
+#include <Bpp/Seq/Container/VectorSequenceContainer.h>
 
 // From PopGenLib
 #include "Locality.h"
@@ -80,7 +80,7 @@ protected:
   std::unique_ptr<Date> date_;
   std::unique_ptr< Point2D<double> > coord_;
   const Locality<double>* locality_;
-  std::unique_ptr<MapSequenceContainer> sequences_;
+  std::unique_ptr<VectorSequenceContainer> sequences_;
   std::unique_ptr<MultilocusGenotype> genotype_;
 
 public:
@@ -340,7 +340,7 @@ public:
    * @return All the sequences' names of the individual in a vector of string.
    * @throw NullPointerException if there is no sequence container defined.
    */
-  std::vector<std::string> getSequencesNames() const;
+  std::vector<std::string> getSequenceNames() const;
 
   /**
    * @brief Get the sequences' positions.
@@ -348,7 +348,7 @@ public:
    * @return All the positions where a sequence is found.
    * @throw NullPointerException if there is no sequence container defined.
    */
-  std::vector<size_t> getSequencesPositions() const;
+  std::vector<size_t> getSequencePositions() const;
 
   /**
    * @brief Get the position of a sequence.
@@ -366,7 +366,7 @@ public:
   /**
    * @brief Set all the sequences with a MapSequenceContainer.
    */
-  void setSequences(const MapSequenceContainer& msc);
+  void setSequences(const VectorSequenceContainer& msc);
 
   /**
    * @brief Get a reference to the sequence container.
