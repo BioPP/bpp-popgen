@@ -10,8 +10,8 @@ Vendor: The Bio++ Project
 Source: %{name}-%{version}.tar.gz
 Summary: Bio++ Population Genetics library
 Group: Development/Libraries/C and C++
-Requires: bpp-core = %{version}
-Requires: bpp-seq = %{version}
+Requires: bpp-core3 = %{version}
+Requires: bpp-seq3 = %{version}
 
 BuildRoot: %{_builddir}/%{name}-root
 BuildRequires: cmake >= 2.8.11

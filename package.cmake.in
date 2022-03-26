@@ -1,11 +1,12 @@
-# CMake package file for Bio++ PopGen
+# CMake package file for Bio++ Phyl
 # Authors:
 #   Francois Gindraud (2017)
-# Created: 16/03/2017
+# Created: 08/03/2017
 @PACKAGE_INIT@
 
 if (NOT @PROJECT_NAME@_FOUND)
   # Deps
+  find_package (bpp-core3 @bpp-core_VERSION@ REQUIRED)
   find_package (bpp-seq3 @bpp-seq_VERSION@ REQUIRED)
   # Add targets
   include ("${CMAKE_CURRENT_LIST_DIR}/@PROJECT_NAME@-targets.cmake")
