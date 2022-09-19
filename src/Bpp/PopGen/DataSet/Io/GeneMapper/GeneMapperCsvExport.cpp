@@ -66,7 +66,7 @@ void GeneMapperCsvExport::read(std::istream& is, DataSet& data_set)
   /*
    * Feed a DataTable with the data
    */
-  DataTable* dtp = DataTable::read(is, "\t", true, -1);
+  auto dtp = DataTable::read(is, "\t", true, -1);
   DataTable& dt = *dtp;
 
   /*
@@ -179,7 +179,6 @@ void GeneMapperCsvExport::read(std::istream& is, DataSet& data_set)
     if (alleles.size())
       data_set.setIndividualMonolocusGenotypeInGroup(0, data_set.getIndividualPositionInGroup(0, dt(i, ind_col_index)), data_set.getAnalyzedLoci()->getLocusInfoPosition(dt(i, mark_col_index)), ma);
   }
-  delete dtp;
 }
 
 void GeneMapperCsvExport::read(const std::string& path, DataSet& data_set)
