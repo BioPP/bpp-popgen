@@ -407,7 +407,7 @@ vector<string> Group::getIndividualSequencesNames(size_t individual_position) co
     throw IndexOutOfBoundsException("Group::getIndividualSequencesNames: individual_position out of bounds.", individual_position, 0, getNumberOfIndividuals());
   try
   {
-    return individuals_[individual_position]->getSequencesNames();
+    return individuals_[individual_position]->getSequenceNames();
   }
   catch (NullPointerException& npe)
   {
@@ -447,11 +447,11 @@ size_t Group::getIndividualNumberOfSequences(size_t individual_position) const
   }
 }
 
-void Group::setIndividualSequences(size_t individual_position, const MapSequenceContainer& msc)
+void Group::setIndividualSequences(size_t individual_position, const OrderedSequenceContainer& osc)
 {
   if (individual_position >= getNumberOfIndividuals())
     throw IndexOutOfBoundsException("Group::setIndividualSequences: individual_position out of bounds.", individual_position, 0, getNumberOfIndividuals());
-  individuals_[individual_position]->setSequences(msc);
+  individuals_[individual_position]->setSequences(osc);
 }
 
 void Group::setIndividualGenotype(size_t individual_position, const MultilocusGenotype& genotype)
