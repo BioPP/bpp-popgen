@@ -56,23 +56,23 @@ namespace bpp
  * @author Sylvain Gaillard
  */
 class BiAlleleMonolocusGenotype :
-  public MonolocusGenotype
+  public virtual MonolocusGenotypeInterface
 {
 private:
-  std::vector<size_t> allele_index_;
+  std::vector<size_t> alleleIndex_;
 
 public:
   // Constructors and destructor
   /**
    * @brief Build a monolocus genotype containing two alleles.
    */
-  BiAlleleMonolocusGenotype(size_t first_allele_index,
-                            size_t second_allele_index);
+  BiAlleleMonolocusGenotype(size_t firstAlleleIndex,
+                            size_t secondAlleleIndex);
 
   /**
    * @brief Build a monolocus genotype containing two alleles.
    */
-  BiAlleleMonolocusGenotype(std::vector<size_t> allele_index);
+  BiAlleleMonolocusGenotype(std::vector<size_t> alleleIndex);
 
   /**
    * @brief Copy constructor.
@@ -82,10 +82,9 @@ public:
   /**
    * @brief Destroy the BiAlleleMonolocusGenotype.
    */
-  ~BiAlleleMonolocusGenotype();
+  virtual ~BiAlleleMonolocusGenotype();
 
 public:
-  // Other methodes
   /**
    * @brief The affectation operator.
    */
@@ -99,24 +98,37 @@ public:
   /**
    * @brief Get the first allele index.
    */
-  size_t getFirstAlleleIndex() const;
+  size_t getFirstAlleleIndex() const
+  {
+    return alleleIndex_[0];
+  }
 
   /**
    * @brief Get the second allele index.
    */
-  size_t getSecondAlleleIndex() const;
+  size_t getSecondAlleleIndex() const
+  {
+    return alleleIndex_[1];
+  }
 
   /**
    * @brief Test the homozygozity of the locus.
    */
-  bool isHomozygous() const;
+  bool isHomozygous() const
+  {
+    return alleleIndex_[0] == alleleIndex_[1];
+  }
 
   /**
    * @name The MonolocusGenotype interface:
    *
    * @{
    */
-  std::vector<size_t> getAlleleIndex() const;
+  std::vector<size_t> getAlleleIndex() const override
+  {
+    return alleleIndex_;
+  }
+
   /** @} */
 
   /**
@@ -124,7 +136,10 @@ public:
    *
    * @{
    */
-  BiAlleleMonolocusGenotype* clone() const;
+  BiAlleleMonolocusGenotype* clone() const override
+  {
+    return new BiAlleleMonolocusGenotype(*this);
+  }
   /** @} */
 };
 } // end of namespace bpp;

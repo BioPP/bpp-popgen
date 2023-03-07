@@ -62,17 +62,20 @@
 
 namespace bpp
 {
+using SimpleSiteContainerIterator = SimpleTemplateSiteContainerIterator<Site, Sequence, std::string>;
+using CompleteSiteContainerIterator = CompleteTemplateSiteContainerIterator<Site, Sequence, std::string>;
+using NoGapSiteContainerIterator = NoGapTemplateSiteContainerIterator<Site, Sequence, std::string>;
+
 /**
  * @brief Utilitary function to manipulate PolymorphismSequenceContainer
  *
  * @author Sylvain Gaillard
  */
-
 class PolymorphismSequenceContainerTools
 {
 public:
   // Class destructor:
-  ~PolymorphismSequenceContainerTools();
+  virtual ~PolymorphismSequenceContainerTools();
 
   /*******************************************************************************/
 
@@ -86,7 +89,9 @@ public:
    *
    * @throw Exception if the file is not in the specified format
    */
-  static PolymorphismSequenceContainer* read(const std::string& path, const Alphabet* alpha);
+  static std::unique_ptr<PolymorphismSequenceContainer> read(
+      const std::string& path,
+      std::shared_ptr<const Alphabet> alpha);
 
   /**
    * @brief Extract ingroup sequences from a PolymorphismSequenceContainer and create a new one.
@@ -95,7 +100,8 @@ public:
    *
    * @throw Exception if there is no ingroup sequence
    */
-  static PolymorphismSequenceContainer* extractIngroup(const PolymorphismSequenceContainer& psc);
+  static std::unique_ptr<PolymorphismSequenceContainer> extractIngroup(
+      const PolymorphismSequenceContainer& psc);
 
   /**
    * @brief Extract outgroup sequences from a PolymorphismSequenceContainer and create a new one.
@@ -104,7 +110,8 @@ public:
    *
    * @throw Exception if there is no outgroup sequence
    */
-  static PolymorphismSequenceContainer* extractOutgroup(const PolymorphismSequenceContainer& psc);
+  static std::unique_ptr<PolymorphismSequenceContainer> extractOutgroup(
+      const PolymorphismSequenceContainer& psc);
 
   /**
    * @brief Extract a special group from the PolymorphismSequenceContainer.
@@ -114,16 +121,19 @@ public:
    *
    * @throw GroupNotFoundException if group_id is not found.
    */
-  static PolymorphismSequenceContainer* extractGroup(const PolymorphismSequenceContainer& psc, size_t group_id);
+  static std::unique_ptr<PolymorphismSequenceContainer> extractGroup(
+      const PolymorphismSequenceContainer& psc,
+      size_t groupId);
 
   /**
    * @brief Extract selected sequences
    *
    * @param psc a PolymorphismSequenceContainer reference.
    * @param ss a sequence selection.
-   *
    */
-  static PolymorphismSequenceContainer* getSelectedSequences(const PolymorphismSequenceContainer& psc, const SequenceSelection& ss);
+  static std::unique_ptr<PolymorphismSequenceContainer> getSelectedSequences(
+      const PolymorphismSequenceContainer& psc,
+      const SequenceSelection& ss);
 
   /**
    * @brief Get a random set of sequences
@@ -132,14 +142,18 @@ public:
    * @param n the number of sequence to get
    * @param replace a boolean flag true for sampling with replacement
    */
-  static PolymorphismSequenceContainer* sample(const PolymorphismSequenceContainer& psc, size_t n, bool replace = true);
+  static std::unique_ptr<PolymorphismSequenceContainer> sample(
+      const PolymorphismSequenceContainer& psc,
+      size_t n,
+      bool replace = true);
 
   /**
    * @brief Retrieves sites without gaps from PolymorphismSequenceContainer.
    *
    * @param psc a PolymorphismSequenceContainer reference
    */
-  static PolymorphismSequenceContainer* getSitesWithoutGaps(const PolymorphismSequenceContainer& psc);
+  static std::unique_ptr<PolymorphismSequenceContainer> getSitesWithoutGaps(
+      const PolymorphismSequenceContainer& psc);
 
   /**
    * @brief Return number of sites without gaps in a PolymorphismSequenceContainer.
@@ -149,7 +163,9 @@ public:
    *
    * @throw Exception if there is no ingroup sequence
    */
-  static size_t getNumberOfNonGapSites(const PolymorphismSequenceContainer& psc, bool ingroup);
+  static size_t getNumberOfNonGapSites(
+      const PolymorphismSequenceContainer& psc,
+      bool ingroup);
 
   /**
    * @brief Return number of completely resolved sites in a PolymorphismSequenceContainer.
@@ -160,7 +176,9 @@ public:
    *
    * @throw Exception if there is no ingroup sequence
    */
-  static size_t getNumberOfCompleteSites(const PolymorphismSequenceContainer& psc, bool ingroup);
+  static size_t getNumberOfCompleteSites(
+      const PolymorphismSequenceContainer& psc,
+      bool ingroup);
 
 
   /**
@@ -168,7 +186,8 @@ public:
    *
    * @param psc a PolymorphismSequenceContainer reference
    */
-  static PolymorphismSequenceContainer* getCompleteSites(const PolymorphismSequenceContainer& psc);
+  static std::unique_ptr<PolymorphismSequenceContainer> getCompleteSites(
+      const PolymorphismSequenceContainer& psc);
 
 
   /**
@@ -176,19 +195,22 @@ public:
    *
    * @param psc a PolymorphismSequenceContainer reference
    */
-  static PolymorphismSequenceContainer* excludeFlankingGap(const PolymorphismSequenceContainer& psc);
+  static std::unique_ptr<PolymorphismSequenceContainer> excludeFlankingGap(
+      const PolymorphismSequenceContainer& psc);
 
   /**
    * @brief Get a PolymorphismSequenceContainer corresponding to a site selection annotated in the mase comments
    *
-   * Be carefull : in the new PolymorphismSequenceContainer the mase comments are lost
+   * Warning: in the new PolymorphismSequenceContainer the mase comments are lost
    * Information about cds positions and start codon is no more available
    *
    * @param psc a PolymorphismSequenceContainer.
    * @param setName The name of the set to retrieve.
    * @param phase a boolean set to true if you want to take the phase into account during the extraction. It removes the useless sites.
    */
-  static PolymorphismSequenceContainer* getSelectedSites(const PolymorphismSequenceContainer& psc, const std::string& setName, bool phase);
+  static std::unique_ptr<PolymorphismSequenceContainer> getSelectedSites(
+      const PolymorphismSequenceContainer& psc,
+      const std::string& setName, bool phase);
 
   /**
    * @brief Retrieve non-coding sites defined in the mase file header
@@ -198,7 +220,9 @@ public:
    * @param psc a PolymorphismSequenceContainer reference
    * @param setName name of the CDS site selection
    */
-  static PolymorphismSequenceContainer* getNonCodingSites(const PolymorphismSequenceContainer& psc, const std::string& setName);
+  static std::unique_ptr<PolymorphismSequenceContainer> getNonCodingSites(
+      const PolymorphismSequenceContainer& psc,
+      const std::string& setName);
 
   /**
    * @brief Retrieve sites at one codon position (1,2,3)
@@ -211,7 +235,10 @@ public:
    * @param setName name of the CDS site selection
    * @param pos position index.
    */
-  static PolymorphismSequenceContainer* getOnePosition(const PolymorphismSequenceContainer& psc, const std::string& setName, size_t pos);
+  static std::unique_ptr<PolymorphismSequenceContainer> getOnePosition(
+      const PolymorphismSequenceContainer& psc,
+      const std::string& setName,
+      size_t pos);
 
   /**
    * @brief Retrieve intron sites
@@ -222,7 +249,10 @@ public:
    * @param setName name of the CDS site selection
    * @param gCode The genetic code to use
    */
-  static PolymorphismSequenceContainer* getIntrons(const PolymorphismSequenceContainer& psc, const std::string& setName, const GeneticCode* gCode);
+  static std::unique_ptr<PolymorphismSequenceContainer> getIntrons(
+      const PolymorphismSequenceContainer& psc,
+      const std::string& setName,
+      const GeneticCode& gCode);
 
   /**
    * @brief Retrieve 5' sites
@@ -230,7 +260,9 @@ public:
    * @param psc a PolymorphismSequenceContainer
    * @param setName name of the CDS site selection
    */
-  static PolymorphismSequenceContainer* get5Prime(const PolymorphismSequenceContainer& psc, const std::string& setName);
+  static std::unique_ptr<PolymorphismSequenceContainer> get5Prime(
+      const PolymorphismSequenceContainer& psc,
+      const std::string& setName);
 
   /**
    * @brief Retrieve 3' sites
@@ -239,7 +271,10 @@ public:
    * @param setName name of the CDS site selection
    * @param gCode The genetic code to use
    */
-  static PolymorphismSequenceContainer* get3Prime(const PolymorphismSequenceContainer& psc, const std::string& setName, const GeneticCode* gCode);
+  static std::unique_ptr<PolymorphismSequenceContainer> get3Prime(
+      const PolymorphismSequenceContainer& psc,
+      const std::string& setName, 
+      const GeneticCode& gCode);
 
   /**
    * @brief Get the species name of the ingroup
@@ -256,7 +291,9 @@ public:
    *
    * @return A new PolymorphismSequenceContainer with only synonymous sites.
    */
-  static PolymorphismSequenceContainer* getSynonymousSites(const PolymorphismSequenceContainer& psc, const GeneticCode& gCode);
+  static std::unique_ptr<PolymorphismSequenceContainer> getSynonymousSites(
+      const PolymorphismSequenceContainer& psc,
+      const GeneticCode& gCode);
 
   /**
    * @brief Retrieve non-synonymous codon sites
@@ -266,7 +303,9 @@ public:
    *
    * @return A new PolymorphismSequenceContainer with only non-synonymous sites.
    */
-  static PolymorphismSequenceContainer* getNonSynonymousSites(const PolymorphismSequenceContainer& psc, const GeneticCode& gCode);
+  static std::unique_ptr<PolymorphismSequenceContainer> getNonSynonymousSites(
+      const PolymorphismSequenceContainer& psc,
+      const GeneticCode& gCode);
 };
 } // end of namespace bpp;
 

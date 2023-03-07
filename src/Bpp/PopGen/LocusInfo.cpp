@@ -50,45 +50,18 @@ unsigned int LocusInfo::HAPLOID = 1;
 unsigned int LocusInfo::DIPLOID = 2;
 unsigned int LocusInfo::UNKNOWN = 9999;
 
-// ** Class constructor: *******************************************************/
-
-LocusInfo::LocusInfo(const std::string& name, const unsigned int ploidy) : name_(name),
-  ploidy_(ploidy),
-  alleles_(vector<AlleleInfo*>()) {}
-
-LocusInfo::LocusInfo(const LocusInfo& locus_info) : name_(locus_info.getName()),
-  ploidy_(locus_info.getPloidy()),
-  alleles_(vector<AlleleInfo*>(locus_info.getNumberOfAlleles()))
-{
-  for (unsigned int i = 0; i < locus_info.getNumberOfAlleles(); i++)
-  {
-    alleles_[i] = dynamic_cast<AlleleInfo*>(locus_info.getAlleleInfoByKey(i).clone());
-  }
-}
-
-// ** Class destructor: *******************************************************/
-
-LocusInfo::~LocusInfo()
-{
-  for (unsigned int i = 0; i < alleles_.size(); i++)
-  {
-    delete alleles_[i];
-  }
-  alleles_.clear();
-}
-
-// ** Other methodes: *********************************************************/
+// ** Other methods: *********************************************************/
 
 // AlleleInfos
 void LocusInfo::addAlleleInfo(const AlleleInfo& allele)
 {
   // Check if the allele id is not already in use
-  for (unsigned int i = 0; i < alleles_.size(); i++)
+  for (const auto& existingAllele : alleles_)
   {
-    if (alleles_[i]->getId() == allele.getId())
+    if (existingAllele->getId() == allele.getId())
       throw BadIdentifierException("LocusInfo::addAlleleInfo: Id already in use.", allele.getId());
   }
-  alleles_.push_back(allele.clone());
+  alleles_.push_back(unique_ptr<AlleleInfo>(allele.clone()));
 }
 
 const AlleleInfo& LocusInfo::getAlleleInfoById(const std::string& id) const
@@ -96,7 +69,7 @@ const AlleleInfo& LocusInfo::getAlleleInfoById(const std::string& id) const
   for (unsigned int i = 0; i < alleles_.size(); i++)
   {
     if (alleles_[i]->getId() == id)
-      return *(alleles_[i]);
+      return *alleles_[i];
   }
   throw AlleleNotFoundException("LocusInfo::getAlleleInfoById: AlleleInfo id unknown.", id);
 }
@@ -110,7 +83,7 @@ const AlleleInfo& LocusInfo::getAlleleInfoByKey(size_t key) const
 
 unsigned int LocusInfo::getAlleleInfoKey(const std::string& id) const
 {
-  for (unsigned int i = 0; i < alleles_.size(); i++)
+  for (unsigned int i = 0; i < alleles_.size(); ++i)
   {
     if (alleles_[i]->getId() == id)
       return i;
@@ -118,16 +91,3 @@ unsigned int LocusInfo::getAlleleInfoKey(const std::string& id) const
   throw AlleleNotFoundException("LocusInfo::getAlleleInfoKey: AlleleInfo id not found.", id);
 }
 
-size_t LocusInfo::getNumberOfAlleles() const
-{
-  return alleles_.size();
-}
-
-void LocusInfo::clear()
-{
-  for (unsigned int i = 0; i < alleles_.size(); i++)
-  {
-    delete alleles_[i];
-  }
-  alleles_.clear();
-}

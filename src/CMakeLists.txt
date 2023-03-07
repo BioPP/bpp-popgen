@@ -10,7 +10,6 @@ set (CPP_FILES
   Bpp/PopGen/BasicAlleleInfo.cpp
   Bpp/PopGen/BiAlleleMonolocusGenotype.cpp
   Bpp/PopGen/DataSet/AnalyzedLoci.cpp
-  Bpp/PopGen/DataSet/AnalyzedSequences.cpp
   Bpp/PopGen/DataSet/DataSet.cpp
   Bpp/PopGen/DataSet/DataSetTools.cpp
   Bpp/PopGen/DataSet/Date.cpp
@@ -24,7 +23,6 @@ set (CPP_FILES
   Bpp/PopGen/DataSet/Io/Genepop/Genepop.cpp
   Bpp/PopGen/DataSet/Io/Genetix/Genetix.cpp
   Bpp/PopGen/DataSet/Io/PopgenlibIO.cpp
-  Bpp/PopGen/DataSet/MultiSeqIndividual.cpp
   Bpp/PopGen/GeneralExceptions.cpp
   Bpp/PopGen/LocusInfo.cpp
   Bpp/PopGen/MonoAlleleMonolocusGenotype.cpp

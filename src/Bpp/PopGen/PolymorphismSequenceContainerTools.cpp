@@ -49,51 +49,25 @@ PolymorphismSequenceContainerTools::~PolymorphismSequenceContainerTools() {}
 
 /******************************************************************************/
 
-PolymorphismSequenceContainer* PolymorphismSequenceContainerTools::read(const std::string& path, const Alphabet* alpha)
+unique_ptr<PolymorphismSequenceContainer> PolymorphismSequenceContainerTools::read(
+    const std::string& path,
+    shared_ptr<const Alphabet> alpha)
 {
   Mase ms;
   string key;
-  const OrderedSequenceContainer* seqc = 0;
-  try
+  auto seqc = ms.readSequences(path, alpha);
+  auto psc = make_unique<PolymorphismSequenceContainer>(*seqc);
+  Comments maseFileHeader = seqc->getComments();
+  auto groupMap = MaseTools::getAvailableSequenceSelections(maseFileHeader);
+  for (auto& mi : groupMap)
   {
-    seqc = dynamic_cast<OrderedSequenceContainer*>(ms.readSequences(path, alpha ));
-  }
-  catch (Exception& e)
-  {
-    if (seqc != 0)
-      delete seqc;
-    throw e;
-  }
-  PolymorphismSequenceContainer* psc = new PolymorphismSequenceContainer(*seqc);
-  Comments maseFileHeader = seqc->getGeneralComments();
-  delete seqc;
-  map<string, size_t> groupMap = MaseTools::getAvailableSequenceSelections(maseFileHeader);
-  for (map<string, size_t>::iterator mi = groupMap.begin(); mi != groupMap.end(); mi++)
-  {
-    key = mi->first;
+    key = mi.first;
     if (key.compare(0, 8, "OUTGROUP") == 0)
     {
-      SequenceSelection ss;
-      try
+      auto ss = MaseTools::getSequenceSet(maseFileHeader, key);
+      for (size_t i = 0; i != ss.size(); ++i)
       {
-        ss = MaseTools::getSequenceSet(maseFileHeader, key);
-      }
-      catch (IOException& ioe)
-      {
-        delete psc;
-        throw ioe;
-      }
-      for (size_t i = 0; i != ss.size(); i++)
-      {
-        try
-        {
-          psc->setAsOutgroupMember(ss[i]);
-        }
-        catch (SequenceNotFoundException& snfe)
-        {
-          delete psc;
-          throw snfe;
-        }
+        psc->setAsOutgroupMember(ss[i]);
       }
     }
   }
@@ -102,18 +76,18 @@ PolymorphismSequenceContainer* PolymorphismSequenceContainerTools::read(const st
 
 /******************************************************************************/
 
-PolymorphismSequenceContainer* PolymorphismSequenceContainerTools::extractIngroup (const PolymorphismSequenceContainer& psc)
+unique_ptr<PolymorphismSequenceContainer> PolymorphismSequenceContainerTools::extractIngroup(
+    const PolymorphismSequenceContainer& psc)
 {
   SequenceSelection ss;
-  PolymorphismSequenceContainer* psci = dynamic_cast<PolymorphismSequenceContainer*>(psc.clone());
-  for (size_t i = 0; i < psc.getNumberOfSequences(); i++)
+  auto psci = make_unique<PolymorphismSequenceContainer>(psc);
+  for (size_t i = 0; i < psc.getNumberOfSequences(); ++i)
   {
     if (!psc.isIngroupMember(i))
       ss.push_back(i);
   }
   if (ss.size() == psc.getNumberOfSequences())
   {
-    delete psci;
     throw Exception("PolymorphismSequenceContainerTools::extractIngroup: no Ingroup sequences found.");
   }
   for (size_t i = ss.size(); i > 0; --i)
@@ -125,18 +99,18 @@ PolymorphismSequenceContainer* PolymorphismSequenceContainerTools::extractIngrou
 
 /******************************************************************************/
 
-PolymorphismSequenceContainer* PolymorphismSequenceContainerTools::extractOutgroup(const PolymorphismSequenceContainer& psc)
+unique_ptr<PolymorphismSequenceContainer> PolymorphismSequenceContainerTools::extractOutgroup(
+    const PolymorphismSequenceContainer& psc)
 {
   SequenceSelection ss;
-  PolymorphismSequenceContainer* psci = dynamic_cast<PolymorphismSequenceContainer*>(psc.clone());
-  for (size_t i = 0; i < psc.getNumberOfSequences(); i++)
+  auto psci = make_unique<PolymorphismSequenceContainer>(psc);
+  for (size_t i = 0; i < psc.getNumberOfSequences(); ++i)
   {
     if (psc.isIngroupMember(i) )
       ss.push_back(i);
   }
   if (ss.size() == psc.getNumberOfSequences())
   {
-    delete psci;
     throw Exception("PolymorphismSequenceContainerTools::extractOutgroup: no Outgroup sequences found.");
   }
   for (size_t i = ss.size(); i > 0; i--)
@@ -148,19 +122,20 @@ PolymorphismSequenceContainer* PolymorphismSequenceContainerTools::extractOutgro
 
 /******************************************************************************/
 
-PolymorphismSequenceContainer* PolymorphismSequenceContainerTools::extractGroup(const PolymorphismSequenceContainer& psc, size_t group_id)
+unique_ptr<PolymorphismSequenceContainer> PolymorphismSequenceContainerTools::extractGroup(
+    const PolymorphismSequenceContainer& psc,
+    size_t groupId)
 {
   SequenceSelection ss;
-  PolymorphismSequenceContainer* psci = dynamic_cast<PolymorphismSequenceContainer*>(psc.clone());
-  for (size_t i = 0; i < psc.getNumberOfSequences(); i++)
+  auto psci = make_unique<PolymorphismSequenceContainer>(psc);
+  for (size_t i = 0; i < psc.getNumberOfSequences(); ++i)
   {
-    if (psc.getGroupId(i) != group_id)
+    if (psc.getGroupId(i) != groupId)
       ss.push_back(i);
   }
   if (ss.size() == psc.getNumberOfSequences())
   {
-    delete psci;
-    throw GroupNotFoundException("PolymorphismSequenceContainerTools::extractGroup: group_id not found.", group_id);
+    throw GroupNotFoundException("PolymorphismSequenceContainerTools::extractGroup: group_id not found.", groupId);
   }
   for (size_t i = ss.size(); i > 0; i--)
   {
@@ -171,12 +146,15 @@ PolymorphismSequenceContainer* PolymorphismSequenceContainerTools::extractGroup(
 
 /******************************************************************************/
 
-PolymorphismSequenceContainer* PolymorphismSequenceContainerTools::getSelectedSequences(const PolymorphismSequenceContainer& psc, const SequenceSelection& ss)
+unique_ptr<PolymorphismSequenceContainer> PolymorphismSequenceContainerTools::getSelectedSequences(
+  const PolymorphismSequenceContainer& psc,
+  const SequenceSelection& ss)
 {
-  PolymorphismSequenceContainer* newpsc = new PolymorphismSequenceContainer(psc.getAlphabet());
-  for (size_t i = 0; i < ss.size(); i++)
+  auto newpsc = make_unique<PolymorphismSequenceContainer>(psc.getAlphabet());
+  for (size_t i = 0; i < ss.size(); ++i)
   {
-    newpsc->addSequenceWithFrequency(psc.getSequence(ss[i]), psc.getSequenceCount(i), false);
+    auto tmpSeq = make_unique<Sequence>(psc.sequence(ss[i]));
+    newpsc->addSequenceWithFrequency(tmpSeq->getName(), tmpSeq, psc.getSequenceCount(i));
     if (psc.isIngroupMember(i))
       newpsc->setAsIngroupMember(i);
     else
@@ -185,13 +163,16 @@ PolymorphismSequenceContainer* PolymorphismSequenceContainerTools::getSelectedSe
       newpsc->setGroupId(i, psc.getGroupId(i));
     }
   }
-  newpsc->setGeneralComments(psc.getGeneralComments());
+  newpsc->setComments(psc.getComments());
   return newpsc;
 }
 
 /******************************************************************************/
 
-PolymorphismSequenceContainer* PolymorphismSequenceContainerTools::sample(const PolymorphismSequenceContainer& psc, size_t n, bool replace)
+unique_ptr<PolymorphismSequenceContainer> PolymorphismSequenceContainerTools::sample(
+    const PolymorphismSequenceContainer& psc,
+    size_t n,
+    bool replace)
 {
   size_t nbSeq = psc.getNumberOfSequences();
   vector<size_t> v;
@@ -201,19 +182,20 @@ PolymorphismSequenceContainer* PolymorphismSequenceContainerTools::sample(const 
   }
   vector<size_t> vv(n);
   RandomTools::getSample(v, vv, replace);
-  PolymorphismSequenceContainer* newpsc = PolymorphismSequenceContainerTools::getSelectedSequences(psc, vv);
+  auto newpsc = PolymorphismSequenceContainerTools::getSelectedSequences(psc, vv);
   return newpsc;
 }
 
 /******************************************************************************/
 
-PolymorphismSequenceContainer* PolymorphismSequenceContainerTools::getSitesWithoutGaps (const PolymorphismSequenceContainer& psc)
+unique_ptr<PolymorphismSequenceContainer> PolymorphismSequenceContainerTools::getSitesWithoutGaps(
+    const PolymorphismSequenceContainer& psc)
 {
-  vector<string> seqNames = psc.getSequencesNames();
-  PolymorphismSequenceContainer* noGapCont = new PolymorphismSequenceContainer(psc.getNumberOfSequences(), psc.getAlphabet());
-  noGapCont->setSequencesNames(seqNames, false);
+  auto seqNames = psc.getSequenceNames();
+  auto noGapCont = make_unique<PolymorphismSequenceContainer>(psc.getNumberOfSequences(), psc.getAlphabet());
+  noGapCont->setSequenceNames(seqNames, false);
   size_t nbSeq = psc.getNumberOfSequences();
-  for (size_t i = 0; i < nbSeq; i++)
+  for (size_t i = 0; i < nbSeq; ++i)
   {
     noGapCont->setSequenceCount(i, psc.getSequenceCount(i));
     if (psc.isIngroupMember(i))
@@ -225,80 +207,67 @@ PolymorphismSequenceContainer* PolymorphismSequenceContainerTools::getSitesWitho
     }
   }
   NoGapSiteContainerIterator ngsi(psc);
-  while (ngsi.hasMoreSites())
-    noGapCont->addSite(*ngsi.nextSite());
+  while (ngsi.hasMoreSites()) {
+    auto tmpSite = make_unique<Site>(ngsi.nextSite());
+    noGapCont->addSite(tmpSite);
+  }
   return noGapCont;
 }
 
 /******************************************************************************/
 
-size_t PolymorphismSequenceContainerTools::getNumberOfNonGapSites(const PolymorphismSequenceContainer& psc, bool ingroup)
+size_t PolymorphismSequenceContainerTools::getNumberOfNonGapSites(
+    const PolymorphismSequenceContainer& psc,
+    bool ingroup)
 {
   size_t count = psc.getNumberOfSites();
-  PolymorphismSequenceContainer* npsc = 0;
-  SimpleSiteContainerIterator* ssi;
+  unique_ptr<PolymorphismSequenceContainer> npsc = nullptr;
+  unique_ptr<SimpleSiteContainerIterator> ssi = nullptr;
   if (ingroup)
   {
-    try
-    {
-      npsc = extractIngroup(psc);
-    }
-    catch (Exception& e)
-    {
-      if (npsc != NULL)
-        delete npsc;
-      throw e;
-    }
-    ssi = new SimpleSiteContainerIterator(*npsc);
+    npsc = extractIngroup(psc);
+    ssi.reset(new SimpleSiteContainerIterator(*npsc));
   }
   else
-    ssi = new SimpleSiteContainerIterator(psc);
+    ssi.reset(new SimpleTemplateSiteContainerIterator<Site, Sequence, string>(psc));
   while (ssi->hasMoreSites())
-    if (SiteTools::hasGap(*ssi->nextSite()))
+    if (SiteTools::hasGap(ssi->nextSite()))
       count--;
-  delete ssi;
   return count;
 }
 
 /******************************************************************************/
 
-size_t PolymorphismSequenceContainerTools::getNumberOfCompleteSites(const PolymorphismSequenceContainer& psc, bool ingroup)
+size_t PolymorphismSequenceContainerTools::getNumberOfCompleteSites(
+    const PolymorphismSequenceContainer& psc,
+    bool ingroup)
 {
   size_t count = psc.getNumberOfSites();
-  PolymorphismSequenceContainer* npsc = 0;
-  SimpleSiteContainerIterator* ssi;
+  unique_ptr<PolymorphismSequenceContainer> npsc = nullptr;
+  unique_ptr<SimpleSiteContainerIterator> ssi = nullptr;
   if (ingroup)
   {
-    try
-    {
-      npsc = extractIngroup(psc);
-    }
-    catch (Exception& e)
-    {
-      if (npsc != NULL)
-        delete npsc;
-      throw e;
-    }
-    ssi = new SimpleSiteContainerIterator(*npsc);
+    npsc = extractIngroup(psc);
+    ssi.reset(new SimpleSiteContainerIterator(*npsc));
   }
   else
-    ssi = new SimpleSiteContainerIterator(psc);
+    ssi.reset(new SimpleSiteContainerIterator(psc));
   while (ssi->hasMoreSites())
-    if (!SiteTools::isComplete(*ssi->nextSite()))
+    if (!SiteTools::isComplete(ssi->nextSite()))
       count--;
-  delete ssi;
   return count;
 }
 
 /******************************************************************************/
 
-PolymorphismSequenceContainer* PolymorphismSequenceContainerTools::getCompleteSites (const PolymorphismSequenceContainer& psc)
+unique_ptr<PolymorphismSequenceContainer> PolymorphismSequenceContainerTools::getCompleteSites(
+    const PolymorphismSequenceContainer& psc)
 {
-  vector<string> seqNames = psc.getSequencesNames();
-  PolymorphismSequenceContainer* complete = new PolymorphismSequenceContainer(psc.getNumberOfSequences(), psc.getAlphabet());
-  complete->setSequencesNames(seqNames, false);
+  auto seqNames = psc.getSequenceNames();
+  auto complete = make_unique<PolymorphismSequenceContainer>(psc.getNumberOfSequences(), psc.getAlphabet());
+  complete->setSequenceNames(seqNames, false);
   size_t nbSeq = psc.getNumberOfSequences();
-  for (size_t i = 0; i < nbSeq; i++)
+  for (size_t i = 0; i < nbSeq; ++i)
   {
     complete->setSequenceCount(i, psc.getSequenceCount(i));
     if (psc.isIngroupMember(i))
@@ -310,21 +279,24 @@ PolymorphismSequenceContainer* PolymorphismSequenceContainerTools::getCompleteSi
     }
   }
   CompleteSiteContainerIterator csi(psc);
-  while (csi.hasMoreSites())
-    complete->addSite(*csi.nextSite());
+  while (csi.hasMoreSites()) {
+    auto tmpSite = make_unique<Site>(csi.nextSite());
+    complete->addSite(tmpSite);
+  }
   return complete;
 }
 
 /******************************************************************************/
 
-PolymorphismSequenceContainer* PolymorphismSequenceContainerTools::excludeFlankingGap(const PolymorphismSequenceContainer& psc)
+unique_ptr<PolymorphismSequenceContainer> PolymorphismSequenceContainerTools::excludeFlankingGap(
+    const PolymorphismSequenceContainer& psc)
 {
-  PolymorphismSequenceContainer* psci = dynamic_cast<PolymorphismSequenceContainer*>(psc.clone());
-  while (SiteTools::hasGap(psci->getSite(0)))
+  auto psci = make_unique<PolymorphismSequenceContainer>(psc);
+  while (SiteTools::hasGap(psci->site(0)))
     psci->deleteSite(0);
   size_t i = 0;
   size_t n = psci->getNumberOfSites();
-  while (SiteTools::hasGap(psci->getSite(n - i - 1)))
+  while (SiteTools::hasGap(psci->site(n - i - 1)))
   {
     psci->deleteSite(n - i - 1);
     i++;
@@ -334,19 +306,22 @@ PolymorphismSequenceContainer* PolymorphismSequenceContainerTools::excludeFlanki
 
 /******************************************************************************/
 
-PolymorphismSequenceContainer* PolymorphismSequenceContainerTools::getSelectedSites(const PolymorphismSequenceContainer& psc, const std::string& setName, bool phase)
+unique_ptr<PolymorphismSequenceContainer> PolymorphismSequenceContainerTools::getSelectedSites(
+    const PolymorphismSequenceContainer& psc,
+    const string& setName,
+    bool phase)
 {
-  SiteContainer* pscc = MaseTools::getSelectedSites(psc, setName);
-  Comments maseFileHeader = psc.getGeneralComments();
+  auto pscc = MaseTools::getSelectedSites(psc, setName);
+  auto maseFileHeader = psc.getComments();
   if (phase)
   {
-    for (size_t i = 1; i < MaseTools::getPhase(maseFileHeader, setName); i++)
+    for (size_t i = 1; i < MaseTools::getPhase(maseFileHeader, setName); ++i)
     {
       pscc->deleteSite(0);
     }
   }
-  PolymorphismSequenceContainer* psci = new PolymorphismSequenceContainer(*pscc);
-  for (size_t i = 0; i < psc.getNumberOfSequences(); i++)
+  auto psci = make_unique<PolymorphismSequenceContainer>(*pscc);
+  for (size_t i = 0; i < psc.getNumberOfSequences(); ++i)
   {
     if (psc.isIngroupMember(i))
       psci->setAsIngroupMember(i);
@@ -356,26 +331,27 @@ PolymorphismSequenceContainer* PolymorphismSequenceContainerTools::getSelectedSi
       psci->setGroupId(i, psc.getGroupId(i));
     }
   }
-  psci->deleteGeneralComments();
-  delete pscc;
+  psci->clearComments();
   return psci;
 }
 
 /******************************************************************************/
 
-PolymorphismSequenceContainer* PolymorphismSequenceContainerTools::getNonCodingSites(const PolymorphismSequenceContainer& psc, const std::string& setName)
+unique_ptr<PolymorphismSequenceContainer> PolymorphismSequenceContainerTools::getNonCodingSites(
+    const PolymorphismSequenceContainer& psc,
+    const string& setName)
 {
   SiteSelection ss;
-  Comments maseFileHeader = psc.getGeneralComments();
-  SiteSelection codss = MaseTools::getSiteSet(maseFileHeader, setName);
-  for (size_t i = 0; i < psc.getNumberOfSites(); i++)
+  auto maseFileHeader = psc.getComments();
+  auto codss = MaseTools::getSiteSet(maseFileHeader, setName);
+  for (size_t i = 0; i < psc.getNumberOfSites(); ++i)
   {
     if (find(codss.begin(), codss.end(), i) == codss.end())
       ss.push_back(i);
   }
-  const SiteContainer* sc = SiteContainerTools::getSelectedSites(psc, ss);
-  PolymorphismSequenceContainer* psci = new PolymorphismSequenceContainer(*sc);
-  for (size_t i = 0; i < psc.getNumberOfSequences(); i++)
+  auto sc = SiteContainerTools::getSelectedSites(psc, ss);
+  auto psci = make_unique<PolymorphismSequenceContainer>(*sc);
+  for (size_t i = 0; i < psc.getNumberOfSequences(); ++i)
   {
     if (psc.isIngroupMember(i))
       psci->setAsIngroupMember(i);
@@ -385,15 +361,17 @@ PolymorphismSequenceContainer* PolymorphismSequenceContainerTools::getNonCodingS
       psci->setGroupId(i, psc.getGroupId(i));
     }
   }
-  delete sc;
   return psci;
 }
 
 /******************************************************************************/
 
-PolymorphismSequenceContainer* PolymorphismSequenceContainerTools::getOnePosition(const PolymorphismSequenceContainer& psc, const std::string& setName, size_t pos)
+unique_ptr<PolymorphismSequenceContainer> PolymorphismSequenceContainerTools::getOnePosition(
+    const PolymorphismSequenceContainer& psc,
+    const string& setName,
+    size_t pos)
 {
-  Comments maseFileHeader = psc.getGeneralComments();
+  auto maseFileHeader = psc.getComments();
   size_t start;
   try
   {
@@ -405,7 +383,7 @@ PolymorphismSequenceContainer* PolymorphismSequenceContainerTools::getOnePositio
   }
   SiteSelection ss;
   size_t i;
-  if ((int)pos - (int)start >= 0)
+  if (static_cast<int>(pos) - static_cast<int>(start) >= 0)
     i = pos - start;
   else
     i = pos - start + 3;
@@ -414,9 +392,9 @@ PolymorphismSequenceContainer* PolymorphismSequenceContainerTools::getOnePositio
     ss.push_back(i);
     i += 3;
   }
-  const SiteContainer* sc = SiteContainerTools::getSelectedSites(psc, ss);
-  PolymorphismSequenceContainer* newpsc = new PolymorphismSequenceContainer(*sc);
-  for (size_t j = 0; j < psc.getNumberOfSequences(); j++)
+  auto sc = SiteContainerTools::getSelectedSites(psc, ss);
+  auto newpsc = make_unique<PolymorphismSequenceContainer>(*sc);
+  for (size_t j = 0; j < psc.getNumberOfSequences(); ++j)
   {
     if (psc.isIngroupMember(j))
       newpsc->setAsIngroupMember(j);
@@ -426,42 +404,32 @@ PolymorphismSequenceContainer* PolymorphismSequenceContainerTools::getOnePositio
       newpsc->setGroupId(i, psc.getGroupId(j));
     }
   }
-  delete sc;
   return newpsc;
 }
 
 /******************************************************************************/
 
-PolymorphismSequenceContainer* PolymorphismSequenceContainerTools::getIntrons(
+unique_ptr<PolymorphismSequenceContainer> PolymorphismSequenceContainerTools::getIntrons(
   const PolymorphismSequenceContainer& psc,
-  const std::string& setName,
-  const GeneticCode* gCode)
+  const string& setName,
+  const GeneticCode& gCode)
 {
-  Comments maseFileHeader = psc.getGeneralComments();
+  auto maseFileHeader = psc.getComments();
   SiteSelection ss;
-  SiteSelection codss = MaseTools::getSiteSet(maseFileHeader, setName);
-  size_t start;
-  try
-  {
-    start = MaseTools::getPhase(maseFileHeader, setName);
-  }
-  catch (Exception& e)
-  {
-    throw e;
-  }
-
+  auto codss = MaseTools::getSiteSet(maseFileHeader, setName);
+  size_t start = MaseTools::getPhase(maseFileHeader, setName);
   size_t first = 0, last = psc.getNumberOfSites();
   // Check if the first codon is AUG
   if (start == 1 &&
-      psc.getSite(codss[0]).getValue(0) == 0 &&
-      psc.getSite(codss[1]).getValue(0) == 3 &&
-      psc.getSite(codss[2]).getValue(0) == 2)
+      psc.site(codss[0]).getValue(0) == 0 &&
+      psc.site(codss[1]).getValue(0) == 3 &&
+      psc.site(codss[2]).getValue(0) == 2)
     first = codss[0];
   // Check if the last codon is a STOP one
-  int c1 = psc.getSite(codss[codss.size() - 3]).getValue(0);
-  int c2 = psc.getSite(codss[codss.size() - 2]).getValue(0);
-  int c3 = psc.getSite(codss[codss.size() - 1]).getValue(0);
-  if (gCode->isStop(gCode->getSourceAlphabet()->getCodon(c1, c2, c3)))
+  int c1 = psc.site(codss[codss.size() - 3]).getValue(0);
+  int c2 = psc.site(codss[codss.size() - 2]).getValue(0);
+  int c3 = psc.site(codss[codss.size() - 1]).getValue(0);
+  if (gCode.isStop(gCode.codonAlphabet().getCodon(c1, c2, c3)))
     last = codss[codss.size() - 1];
   // Keep sites between AUG and STOP
   for (size_t i = first; i < last; i++)
@@ -471,9 +439,9 @@ PolymorphismSequenceContainer* PolymorphismSequenceContainerTools::getIntrons(
       ss.push_back(i);
     }
   }
-  const SiteContainer* sc = SiteContainerTools::getSelectedSites(psc, ss);
-  PolymorphismSequenceContainer* psci = new PolymorphismSequenceContainer(*sc);
-  for (size_t i = 0; i < psc.getNumberOfSequences(); i++)
+  auto sc = SiteContainerTools::getSelectedSites(psc, ss);
+  auto psci = make_unique<PolymorphismSequenceContainer>(*sc);
+  for (size_t i = 0; i < psc.getNumberOfSequences(); ++i)
   {
     if (psc.isIngroupMember(i))
       psci->setAsIngroupMember(i);
@@ -483,35 +451,36 @@ PolymorphismSequenceContainer* PolymorphismSequenceContainerTools::getIntrons(
       psci->setGroupId(i, psc.getGroupId(i));
     }
   }
-  delete sc;
   return psci;
 }
 
 /******************************************************************************/
 
-PolymorphismSequenceContainer* PolymorphismSequenceContainerTools::get5Prime(const PolymorphismSequenceContainer& psc, const std::string& setName)
+unique_ptr<PolymorphismSequenceContainer> PolymorphismSequenceContainerTools::get5Prime(
+    const PolymorphismSequenceContainer& psc,
+    const string& setName)
 {
-  Comments maseFileHeader = psc.getGeneralComments();
+  auto maseFileHeader = psc.getComments();
   SiteSelection ss;
-  SiteSelection codss = MaseTools::getSiteSet(maseFileHeader, setName);
+  auto codss = MaseTools::getSiteSet(maseFileHeader, setName);
   size_t start = MaseTools::getPhase(maseFileHeader, setName);
   size_t last = 0;
   // Check if the first Codon is AUG
   if (start == 1 &&
-      psc.getSite(codss[0]).getValue(0) == 0 &&
-      psc.getSite(codss[1]).getValue(0) == 3 &&
-      psc.getSite(codss[2]).getValue(0) == 2)
+      psc.site(codss[0]).getValue(0) == 0 &&
+      psc.site(codss[1]).getValue(0) == 3 &&
+      psc.site(codss[2]).getValue(0) == 2)
     last = codss[0];
-  for (size_t i = 0; i < last; i++)
+  for (size_t i = 0; i < last; ++i)
   {
     if (find(codss.begin(), codss.end(), i) == codss.end())
     {
       ss.push_back(i);
     }
   }
-  const SiteContainer* sc = SiteContainerTools::getSelectedSites(psc, ss);
-  PolymorphismSequenceContainer* psci = new PolymorphismSequenceContainer(*sc);
-  for (size_t i = 0; i < psc.getNumberOfSequences(); i++)
+  auto sc = SiteContainerTools::getSelectedSites(psc, ss);
+  auto psci = make_unique<PolymorphismSequenceContainer>(*sc);
+  for (size_t i = 0; i < psc.getNumberOfSequences(); ++i)
   {
     if (psc.isIngroupMember(i))
       psci->setAsIngroupMember(i);
@@ -521,37 +490,36 @@ PolymorphismSequenceContainer* PolymorphismSequenceContainerTools::get5Prime(con
       psci->setGroupId(i, psc.getGroupId(i));
     }
   }
-  delete sc;
   return psci;
 }
 
 /******************************************************************************/
 
-PolymorphismSequenceContainer* PolymorphismSequenceContainerTools::get3Prime(
+unique_ptr<PolymorphismSequenceContainer> PolymorphismSequenceContainerTools::get3Prime(
   const PolymorphismSequenceContainer& psc,
-  const std::string& setName,
-  const GeneticCode* gCode)
+  const string& setName,
+  const GeneticCode& gCode)
 {
-  Comments maseFileHeader = psc.getGeneralComments();
+  auto maseFileHeader = psc.getComments();
   SiteSelection ss;
-  SiteSelection codss = MaseTools::getSiteSet(maseFileHeader, setName);
+  auto codss = MaseTools::getSiteSet(maseFileHeader, setName);
   size_t first = psc.getNumberOfSites() - 1;
   // Check if the last codon is a STOP one
-  int c1 = psc.getSite(codss[codss.size() - 3]).getValue(0);
-  int c2 = psc.getSite(codss[codss.size() - 2]).getValue(0);
-  int c3 = psc.getSite(codss[codss.size() - 1]).getValue(0);
-  if (gCode->isStop(gCode->getSourceAlphabet()->getCodon(c1, c2, c3)))
+  int c1 = psc.site(codss[codss.size() - 3]).getValue(0);
+  int c2 = psc.site(codss[codss.size() - 2]).getValue(0);
+  int c3 = psc.site(codss[codss.size() - 1]).getValue(0);
+  if (gCode.isStop(gCode.codonAlphabet().getCodon(c1, c2, c3)))
     first = codss[codss.size() - 1];
-  for (size_t i = first; i < psc.getNumberOfSites(); i++)
+  for (size_t i = first; i < psc.getNumberOfSites(); ++i)
   {
     if (find(codss.begin(), codss.end(), i) == codss.end())
     {
       ss.push_back(i);
     }
   }
-  const SiteContainer* sc = SiteContainerTools::getSelectedSites(psc, ss);
-  PolymorphismSequenceContainer* psci = new PolymorphismSequenceContainer(*sc);
-  for (size_t i = 0; i < psc.getNumberOfSequences(); i++)
+  auto sc = SiteContainerTools::getSelectedSites(psc, ss);
+  auto psci = make_unique<PolymorphismSequenceContainer>(*sc);
+  for (size_t i = 0; i < psc.getNumberOfSequences(); ++i)
   {
     if (psc.isIngroupMember(i))
       psci->setAsIngroupMember(i);
@@ -561,7 +529,6 @@ PolymorphismSequenceContainer* PolymorphismSequenceContainerTools::get3Prime(
       psci->setGroupId(i, psc.getGroupId(i));
     }
   }
-  delete sc;
   return psci;
 }
 
@@ -571,17 +538,17 @@ string PolymorphismSequenceContainerTools::getIngroupSpeciesName(const Polymorph
 {
   string key;
   string speciesName;
-  Comments maseFileHeader = psc.getGeneralComments();
+  auto maseFileHeader = psc.getComments();
   if (!maseFileHeader.size())
     return speciesName;
-  map<string, size_t> groupMap = MaseTools::getAvailableSequenceSelections(maseFileHeader);
-  for (map<string, size_t>::iterator mi = groupMap.begin(); mi != groupMap.end(); mi++)
+  auto groupMap = MaseTools::getAvailableSequenceSelections(maseFileHeader);
+  for (auto& mi : groupMap)
   {
-    key = mi->first;
+    key = mi.first;
     if (key.compare(0, 7, "INGROUP") == 0)
     {
-      StringTokenizer* sptk = new StringTokenizer(key, "_");
-      speciesName = sptk->getToken(1) + " " + sptk->getToken(2);
+      StringTokenizer sptk(key, "_");
+      speciesName = sptk.getToken(1) + " " + sptk.getToken(2);
     }
   }
   return speciesName;
@@ -589,18 +556,21 @@ string PolymorphismSequenceContainerTools::getIngroupSpeciesName(const Polymorph
 
 /******************************************************************************/
 
-PolymorphismSequenceContainer* PolymorphismSequenceContainerTools::getSynonymousSites(const PolymorphismSequenceContainer& psc, const GeneticCode& gCode)
+unique_ptr<PolymorphismSequenceContainer> PolymorphismSequenceContainerTools::getSynonymousSites(
+    const PolymorphismSequenceContainer& psc,
+    const GeneticCode& gCode)
 {
-  unique_ptr<PolymorphismSequenceContainer> psco(new PolymorphismSequenceContainer(psc.getSequencesNames(), psc.getAlphabet()));
+  auto psco = make_unique<PolymorphismSequenceContainer>(psc.getSequenceNames(), psc.getAlphabet());
   for (size_t i = 0; i < psc.getNumberOfSites(); ++i)
   {
-    const Site& site = psc.getSite(i);
+    const Site& site = psc.site(i);
     if (CodonSiteTools::isSynonymousPolymorphic(site, gCode))
     {
-      psco->addSite(site);
+      auto tmpSite = make_unique<Site>(site);
+      psco->addSite(tmpSite);
     }
   }
-  for (size_t i = 0; i < psc.getNumberOfSequences(); i++)
+  for (size_t i = 0; i < psc.getNumberOfSequences(); ++i)
   {
     psco->setSequenceCount(i, psc.getSequenceCount(i));
     if (psc.isIngroupMember(i))
@@ -611,23 +581,26 @@ PolymorphismSequenceContainer* PolymorphismSequenceContainerTools::getSynonymous
       psco->setGroupId(i, psc.getGroupId(i));
     }
   }
-  return psco.release();
+  return psco;
 }
 
 /******************************************************************************/
 
-PolymorphismSequenceContainer* PolymorphismSequenceContainerTools::getNonSynonymousSites(const PolymorphismSequenceContainer& psc, const GeneticCode& gCode)
+unique_ptr<PolymorphismSequenceContainer> PolymorphismSequenceContainerTools::getNonSynonymousSites(
+    const PolymorphismSequenceContainer& psc,
+    const GeneticCode& gCode)
 {
-  unique_ptr<PolymorphismSequenceContainer> psco(new PolymorphismSequenceContainer(psc.getSequencesNames(), psc.getAlphabet()));
+  auto psco = make_unique<PolymorphismSequenceContainer>(psc.getSequenceNames(), psc.getAlphabet());
   for (size_t i = 0; i < psc.getNumberOfSites(); ++i)
   {
-    const Site& site = psc.getSite(i);
+    const Site& site = psc.site(i);
     if (!CodonSiteTools::isSynonymousPolymorphic(site, gCode))
     {
-      psco->addSite(site);
+      auto tmpSite = make_unique<Site>(site);
+      psco->addSite(tmpSite);
     }
   }
-  for (size_t i = 0; i < psc.getNumberOfSequences(); i++)
+  for (size_t i = 0; i < psc.getNumberOfSequences(); ++i)
   {
     psco->setSequenceCount(i, psc.getSequenceCount(i));
     if (psc.isIngroupMember(i))
@@ -638,7 +611,8 @@ PolymorphismSequenceContainer* PolymorphismSequenceContainerTools::getNonSynonym
       psco->setGroupId(i, psc.getGroupId(i));
     }
   }
-  return psco.release();
+  return psco;
 }
 
 /******************************************************************************/
+

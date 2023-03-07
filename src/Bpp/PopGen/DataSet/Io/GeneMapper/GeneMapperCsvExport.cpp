@@ -58,7 +58,7 @@ const std::string GeneMapperCsvExport::AN_H = "AN";
 
 GeneMapperCsvExport::~GeneMapperCsvExport() {}
 
-void GeneMapperCsvExport::read(std::istream& is, DataSet& data_set)
+void GeneMapperCsvExport::read(std::istream& is, DataSet& dataset)
 {
   if (!is)
     throw IOException("GeneMapperCsvExport::read: fail to open stream.");
@@ -66,7 +66,7 @@ void GeneMapperCsvExport::read(std::istream& is, DataSet& data_set)
   /*
    * Feed a DataTable with the data
    */
-  DataTable* dtp = DataTable::read(is, "\t", true, -1);
+  auto dtp = DataTable::read(is, "\t", true, -1);
   DataTable& dt = *dtp;
 
   /*
@@ -104,16 +104,16 @@ void GeneMapperCsvExport::read(std::istream& is, DataSet& data_set)
   /*
    * Loci number
    */
-  data_set.initAnalyzedLoci(loc_nbr);
+  dataset.initAnalyzedLoci(loc_nbr);
 
   /*
    * Group of individuals
    */
-  data_set.addEmptyGroup(0);
+  dataset.addEmptyGroup(0);
   for (unsigned int i = 0; i < ind_names.size(); i++)
   {
     Individual ind(ind_names[i]);
-    data_set.addIndividualToGroup(data_set.getGroupPosition(0), ind);
+    dataset.addIndividualToGroup(dataset.getGroupPosition(0), ind);
   }
 
   /*
@@ -154,7 +154,7 @@ void GeneMapperCsvExport::read(std::istream& is, DataSet& data_set)
       al.addAlleleInfoByLocusName(itm->first, BasicAlleleInfo(*its));
     }
   }
-  data_set.setAnalyzedLoci(al);
+  dataset.setAnalyzedLoci(al);
 
   /*
    * Individuals informations
@@ -168,23 +168,22 @@ void GeneMapperCsvExport::read(std::istream& is, DataSet& data_set)
     {
       if (!TextTools::isEmpty(dt(i, alleles_cols[j])))
       {
-        unsigned int num = (data_set.getLocusInfoByName(dt(i, mark_col_index))).getAlleleInfoKey(dt(i, alleles_cols[j]));
+        unsigned int num = (dataset.getLocusInfoByName(dt(i, mark_col_index))).getAlleleInfoKey(dt(i, alleles_cols[j]));
         alleles.push_back(num);
       }
     }
     alleles = VectorTools::unique(alleles);
     MultiAlleleMonolocusGenotype ma(alleles);
-    if (!data_set.getIndividualByIdFromGroup(0, dt(i, ind_col_index))->hasGenotype())
-      data_set.initIndividualGenotypeInGroup(0, data_set.getIndividualPositionInGroup(0, dt(i, ind_col_index)));
+    if (!dataset.getIndividualByIdFromGroup(0, dt(i, ind_col_index)).hasGenotype())
+      dataset.initIndividualGenotypeInGroup(0, dataset.getIndividualPositionInGroup(0, dt(i, ind_col_index)));
     if (alleles.size())
-      data_set.setIndividualMonolocusGenotypeInGroup(0, data_set.getIndividualPositionInGroup(0, dt(i, ind_col_index)), data_set.getAnalyzedLoci()->getLocusInfoPosition(dt(i, mark_col_index)), ma);
+      dataset.setIndividualMonolocusGenotypeInGroup(0, dataset.getIndividualPositionInGroup(0, dt(i, ind_col_index)), dataset.analyzedLoci().getLocusInfoPosition(dt(i, mark_col_index)), ma);
   }
-  delete dtp;
 }
 
-void GeneMapperCsvExport::read(const std::string& path, DataSet& data_set)
+void GeneMapperCsvExport::read(const std::string& path, DataSet& dataset)
 {
-  AbstractIDataSet::read(path, data_set);
+  AbstractIDataSet::read(path, dataset);
 }
 
 DataSet* GeneMapperCsvExport::read(std::istream& is)

@@ -61,50 +61,68 @@ namespace bpp
  *
  * @author Sylvain Gaillard
  */
-class AnalyzedLoci
+class AnalyzedLoci:
+  public virtual Clonable
 {
 private:
-  std::vector<LocusInfo*> loci_;
+  std::vector<std::unique_ptr<LocusInfo>> loci_;
 
 public:
   // Constructors and Destructor
   /**
    * @brief Build a void AnalyzedLoci with a specific number of loci.
    */
-  AnalyzedLoci(size_t number_of_loci);
+  AnalyzedLoci(size_t numberOfLoci) : loci_(numberOfLoci) {}
 
   /**
    * @brief Copy constructor.
    */
-  AnalyzedLoci(const AnalyzedLoci& analyzed_loci);
+  AnalyzedLoci(const AnalyzedLoci& analyzedLoci):
+    loci_(analyzedLoci.loci_.size())
+  {
+    size_t i = 0;
+    for (const auto& locus : analyzedLoci.loci_)
+      loci_[i++].reset(locus->clone());
+  }
 
+  AnalyzedLoci& operator=(const AnalyzedLoci& analyzedLoci)
+  {
+    loci_.resize(analyzedLoci.loci_.size());
+    size_t i = 0;
+    for (const auto& locus : analyzedLoci.loci_)
+      loci_[i++].reset(locus->clone());
+    return *this;
+  }
+  
   /**
    * @brief Destroy the AnalyzedLoci.
    */
-  ~AnalyzedLoci();
+  virtual ~AnalyzedLoci() = default;
+
+  AnalyzedLoci* clone() const { return new AnalyzedLoci(*this); }
 
 public:
-  // Other methodes
+  // Other methods
   /**
    * @brief Set a LocusInfo.
    *
    * @throw IndexOutOfBoundsException if locus_position is out of bounds.
    */
-  void setLocusInfo(size_t locus_position, const LocusInfo& locus);
+  void setLocusInfo(size_t locusPosition, const LocusInfo& locus);
 
   /**
    * @brief Get the position of a LocusInfo.
    *
    * @throw BadIdentifierException if locus_name is not found.
    */
-  size_t getLocusInfoPosition(const std::string& locus_name) const;
+  size_t getLocusInfoPosition(const std::string& locusName) const;
 
   /**
    * @brief Get a LocusInfo by name.
    *
    * @throw BadIdentifierException if locus_name is not found.
    */
-  const LocusInfo& getLocusInfoByName(const std::string& locus_name) const;
+  const LocusInfo& getLocusInfoByName(const std::string& locusName) const;
 
   /**
    * @brief Get a LocusInfo by its position.
@@ -112,7 +130,7 @@ public:
    * @throw NullPointerException if the LocusInfo is not difined.
    * @throw IndexOutOfBoundsException if locus_position is out of bounds.
    */
-  const LocusInfo& getLocusInfoAtPosition(size_t locus_position) const;
+  const LocusInfo& getLocusInfoAtPosition(size_t locusPosition) const;
 
   /**
    * @brief Add an AlleleInfo to a LocusInfo by LocusInfo name.
@@ -120,7 +138,7 @@ public:
    * @throw BadIdentifierException if the allele's id is already in use.
    * @throw LocusNotFoundException if locus_name is not found.
    */
-  void addAlleleInfoByLocusName(const std::string& locus_name,
+  void addAlleleInfoByLocusName(const std::string& locusName,
                                 const AlleleInfo& allele);
 
   /**
@@ -129,7 +147,7 @@ public:
    * @throw BadIdentifierException if the allele's id is already in use.
    * @throw IndexOutOfBoundsException if locus_position is out of bounds.
    */
-  void addAlleleInfoByLocusPosition(size_t locus_position,
+  void addAlleleInfoByLocusPosition(size_t locusosition,
                                     const AlleleInfo& allele);
 
   /**
@@ -147,14 +165,14 @@ public:
    *
    * @throw LocusNotFoundException if locus_name is not found.
    */
-  unsigned int getPloidyByLocusName(const std::string& locus_name) const;
+  unsigned int getPloidyByLocusName(const std::string& locusName) const;
 
   /**
    * @brief Get the ploidy of a locus by its position.
    *
    * @throw IndexOutOfBoundsException if locus_position is out of bounds.
    */
-  unsigned int getPloidyByLocusPosition(size_t locus_position) const;
+  unsigned int getPloidyByLocusPosition(size_t locusPosition) const;
 };
 } // end of namespace bpp;
 

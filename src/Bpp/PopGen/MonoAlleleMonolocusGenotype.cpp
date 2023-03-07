@@ -44,43 +44,36 @@ using namespace std;
 
 // ** Class constructor: *******************************************************/
 
-MonoAlleleMonolocusGenotype::MonoAlleleMonolocusGenotype(size_t allele_index) : allele_index_(allele_index) {}
+MonoAlleleMonolocusGenotype::MonoAlleleMonolocusGenotype(size_t allele_index) :
+  alleleIndex_(allele_index) {}
 
-MonoAlleleMonolocusGenotype::MonoAlleleMonolocusGenotype(std::vector<size_t> allele_index) : allele_index_(0)
+MonoAlleleMonolocusGenotype::MonoAlleleMonolocusGenotype(std::vector<size_t> allele_index) : alleleIndex_(0)
 {
   if (allele_index.size() != 1)
     throw BadSizeException("MonoAlleleMonolocusGenotype::MonoAlleleMonolocusGenotype: allele_index must conain one value.", allele_index.size(), 1);
-  allele_index_ = allele_index[0];
+  alleleIndex_ = allele_index[0];
 }
 
 MonoAlleleMonolocusGenotype::MonoAlleleMonolocusGenotype(const MonoAlleleMonolocusGenotype& mmg) :
-  allele_index_(mmg.getAlleleIndex()[0]) {}
+  alleleIndex_(mmg.getAlleleIndex()[0]) {}
 
-// ** Class destructor: ********************************************************/
-
-MonoAlleleMonolocusGenotype::~MonoAlleleMonolocusGenotype() {}
-
-// ** Other methodes: **********************************************************/
+// ** Other methods: **********************************************************/
 
 MonoAlleleMonolocusGenotype& MonoAlleleMonolocusGenotype::operator=(const MonoAlleleMonolocusGenotype& mmg)
 {
-  allele_index_ = mmg.getAlleleIndex()[0];
+  alleleIndex_ = mmg.getAlleleIndex()[0];
   return *this;
 }
 
 bool MonoAlleleMonolocusGenotype::operator==(const MonoAlleleMonolocusGenotype& mmg) const
 {
-  return allele_index_ == mmg.getAlleleIndex()[0];
+  return alleleIndex_ == mmg.getAlleleIndex()[0];
 }
 
 std::vector<size_t> MonoAlleleMonolocusGenotype::getAlleleIndex() const
 {
   vector<size_t> index;
-  index.push_back(allele_index_);
+  index.push_back(alleleIndex_);
   return index;
 }
 
-MonoAlleleMonolocusGenotype* MonoAlleleMonolocusGenotype::clone() const
-{
-  return new MonoAlleleMonolocusGenotype(*this);
-}

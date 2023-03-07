@@ -53,22 +53,21 @@ namespace bpp
  * @author Sylvain Gaillard
  */
 class MonoAlleleMonolocusGenotype :
-  public MonolocusGenotype
+  public virtual MonolocusGenotypeInterface
 {
 private:
-  size_t allele_index_;
+  size_t alleleIndex_;
 
 public:
-  // Constructors and destructor
   /**
    * @brief Build a monolocus genotype containing one allele.
    */
-  MonoAlleleMonolocusGenotype(size_t allele_index);
+  MonoAlleleMonolocusGenotype(size_t alleleIndex);
 
   /**
    * @brief Build a monolocus genotype containing one allele.
    */
-  MonoAlleleMonolocusGenotype(std::vector<size_t> allele_index);
+  MonoAlleleMonolocusGenotype(std::vector<size_t> alleleIndex);
 
   /**
    * @brief Copy constructor.
@@ -78,10 +77,9 @@ public:
   /**
    * @brief Destroy the MonoAlleleMonolocusGenotype.
    */
-  ~MonoAlleleMonolocusGenotype();
+  virtual ~MonoAlleleMonolocusGenotype() = default;
 
 public:
-  // Other methodes
   /**
    * @brief The affectation operator.
    */
@@ -97,7 +95,7 @@ public:
    *
    * @{
    */
-  std::vector<size_t> getAlleleIndex() const;
+  std::vector<size_t> getAlleleIndex() const override;
   /** @} */
 
   /**
@@ -105,7 +103,10 @@ public:
    *
    * @{
    */
-  MonoAlleleMonolocusGenotype* clone() const;
+  MonoAlleleMonolocusGenotype* clone() const override
+  {
+    return new MonoAlleleMonolocusGenotype(*this);
+  }
   /** @} */
 };
 } // end of namespace bpp;

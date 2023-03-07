@@ -67,7 +67,7 @@ public:
    * @param pmgc The PolymorphismMultiGContainer to permut.
    * @return A permuted PolymorphismMultiGContainer.
    */
-  static PolymorphismMultiGContainer permutMultiG(const PolymorphismMultiGContainer& pmgc);
+  static std::unique_ptr<PolymorphismMultiGContainer> permuteMultiG(const PolymorphismMultiGContainer& pmgc);
 
   /**
    * @brief Permut the MonolocusGenotype.
@@ -79,7 +79,7 @@ public:
    * @param groups The groups ids between which the MonolocusGenotypes will be permuted.
    * @return A permuted PolymorphismMultiGContainer.
    */
-  static PolymorphismMultiGContainer permutMonoG(const PolymorphismMultiGContainer& pmgc, const std::set<size_t>& groups);
+  static std::unique_ptr<PolymorphismMultiGContainer> permuteMonoG(const PolymorphismMultiGContainer& pmgc, const std::set<size_t>& groups);
 
   /**
    * @brief Permut the MonolocusGenotype between individuals in the same group.
@@ -91,7 +91,7 @@ public:
    * @param groups The groups ids for which the MonolocusGenotypes will be permuted.
    * @return A permuted PolymorphismMultiGContainer.
    */
-  static PolymorphismMultiGContainer permutIntraGroupMonoG(const PolymorphismMultiGContainer& pmgc, const std::set<size_t>& groups);
+  static std::unique_ptr<PolymorphismMultiGContainer> permuteIntraGroupMonoG(const PolymorphismMultiGContainer& pmgc, const std::set<size_t>& groups);
 
   /**
    * @brief Permut the Alleles.
@@ -103,7 +103,7 @@ public:
    * @param groups The groups ids between which the MonolocusGenotypes will be permuted.
    * @return A permuted PolymorphismMultiGContainer.
    */
-  static PolymorphismMultiGContainer permutAlleles(const PolymorphismMultiGContainer& pmgc, const std::set<size_t>& groups);
+  static std::unique_ptr<PolymorphismMultiGContainer> permuteAlleles(const PolymorphismMultiGContainer& pmgc, const std::set<size_t>& groups);
 
   /**
    * @brief Permut the Alleles between individuals in the same group.
@@ -114,8 +114,9 @@ public:
    * @param groups The groups ids between which the MonolocusGenotypes will be permuted.
    * @return A permuted PolymorphismMultiGContainer.
    */
-  static PolymorphismMultiGContainer permutIntraGroupAlleles(const PolymorphismMultiGContainer& pmgc, const std::set<size_t>& groups);
-  static PolymorphismMultiGContainer extractGroups(const PolymorphismMultiGContainer& pmgc, const std::set<size_t>& groups);
+  static std::unique_ptr<PolymorphismMultiGContainer> permuteIntraGroupAlleles(const PolymorphismMultiGContainer& pmgc, const std::set<size_t>& groups);
+
+  static std::unique_ptr<PolymorphismMultiGContainer> extractGroups(const PolymorphismMultiGContainer& pmgc, const std::set<size_t>& groups);
 };
 } // end of namespace bpp;
 

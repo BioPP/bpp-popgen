@@ -48,13 +48,12 @@
 #include <Bpp/Exceptions.h>
 #include <Bpp/Text/TextTools.h>
 
-// From SeqLib
+// From bpp-seq
 #include <Bpp/Seq/Sequence.h>
 #include <Bpp/Seq/SequenceExceptions.h>
-#include <Bpp/Seq/Container/OrderedSequenceContainer.h>
-#include <Bpp/Seq/Container/MapSequenceContainer.h>
+#include <Bpp/Seq/Container/VectorSequenceContainer.h>
 
-// From PopGenLib
+// From bpp-popgen
 #include "Locality.h"
 #include "Date.h"
 #include "../MultilocusGenotype.h"
@@ -78,9 +77,9 @@ protected:
   std::string id_;
   unsigned short sex_;
   std::unique_ptr<Date> date_;
-  std::unique_ptr< Point2D<double> > coord_;
-  const Locality<double>* locality_;
-  std::unique_ptr<MapSequenceContainer> sequences_;
+  std::unique_ptr<Point2D<double>> coord_;
+  std::shared_ptr<const Locality<double>> locality_;
+  std::unique_ptr<VectorSequenceContainer> sequences_;
   std::unique_ptr<MultilocusGenotype> genotype_;
 
 public:
@@ -108,7 +107,7 @@ public:
   Individual(const std::string& id,
              const Date& date,
              const Point2D<double>& coord,
-             Locality<double>* locality,
+             std::shared_ptr<Locality<double>> locality,
              const unsigned short sex);
 
   /**
@@ -169,10 +168,10 @@ public:
   /**
    * @brief Get the date of the Individual.
    *
-   * @return A pointer toward a Date object if the Individual has a date.
+   * @return A reference toward a Date object if the Individual has a date.
    * Otherwise throw a NullPointerException.
    */
-  const Date& getDate() const;
+  const Date& date() const;
 
   /**
    * @brief Tell if this Individual has a date.
@@ -200,7 +199,7 @@ public:
    * @return A pointer toward a Point2D object if the Individual has
    * coordinates. Otherwise throw a NullPointerException.
    */
-  const Point2D<double>& getCoord() const;
+  const Point2D<double>& coord() const;
 
   /**
    * @brief Tell if this Individual has coordinates.
@@ -248,19 +247,32 @@ public:
    *
    * @param locality A pointer to a Locality object.
    */
-  void setLocality(const Locality<double>* locality);
+  void setLocality(std::shared_ptr<const Locality<double>> locality)
+  {
+    locality_ = locality;
+  }
 
   /**
    * @brief Get the locality of the Individual.
    *
    * @return A pointer to the Locality of the Individual.
    */
-  const Locality<double>* getLocality() const;
+  std::shared_ptr<const Locality<double>> getLocality() const;
+
+  /**
+   * @brief Get the locality of the Individual.
+   *
+   * @return A pointer to the Locality of the Individual.
+   */
+  const Locality<double>& locality() const;
 
   /**
    * @brief Tell if this Individual has a locality.
    */
-  bool hasLocality() const;
+  bool hasLocality() const
+  {
+    return locality_ != nullptr;
+  }
 
   /**
    * @brief Add a sequence to the Individual.
@@ -268,51 +280,51 @@ public:
    * Creates the sequence container when adding the first sequence.
    * Otherwize add the sequence to the end of the sequence container.
    *
-   * @param sequence_key the place where the sequence will be put.
+   * @param sequenceKey the place where the sequence will be put.
    * @param sequence The sequence to add.
    * @throw AlphabetMismatchException if the sequence's alphabet doesn't match the container's alphabet.
    * @throw BadIdentifierException if sequence's name is already in use.
    * @throw BadIntegerException if sequence_position is already in use.
    */
-  void addSequence(size_t sequence_key, const Sequence& sequence);
+  void addSequence(size_t sequenceKey, std::unique_ptr<Sequence>& sequence);
 
   /**
-   * @brief Get a sequence by its name.
+   * @brief Get a sequence from its name.
    *
-   * @param sequence_name The name of the sequence.
+   * @param sequenceName The name of the sequence.
    * @return A reference to the sequence.
    * @throw NullPointerException if there is no sequence container defined.
    * @throw SequenceNotFoundException if sequence_name is not found.
    */
-  const Sequence& getSequenceByName(const std::string& sequence_name) const;
+  const Sequence& sequenceByName(const std::string& sequenceName) const;
 
   /**
    * @brief Get a sequence by its position.
    *
-   * @param sequence_position The position of the sequence in the sequence set.
+   * @param sequencePosition The position of the sequence in the sequence set.
    * @return A reference to the sequence.
    * @throw NullPointerException if there is no sequence container defined.
    * @throw SequenceNotFoundException if sequence_position is not found (i.e. missing data or not used).
    */
-  const Sequence& getSequenceAtPosition(const size_t sequence_position) const;
+  const Sequence& sequenceAtPosition(size_t sequencePosition) const;
 
   /**
    * @brief Delete a sequence.
    *
-   * @param sequence_name The name of the sequence.
+   * @param sequenceName The name of the sequence.
    * @throw NullPointerException if there is no sequence container defined.
    * @throw SequenceNotFoundException if sequence_name is not found.
    */
-  void deleteSequenceByName(const std::string& sequence_name);
+  void deleteSequenceByName(const std::string& sequenceName);
 
   /**
    * @brief Delete a sequence.
    *
-   * @param sequence_position The position of the sequence.
+   * @param sequencePosition The position of the sequence.
    * @throw NullPointerException if there is no sequence container defined.
    * @throw SequenceNotFoundException if sequence_postion is not found.
    */
-  void deleteSequenceAtPosition(size_t sequence_position);
+  void deleteSequenceAtPosition(size_t sequencePosition);
 
   /**
    * @brief Tell if the Individual has some sequences.
@@ -332,7 +344,14 @@ public:
    *
    * @throw NullPointerException if there is no sequence container defined.
    */
-  const Alphabet* getSequenceAlphabet() const;
+  std::shared_ptr<const Alphabet> getSequenceAlphabet() const;
+
+  /**
+   * @brief Return the alphabet of the sequences.
+   *
+   * @throw NullPointerException if there is no sequence container defined.
+   */
+  const Alphabet& sequenceAlphabet() const;
 
   /**
    * @brief Get the sequences' names.
@@ -340,7 +359,12 @@ public:
    * @return All the sequences' names of the individual in a vector of string.
    * @throw NullPointerException if there is no sequence container defined.
    */
-  std::vector<std::string> getSequencesNames() const;
+  std::vector<std::string> getSequenceNames() const
+  { 
+    if (!sequences_)
+      throw NullPointerException("Individual::getSequencesNames: no sequence data.");
+    return sequences_->getSequenceNames();
+  }
 
   /**
    * @brief Get the sequences' positions.
@@ -348,7 +372,7 @@ public:
    * @return All the positions where a sequence is found.
    * @throw NullPointerException if there is no sequence container defined.
    */
-  std::vector<size_t> getSequencesPositions() const;
+  std::vector<size_t> getSequencePositions() const;
 
   /**
    * @brief Get the position of a sequence.
@@ -356,24 +380,37 @@ public:
    * @throw NullPointerException if there is no sequence container defined.
    * @throw SequenceNotFoundException if sequence_name is not found.
    */
-  size_t getSequencePosition(const std::string& sequence_name) const;
+  size_t getSequencePosition(const std::string& sequenceKey) const;
 
   /**
    * @brief Get the number of sequences.
    */
-  size_t getNumberOfSequences() const;
+  size_t getNumberOfSequences() const
+  {
+    return (sequences_ ? sequences_->getNumberOfSequences() : 0);
+  }
+
 
   /**
-   * @brief Set all the sequences with a MapSequenceContainer.
+   * @brief Set all the sequences with a SequenceContainer. The container will be copied.
    */
-  void setSequences(const MapSequenceContainer& msc);
+  void setSequences(const SequenceContainerInterface& sc)
+  {
+    sequences_.reset(new VectorSequenceContainer(sc));
+  }
 
   /**
    * @brief Get a reference to the sequence container.
    *
    * @throw NullPointerException if there is no sequence container defined.
    */
-  const OrderedSequenceContainer& getSequences() const;
+  const SequenceContainerInterface& sequences() const
+  {
+    if (!sequences_)
+      throw NullPointerException("Individual::getSequences: no sequence data.");
+    return *sequences_;
+  }
+
 
   /**
    * @brief Set a genotype.
@@ -388,7 +425,7 @@ public:
    * @throw Exception if the Individual already has a Genotype.
    * @throw BadIntegerException if loci_number < 1.
    */
-  void initGenotype(size_t loci_number);
+  void initGenotype(size_t lociNumber);
 
   /**
    * @brief Get the genotype.
@@ -409,40 +446,40 @@ public:
    * @brief Set a MonolocusGenotype.
    *
    * @throw NullPointerException if there is no genotype defined.
-   * @throw IndexOutOfBoundsException if locus_position excedes the number of loci.
+   * @throw IndexOutOfBoundsException if locusPosition excedes the number of loci.
    */
-  void setMonolocusGenotype(size_t locus_position, const MonolocusGenotype& monogen);
+  void setMonolocusGenotype(size_t locusPosition, const MonolocusGenotypeInterface& monogen);
 
   /**
    * @brief Set a MonolocusGenotype.
    *
    * @throw NullPointerException if there is no genotype defined.
-   * @throw IndexOutOfBoundsException if locus_position excedes the number of loci.
-   * @throw Exception if there is no key in allele_keys.
+   * @throw IndexOutOfBoundsException if locusPosition excedes the number of loci.
+   * @throw Exception if there is no key in alleleKeys.
    */
   void setMonolocusGenotypeByAlleleKey(
-    size_t locus_position,
-    const std::vector<size_t> allele_keys);
+    size_t locusPosition,
+    const std::vector<size_t> alleleKeys);
 
   /**
    * @brief Set a MonolocusGenotype.
    *
    * @throw NullPointerException if there is no genotype defined.
-   * @throw IndexOutOfBoundsException if locus_position excedes the number of loci.
+   * @throw IndexOutOfBoundsException if locusPosition excedes the number of loci.
    * @throw AlleleNotFoundException if at least one the id is not found in the LocusInfo.
    */
   void setMonolocusGenotypeByAlleleId(
-    size_t locus_position,
-    const std::vector<std::string> allele_id,
-    const LocusInfo& locus_info);
+    size_t locusPosition,
+    const std::vector<std::string> alleleId,
+    const LocusInfo& locusInfo);
 
   /**
    * @brief Get a MonolocusGenotype.
    *
    * @throw NullPointerException if there is no genotype defined.
-   * @throw IndexOutOfBoundsException if locus_position excedes the number of loci.
+   * @throw IndexOutOfBoundsException if locusPosition excedes the number of loci.
    */
-  const MonolocusGenotype& getMonolocusGenotype(size_t locus_position);
+  const MonolocusGenotypeInterface& getMonolocusGenotype(size_t locusPosition);
 
   /**
    * @brief Count the number of non missing MonolocusGenotype.

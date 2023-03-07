@@ -64,19 +64,24 @@ namespace bpp
  *
  * @author Sylvain Gaillard
  */
-class PolymorphismMultiGContainer
+class PolymorphismMultiGContainer:
+  public virtual Clonable
 {
 private:
-  std::vector<MultilocusGenotype*> multilocusGenotypes_;
+  std::vector<std::unique_ptr<MultilocusGenotype>> multilocusGenotypes_;
   std::vector<size_t> groups_; // group id for each multilocusgenotype
-  std::map<size_t, std::string> groups_names_;
+  std::map<size_t, std::string> groupsNames_;
 
 public:
   // Constructors and destructor
   /**
    * @brief Build a new PolymorphismMultilocusGenotypeContainer.
    */
-  PolymorphismMultiGContainer();
+  PolymorphismMultiGContainer() :
+    multilocusGenotypes_(),
+    groups_(std::vector<size_t>()),
+    groupsNames_(std::map<size_t, std::string>())
+  {}
 
   /**
    * @brief The copy constructor.
@@ -86,7 +91,12 @@ public:
   /**
    * @brief Destroy a PolymorphismMultilocusGenotypeContainer.
    */
-  ~PolymorphismMultiGContainer();
+  virtual ~PolymorphismMultiGContainer()
+  {
+    clear();
+  }
+
+  PolymorphismMultiGContainer* clone() const override { return new PolymorphismMultiGContainer(*this); }
 
 public:
   /**
@@ -97,21 +107,21 @@ public:
   /**
    * @brief Add a MultilocusGenotype to the container.
    */
-  void addMultilocusGenotype(const MultilocusGenotype& mg, size_t group);
+  void addMultilocusGenotype(std::unique_ptr<MultilocusGenotype>& mg, size_t group);
 
   /**
    * @brief Get a MultilocusGenotype at a position.
    *
    * @throw IndexOutOfBoundsException if position excedes the size of the container.
    */
-  const MultilocusGenotype* getMultilocusGenotype(size_t position) const;
+  const MultilocusGenotype& multilocusGenotype(size_t position) const;
 
   /**
    * @brief Remove a MultilocusGenotype.
    *
    * @throw IndexOutOfBoundsException if position excedes the size of the container.
    */
-  MultilocusGenotype* removeMultilocusGenotype(size_t position);
+  std::unique_ptr<MultilocusGenotype> removeMultilocusGenotype(size_t position);
 
   /**
    * @brief Delete a MultilocusGenotype.
@@ -144,7 +154,7 @@ public:
    *
    * @throw IndexOutOfBoundsException if position excedes the size of the container.
    */
-  void setGroupId(size_t position, size_t group_id);
+  void setGroupId(size_t position, size_t groupId);
 
   /**
    * @brief Get the groups' ids.
@@ -164,7 +174,10 @@ public:
   /**
    * @brief Get the number of groups.
    */
-  size_t getNumberOfGroups() const;
+  size_t getNumberOfGroups() const
+  {
+    return getAllGroupsIds().size();
+  }
 
   /**
    * @brief Get group size.
@@ -174,22 +187,22 @@ public:
   /**
    * @brief Get the group name for a given group id or just the id if not available juste return it's id
    */
-  std::string getGroupName(size_t group_id) const;
+  std::string getGroupName(size_t groupId) const;
 
   /**
    * @brief Set the name for the given group id.
    */
-  void setGroupName(size_t group_id, std::string name);
+  void setGroupName(size_t groupId, const std::string& name);
 
   /**
    * @brief Inserts a name for the given group id.
    */
-  void addGroupName(size_t group_id, std::string name);
+  void addGroupName(size_t groupId, const std::string& name);
 
   /**
    * @brief Get the size of a group for a given locus.
    */
-  size_t getLocusGroupSize(size_t group, size_t locus_position) const;
+  size_t getLocusGroupSize(size_t group, size_t locusPosition) const;
 
   /**
    * @brief Get the number of MultilocusGenotype.

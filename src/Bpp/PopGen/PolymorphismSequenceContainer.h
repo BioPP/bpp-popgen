@@ -112,53 +112,55 @@ public:
   /**
    * @brief Build a new empty PolymorphismSequenceContainer.
    */
-  PolymorphismSequenceContainer(const Alphabet* alpha);
+  PolymorphismSequenceContainer(std::shared_ptr<const Alphabet> alpha):
+    VectorSiteContainer(alpha),
+    ingroup_(std::vector<bool>()),
+    count_(0),
+    group_(0)
+  {}
 
   /**
    * @brief Build a new empty PolymorphismSequenceContainer of given size.
    */
-  PolymorphismSequenceContainer(size_t size, const Alphabet* alpha);
+  PolymorphismSequenceContainer(size_t size, std::shared_ptr<const Alphabet> alpha):
+    VectorSiteContainer(size, alpha),
+    ingroup_(size),
+    count_(size),
+    group_(size)
+  {}
 
   /**
    * @brief Build a new empty PolymorphismSequenceContainer with given sequence names.
    */
-  PolymorphismSequenceContainer(const std::vector<std::string>& names, const Alphabet* alpha);
+  PolymorphismSequenceContainer(const std::vector<std::string>& names, std::shared_ptr<const Alphabet> alpha):
+    VectorSiteContainer(names, alpha),
+    ingroup_(names.size()),
+    count_(names.size()),
+    group_(names.size())
+  {}
 
   /**
-   * @brief Build a PolymorphismSequenceContainer by copying data from an OrderedSequenceContainer.
+   * @brief Build a PolymorphismSequenceContainer by copying data from a SequenceContainer.
    *
    * @param sc Sequence container to convert.
    */
-  PolymorphismSequenceContainer(const OrderedSequenceContainer& sc);
+  PolymorphismSequenceContainer(const SequenceContainerInterface& sc):
+    VectorSiteContainer(sc),
+    ingroup_(sc.getNumberOfSequences(), true),
+    count_(sc.getNumberOfSequences(), 1),
+    group_(sc.getNumberOfSequences(), 1)
+  {}
 
   /**
-   * @brief Build a PolymorphismSequenceContainer by copying data from an OrderedSequenceContainer.
+   * @brief Build a PolymorphismSequenceContainer by copying data from a SequenceContainer.
    *
-   * @note In case of count = false, the constructor with additional argument will be more efficient.
-   *
-   * @param sc Sequence container to convert.
-   * @param count Tell if identical sequences should be collapsed and counted.
-   *              If not (the historical behavior), sequences are duplicated and stored with a frequency of 1.
-   */
-  PolymorphismSequenceContainer(const OrderedSequenceContainer& sc, bool count);
-
-  /**
-   * @brief Build a PolymorphismSequenceContainer by copying data from a SiteContainer.
-   *
-   * @param sc Sequence container to convert.
-   */
-  PolymorphismSequenceContainer(const SiteContainer& sc);
-
-  /**
-   * @brief Build a PolymorphismSequenceContainer by copying data from a SiteContainer.
-   *
-   * @note In case of count = false, the constructor with additional argument will be more efficient.
+   * @note In case of count = false, the constructor without additional argument will be more efficient.
    *
    * @param sc Sequence container to convert.
    * @param count Tell if identical sequences should be collapsed and counted.
    *              If not (the historical behavior), sequences are duplicated and stored with a frequency of 1.
    */
-  PolymorphismSequenceContainer(const SiteContainer& sc, bool count);
+  PolymorphismSequenceContainer(const SequenceContainerInterface& sc, bool count);
 
   /**
    * @brief Copy constructor.
@@ -178,40 +180,20 @@ public:
   /**
    * @brief Clone a PolymorphismSequenceContainer.
    */
-  PolymorphismSequenceContainer* clone() const
+  PolymorphismSequenceContainer* clone() const override
   {
     return new PolymorphismSequenceContainer(*this);
   }
 
 public:
   // Other methods
-  /**
-   * @brief Remove a sequence by index and return a pointer to this removed sequence.
-   *
-   * @throw IndexOutOfBoundsException if index excedes the number of sequences.
-   */
-  std::shared_ptr<Sequence> removeSequence(size_t index);
+  std::unique_ptr<Sequence> removeSequence(size_t sequencePosition) override;
 
-  /**
-   * @brief Remove a sequence by name and return a pointer to this removed sequence.
-   *
-   * @throw SequenceNotFoundException if name is not found among the sequences' names.
-   */
-  std::shared_ptr<Sequence> removeSequence(const std::string& name);
+  std::unique_ptr<Sequence> removeSequence(const std::string& sequenceKey)override;
 
-  /**
-   * @brief Delete a sequence by index.
-   *
-   * @throw IndexOutOfBoundsException if index excedes the number of sequences.
-   */
-  void deleteSequence(size_t index);
+  void deleteSequence(size_t sequencePosition) override;
 
-  /**
-   * @brief Delete a sequence by name.
-   *
-   * @throw SequenceNotFoundException if name is not found among the sequences' names.
-   */
-  void deleteSequence(const std::string& name);
+  void deleteSequence(const std::string& sequenceKey) override;
 
   /**
    * @brief Add a sequence to the container.
@@ -220,35 +202,82 @@ public:
    * @throw SequenceException if the sequence's size doesn't match the sequence's size of the container.
    * @throw SequenceException if the sequence's name already exists in the container.
    */
-  void addSequenceWithFrequency(const Sequence& sequence, unsigned int frequency, bool checkName = true);
-  void addSequenceWithFrequency(const Sequence& sequence, size_t sequenceIndex, unsigned int frequency, bool checkName = true);
-  void addSequence(const Sequence& sequence, bool checkName = true)
+  void addSequenceWithFrequency(
+      const std::string& sequenceKey,
+      std::unique_ptr<Sequence>& sequence,
+      unsigned int frequency)
   {
-    addSequenceWithFrequency(sequence, 1, checkName);
+    VectorSiteContainer::addSequence(sequenceKey, sequence);
+    count_.push_back(frequency);
+    ingroup_.push_back(true);
+    group_.push_back(0);
   }
-  void addSequence(const Sequence& sequence, size_t sequenceIndex, bool checkName = true)
+
+
+  void insertSequenceWithFrequency(
+      size_t sequencePosition,
+      std::unique_ptr<Sequence>& sequence,
+      const std::string& sequenceKey,
+      unsigned int frequency)
   {
-    addSequenceWithFrequency(sequence, sequenceIndex, 1, checkName);
+    VectorSiteContainer::insertSequence(sequencePosition, sequence, sequenceKey);
+    count_.insert(count_.begin() + static_cast<ptrdiff_t>(sequencePosition), frequency);
+    ingroup_.insert(ingroup_.begin() + static_cast<ptrdiff_t>(sequencePosition), true);
+    group_.insert(group_.begin() + static_cast<ptrdiff_t>(sequencePosition), 0);
+  }
+
+  void addSequence(
+      const std::string& sequenceKey,
+      std::unique_ptr<Sequence>& sequence) override
+  {
+    addSequenceWithFrequency(sequenceKey, sequence, 1);
+  }
+
+  void insertSequence(size_t sequencePosition, std::unique_ptr<Sequence>& sequence, const std::string& sequenceKey) override
+  {
+    insertSequenceWithFrequency(sequencePosition, sequence, sequenceKey, 1);
   }
 
   /**
    * @brief Clear the container of all its sequences.
    */
-  void clear();
+  void clear() override
+  {
+    VectorSiteContainer::clear();
+    count_.clear();
+    ingroup_.clear();
+    group_.clear();
+  }
 
   /**
    * @brief Get the group identifier of the sequence.
    *
    * @throw IndexOutOfBoundsException if index excedes the number of sequences in the container.
    */
-  size_t getGroupId(size_t index) const;
+  size_t getGroupId(size_t index) const
+  {
+    if (index >= getNumberOfSequences())
+      throw IndexOutOfBoundsException("PolymorphismSequenceContainer::getGroupId: index out of bounds.", index, 0, getNumberOfSequences());
+    return group_[index];
+  }
 
   /**
    * @brief Get the group identifier of a sequence.
    *
    * @throw SequenceNotFoundException if name is not found among the sequences' names.
    */
-  size_t getGroupId(const std::string& name) const;
+  size_t getGroupId(const std::string& name) const
+  {
+    try
+    {
+      return group_[getSequencePosition(name)];
+    }
+    catch (SequenceNotFoundException& snfe)
+    {
+      throw SequenceNotFoundException("PolymorphismSequenceContainer::getGroupId.", name);
+    }
+  }
+
 
   /**
    * @brief Get all the groups identifiers.
@@ -260,19 +289,37 @@ public:
    *
    * @throw IndexOutOfBoundsException if index excedes the number of sequences in the container.
    */
-  void setGroupId(size_t index, size_t group_id);
+  void setGroupId(size_t index, size_t group_id)
+  {
+    if (index >= getNumberOfSequences())
+      throw IndexOutOfBoundsException("PolymorphismSequenceContainer::setGroupId: index out of bounds.", index, 0, getNumberOfSequences());
+    group_[index] = group_id;
+  }
 
   /**
    * @brief Set the group identifier of a sequence.
    *
    * @throw SequenceNotFoundException if name is not found among the sequences' names.
    */
-  void setGroupId(const std::string& name, size_t group_id);
+  void setGroupId(const std::string& name, size_t group_id)
+  {
+    try
+    {
+      group_[getSequencePosition(name)] = group_id;
+    }
+    catch (SequenceNotFoundException& snfe)
+    {
+      throw SequenceNotFoundException("PolymorphismSequenceContainer::setGroupId.", name);
+    }
+  }
 
   /**
    * @brief Get the number of groups.
    */
-  size_t getNumberOfGroups() const;
+  size_t getNumberOfGroups() const
+  {
+    return getAllGroupsIds().size();
+  }
 
   /**
    * @return True is the container contains at least one outgroup sequence.
@@ -284,14 +331,29 @@ public:
    *
    * @throw IndexOutOfBoundsException if index excedes the number of sequences in the container.
    */
-  bool isIngroupMember(size_t index) const;
+  bool isIngroupMember(size_t index) const
+  {
+    if (index >= getNumberOfSequences())
+      throw IndexOutOfBoundsException("PolymorphismSequenceContainer::isIngroupMember: index out of bounds.", index, 0, getNumberOfSequences());
+    return ingroup_[index];
+  }
 
   /**
    * @brief Tell if a sequence is ingroup by name.
    *
    * @throw SequenceNotFoundException if name is not found among the sequences' names.
    */
-  bool isIngroupMember(const std::string& name) const;
+  bool isIngroupMember(const std::string& name) const
+  {
+    try
+    {
+      return ingroup_[getSequencePosition(name)];
+    }
+    catch (SequenceNotFoundException& snfe)
+    {
+      throw SequenceNotFoundException("PolymorphismSequenceContainer::isIngroupMember.", name);
+    }
+  }
 
   /**
    * @brief Set a sequence as ingroup member by index.
@@ -386,7 +448,7 @@ public:
    *
    * @return A SiteContainer object, eventually with duplicated sequences. Names of duplicated sequences are happended with _1, _2, etc.
    */
-  SiteContainer* toSiteContainer() const;
+  std::unique_ptr<SiteContainerInterface> toSiteContainer() const;
 };
 } // end of namespace bpp;
 
