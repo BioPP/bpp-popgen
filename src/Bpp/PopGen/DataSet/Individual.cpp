@@ -37,14 +37,15 @@
    knowledge of the CeCILL license and that you accept its terms.
  */
 
+#include <Bpp/Seq/Container/SequenceContainerTools.h>
 #include "Individual.h"
 
 using namespace bpp;
-
 using namespace std;
 
 // ** Class constructor: *******************************************************/
-Individual::Individual() : id_(""),
+Individual::Individual() : 
+  id_(""),
   sex_(0),
   date_(),
   coord_(),
@@ -63,7 +64,7 @@ Individual::Individual(const std::string& id) : id_(id),
 Individual::Individual(const string& id,
                        const Date& date,
                        const Point2D<double>& coord,
-                       Locality<double>* locality,
+                       shared_ptr<Locality<double>> locality,
                        const unsigned short sex) :
   id_(id),
   sex_(sex),
@@ -73,35 +74,30 @@ Individual::Individual(const string& id,
   sequences_(),
   genotype_() {}
 
-Individual::Individual(const Individual& ind) : id_(ind.getId()),
-  sex_(ind.getSex()),
+Individual::Individual(const Individual& ind) :
+  id_(ind.id_),
+  sex_(ind.sex_),
   date_(),
   coord_(),
-  locality_(0),
+  locality_(ind.locality_),
   sequences_(),
   genotype_()
 {
   try
   {
-    setDate(ind.getDate());
+    setDate(ind.date());
   }
   catch (...)
   {}
   try
   {
-    setCoord(ind.getCoord());
+    setCoord(ind.coord());
   }
   catch (...)
   {}
   try
   {
-    setLocality(ind.getLocality());
-  }
-  catch (...)
-  {}
-  try
-  {
-    setSequences(dynamic_cast<const VectorSequenceContainer&>(ind.getSequences()));
+    setSequences(ind.sequences());
   }
   catch (...)
   {}
@@ -120,7 +116,7 @@ Individual& Individual::operator=(const Individual& ind)
   setSex(ind.getSex());
   try
   {
-    setDate(ind.getDate());
+    setDate(ind.date());
   }
   catch (NullPointerException&)
   {
@@ -128,7 +124,7 @@ Individual& Individual::operator=(const Individual& ind)
   }
   try
   {
-    setCoord(ind.getCoord());
+    setCoord(ind.coord());
   }
   catch (NullPointerException&)
   {
@@ -144,7 +140,7 @@ Individual& Individual::operator=(const Individual& ind)
   }
   try
   {
-    setSequences(dynamic_cast<const VectorSequenceContainer&>(ind.getSequences()));
+    setSequences(ind.sequences());
   }
   catch (NullPointerException&)
   {
@@ -180,10 +176,10 @@ void Individual::setDate(const Date& date)
 
 /******************************************************************************/
 
-const Date& Individual::getDate() const
+const Date& Individual::date() const
 {
   if (hasDate())
-    return *date_.get();
+    return *date_;
   else
     throw (NullPointerException("Individual::getDate: no date associated to this individual."));
 }
@@ -192,7 +188,7 @@ const Date& Individual::getDate() const
 
 bool Individual::hasDate() const
 {
-  return date_.get() != 0;
+  return date_ != nullptr;
 }
 
 /******************************************************************************/
@@ -212,10 +208,10 @@ void Individual::setCoord(const double x, const double y)
 
 /******************************************************************************/
 
-const Point2D<double>& Individual::getCoord() const
+const Point2D<double>& Individual::coord() const
 {
   if (hasCoord())
-    return *coord_.get();
+    return *coord_;
   else
     throw (NullPointerException("Individual::getCoord: no coord associated to this individual."));
 }
@@ -224,7 +220,7 @@ const Point2D<double>& Individual::getCoord() const
 
 bool Individual::hasCoord() const
 {
-  return coord_.get() != 0;
+  return coord_ != nullptr;
 }
 
 /******************************************************************************/
@@ -269,15 +265,7 @@ double Individual::getY() const
 
 /******************************************************************************/
 
-// Locality
-void Individual::setLocality(const Locality<double>* locality)
-{
-  locality_ = locality;
-}
-
-/******************************************************************************/
-
-const Locality<double>* Individual::getLocality() const
+shared_ptr<const Locality<double>> Individual::getLocality() const
 {
   if (hasLocality())
     return locality_;
@@ -287,45 +275,49 @@ const Locality<double>* Individual::getLocality() const
 
 /******************************************************************************/
 
-bool Individual::hasLocality() const
+const Locality<double>& Individual::locality() const
 {
-  return locality_ != 0;
+  if (hasLocality())
+    return *locality_;
+  else
+    throw (NullPointerException("Individual::locality: no locality associated to this individual."));
 }
 
 /******************************************************************************/
 
 // Sequences
-void Individual::addSequence(size_t sequence_key, const Sequence& sequence)
+void Individual::addSequence(size_t sequenceKey, unique_ptr<Sequence>& sequence)
 {
-  if (sequences_.get() == 0)
-    sequences_.reset(new VectorSequenceContainer(sequence.getAlphabet()));
+  if (!sequences_)
+    sequences_ = make_unique<VectorSequenceContainer>(sequence->getAlphabet());
   try
   {
-    sequences_->addSequence(sequence, TextTools::toString(sequence_key));
+    sequences_->addSequence(TextTools::toString(sequenceKey), sequence);
   }
   catch (AlphabetMismatchException& ame)
   {
-    throw (AlphabetMismatchException("Individual::addSequence: alphabets don't match.", ame.getAlphabets()[0], ame.getAlphabets()[1]));
+    throw (AlphabetMismatchException("Individual::addSequence: alphabets don't match.", ame.getFirstAlphabet(), ame.getSecondAlphabet()));
   }
   catch (Exception& e)
   {
     if (string(e.what()).find("name") < string(e.what()).size())
-      throw (BadIdentifierException("Individual::addSequence: sequence's name already in use.", sequence.getName()));
+      throw (BadIdentifierException("Individual::addSequence: sequence's name already in use.", sequence->getName()));
     // if (string(e.what()).find("key") < string(e.what()).size())
     else
-      throw (Exception("Individual::addSequence: sequence_key already in use:" + TextTools::toString(sequence_key)));
+      throw (Exception("Individual::addSequence: sequence_key already in use:" + TextTools::toString(sequenceKey)));
   }
 }
 
 /******************************************************************************/
 
-const Sequence& Individual::getSequenceByName(const std::string& sequence_name) const
+const Sequence& Individual::sequenceByName(const std::string& sequenceName) const
 {
-  if (sequences_.get() == 0)
+  if (!sequences_)
     throw NullPointerException("Individual::getSequenceByName: no sequence data.");
   try
   {
-    return sequences_->getSequence(sequence_name);
+    size_t pos = VectorTools::which(sequences_->getSequenceNames(), sequenceName);
+    return sequences_->sequence(pos);
   }
   catch (SequenceNotFoundException& snfe)
   {
@@ -335,13 +327,13 @@ const Sequence& Individual::getSequenceByName(const std::string& sequence_name) 
 
 /******************************************************************************/
 
-const Sequence& Individual::getSequenceAtPosition(size_t sequence_position) const
+const Sequence& Individual::sequenceAtPosition(size_t sequencePosition) const
 {
-  if (sequences_.get() == 0)
+  if (!sequences_)
     throw NullPointerException("Individual::getSequenceAtPosition: no sequence data.");
   try
   {
-    return sequences_->getSequenceByKey(TextTools::toString(sequence_position));
+    return sequences_->sequence(TextTools::toString(sequencePosition));
   }
   catch (SequenceNotFoundException& snfe)
   {
@@ -351,13 +343,14 @@ const Sequence& Individual::getSequenceAtPosition(size_t sequence_position) cons
 
 /******************************************************************************/
 
-void Individual::deleteSequenceByName(const std::string& sequence_name)
+void Individual::deleteSequenceByName(const std::string& sequenceName)
 {
-  if (sequences_.get() == 0)
+  if (!sequences_)
     throw NullPointerException("Individual::deleteSequenceByName: no sequence data.");
   try
   {
-    sequences_->deleteSequence(sequence_name);
+    size_t pos = VectorTools::which(sequences_->getSequenceNames(), sequenceName);
+    sequences_->deleteSequence(pos);
   }
   catch (SequenceNotFoundException& snfe)
   {
@@ -369,11 +362,11 @@ void Individual::deleteSequenceByName(const std::string& sequence_name)
 
 void Individual::deleteSequenceAtPosition(size_t sequence_position)
 {
-  if (sequences_.get() == 0)
+  if (!sequences_)
     throw NullPointerException("Individual::deleteSequenceAtPosition: no sequence data.");
   try
   {
-    sequences_->deleteSequenceByKey(TextTools::toString(sequence_position));
+    sequences_->removeSequence(TextTools::toString(sequence_position));
   }
   catch (SequenceNotFoundException& snfe)
   {
@@ -383,21 +376,12 @@ void Individual::deleteSequenceAtPosition(size_t sequence_position)
 
 /******************************************************************************/
 
-std::vector<std::string> Individual::getSequenceNames() const
-{
-  if (sequences_.get() == 0)
-    throw NullPointerException("Individual::getSequencesNames: no sequence data.");
-  return sequences_->getSequenceNames();
-}
-
-/******************************************************************************/
-
 std::vector<size_t> Individual::getSequencePositions() const
 {
-  if (sequences_.get() == 0)
+  if (!sequences_)
     throw NullPointerException("Individual::getSequencesPositions: no sequence data.");
   vector<size_t> seqpos;
-  vector<string> seqkeys = sequences_->getKeys();
+  vector<string> seqkeys = sequences_->getSequenceKeys();
   for (size_t i = 0; i < seqkeys.size(); i++)
   {
     seqpos.push_back((size_t) TextTools::toInt(seqkeys[i]));
@@ -407,13 +391,13 @@ std::vector<size_t> Individual::getSequencePositions() const
 
 /******************************************************************************/
 
-size_t Individual::getSequencePosition(const std::string& sequence_name) const
+size_t Individual::getSequencePosition(const std::string& sequenceName) const
 {
   if (sequences_.get() == 0)
     throw NullPointerException("Individual::getSequencePosition: no sequence data.");
   try
   {
-    return (size_t) TextTools::toInt(sequences_->getName(getSequencePosition(sequence_name)));
+    return TextTools::to<size_t>(sequences_->sequenceKey(getSequencePosition(sequenceName)));
   }
   catch (SequenceNotFoundException& snfe)
   {
@@ -435,7 +419,7 @@ bool Individual::hasSequenceAtPosition(size_t position) const
   if (hasSequences())
   {
     vector<size_t> pos = getSequencePositions();
-    for (size_t i = 0; i < pos.size(); i++)
+    for (size_t i = 0; i < pos.size(); ++i)
     {
       if (pos[i] == position)
         return true;
@@ -446,36 +430,20 @@ bool Individual::hasSequenceAtPosition(size_t position) const
 
 /******************************************************************************/
 
-const Alphabet* Individual::getSequenceAlphabet() const
+shared_ptr<const Alphabet> Individual::getSequenceAlphabet() const
 {
-  if (sequences_.get() == 0)
+  if (!sequences_)
     throw NullPointerException("Individual::getSequenceAlphabet: no sequence data.");
   return sequences_->getAlphabet();
 }
 
 /******************************************************************************/
 
-size_t Individual::getNumberOfSequences() const
+const Alphabet& Individual::sequenceAlphabet() const
 {
-  if (sequences_.get() == 0)
-    return 0;
-  return sequences_->getNumberOfSequences();
-}
-
-/******************************************************************************/
-
-void Individual::setSequences(const VectorSequenceContainer& msc)
-{
-  sequences_.reset(new VectorSequenceContainer(msc));
-}
-
-/******************************************************************************/
-
-const OrderedSequenceContainer& Individual::getSequences() const
-{
-  if (sequences_.get() == 0)
-    throw NullPointerException("Individual::getSequences: no sequence data.");
-  return *sequences_;
+  if (!sequences_)
+    throw NullPointerException("Individual::getSequenceAlphabet: no sequence data.");
+  return sequences_->alphabet();
 }
 
 /******************************************************************************/
@@ -528,13 +496,15 @@ bool Individual::hasGenotype() const
 
 /******************************************************************************/
 
-void Individual::setMonolocusGenotype(size_t locus_position, const MonolocusGenotype& monogen)
+void Individual::setMonolocusGenotype(
+    size_t locusPosition,
+    const MonolocusGenotypeInterface& monogen)
 {
   if (!hasGenotype())
     throw NullPointerException("Individual::setMonolocusGenotype: individual has no genotype.");
   try
   {
-    genotype_->setMonolocusGenotype(locus_position, monogen);
+    genotype_->setMonolocusGenotype(locusPosition, monogen);
   }
   catch (IndexOutOfBoundsException& ioobe)
   {
@@ -584,13 +554,13 @@ void Individual::setMonolocusGenotypeByAlleleId(size_t locus_position, const std
 
 /******************************************************************************/
 
-const MonolocusGenotype& Individual::getMonolocusGenotype(size_t locus_position)
+const MonolocusGenotypeInterface& Individual::getMonolocusGenotype(size_t locusPosition)
 {
   if (!hasGenotype())
     throw NullPointerException("Individual::getMonolocusGenotype: individual has no genotype.");
   try
   {
-    return genotype_->getMonolocusGenotype(locus_position);
+    return genotype_->monolocusGenotype(locusPosition);
   }
   catch (IndexOutOfBoundsException& ioobe)
   {

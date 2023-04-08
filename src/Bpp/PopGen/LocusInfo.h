@@ -43,8 +43,9 @@
 // From STL
 #include <string>
 #include <vector>
+#include <memory>
 
-// From local Popgenlib
+// From local bpp-popgen
 #include "AlleleInfo.h"
 #include "GeneralExceptions.h"
 
@@ -60,12 +61,13 @@ namespace bpp
  *
  * @author Sylvain Gaillard
  */
-class LocusInfo
+class LocusInfo :
+  public virtual Clonable
 {
 private:
   std::string name_;
   unsigned int ploidy_;
-  std::vector<AlleleInfo*> alleles_;
+  std::vector<std::unique_ptr<AlleleInfo>> alleles_;
 
 public:
   static unsigned int HAPLODIPLOID;
@@ -81,20 +83,43 @@ public:
    * @param name The name of the locus.
    * @param ploidy The ploidy of the locus.
    */
-  LocusInfo(const std::string& name, const unsigned int ploidy = DIPLOID);
+  LocusInfo(const std::string& name, const unsigned int ploidy = DIPLOID) :
+    name_(name),
+    ploidy_(ploidy),
+    alleles_()
+  {}
 
   /**
    * @brief Copy constructor.
    */
-  LocusInfo(const LocusInfo& locus_info);
+  LocusInfo(const LocusInfo& locusInfo) :
+    name_(locusInfo.name_),
+    ploidy_(locusInfo.ploidy_),
+    alleles_(locusInfo.getNumberOfAlleles())
+  {
+    for (unsigned int i = 0; i < locusInfo.getNumberOfAlleles(); ++i)
+    alleles_[i].reset(locusInfo.getAlleleInfoByKey(i).clone());
+  }
+
+  LocusInfo& operator=(const LocusInfo& locusInfo)
+  {
+    name_ = locusInfo.name_;
+    ploidy_ = locusInfo.ploidy_;
+    alleles_.resize(locusInfo.getNumberOfAlleles());
+    for (unsigned int i = 0; i < locusInfo.getNumberOfAlleles(); ++i)
+      alleles_[i].reset(locusInfo.getAlleleInfoByKey(i).clone());
+    return(*this);
+  }
 
   /**
    * @brief Destroy the LocusInfo.
    */
-  virtual ~LocusInfo();
+  virtual ~LocusInfo() = default;
 
+  LocusInfo* clone() const override { return new LocusInfo(*this); }
+  
 public:
-  // Methodes
+  
   /**
    * @brief Get the name of the locus.
    */
@@ -138,12 +163,12 @@ public:
   /**
    * @brief Get the number of alleles at this locus.
    */
-  size_t getNumberOfAlleles() const;
+  size_t getNumberOfAlleles() const { return alleles_.size(); }
 
   /**
    * @brief Delete all alleles from the locus.
    */
-  void clear();
+  void clear() { alleles_.clear(); }
 };
 } // end of namespace bpp;
 

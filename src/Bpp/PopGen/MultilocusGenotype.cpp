@@ -44,26 +44,28 @@ using namespace std;
 
 // ** Class constructor: *******************************************************/
 
-MultilocusGenotype::MultilocusGenotype(size_t loci_number) : loci_(vector<MonolocusGenotype*>(loci_number))
+MultilocusGenotype::MultilocusGenotype(size_t loci_number) :
+  loci_(loci_number)
 {
   if (loci_number < 1)
     throw BadIntegerException("MultilocusGenotype::MultilocusGenotype: loci_number must be > 0.", static_cast<int>(loci_number));
 
   // Set all the loci_ pointers to nullptr
-  for (size_t i = 0; i < loci_number; i++)
+  for (size_t i = 0; i < loci_number; ++i)
   {
-    loci_[i] = 0;
+    loci_[i] = nullptr;
   }
 }
 
-MultilocusGenotype::MultilocusGenotype(const MultilocusGenotype& genotype) : loci_(vector<MonolocusGenotype*>(genotype.size()))
+MultilocusGenotype::MultilocusGenotype(const MultilocusGenotype& genotype) :
+  loci_(genotype.size())
 {
-  for (size_t i = 0; i < genotype.size(); i++)
+  for (size_t i = 0; i < genotype.size(); ++i)
   {
     if (!genotype.isMonolocusGenotypeMissing(i))
-      loci_[i] = dynamic_cast<MonolocusGenotype*>(genotype.getMonolocusGenotype(i).clone());
+      loci_[i].reset(genotype.monolocusGenotype(i).clone());
     else
-      loci_[i] = 0;
+      loci_[i] = nullptr;
   }
 }
 
@@ -71,49 +73,47 @@ MultilocusGenotype::MultilocusGenotype(const MultilocusGenotype& genotype) : loc
 
 MultilocusGenotype::~MultilocusGenotype()
 {
-  for (size_t i = 0; i < loci_.size(); i++)
-  {
-    delete loci_[i];
-  }
   loci_.clear();
 }
 
 // ** Other methodes: *********************************************************/
 
-void MultilocusGenotype::setMonolocusGenotype(size_t locus_position,
-                                              const MonolocusGenotype& monogen)
+void MultilocusGenotype::setMonolocusGenotype(
+    size_t locusPosition,
+    const MonolocusGenotypeInterface& monogen)
 {
-  if (locus_position < loci_.size())
-    loci_[locus_position] = dynamic_cast<MonolocusGenotype*>(monogen.clone());
+  if (locusPosition < loci_.size())
+    loci_[locusPosition].reset(monogen.clone());
   else
-    throw IndexOutOfBoundsException("MultilocusGenotype::setMonolocusGenotype: locus_position out of bounds.",
-                                    locus_position, 0, loci_.size());
+    throw IndexOutOfBoundsException("MultilocusGenotype::setMonolocusGenotype: locusPosition out of bounds.", locusPosition, 0, loci_.size());
 }
 
-void MultilocusGenotype::setMonolocusGenotypeByAlleleKey(size_t locus_position,
-                                                         const std::vector<size_t>& allele_keys)
+void MultilocusGenotype::setMonolocusGenotypeByAlleleKey(
+    size_t locusPosition,
+    const std::vector<size_t>& alleleKeys)
 {
-  if (allele_keys.size() < 1)
-    throw Exception("MultilocusGenotype::setMonolocusGenotypeByAlleleKey: no key in allele_keys.");
+  if (alleleKeys.size() < 1)
+    throw Exception("MultilocusGenotype::setMonolocusGenotypeByAlleleKey: no key in alleleKeys.");
 
-  if (locus_position < loci_.size())
+  if (locusPosition < loci_.size())
   {
-    setMonolocusGenotype(locus_position, *MonolocusGenotypeTools::buildMonolocusGenotypeByAlleleKey(allele_keys));
+    setMonolocusGenotype(locusPosition, *MonolocusGenotypeTools::buildMonolocusGenotypeByAlleleKey(alleleKeys));
   }
   else
-    throw IndexOutOfBoundsException("MultilocusGenotype::setMonolocusGenotype: locus_position out of bounds.",
-                                    locus_position, 0, loci_.size());
+    throw IndexOutOfBoundsException("MultilocusGenotype::setMonolocusGenotype: locusPosition out of bounds.", locusPosition, 0, loci_.size());
 }
 
-void MultilocusGenotype::setMonolocusGenotypeByAlleleId(size_t locus_position,
-                                                        const std::vector<std::string>& allele_id, const LocusInfo& locus_info)
+void MultilocusGenotype::setMonolocusGenotypeByAlleleId(
+    size_t locusPosition,
+    const vector<string>& alleleId,
+    const LocusInfo& locusInfo)
 {
-  vector<size_t> allele_keys;
-  for (size_t i = 0; i < allele_id.size(); i++)
+  vector<size_t> alleleKeys;
+  for (size_t i = 0; i < alleleId.size(); i++)
   {
     try
     {
-      allele_keys.push_back(locus_info.getAlleleInfoKey(allele_id[i]));
+      alleleKeys.push_back(locusInfo.getAlleleInfoKey(alleleId[i]));
     }
     catch (AlleleNotFoundException& anfe)
     {
@@ -122,35 +122,33 @@ void MultilocusGenotype::setMonolocusGenotypeByAlleleId(size_t locus_position,
   }
   try
   {
-    setMonolocusGenotypeByAlleleKey(locus_position, allele_keys);
+    setMonolocusGenotypeByAlleleKey(locusPosition, alleleKeys);
   }
   catch (IndexOutOfBoundsException& ioobe)
   {
-    throw IndexOutOfBoundsException("MultilocusGenotype::setMonolocusGenotypeByAlleleId: locus_position out of bounds.", ioobe.getBadIndex(), ioobe.getBounds()[0], ioobe.getBounds()[1]);
+    throw IndexOutOfBoundsException("MultilocusGenotype::setMonolocusGenotypeByAlleleId: locusPosition out of bounds.", ioobe.getBadIndex(), ioobe.getBounds()[0], ioobe.getBounds()[1]);
   }
 }
 
-void MultilocusGenotype::setMonolocusGenotypeAsMissing(size_t locus_position)
+void MultilocusGenotype::setMonolocusGenotypeAsMissing(size_t locusPosition)
 {
-  if (locus_position >= loci_.size())
-    throw IndexOutOfBoundsException("MultilocusGenotype::setMonolocusGenotypeAsMissing: locus_position out of bounds.", locus_position, 0, loci_.size());
-  if (loci_[locus_position] != NULL)
-    delete loci_[locus_position];
-  loci_[locus_position] = NULL;
+  if (locusPosition >= loci_.size())
+    throw IndexOutOfBoundsException("MultilocusGenotype::setMonolocusGenotypeAsMissing: locusPosition out of bounds.", locusPosition, 0, loci_.size());
+  loci_[locusPosition] = nullptr;
 }
 
-bool MultilocusGenotype::isMonolocusGenotypeMissing(size_t locus_position) const
+bool MultilocusGenotype::isMonolocusGenotypeMissing(size_t locusPosition) const
 {
-  if (locus_position >= loci_.size())
-    throw IndexOutOfBoundsException("MultilocusGenotype::isMonolocusGenotypeMissing: locus_position out of bounds.", locus_position, 0, loci_.size());
-  return loci_[locus_position] == NULL;
+  if (locusPosition >= loci_.size())
+    throw IndexOutOfBoundsException("MultilocusGenotype::isMonolocusGenotypeMissing: locusPosition out of bounds.", locusPosition, 0, loci_.size());
+  return loci_[locusPosition] == nullptr;
 }
 
-const MonolocusGenotype& MultilocusGenotype::getMonolocusGenotype(size_t locus_position) const
+const MonolocusGenotypeInterface& MultilocusGenotype::monolocusGenotype(size_t locusPosition) const
 {
-  if (locus_position >= loci_.size())
-    throw IndexOutOfBoundsException("MultilocusGenotype::getMonolocusGenotype: locus_position out of bounds", locus_position, 0, loci_.size());
-  return *loci_[locus_position];
+  if (locusPosition >= loci_.size())
+    throw IndexOutOfBoundsException("MultilocusGenotype::getMonolocusGenotype: locusPosition out of bounds", locusPosition, 0, loci_.size());
+  return *loci_[locusPosition];
 }
 
 size_t MultilocusGenotype::size() const
@@ -161,9 +159,9 @@ size_t MultilocusGenotype::size() const
 size_t MultilocusGenotype::countNonMissingLoci() const
 {
   size_t count = 0;
-  for (size_t i = 0; i < loci_.size(); i++)
+  for (size_t i = 0; i < loci_.size(); ++i)
   {
-    if (loci_[i] != NULL)
+    if (loci_[i])
       count++;
   }
   return count;
@@ -172,11 +170,11 @@ size_t MultilocusGenotype::countNonMissingLoci() const
 size_t MultilocusGenotype::countHomozygousLoci() const
 {
   size_t count = 0;
-  for (size_t i = 0; i < loci_.size(); i++)
+  for (size_t i = 0; i < loci_.size(); ++i)
   {
     try
     {
-      if (dynamic_cast<BiAlleleMonolocusGenotype*>(loci_[i])->isHomozygous())
+      if (dynamic_cast<BiAlleleMonolocusGenotype&>(*loci_[i]).isHomozygous())
         count++;
     }
     catch (...)
@@ -192,7 +190,7 @@ size_t MultilocusGenotype::countHeterozygousLoci() const
   {
     try
     {
-      if (!(dynamic_cast<BiAlleleMonolocusGenotype*>(loci_[i])->isHomozygous()))
+      if (!(dynamic_cast<BiAlleleMonolocusGenotype&>(*loci_[i]).isHomozygous()))
         count++;
     }
     catch (...)

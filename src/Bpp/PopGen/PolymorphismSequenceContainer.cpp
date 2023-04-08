@@ -48,39 +48,7 @@ using namespace std;
 
 /******************************************************************************/
 
-PolymorphismSequenceContainer::PolymorphismSequenceContainer(const Alphabet* alpha) :
-  VectorSiteContainer(alpha),
-  ingroup_(vector<bool>()),
-  count_(0),
-  group_(0) {}
-
-/******************************************************************************/
-
-PolymorphismSequenceContainer::PolymorphismSequenceContainer(size_t size, const Alphabet* alpha) :
-  VectorSiteContainer(size, alpha),
-  ingroup_(size),
-  count_(size),
-  group_(size) {}
-
-/******************************************************************************/
-
-PolymorphismSequenceContainer::PolymorphismSequenceContainer(const vector<string>& names, const Alphabet* alpha) :
-  VectorSiteContainer(names, alpha),
-  ingroup_(names.size()),
-  count_(names.size()),
-  group_(names.size()) {}
-
-/******************************************************************************/
-
-PolymorphismSequenceContainer::PolymorphismSequenceContainer(const OrderedSequenceContainer& sc) :
-  VectorSiteContainer(sc),
-  ingroup_(sc.getNumberOfSequences(), true),
-  count_(sc.getNumberOfSequences(), 1),
-  group_(sc.getNumberOfSequences(), 1) {}
-
-/******************************************************************************/
-
-PolymorphismSequenceContainer::PolymorphismSequenceContainer(const OrderedSequenceContainer& sc, bool count) :
+PolymorphismSequenceContainer::PolymorphismSequenceContainer(const SequenceContainerInterface& sc, bool count) :
   VectorSiteContainer(sc.getAlphabet()),
   ingroup_(),
   count_(),
@@ -90,15 +58,16 @@ PolymorphismSequenceContainer::PolymorphismSequenceContainer(const OrderedSequen
     return; // done.
 
   // Add first sequence:
-  addSequenceWithFrequency(sc.getSequence(0), 1);
+  auto seqTmp0 = unique_ptr<Sequence>(sc.sequence(0).clone());
+  addSequenceWithFrequency(seqTmp0->getName(), seqTmp0, 1);
   for (size_t i = 1; i < sc.getNumberOfSequences(); ++i)
   {
-    const Sequence& seq = sc.getSequence(i);
+    const Sequence& seq = sc.sequence(i);
     // Check if this sequence already exists in this container:
     bool exists = false;
     for (size_t j = 0; !exists && j < getNumberOfSequences(); ++j)
     {
-      if (SequenceTools::areSequencesIdentical(getSequence(j), seq))
+      if (SequenceTools::areSequencesIdentical(sequence(j), seq))
       {
         incrementSequenceCount(j); // We increase frequency, meaning that we discard this sequence name.
         exists = true;
@@ -106,50 +75,8 @@ PolymorphismSequenceContainer::PolymorphismSequenceContainer(const OrderedSequen
     }
     if (!exists)
     {
-      addSequenceWithFrequency(seq, 1);
-    }
-  }
-  ingroup_.resize(getNumberOfSequences(), true);
-  group_.resize(getNumberOfSequences());
-}
-
-/******************************************************************************/
-
-PolymorphismSequenceContainer::PolymorphismSequenceContainer(const SiteContainer& sc) :
-  VectorSiteContainer(sc),
-  ingroup_(sc.getNumberOfSequences(), true),
-  count_(sc.getNumberOfSequences(), 1),
-  group_(sc.getNumberOfSequences(), 1) {}
-
-/******************************************************************************/
-
-PolymorphismSequenceContainer::PolymorphismSequenceContainer(const SiteContainer& sc, bool count) :
-  VectorSiteContainer(sc.getAlphabet()),
-  ingroup_(),
-  count_(),
-  group_()
-{
-  if (sc.getNumberOfSequences() == 0)
-    return; // done.
-
-  // Add first sequence:
-  addSequenceWithFrequency(sc.getSequence(0), 1);
-  for (size_t i = 1; i < sc.getNumberOfSequences(); ++i)
-  {
-    const Sequence& seq = sc.getSequence(i);
-    // Check if this sequence already exists in this container:
-    bool exists = false;
-    for (size_t j = 0; !exists && j < getNumberOfSequences(); ++j)
-    {
-      if (SequenceTools::areSequencesIdentical(getSequence(j), seq))
-      {
-        incrementSequenceCount(j); // We increase frequency, meaning that we discard this sequence name.
-        exists = true;
-      }
-    }
-    if (!exists)
-    {
-      addSequenceWithFrequency(seq, 1);
+      auto seqTmp = unique_ptr<Sequence>(seq.clone());
+      addSequenceWithFrequency(seqTmp->getName(), seqTmp, 1);
     }
   }
   ingroup_.resize(getNumberOfSequences(), true);
@@ -193,7 +120,7 @@ PolymorphismSequenceContainer& PolymorphismSequenceContainer::operator=(const Po
 
 /******************************************************************************/
 
-// ** Class destructor: *******************************************************/
+/** Class destructor: *********************************************************/
 
 PolymorphismSequenceContainer::~PolymorphismSequenceContainer()
 {
@@ -202,124 +129,57 @@ PolymorphismSequenceContainer::~PolymorphismSequenceContainer()
 
 /*****************************************************************************/
 
-// ** Other methods: *********************************************************/
+/** Other methods: ***********************************************************/
 
-std::shared_ptr<Sequence> PolymorphismSequenceContainer::removeSequence(size_t index)
+std::unique_ptr<Sequence> PolymorphismSequenceContainer::removeSequence(size_t sequencePosition)
 {
-  if (index >= getNumberOfSequences())
-    throw IndexOutOfBoundsException("PolymorphismSequenceContainer::removeSequence: index out of bounds.", index, 0, getNumberOfSequences());
-  count_.erase(count_.begin() + static_cast<ptrdiff_t>(index));
-  ingroup_.erase(ingroup_.begin() + static_cast<ptrdiff_t>(index));
-  group_.erase(group_.begin() + static_cast<ptrdiff_t>(index));
-  return VectorSiteContainer::removeSequence(index);
+  if (sequencePosition >= getNumberOfSequences())
+    throw IndexOutOfBoundsException("PolymorphismSequenceContainer::removeSequence: index out of bounds.", sequencePosition, 0, getNumberOfSequences());
+  count_.erase(count_.begin() + static_cast<ptrdiff_t>(sequencePosition));
+  ingroup_.erase(ingroup_.begin() + static_cast<ptrdiff_t>(sequencePosition));
+  group_.erase(group_.begin() + static_cast<ptrdiff_t>(sequencePosition));
+  return VectorSiteContainer::removeSequence(sequencePosition);
 }
 
 /******************************************************************************/
 
-std::shared_ptr<Sequence> PolymorphismSequenceContainer::removeSequence(const std::string& name)
+std::unique_ptr<Sequence> PolymorphismSequenceContainer::removeSequence(const std::string& sequenceName)
 {
   try
   {
-    return removeSequence(getSequencePosition(name));
+    return removeSequence(getSequencePosition(sequenceName));
   }
   catch (SequenceNotFoundException& snfe)
   {
-    throw SequenceNotFoundException("PolymorphismSequenceContainer::removeSequence.", name);
+    throw SequenceNotFoundException("PolymorphismSequenceContainer::removeSequence.", sequenceName);
   }
 }
 
 /******************************************************************************/
 
-void PolymorphismSequenceContainer::deleteSequence(size_t index)
+void PolymorphismSequenceContainer::deleteSequence(size_t sequencePosition)
 {
   try
   {
-    removeSequence(index); //This returns a smart pointer, which automatically deletes the object.
+    removeSequence(sequencePosition); //This returns a smart pointer, which automatically deletes the object.
   }
   catch (IndexOutOfBoundsException& ioobe)
   {
-    throw IndexOutOfBoundsException("PolymorphismSequenceContainer::deleteSequence.", index, 0, getNumberOfSequences());
+    throw IndexOutOfBoundsException("PolymorphismSequenceContainer::deleteSequence.", sequencePosition, 0, getNumberOfSequences());
   }
 }
 
 /******************************************************************************/
 
-void PolymorphismSequenceContainer::deleteSequence(const std::string& name)
+void PolymorphismSequenceContainer::deleteSequence(const std::string& sequenceName)
 {
   try
   {
-    removeSequence(name); //This returns a smart pointer, which automatically deletes the object.
+    removeSequence(sequenceName); //This returns a smart pointer, which automatically deletes the object.
   }
   catch (SequenceNotFoundException& snfe)
   {
-    throw SequenceNotFoundException("PolymorphismSequenceContainer::deleteSequence.", name);
-  }
-}
-
-/******************************************************************************/
-
-void PolymorphismSequenceContainer::addSequenceWithFrequency(const Sequence& sequence, unsigned int frequency, bool checkName)
-{
-  try
-  {
-    VectorSiteContainer::addSequence(sequence, checkName);
-  }
-  catch (Exception& e)
-  {
-    throw e;
-  }
-  count_.push_back(frequency);
-  ingroup_.push_back(true);
-  group_.push_back(0);
-}
-
-/******************************************************************************/
-
-void PolymorphismSequenceContainer::addSequenceWithFrequency(const Sequence& sequence, size_t sequenceIndex, unsigned int frequency, bool checkName)
-{
-  try
-  {
-    VectorSiteContainer::addSequence(sequence, sequenceIndex, checkName);
-  }
-  catch (Exception& e)
-  {
-    throw e;
-  }
-  count_.insert(count_.begin() + static_cast<ptrdiff_t>(sequenceIndex), frequency);
-  ingroup_.insert(ingroup_.begin() + static_cast<ptrdiff_t>(sequenceIndex), true);
-  group_.insert(group_.begin() + static_cast<ptrdiff_t>(sequenceIndex), 0);
-}
-
-/******************************************************************************/
-
-void PolymorphismSequenceContainer::clear()
-{
-  VectorSiteContainer::clear();
-  count_.clear();
-  ingroup_.clear();
-  group_.clear();
-}
-
-/******************************************************************************/
-
-size_t PolymorphismSequenceContainer::getGroupId(size_t index) const
-{
-  if (index >= getNumberOfSequences())
-    throw IndexOutOfBoundsException("PolymorphismSequenceContainer::getGroupId: index out of bounds.", index, 0, getNumberOfSequences());
-  return group_[index];
-}
-
-/******************************************************************************/
-
-size_t PolymorphismSequenceContainer::getGroupId(const std::string& name) const
-{
-  try
-  {
-    return group_[getSequencePosition(name)];
-  }
-  catch (SequenceNotFoundException& snfe)
-  {
-    throw SequenceNotFoundException("PolymorphismSequenceContainer::getGroupId.", name);
+    throw SequenceNotFoundException("PolymorphismSequenceContainer::deleteSequence.", sequenceName);
   }
 }
 
@@ -337,67 +197,14 @@ std::set<size_t> PolymorphismSequenceContainer::getAllGroupsIds() const
 
 /******************************************************************************/
 
-void PolymorphismSequenceContainer::setGroupId(size_t index, size_t group_id)
-{
-  if (index >= getNumberOfSequences())
-    throw IndexOutOfBoundsException("PolymorphismSequenceContainer::setGroupId: index out of bounds.", index, 0, getNumberOfSequences());
-  group_[index] = group_id;
-}
-
-/******************************************************************************/
-
-void PolymorphismSequenceContainer::setGroupId(const std::string& name, size_t group_id)
-{
-  try
-  {
-    group_[getSequencePosition(name)] = group_id;
-  }
-  catch (SequenceNotFoundException& snfe)
-  {
-    throw SequenceNotFoundException("PolymorphismSequenceContainer::setGroupId.", name);
-  }
-}
-
-/******************************************************************************/
-
-size_t PolymorphismSequenceContainer::getNumberOfGroups() const
-{
-  return getAllGroupsIds().size();
-}
-
-/******************************************************************************/
-
 bool PolymorphismSequenceContainer::hasOutgroup() const
 {
-  for (auto i: ingroup_)
+  for (auto i : ingroup_)
   {
     if (!i)
       return true;
   }
   return false;
-}
-
-/******************************************************************************/
-
-bool PolymorphismSequenceContainer::isIngroupMember(size_t index) const
-{
-  if (index >= getNumberOfSequences())
-    throw IndexOutOfBoundsException("PolymorphismSequenceContainer::isIngroupMember: index out of bounds.", index, 0, getNumberOfSequences());
-  return ingroup_[index];
-}
-
-/******************************************************************************/
-
-bool PolymorphismSequenceContainer::isIngroupMember(const std::string& name) const
-{
-  try
-  {
-    return ingroup_[getSequencePosition(name)];
-  }
-  catch (SequenceNotFoundException& snfe)
-  {
-    throw SequenceNotFoundException("PolymorphismSequenceContainer::isIngroupMember.", name);
-  }
 }
 
 /******************************************************************************/
@@ -554,12 +361,12 @@ unsigned int PolymorphismSequenceContainer::getSequenceCount(const std::string& 
 
 /******************************************************************************/
 
-SiteContainer* PolymorphismSequenceContainer::toSiteContainer() const
+unique_ptr<SiteContainerInterface> PolymorphismSequenceContainer::toSiteContainer() const
 {
-  unique_ptr<VectorSiteContainer> sites(new VectorSiteContainer(getAlphabet()));
+  unique_ptr<SiteContainerInterface> sites(new VectorSiteContainer(getAlphabet()));
   for (size_t i = 0; i < getNumberOfSequences(); ++i)
   {
-    const Sequence& seq = getSequence(i);
+    const auto& seq = sequence(i);
     unsigned int freq = getSequenceCount(i);
     if (freq > 1)
     {
@@ -567,16 +374,17 @@ SiteContainer* PolymorphismSequenceContainer::toSiteContainer() const
       {
         unique_ptr<Sequence> seqdup(seq.clone());
         seqdup->setName(seq.getName() + "_" + TextTools::toString(j + 1));
-        sites->addSequence(*seqdup);
+        sites->addSequence(seqdup->getName(), seqdup);
       }
     }
     else
     {
-      sites->addSequence(seq);
+      unique_ptr<Sequence> seqdup(seq.clone());
+      sites->addSequence(seqdup->getName(), seqdup);
     }
   }
-  sites->setSitePositions(getSitePositions());
-  return sites.release();
+  sites->setSiteCoordinates(getSiteCoordinates());
+  return sites;
 }
 
 /******************************************************************************/

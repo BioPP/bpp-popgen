@@ -48,16 +48,16 @@ DarwinDon::DarwinDon() {}
 
 DarwinDon::~DarwinDon() {}
 
-void DarwinDon::write(ostream& os, const DataSet& data_set) const
+void DarwinDon::write(ostream& os, const DataSet& dataset) const
 {
   if (!os)
     throw IOException("DarwinDon::write: fail to open stream.");
   StlOutputStreamWrapper out(&os);
   (out << "@DARwin 5.0 - DON").endLine();
   size_t ind_nbr = 0;
-  for (size_t i = 0; i < data_set.getNumberOfGroups(); i++)
+  for (size_t i = 0; i < dataset.getNumberOfGroups(); i++)
   {
-    ind_nbr += data_set.getNumberOfIndividualsInGroup(i);
+    ind_nbr += dataset.getNumberOfIndividualsInGroup(i);
   }
   vector<string> header;
   header.push_back("N°");
@@ -65,17 +65,17 @@ void DarwinDon::write(ostream& os, const DataSet& data_set) const
   (out << ind_nbr << "\t" << header.size() - 1).endLine();
   VectorTools::print(header, out, "\t");
   // size_t ind_index = 0;
-  for (size_t i = 0; i < data_set.getNumberOfGroups(); i++)
+  for (size_t i = 0; i < dataset.getNumberOfGroups(); i++)
   {
-    size_t ind_nbr_ig = data_set.getNumberOfIndividualsInGroup(i);
+    size_t ind_nbr_ig = dataset.getNumberOfIndividualsInGroup(i);
     for (size_t j = 0; j < ind_nbr_ig; j++)
     {
-      (out << j + (i * ind_nbr_ig) + 1 << "\t" << data_set.getIndividualAtPositionFromGroup(i, j)->getId()).endLine();
+      (out << j + (i * ind_nbr_ig) + 1 << "\t" << dataset.getIndividualAtPositionFromGroup(i, j).getId()).endLine();
     }
   }
 }
 
-void DarwinDon::write(const string& path, const DataSet& data_set, bool overwrite) const
+void DarwinDon::write(const string& path, const DataSet& dataset, bool overwrite) const
 {
-  AbstractODataSet::write(path, data_set, overwrite);
+  AbstractODataSet::write(path, dataset, overwrite);
 }

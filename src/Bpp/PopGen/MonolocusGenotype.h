@@ -56,18 +56,14 @@ namespace bpp
  *
  * @author Sylvain Gaillard
  */
-class MonolocusGenotype :
-  public Clonable
+class MonolocusGenotypeInterface :
+  public virtual Clonable
 {
 public:
-  // Constructors and Destructor
-  /**
-   * @brief Destroy a MonolocusGenotype.
-   */
-  virtual ~MonolocusGenotype() {}
+
+  MonolocusGenotypeInterface* clone() const override = 0;
 
 public:
-  // Methodes
   /**
    * @brief Get the alleles' index.
    *

@@ -5,7 +5,7 @@
 //
 
 /*
-   Copyright or © or Copr. CNRS, (November 17, 2004)
+   Copyright or © or Copr. Bio++ Development Team, (November 17, 2004)
 
    This software is a computer program whose purpose is to provide classes
    for population genetics analysis.
@@ -42,42 +42,44 @@
 using namespace bpp;
 using namespace std;
 
-std::unique_ptr<DataSet> DataSetTools::buildDataSet(const OrderedSequenceContainer& osc)
+std::unique_ptr<DataSet> DataSetTools::buildDataSet(const SequenceContainerInterface& sc)
 {
-  unique_ptr<DataSet> d_s(new DataSet());
-  d_s->addEmptyGroup(0);
-  for (size_t i = 0; i < osc.getNumberOfSequences(); i++)
+  auto dataset = make_unique<DataSet>();
+  dataset->addEmptyGroup(0);
+  for (size_t i = 0; i < sc.getNumberOfSequences(); ++i)
   {
-    d_s->addEmptyIndividualToGroup(0, string("Individual_") + TextTools::toString(i + 1));
+    dataset->addEmptyIndividualToGroup(0, string("Individual_") + TextTools::toString(i + 1));
     try
     {
-      d_s->addIndividualSequenceInGroup(0, i, 0, osc.getSequence(i));
+      auto tmpSeq = unique_ptr<Sequence>(sc.sequence(i).clone());
+      dataset->addIndividualSequenceInGroup(0, i, 0, tmpSeq);
     }
     catch (Exception& e)
     {
       throw e;
     }
   }
-  return d_s;
+  return dataset;
 }
 
 std::unique_ptr<DataSet> DataSetTools::buildDataSet(const PolymorphismSequenceContainer& psc)
 {
-  unique_ptr<DataSet> d_s(new DataSet());
-  set<size_t> grp_ids = psc.getAllGroupsIds();
-  for (set<size_t>::iterator it = grp_ids.begin(); it != grp_ids.end(); it++)
+  auto dataset = make_unique<DataSet>();
+  set<size_t> grpIds = psc.getAllGroupsIds();
+  for (auto& it : grpIds)
   {
-    d_s->addEmptyGroup(*it);
+    dataset->addEmptyGroup(it);
   }
-  size_t ind_count = 0;
-  for (size_t i = 0; i < psc.getNumberOfSequences(); i++)
+  size_t indCount = 0;
+  for (size_t i = 0; i < psc.getNumberOfSequences(); ++i)
   {
-    for (size_t j = 0; j < psc.getSequenceCount(i); j++)
+    for (size_t j = 0; j < psc.getSequenceCount(i); ++j)
     {
-      d_s->addEmptyIndividualToGroup(psc.getGroupId(i), string("Individual_") + TextTools::toString(ind_count++));
+      dataset->addEmptyIndividualToGroup(psc.getGroupId(i), string("Individual_") + TextTools::toString(indCount++));
       try
       {
-        d_s->addIndividualSequenceInGroup(psc.getGroupId(i), i, 0, psc.getSequence(i));
+	auto tmpSeq = unique_ptr<Sequence>(psc.sequence(i).clone());
+        dataset->addIndividualSequenceInGroup(psc.getGroupId(i), i, 0, tmpSeq);
       }
       catch (Exception& e)
       {
@@ -85,5 +87,6 @@ std::unique_ptr<DataSet> DataSetTools::buildDataSet(const PolymorphismSequenceCo
       }
     }
   }
-  return d_s;
+  return dataset;
 }
+

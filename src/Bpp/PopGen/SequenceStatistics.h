@@ -53,6 +53,7 @@
 #include <Bpp/Seq/Container/SiteContainerTools.h>
 
 #include "PolymorphismSequenceContainer.h"
+#include "PolymorphismSequenceContainerTools.h"
 
 // From the STL
 #include <string>
@@ -61,6 +62,8 @@
 
 namespace bpp
 {
+using ConstSiteIterator = TemplateSiteIteratorInterface<const Site>;
+
 /**
  * @brief Static class providing methods to compute statistics on sequences data.
  *
@@ -766,7 +769,7 @@ public:
    * @todo
    *  - To be moved to PolymorphismSequenceContainerTools.
    */
-  static PolymorphismSequenceContainer* generateLdContainer(
+  static std::unique_ptr<PolymorphismSequenceContainer> generateLdContainer(
     const PolymorphismSequenceContainer& psc,
     bool keepsingleton = true,
     double freqmin = 0.);

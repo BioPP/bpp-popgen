@@ -43,6 +43,7 @@
 // From STL
 #include <vector>
 #include <string>
+#include <memory>
 
 #include <Bpp/Exceptions.h>
 
@@ -62,19 +63,19 @@ namespace bpp
  *
  * @author Sylvain Gaillard
  */
-class MultilocusGenotype
+class MultilocusGenotype:
+  public virtual Clonable
 {
 private:
-  std::vector<MonolocusGenotype*> loci_;
+  std::vector<std::unique_ptr<MonolocusGenotypeInterface>> loci_;
 
 public:
-  // Constructors and Destructor
   /**
    * @brief Build a MultilocusGenotype linked to an AnalyzedLoci object.
    *
-   * @throw BadIntegerException if loci_number < 1.
+   * @throw BadIntegerException if lociNumber < 1.
    */
-  MultilocusGenotype(size_t loci_number);
+  MultilocusGenotype(size_t lociNumber);
 
   /**
    * @brief Copy constructor.
@@ -84,14 +85,17 @@ public:
   /**
    * @brief Destroy a MultilocusGenotype.
    */
-  ~MultilocusGenotype();
+  virtual ~MultilocusGenotype();
+
+  MultilocusGenotype* clone() const override { return new MultilocusGenotype(*this); }
 
 public:
   /**
    * @brief Set a MonolocusGenotype.
    */
-  void setMonolocusGenotype(size_t locus_position,
-                            const MonolocusGenotype& monogen);
+  void setMonolocusGenotype(
+      size_t locusPosition,
+      const MonolocusGenotypeInterface& monogen);
 
   /**
    * @brief Set a MonolocusGenotype by allele keys.
@@ -99,8 +103,9 @@ public:
    * @throw IndexOutOfBoundsException if locus_position excedes the number of loci.
    * @throw Exception if there is no key in allele_keys.
    */
-  void setMonolocusGenotypeByAlleleKey(size_t locus_position,
-                                       const std::vector<size_t>& allele_keys);
+  void setMonolocusGenotypeByAlleleKey(
+      size_t locusPosition,
+      const std::vector<size_t>& alleleKeys);
 
   /**
    * @brief Set a MonolocusGenotype by allele id.
@@ -108,28 +113,29 @@ public:
    * @throw IndexOutOfBoundsException if locus_position excedes the number of loci.
    * @throw AlleleNotFoundException if at least one of the id is not found in the LocusInfo.
    */
-  void setMonolocusGenotypeByAlleleId(size_t locus_position,
-                                      const std::vector<std::string>& allele_id,
-                                      const LocusInfo& locus_info);
+  void setMonolocusGenotypeByAlleleId(
+      size_t locusPosition,
+      const std::vector<std::string>& alleleId,
+      const LocusInfo& locusInfo);
 
   /**
    * @brief Set a MonolocusGenotype as missing data.
    *
    * @throw IndexOutOfBoundsException if locus_position excedes the number of loci.
    */
-  void setMonolocusGenotypeAsMissing(size_t locus_position);
+  void setMonolocusGenotypeAsMissing(size_t locusPosition);
 
   /**
    * @brief Tell if a MonolocusGenotype is a missing data.
    *
    * @throw IndexOutOfBoundsException if locus_position excedes the number of loci.
    */
-  bool isMonolocusGenotypeMissing(size_t locus_position) const;
+  bool isMonolocusGenotypeMissing(size_t locusPosition) const;
 
   /**
    * @brief Get a MonolocusGenotype.
    */
-  const MonolocusGenotype& getMonolocusGenotype(size_t locus_position) const;
+  const MonolocusGenotypeInterface& monolocusGenotype(size_t locusPosition) const;
 
   /**
    * @brief Count the number of loci.

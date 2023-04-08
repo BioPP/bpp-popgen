@@ -72,7 +72,7 @@ public:
    * @param allele_keys A vector containing thes allele keys to put in the MonolocusGenotype.
    * @return A MonolocusGenotype according to the number of alleles
    */
-  static std::unique_ptr<MonolocusGenotype> buildMonolocusGenotypeByAlleleKey(const std::vector<size_t> allele_keys);
+  static std::unique_ptr<MonolocusGenotypeInterface> buildMonolocusGenotypeByAlleleKey(const std::vector<size_t> alleleKeys);
 };
 } // end of namespace bpp;
 

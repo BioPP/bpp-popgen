@@ -46,23 +46,23 @@ DarwinVarSingle::DarwinVarSingle(size_t missingData) : missingData_(missingData)
 
 DarwinVarSingle::~DarwinVarSingle() {}
 
-void DarwinVarSingle::write(ostream& os, const DataSet& data_set) const
+void DarwinVarSingle::write(ostream& os, const DataSet& dataset) const
 {
   if (!os)
     throw IOException("DarwinVarSingle::write: fail to open stream.");
   StlOutputStreamWrapper out(&os);
   (out << "@DARwin 5.0 - SINGLE").endLine();
   size_t ind_nbr = 0;
-  for (size_t i = 0; i < data_set.getNumberOfGroups(); i++)
+  for (size_t i = 0; i < dataset.getNumberOfGroups(); i++)
   {
-    ind_nbr += data_set.getNumberOfIndividualsInGroup(i);
+    ind_nbr += dataset.getNumberOfIndividualsInGroup(i);
   }
   vector<string> header;
   header.push_back("Unit");
-  for (size_t i = 0; i < data_set.getNumberOfLoci(); i++)
+  for (size_t i = 0; i < dataset.getNumberOfLoci(); ++i)
   {
-    const LocusInfo& li = data_set.getLocusInfoAtPosition(i);
-    for (size_t j = 0; j < li.getNumberOfAlleles(); j++)
+    const LocusInfo& li = dataset.getLocusInfoAtPosition(i);
+    for (size_t j = 0; j < li.getNumberOfAlleles(); ++j)
     {
       header.push_back(li.getName() + "." + li.getAlleleInfoByKey(j).getId());
     }
@@ -72,27 +72,27 @@ void DarwinVarSingle::write(ostream& os, const DataSet& data_set) const
   (out << ind_nbr << "\t" << var_nbr).endLine();
   VectorTools::print(header, out, "\t");
   // size_t ind_index = 0;
-  const AnalyzedLoci* al = data_set.getAnalyzedLoci();
-  for (size_t i = 0; i < data_set.getNumberOfGroups(); i++)
+  const auto& al = dataset.analyzedLoci();
+  for (size_t i = 0; i < dataset.getNumberOfGroups(); ++i)
   {
-    size_t ind_nbr_ig = data_set.getNumberOfIndividualsInGroup(i);
-    for (size_t j = 0; j < ind_nbr_ig; j++)
+    size_t ind_nbr_ig = dataset.getNumberOfIndividualsInGroup(i);
+    for (size_t j = 0; j < ind_nbr_ig; ++j)
     {
       vector<size_t> var;
-      const MultilocusGenotype& geno = data_set.getIndividualAtPositionFromGroup(i, j)->getGenotype();
-      for (size_t k = 0; k < geno.size(); k++)
+      const auto& geno = dataset.getIndividualAtPositionFromGroup(i, j).getGenotype();
+      for (size_t k = 0; k < geno.size(); ++k)
       {
-        const MonolocusGenotype& mg = geno.getMonolocusGenotype(k);
+        const auto& mg = geno.monolocusGenotype(k);
         if (geno.isMonolocusGenotypeMissing(k))
         {
-          for (size_t l = 0; l < al->getNumberOfAlleles()[k]; l++)
+          for (size_t l = 0; l < al.getNumberOfAlleles()[k]; ++l)
           {
             var.push_back(missingData_);
           }
         }
         else
         {
-          for (size_t l = 0; l < al->getNumberOfAlleles()[k]; l++)
+          for (size_t l = 0; l < al.getNumberOfAlleles()[k]; ++l)
           {
             size_t flag = 0;
             if (VectorTools::contains(mg.getAlleleIndex(), l))
@@ -107,7 +107,7 @@ void DarwinVarSingle::write(ostream& os, const DataSet& data_set) const
   }
 }
 
-void DarwinVarSingle::write(const string& path, const DataSet& data_set, bool overwrite) const
+void DarwinVarSingle::write(const string& path, const DataSet& dataset, bool overwrite) const
 {
-  AbstractODataSet::write(path, data_set, overwrite);
+  AbstractODataSet::write(path, dataset, overwrite);
 }

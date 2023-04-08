@@ -5,7 +5,7 @@
 //
 
 /*
-   Copyright or © or Copr. CNRS, (November 17, 2004)
+   Copyright or © or Copr. Bio++ Development Team, (November 17, 2004)
 
    This software is a computer program whose purpose is to provide classes
    for population genetics analysis.
@@ -47,8 +47,8 @@
 #include <Bpp/Exceptions.h>
 #include <Bpp/Text/TextTools.h>
 
-// From SeqLib
-#include <Bpp/Seq/Container/OrderedSequenceContainer.h>
+// From bpp-seq
+#include <Bpp/Seq/Container/SequenceContainer.h>
 
 // From local bpp-popgen
 #include "DataSet.h"
@@ -67,7 +67,7 @@ public:
   /**
    * @brief General method to build a DataSet from an OrderedSequenceContainer.
    */
-  static std::unique_ptr<DataSet> buildDataSet(const OrderedSequenceContainer& osc);
+  static std::unique_ptr<DataSet> buildDataSet(const SequenceContainerInterface& sc);
 
   /**
    * @brief Specific methode to build a DataSet from a PolymorphismSequenceContainer.

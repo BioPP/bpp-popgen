@@ -44,19 +44,19 @@ using namespace std;
 
 // ** Class constructor: *******************************************************/
 
-MultiAlleleMonolocusGenotype::MultiAlleleMonolocusGenotype(std::vector<size_t> allele_index) : allele_index_(vector<size_t>(allele_index.size()))
+MultiAlleleMonolocusGenotype::MultiAlleleMonolocusGenotype(std::vector<size_t> allele_index) : alleleIndex_(vector<size_t>(allele_index.size()))
 {
   for (size_t i = 0; i < allele_index.size(); ++i)
   {
-    allele_index_[i] = allele_index[i];
+    alleleIndex_[i] = allele_index[i];
   }
 }
 
-MultiAlleleMonolocusGenotype::MultiAlleleMonolocusGenotype(const MultiAlleleMonolocusGenotype& mmg) : allele_index_(vector<size_t>(mmg.allele_index_.size()))
+MultiAlleleMonolocusGenotype::MultiAlleleMonolocusGenotype(const MultiAlleleMonolocusGenotype& mmg) : alleleIndex_(vector<size_t>(mmg.alleleIndex_.size()))
 {
   for (size_t i = 0; i < mmg.getAlleleIndex().size(); ++i)
   {
-    allele_index_[i] = mmg.getAlleleIndex()[i];
+    alleleIndex_[i] = mmg.getAlleleIndex()[i];
   }
 }
 
@@ -64,7 +64,7 @@ MultiAlleleMonolocusGenotype::MultiAlleleMonolocusGenotype(const MultiAlleleMono
 
 MultiAlleleMonolocusGenotype::~MultiAlleleMonolocusGenotype()
 {
-  allele_index_.clear();
+  alleleIndex_.clear();
 }
 
 // ** Other methodes: **********************************************************/
@@ -73,33 +73,24 @@ MultiAlleleMonolocusGenotype& MultiAlleleMonolocusGenotype::operator=(const Mult
 {
   for (size_t i = 0; i < mmg.getAlleleIndex().size(); ++i)
   {
-    allele_index_.push_back(mmg.getAlleleIndex()[i]);
+    alleleIndex_.push_back(mmg.getAlleleIndex()[i]);
   }
   return *this;
 }
 
 bool MultiAlleleMonolocusGenotype::operator==(const MultiAlleleMonolocusGenotype& mmg) const
 {
-  return (allele_index_[0] == mmg.getAlleleIndex()[0] && allele_index_[1] == mmg.getAlleleIndex()[1])
-         || (allele_index_[0] == mmg.getAlleleIndex()[1] && allele_index_[1] == mmg.getAlleleIndex()[0]);
+  return (alleleIndex_[0] == mmg.getAlleleIndex()[0] && alleleIndex_[1] == mmg.getAlleleIndex()[1])
+         || (alleleIndex_[0] == mmg.getAlleleIndex()[1] && alleleIndex_[1] == mmg.getAlleleIndex()[0]);
 }
 
 bool MultiAlleleMonolocusGenotype::isHomozygous() const
 {
-  for (size_t i = 1; i < allele_index_.size(); ++i)
+  for (size_t i = 1; i < alleleIndex_.size(); ++i)
   {
-    if (allele_index_[i - 1] != allele_index_[i])
+    if (alleleIndex_[i - 1] != alleleIndex_[i])
       return false;
   }
   return true;
 }
 
-std::vector<size_t> MultiAlleleMonolocusGenotype::getAlleleIndex() const
-{
-  return allele_index_;
-}
-
-MultiAlleleMonolocusGenotype* MultiAlleleMonolocusGenotype::clone() const
-{
-  return new MultiAlleleMonolocusGenotype(*this);
-}
