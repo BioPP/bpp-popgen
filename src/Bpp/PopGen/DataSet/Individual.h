@@ -354,7 +354,7 @@ public:
   const Alphabet& sequenceAlphabet() const;
 
   /**
-   * @brief Get the sequences' names.
+   * @brief Get the sequence names.
    *
    * @return All the sequences' names of the individual in a vector of string.
    * @throw NullPointerException if there is no sequence container defined.
