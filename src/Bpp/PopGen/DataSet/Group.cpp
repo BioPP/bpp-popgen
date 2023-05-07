@@ -211,7 +211,7 @@ size_t Group::getMaxNumberOfSequences() const
   size_t maxnum = 0;
   for (size_t i = 0; i < getNumberOfIndividuals(); i++)
   {
-    vector<size_t> seqpos = individuals_[i]->getSequencesPositions();
+    vector<size_t> seqpos = individuals_[i]->getSequencePositions();
     for (size_t j = 0; j < seqpos.size(); j++)
     {
       if (maxnum < seqpos[j])

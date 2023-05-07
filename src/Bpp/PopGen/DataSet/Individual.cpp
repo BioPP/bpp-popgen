@@ -392,7 +392,7 @@ std::vector<std::string> Individual::getSequenceNames() const
 
 /******************************************************************************/
 
-std::vector<size_t> Individual::getSequencesPositions() const
+std::vector<size_t> Individual::getSequencePositions() const
 {
   if (sequences_.get() == 0)
     throw NullPointerException("Individual::getSequencesPositions: no sequence data.");
@@ -413,7 +413,11 @@ size_t Individual::getSequencePosition(const std::string& sequence_name) const
     throw NullPointerException("Individual::getSequencePosition: no sequence data.");
   try
   {
+<<<<<<< HEAD
     return (size_t) TextTools::toInt(sequences_->getSequenceKey(getSequencePosition(sequence_name)));
+=======
+    return (size_t) TextTools::toInt(sequences_->getName(getSequencePosition(sequence_name)));
+>>>>>>> c8328c02c044e919756b4bf96d3266c5d8bba6b2
   }
   catch (SequenceNotFoundException& snfe)
   {
@@ -434,7 +438,7 @@ bool Individual::hasSequenceAtPosition(size_t position) const
 {
   if (hasSequences())
   {
-    vector<size_t> pos = getSequencesPositions();
+    vector<size_t> pos = getSequencePositions();
     for (size_t i = 0; i < pos.size(); i++)
     {
       if (pos[i] == position)
@@ -464,9 +468,15 @@ size_t Individual::getNumberOfSequences() const
 
 /******************************************************************************/
 
+<<<<<<< HEAD
 void Individual::setSequences(const OrderedSequenceContainer& osc)
 {
   sequences_.reset(new VectorSequenceContainer(osc));
+=======
+void Individual::setSequences(const VectorSequenceContainer& msc)
+{
+  sequences_.reset(new VectorSequenceContainer(msc));
+>>>>>>> c8328c02c044e919756b4bf96d3266c5d8bba6b2
 }
 
 /******************************************************************************/

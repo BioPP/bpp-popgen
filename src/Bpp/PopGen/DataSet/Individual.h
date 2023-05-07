@@ -48,13 +48,13 @@
 #include <Bpp/Exceptions.h>
 #include <Bpp/Text/TextTools.h>
 
-// From SeqLib
+// From bpp-seq
 #include <Bpp/Seq/Sequence.h>
 #include <Bpp/Seq/SequenceExceptions.h>
 #include <Bpp/Seq/Container/OrderedSequenceContainer.h>
 #include <Bpp/Seq/Container/VectorSequenceContainer.h>
 
-// From PopGenLib
+// From bpp-popgen
 #include "Locality.h"
 #include "Date.h"
 #include "../MultilocusGenotype.h"
@@ -348,7 +348,7 @@ public:
    * @return All the positions where a sequence is found.
    * @throw NullPointerException if there is no sequence container defined.
    */
-  std::vector<size_t> getSequencesPositions() const;
+  std::vector<size_t> getSequencePositions() const;
 
   /**
    * @brief Get the position of a sequence.

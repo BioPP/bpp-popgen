@@ -209,9 +209,9 @@ PolymorphismSequenceContainer* PolymorphismSequenceContainerTools::sample(const 
 
 PolymorphismSequenceContainer* PolymorphismSequenceContainerTools::getSitesWithoutGaps (const PolymorphismSequenceContainer& psc)
 {
-  vector<string> seqNames = psc.getSequencesNames();
+  vector<string> seqNames = psc.getSequenceNames();
   PolymorphismSequenceContainer* noGapCont = new PolymorphismSequenceContainer(psc.getNumberOfSequences(), psc.getAlphabet());
-  noGapCont->setSequencesNames(seqNames, false);
+  noGapCont->setSequenceNames(seqNames, false);
   size_t nbSeq = psc.getNumberOfSequences();
   for (size_t i = 0; i < nbSeq; i++)
   {
@@ -294,9 +294,9 @@ size_t PolymorphismSequenceContainerTools::getNumberOfCompleteSites(const Polymo
 
 PolymorphismSequenceContainer* PolymorphismSequenceContainerTools::getCompleteSites (const PolymorphismSequenceContainer& psc)
 {
-  vector<string> seqNames = psc.getSequencesNames();
+  vector<string> seqNames = psc.getSequenceNames();
   PolymorphismSequenceContainer* complete = new PolymorphismSequenceContainer(psc.getNumberOfSequences(), psc.getAlphabet());
-  complete->setSequencesNames(seqNames, false);
+  complete->setSequenceNames(seqNames, false);
   size_t nbSeq = psc.getNumberOfSequences();
   for (size_t i = 0; i < nbSeq; i++)
   {
@@ -591,7 +591,7 @@ string PolymorphismSequenceContainerTools::getIngroupSpeciesName(const Polymorph
 
 PolymorphismSequenceContainer* PolymorphismSequenceContainerTools::getSynonymousSites(const PolymorphismSequenceContainer& psc, const GeneticCode& gCode)
 {
-  unique_ptr<PolymorphismSequenceContainer> psco(new PolymorphismSequenceContainer(psc.getSequencesNames(), psc.getAlphabet()));
+  unique_ptr<PolymorphismSequenceContainer> psco(new PolymorphismSequenceContainer(psc.getSequenceNames(), psc.getAlphabet()));
   for (size_t i = 0; i < psc.getNumberOfSites(); ++i)
   {
     const Site& site = psc.getSite(i);
@@ -618,7 +618,7 @@ PolymorphismSequenceContainer* PolymorphismSequenceContainerTools::getSynonymous
 
 PolymorphismSequenceContainer* PolymorphismSequenceContainerTools::getNonSynonymousSites(const PolymorphismSequenceContainer& psc, const GeneticCode& gCode)
 {
-  unique_ptr<PolymorphismSequenceContainer> psco(new PolymorphismSequenceContainer(psc.getSequencesNames(), psc.getAlphabet()));
+  unique_ptr<PolymorphismSequenceContainer> psco(new PolymorphismSequenceContainer(psc.getSequenceNames(), psc.getAlphabet()));
   for (size_t i = 0; i < psc.getNumberOfSites(); ++i)
   {
     const Site& site = psc.getSite(i);

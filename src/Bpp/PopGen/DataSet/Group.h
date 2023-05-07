@@ -395,7 +395,11 @@ public:
    *
    * @throw IndexOutOfBoundsException if individual_position excedes the number of individuals.
    */
+<<<<<<< HEAD
   void setIndividualSequences(size_t individual_position, const OrderedSequenceContainer& osc);
+=======
+  void setIndividualSequences(size_t individual_position, const VectorSequenceContainer& msc);
+>>>>>>> c8328c02c044e919756b4bf96d3266c5d8bba6b2
 
   /**
    * @brief Set the genotype of an Individual.
