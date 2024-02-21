@@ -149,12 +149,12 @@ void PopgenlibIO::read(std::istream& is, DataSet& dataset)
   bool section5 = true;
   size_t current_section = 0;
   size_t previous_section = 0;
-  size_t linenum = 0;
+  //size_t linenum = 0;
   // Main loop for all file lines
   while (!is.eof())
   {
     temp = FileTools::getNextLine(is);
-    linenum++;
+    //linenum++;
     // Get the correct current section
     if (temp.find("[General]", 0) != string::npos)
     {

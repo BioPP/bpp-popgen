@@ -84,7 +84,7 @@ PolymorphismMultiGContainer& PolymorphismMultiGContainer::operator=(const Polymo
 
 void PolymorphismMultiGContainer::addMultilocusGenotype(unique_ptr<MultilocusGenotype>& mg, size_t group)
 {
-  multilocusGenotypes_.push_back(move(mg));
+  multilocusGenotypes_.push_back(std::move(mg));
   groups_.push_back(group);
   auto it = groupsNames_.find(group);
   if (!(it != groupsNames_.end()) )
@@ -109,7 +109,7 @@ unique_ptr<MultilocusGenotype> PolymorphismMultiGContainer::removeMultilocusGeno
 {
   if (position >= size())
     throw IndexOutOfBoundsException("PolymorphismMultiGContainer::removeMultilocusGenotype: position out of bounds.", position, 0, size() - 1);
-  unique_ptr<MultilocusGenotype> tmpMg = move(multilocusGenotypes_[position]);
+  unique_ptr<MultilocusGenotype> tmpMg = std::move(multilocusGenotypes_[position]);
   multilocusGenotypes_.erase(multilocusGenotypes_.begin() + static_cast<ptrdiff_t>(position));
   groups_.erase(groups_.begin() + static_cast<ptrdiff_t>(position));
   return tmpMg;

@@ -82,7 +82,7 @@ unique_ptr<Individual> Group::removeIndividualById(const std::string& individual
   try
   {
     size_t indPos = getIndividualPosition(individualId);
-    unique_ptr<Individual> ind = move(individuals_[indPos]);
+    unique_ptr<Individual> ind = std::move(individuals_[indPos]);
     individuals_.erase(individuals_.begin() + static_cast<ptrdiff_t>(indPos));
     return ind;
   }
@@ -96,7 +96,7 @@ std::unique_ptr<Individual> Group::removeIndividualAtPosition(size_t individualP
 {
   if (individualPosition >= individuals_.size())
     throw IndexOutOfBoundsException("Group::removeIndividualAtPosition.", individualPosition, 0, individuals_.size());
-  unique_ptr<Individual> ind = move(individuals_[individualPosition]);
+  unique_ptr<Individual> ind = std::move(individuals_[individualPosition]);
   individuals_.erase(individuals_.begin() + static_cast<ptrdiff_t>(individualPosition));
   return ind;
 }
