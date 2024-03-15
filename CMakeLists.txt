@@ -1,3 +1,7 @@
+# SPDX-FileCopyrightText: The Bio++ Development Group
+#
+# SPDX-License-Identifier: CECILL-2.1
+
 # CMake script for Bio++ Population Genetics Library
 # Authors:
 #   Sylvain Gaillard
@@ -5,7 +9,7 @@
 #   Francois Gindraud (2017)
 # Created: 21/08/2009
 
-cmake_minimum_required (VERSION 2.8.12)
+cmake_minimum_required (VERSION 3.5)
 project (bpp-popgen3 CXX)
 
 # Compile options
@@ -112,7 +116,7 @@ SET(CPACK_PACKAGE_VERSION_MAJOR "3")
 SET(CPACK_PACKAGE_VERSION_MINOR "0")
 SET(CPACK_PACKAGE_VERSION_PATCH "0")
 SET(CPACK_PACKAGE_DESCRIPTION_SUMMARY "The Bio++ Population Genetics library")
-SET(CPACK_RESOURCE_FILE_LICENSE "${CMAKE_SOURCE_DIR}/COPYING.txt")
+SET(CPACK_RESOURCE_FILE_LICENSE "${CMAKE_SOURCE_DIR}/LICENSES/CECILL-2.1.txt")
 SET(CPACK_RESOURCE_FILE_AUTHORS "${CMAKE_SOURCE_DIR}/AUTHORS.txt")
 SET(CPACK_RESOURCE_FILE_INSTALL "${CMAKE_SOURCE_DIR}/INSTALL.txt")
 SET(CPACK_SOURCE_GENERATOR "TGZ")
