@@ -1,8 +1,9 @@
+Julien Dutheil <dutheil@evolbio.mpg.de>
 Eric Bazin
-Sylvain Gaillard <sylvain.gaillard@angers.inra.fr>
-Sylvain Glémin <glemin@univ-montp2.fr>
-Khalid Belkhir <belkhir@univ-montp2.fr>
-François Gindraud  <francois.gindraud@gmail.com>
+Khalid Belkhir
+Sylvain Gaillard
+François Gindraud
+Sylvain Glémin
 
 Contributed code to Bio++ was enabled thanks to the following institutions and resources:
 
