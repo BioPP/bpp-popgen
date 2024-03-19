@@ -25,7 +25,6 @@ class MonolocusGenotypeInterface :
   public virtual Clonable
 {
 public:
-
   MonolocusGenotypeInterface* clone() const override = 0;
 
 public:
@@ -43,4 +42,4 @@ public:
 };
 } // end of namespace bpp;
 
-#endif// _MONOLOCUSGENOTYPE_H_
+#endif // _MONOLOCUSGENOTYPE_H_

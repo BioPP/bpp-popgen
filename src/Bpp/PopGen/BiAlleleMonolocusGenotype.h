@@ -33,7 +33,7 @@ public:
    * @brief Build a monolocus genotype containing two alleles.
    */
   BiAlleleMonolocusGenotype(size_t firstAlleleIndex,
-                            size_t secondAlleleIndex);
+      size_t secondAlleleIndex);
 
   /**
    * @brief Build a monolocus genotype containing two alleles.
@@ -110,4 +110,4 @@ public:
 };
 } // end of namespace bpp;
 
-#endif// _BIALLELEMONOLOCUSGENOTYPE_H_
+#endif // _BIALLELEMONOLOCUSGENOTYPE_H_

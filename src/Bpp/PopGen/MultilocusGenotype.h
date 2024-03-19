@@ -28,7 +28,7 @@ namespace bpp
  *
  * @author Sylvain Gaillard
  */
-class MultilocusGenotype:
+class MultilocusGenotype :
   public virtual Clonable
 {
 private:
@@ -126,4 +126,4 @@ public:
 };
 } // end of namespace bpp;
 
-#endif// _MULTILOCUSGENOTYPE_H_
+#endif // _MULTILOCUSGENOTYPE_H_

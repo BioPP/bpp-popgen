@@ -30,7 +30,7 @@ namespace bpp
  *
  * @author Sylvain Gaillard
  */
-class PolymorphismMultiGContainer:
+class PolymorphismMultiGContainer :
   public virtual Clonable
 {
 private:
@@ -182,4 +182,4 @@ public:
 };
 } // end of namespace bpp;
 
-#endif// _POLYMORPHYSMMULTIGCONTAINER_H_
+#endif // _POLYMORPHYSMMULTIGCONTAINER_H_

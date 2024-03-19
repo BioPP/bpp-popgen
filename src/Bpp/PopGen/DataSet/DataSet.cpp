@@ -19,9 +19,13 @@ DataSet::DataSet(const DataSet& ds) :
   if (ds.analyzedLoci_)
     analyzedLoci_.reset(ds.analyzedLoci_->clone());
   for (const auto& locality : ds.localities_)
+  {
     localities_.push_back(unique_ptr<Locality<double>>(locality->clone()));
+  }
   for (const auto& group : ds.groups_)
+  {
     groups_.push_back(unique_ptr<Group>(group->clone()));
+  }
 }
 
 /******************************************************************************/
@@ -34,15 +38,19 @@ DataSet& DataSet::operator=(const DataSet& ds)
     analyzedLoci_.reset(nullptr);
 
   sequenceAlphabet_ = ds.sequenceAlphabet_;
- 
-  localities_.clear(); 
+
+  localities_.clear();
   for (const auto& locality : ds.localities_)
+  {
     localities_.push_back(unique_ptr<Locality<double>>(locality->clone()));
+  }
 
   groups_.clear();
   for (const auto& group : ds.groups_)
+  {
     groups_.push_back(unique_ptr<Group>(group->clone()));
-  
+  }
+
   return *this;
 }
 
@@ -170,10 +178,12 @@ void DataSet::addEmptyGroup(size_t groupId)
 const Group& DataSet::getGroupById(size_t groupId) const
 {
   for (size_t i = 0; i < groups_.size(); i++)
-  for (const auto& group : groups_)
   {
-    if (groupId == group->getGroupId())
-      return *group;
+    for (const auto& group : groups_)
+    {
+      if (groupId == group->getGroupId())
+        return *group;
+    }
   }
   throw GroupNotFoundException("DataSet::getGroupById: groupId not found.", groupId);
 }
@@ -1140,7 +1150,7 @@ unique_ptr<PolymorphismMultiGContainer> DataSet::getPolymorphismMultiGContainer(
 
 /******************************************************************************/
 
-unique_ptr<PolymorphismMultiGContainer> DataSet::getPolymorphismMultiGContainer(const std::map<size_t, std::vector<size_t> >& selection) const
+unique_ptr<PolymorphismMultiGContainer> DataSet::getPolymorphismMultiGContainer(const std::map<size_t, std::vector<size_t>>& selection) const
 {
   auto pmgc = make_unique<PolymorphismMultiGContainer>();
   for (const auto& it : selection)
@@ -1179,7 +1189,7 @@ unique_ptr<PolymorphismMultiGContainer> DataSet::getPolymorphismMultiGContainer(
 /******************************************************************************/
 
 unique_ptr<PolymorphismSequenceContainer> DataSet::getPolymorphismSequenceContainer(
-    const std::map<size_t, std::vector<size_t> >& selection,
+    const std::map<size_t, std::vector<size_t>>& selection,
     size_t sequencePosition) const
 {
   auto psc = make_unique<PolymorphismSequenceContainer>(getAlphabet());
@@ -1201,7 +1211,7 @@ unique_ptr<PolymorphismSequenceContainer> DataSet::getPolymorphismSequenceContai
         const auto& tmpInd = getIndividualAtPositionFromGroup(i, j);
         if (tmpInd.hasSequenceAtPosition(sequencePosition))
         {
-	  auto tmpSeq = unique_ptr<Sequence>(tmpInd.sequenceAtPosition(sequencePosition).clone());
+          auto tmpSeq = unique_ptr<Sequence>(tmpInd.sequenceAtPosition(sequencePosition).clone());
           psc->addSequenceWithFrequency(tmpSeq->getName(), tmpSeq, 1);
           psc->setGroupId(tmpSeq->getName(), it.first);
         }
@@ -1216,4 +1226,3 @@ unique_ptr<PolymorphismSequenceContainer> DataSet::getPolymorphismSequenceContai
 }
 
 /******************************************************************************/
-

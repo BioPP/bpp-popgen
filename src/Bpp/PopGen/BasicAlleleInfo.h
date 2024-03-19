@@ -78,4 +78,4 @@ public:
 };
 } // end of namespace bpp;
 
-#endif// _BASICALLELEINFO_H_
+#endif // _BASICALLELEINFO_H_

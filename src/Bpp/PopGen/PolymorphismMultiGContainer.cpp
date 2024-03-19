@@ -54,7 +54,7 @@ void PolymorphismMultiGContainer::addMultilocusGenotype(unique_ptr<MultilocusGen
   auto it = groupsNames_.find(group);
   if (!(it != groupsNames_.end()) )
   {
-    //Add group with empty name
+    // Add group with empty name
     groupsNames_[group] = "";
   }
 }
@@ -192,7 +192,7 @@ size_t PolymorphismMultiGContainer::getGroupSize(size_t group) const
 
 std::string PolymorphismMultiGContainer::getGroupName(size_t groupId) const
 {
-  string name = TextTools::toString(groupId); //return group id per default.
+  string name = TextTools::toString(groupId); // return group id per default.
   auto it = groupsNames_.find(groupId);
   if (it != groupsNames_.end() )
     name = it->second;

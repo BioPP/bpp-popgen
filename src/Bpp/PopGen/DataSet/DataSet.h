@@ -38,7 +38,7 @@ class DataSet
 private:
   std::unique_ptr<AnalyzedLoci> analyzedLoci_;
   std::shared_ptr<const Alphabet> sequenceAlphabet_;
-  std::vector<std::shared_ptr<Locality<double>>> localities_; //Localities can be shared
+  std::vector<std::shared_ptr<Locality<double>>> localities_; // Localities can be shared
   std::vector<std::unique_ptr<Group>> groups_;
 
 public:
@@ -46,7 +46,7 @@ public:
   /**
    * @brief Build a new void DataSet.
    */
-  DataSet() : 
+  DataSet() :
     analyzedLoci_(nullptr),
     sequenceAlphabet_(nullptr),
     localities_(),
@@ -319,7 +319,7 @@ public:
    */
   void setIndividualDateInGroup(
       size_t groupPosition,
-      size_t individualPosition, 
+      size_t individualPosition,
       const Date& date);
 
   /**
@@ -560,7 +560,7 @@ public:
    */
   std::shared_ptr<const Alphabet> getAlphabet() const
   {
-    if (! sequenceAlphabet_)
+    if (!sequenceAlphabet_)
       throw NullPointerException("DataSet::getAlphabet: no sequence data.");
     return sequenceAlphabet_;
   }
@@ -572,7 +572,7 @@ public:
    */
   const Alphabet& alphabet() const
   {
-    if (! sequenceAlphabet_)
+    if (!sequenceAlphabet_)
       throw NullPointerException("DataSet::getAlphabet: no sequence data.");
     return *sequenceAlphabet_;
   }
@@ -584,7 +584,7 @@ public:
    */
   std::string getAlphabetType() const
   {
-    if (! sequenceAlphabet_)
+    if (!sequenceAlphabet_)
       throw NullPointerException("DataSet::getAlphabet: no sequence data.");
     return sequenceAlphabet_->getAlphabetType();
   }
@@ -696,8 +696,8 @@ public:
    * @param sequence_position The position of the sequence in the individuals;
    */
   std::unique_ptr<PolymorphismSequenceContainer> getPolymorphismSequenceContainer(
-    const std::map<size_t, std::vector<size_t>>& selection,
-    size_t sequence_position) const;
+      const std::map<size_t, std::vector<size_t>>& selection,
+      size_t sequence_position) const;
 
   // ** General tests **********************************************************/
   /**
@@ -709,8 +709,7 @@ public:
    * @brief Tell if there is alelelic data.
    */
   bool hasAlleleicData() const { return analyzedLoci_ != nullptr; }
-
 };
 } // end of namespace bpp;
 
-#endif// _DATASET_H_
+#endif // _DATASET_H_

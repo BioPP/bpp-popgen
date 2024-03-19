@@ -10,8 +10,8 @@ using namespace std;
 // ** Class constructor: *******************************************************/
 
 BiAlleleMonolocusGenotype::BiAlleleMonolocusGenotype(
-  size_t firstAlleleIndex,
-  size_t secondAlleleIndex) : alleleIndex_(vector<size_t>(2))
+    size_t firstAlleleIndex,
+    size_t secondAlleleIndex) : alleleIndex_(vector<size_t>(2))
 {
   alleleIndex_[0] = firstAlleleIndex;
   alleleIndex_[1] = secondAlleleIndex;
@@ -58,4 +58,3 @@ bool BiAlleleMonolocusGenotype::operator==(const BiAlleleMonolocusGenotype& bmg)
   return (alleleIndex_[0] == bmg.getAlleleIndex()[0] && alleleIndex_[1] == bmg.getAlleleIndex()[1])
          || (alleleIndex_[0] == bmg.getAlleleIndex()[1] && alleleIndex_[1] == bmg.getAlleleIndex()[0]);
 }
-

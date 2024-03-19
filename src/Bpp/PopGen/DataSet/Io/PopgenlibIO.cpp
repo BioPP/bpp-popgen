@@ -21,7 +21,7 @@ PopgenlibIO::PopgenlibIO() : data_separator_(' '),
   missing_data_symbol_('$') {}
 
 PopgenlibIO::PopgenlibIO(const std::string& missing_data_symbol,
-                         const std::string& data_separator) :
+    const std::string& data_separator) :
   data_separator_(' '),
   missing_data_symbol_('$')
 {
@@ -114,12 +114,12 @@ void PopgenlibIO::read(std::istream& is, DataSet& dataset)
   bool section5 = true;
   size_t current_section = 0;
   size_t previous_section = 0;
-  //size_t linenum = 0;
+  // size_t linenum = 0;
   // Main loop for all file lines
   while (!is.eof())
   {
     temp = FileTools::getNextLine(is);
-    //linenum++;
+    // linenum++;
     // Get the correct current section
     if (temp.find("[General]", 0) != string::npos)
     {
@@ -421,10 +421,11 @@ void PopgenlibIO::parseIndividual_(const std::vector<std::string>& in, DataSet& 
       {
         try
         {
-          if (seq_pos_str[j] != getMissingDataSymbol()) {
-	    auto tmpSeq = unique_ptr<Sequence>(vsc.sequence(TextTools::to<size_t>(seq_pos_str[j]) - 1).clone());
+          if (seq_pos_str[j] != getMissingDataSymbol())
+          {
+            auto tmpSeq = unique_ptr<Sequence>(vsc.sequence(TextTools::to<size_t>(seq_pos_str[j]) - 1).clone());
             tmpIndiv.addSequence(j, tmpSeq);
-	  }
+          }
         }
         catch (...)
         {}
@@ -611,7 +612,7 @@ void PopgenlibIO::write(std::ostream& os, const DataSet& dataset) const
       if (tmpInd.hasGenotype())
       {
         const MultilocusGenotype& tmp_genotype = tmpInd.getGenotype();
-        vector<vector<string> > output(tmp_genotype.size());
+        vector<vector<string>> output(tmp_genotype.size());
         os << "AllelicData = {" << endl;
         for (size_t k = 0; k < tmp_genotype.size(); k++)
         {

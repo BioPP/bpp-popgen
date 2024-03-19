@@ -58,4 +58,3 @@ bool MultiAlleleMonolocusGenotype::isHomozygous() const
   }
   return true;
 }
-

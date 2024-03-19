@@ -111,8 +111,8 @@ unique_ptr<PolymorphismSequenceContainer> PolymorphismSequenceContainerTools::ex
 /******************************************************************************/
 
 unique_ptr<PolymorphismSequenceContainer> PolymorphismSequenceContainerTools::getSelectedSequences(
-  const PolymorphismSequenceContainer& psc,
-  const SequenceSelection& ss)
+    const PolymorphismSequenceContainer& psc,
+    const SequenceSelection& ss)
 {
   auto newpsc = make_unique<PolymorphismSequenceContainer>(psc.getAlphabet());
   for (size_t i = 0; i < ss.size(); ++i)
@@ -171,7 +171,8 @@ unique_ptr<PolymorphismSequenceContainer> PolymorphismSequenceContainerTools::ge
     }
   }
   NoGapSiteContainerIterator ngsi(psc);
-  while (ngsi.hasMoreSites()) {
+  while (ngsi.hasMoreSites())
+  {
     auto tmpSite = make_unique<Site>(ngsi.nextSite());
     noGapCont->addSite(tmpSite);
   }
@@ -243,7 +244,8 @@ unique_ptr<PolymorphismSequenceContainer> PolymorphismSequenceContainerTools::ge
     }
   }
   CompleteSiteContainerIterator csi(psc);
-  while (csi.hasMoreSites()) {
+  while (csi.hasMoreSites())
+  {
     auto tmpSite = make_unique<Site>(csi.nextSite());
     complete->addSite(tmpSite);
   }
@@ -374,9 +376,9 @@ unique_ptr<PolymorphismSequenceContainer> PolymorphismSequenceContainerTools::ge
 /******************************************************************************/
 
 unique_ptr<PolymorphismSequenceContainer> PolymorphismSequenceContainerTools::getIntrons(
-  const PolymorphismSequenceContainer& psc,
-  const string& setName,
-  const GeneticCode& gCode)
+    const PolymorphismSequenceContainer& psc,
+    const string& setName,
+    const GeneticCode& gCode)
 {
   auto maseFileHeader = psc.getComments();
   SiteSelection ss;
@@ -460,9 +462,9 @@ unique_ptr<PolymorphismSequenceContainer> PolymorphismSequenceContainerTools::ge
 /******************************************************************************/
 
 unique_ptr<PolymorphismSequenceContainer> PolymorphismSequenceContainerTools::get3Prime(
-  const PolymorphismSequenceContainer& psc,
-  const string& setName,
-  const GeneticCode& gCode)
+    const PolymorphismSequenceContainer& psc,
+    const string& setName,
+    const GeneticCode& gCode)
 {
   auto maseFileHeader = psc.getComments();
   SiteSelection ss;
@@ -579,4 +581,3 @@ unique_ptr<PolymorphismSequenceContainer> PolymorphismSequenceContainerTools::ge
 }
 
 /******************************************************************************/
-

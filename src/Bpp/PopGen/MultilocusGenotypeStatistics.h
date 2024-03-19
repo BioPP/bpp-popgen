@@ -133,8 +133,8 @@ public:
    * @throw ZeroDivisionException if the number of considered alleles = 0.
    */
   static std::map<size_t, double> getHeterozygousFrqForGroups(
-      const PolymorphismMultiGContainer& pmgc, 
-      size_t locusPosition, 
+      const PolymorphismMultiGContainer& pmgc,
+      size_t locusPosition,
       const std::set<size_t>& groups);
 
   /**
@@ -161,8 +161,8 @@ public:
    * @throw ZeroDivisionException if the number of considered alleles = 0.
    */
   static double getHexpForGroups(
-      const PolymorphismMultiGContainer& pmgc, 
-      size_t locusPosition, 
+      const PolymorphismMultiGContainer& pmgc,
+      size_t locusPosition,
       const std::set<size_t>& groups);
 
   /**
@@ -195,7 +195,7 @@ public:
    * @throw ZeroDivisionException if the number of considered alleles = 0.
    */
   static double getDnei72(
-      const PolymorphismMultiGContainer& pmgc, 
+      const PolymorphismMultiGContainer& pmgc,
       std::vector<size_t> locusPositions,
       size_t grp1,
       size_t grp2);
@@ -238,15 +238,15 @@ public:
    * @brief Compute the Weir and Cockerham Fit on a set of groups for each allele of a given locus.
    */
   static std::map<size_t, double> getAllelesFit(
-      const PolymorphismMultiGContainer& pmgc, 
-      size_t locusPosition, 
+      const PolymorphismMultiGContainer& pmgc,
+      size_t locusPosition,
       const std::set<size_t>& groups);
 
   /**
    * @brief Compute the Weir and Cockerham @f$\theta@f$ on a set of groups for each allele of a given locus.
    */
   static std::map<size_t, double> getAllelesFst(
-      const PolymorphismMultiGContainer& pmgc, 
+      const PolymorphismMultiGContainer& pmgc,
       size_t locusPosition,
       const std::set<size_t>& groups);
 
@@ -254,15 +254,15 @@ public:
    * @brief Compute the Weir and Cockerham Fis on a set of groups for each allele of a given locus.
    */
   static std::map<size_t, double> getAllelesFis(
-      const PolymorphismMultiGContainer& pmgc, 
-      size_t locusPosition, 
+      const PolymorphismMultiGContainer& pmgc,
+      size_t locusPosition,
       const std::set<size_t>& groups);
 
   /**
    * @brief Get the variance components a, b and c (Weir and Cockerham, 1983).
    */
   static std::map<size_t, VarComp> getVarianceComponents(
-      const PolymorphismMultiGContainer& pmgc, 
+      const PolymorphismMultiGContainer& pmgc,
       size_t locusPosition,
       const std::set<size_t>& groups);
 
@@ -272,7 +272,7 @@ public:
    */
   static double getWCMultilocusFst(
       const PolymorphismMultiGContainer& pmgc,
-      std::vector<size_t> locusPositions, 
+      std::vector<size_t> locusPositions,
       const std::set<size_t>& groups);
 
   /**
@@ -280,7 +280,7 @@ public:
    * The variance componenets for each allele are calculated and then combined over loci using Weir and Cockerham weighting.
    */
   static double getWCMultilocusFis(
-      const PolymorphismMultiGContainer& pmgc, 
+      const PolymorphismMultiGContainer& pmgc,
       std::vector<size_t> locusPositions,
       const std::set<size_t>& groups);
 
@@ -291,9 +291,9 @@ public:
    * Return values are theta, % of values > theta and % of values < theta.
    */
   static PermResults getWCMultilocusFstAndPerm(
-      const PolymorphismMultiGContainer& pmgc, 
-      std::vector<size_t> locusPositions, 
-      std::set<size_t> groups, 
+      const PolymorphismMultiGContainer& pmgc,
+      std::vector<size_t> locusPositions,
+      std::set<size_t> groups,
       unsigned int nb_perm);
 
   /**
@@ -303,7 +303,7 @@ public:
    * Return values are Fis, % of values > Fis and % of values < Fis.
    */
   static PermResults getWCMultilocusFisAndPerm(
-      const PolymorphismMultiGContainer& pmgc, 
+      const PolymorphismMultiGContainer& pmgc,
       std::vector<size_t> locusPositions,
       std::set<size_t> groups,
       unsigned int nbPerm);
@@ -315,7 +315,7 @@ public:
    */
   static double getRHMultilocusFst(
       const PolymorphismMultiGContainer& pmgc,
-      std::vector<size_t> locusPositions, 
+      std::vector<size_t> locusPositions,
       const std::set<size_t>& groups);
 
   /**
@@ -324,11 +324,11 @@ public:
    * D=-ln(1-Fst) of Reynolds et al. 1983, Rousset 1997 Fst/(1-Fst)
    */
   static std::unique_ptr<DistanceMatrix> getDistanceMatrix(
-      const PolymorphismMultiGContainer& pmgc, 
+      const PolymorphismMultiGContainer& pmgc,
       std::vector<size_t> locusPositions,
-      const std::set<size_t>& groups, 
+      const std::set<size_t>& groups,
       std::string distance_method);
 };
 } // end of namespace bpp;
 
-#endif// _MULTILOCUSGENOTYPESTATISTICS_H_
+#endif // _MULTILOCUSGENOTYPESTATISTICS_H_

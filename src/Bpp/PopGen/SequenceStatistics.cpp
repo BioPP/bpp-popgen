@@ -145,8 +145,8 @@ unsigned int SequenceStatistics::totalNumberOfMutations(const PolymorphismSequen
 }
 
 unsigned int SequenceStatistics::totalNumberOfMutationsOnExternalBranches(
-  const PolymorphismSequenceContainer& ing,
-  const PolymorphismSequenceContainer& outg)
+    const PolymorphismSequenceContainer& ing,
+    const PolymorphismSequenceContainer& outg)
 {
   if (ing.getNumberOfSites() != outg.getNumberOfSites())
     throw Exception("ing and outg must have the same size");
@@ -159,7 +159,7 @@ unsigned int SequenceStatistics::totalNumberOfMutationsOnExternalBranches(
     auto& siteOut = so->nextSite();
     // use fully resolved sites
     if (SiteTools::isComplete(siteIn) &&  SiteTools::isComplete(siteOut))
-      nmuts += getNumberOfDerivedSingletons_(siteIn, siteOut);                                            // singletons that are not in outgroup
+      nmuts += getNumberOfDerivedSingletons_(siteIn, siteOut); // singletons that are not in outgroup
   }
   return nmuts;
 }
@@ -226,7 +226,7 @@ std::vector<unsigned int> SequenceStatistics::gcPolymorphism(const PolymorphismS
     if (!SiteTools::isConstant(site))
     {
       long double freqGC = SymbolListTools::getGCContent(site);
-      if (freqGC > 0 && freqGC < 1) //Not 100% AT or GC
+      if (freqGC > 0 && freqGC < 1) // Not 100% AT or GC
       {
         nbMut += static_cast<unsigned int>(nbSeq);
         long double adGC = freqGC * nbSeq;
@@ -480,7 +480,7 @@ unsigned int SequenceStatistics::numberOfTransversions(const PolymorphismSequenc
       }
     }
     if (!(((state1 == 0 && state2 == 2) || (state1 == 2 && state2 == 0)) ||
-          ((state1 == 1 && state2 == 3) || (state1 == 3 && state2 == 1))))
+        ((state1 == 1 && state2 == 3) || (state1 == 3 && state2 == 1))))
     {
       nbTv++;
     }
@@ -608,7 +608,7 @@ double SequenceStatistics::watterson75NonSynonymous(
 }
 
 double SequenceStatistics::piSynonymous(
-    const PolymorphismSequenceContainer& psc, 
+    const PolymorphismSequenceContainer& psc,
     const GeneticCode& gc,
     bool minchange)
 {
@@ -692,7 +692,7 @@ unsigned int SequenceStatistics::numberOfNonSynonymousSubstitutions(const Polymo
 }
 
 vector<unsigned int> SequenceStatistics::fixedDifferences(
-    const PolymorphismSequenceContainer& pscin, 
+    const PolymorphismSequenceContainer& pscin,
     const PolymorphismSequenceContainer& pscout,
     PolymorphismSequenceContainer& psccons,
     const GeneticCode& gc)
@@ -787,10 +787,10 @@ double SequenceStatistics::tajimaDtnm(const PolymorphismSequenceContainer& psc, 
 }
 
 double SequenceStatistics::fuLiD(
-  const PolymorphismSequenceContainer& ingroup,
-  const PolymorphismSequenceContainer& outgroup,
-  bool useNbSingletons,
-  bool useNbSegregatingSites)
+    const PolymorphismSequenceContainer& ingroup,
+    const PolymorphismSequenceContainer& outgroup,
+    bool useNbSingletons,
+    bool useNbSegregatingSites)
 {
   size_t n = ingroup.getNumberOfSequences();
   map<string, double> values = getUsefulValues_(n);
@@ -808,13 +808,13 @@ double SequenceStatistics::fuLiD(
   if (useNbSingletons)
     etae = static_cast<double>(numberOfSingletons(outgroup));
   else
-    etae = static_cast<double>(totalNumberOfMutationsOnExternalBranches(ingroup, outgroup));                                                                                                // added by Khalid 13/07/2005
+    etae = static_cast<double>(totalNumberOfMutationsOnExternalBranches(ingroup, outgroup)); // added by Khalid 13/07/2005
   return (eta - (values["a1"] * etae)) / sqrt((uD * eta) + (vD * eta * eta));
 }
 
 double SequenceStatistics::fuLiDStar(
-  const PolymorphismSequenceContainer& group,
-  bool useNbSegregatingSites)
+    const PolymorphismSequenceContainer& group,
+    bool useNbSegregatingSites)
 {
   size_t n = group.getNumberOfSequences();
   double nn = static_cast<double>(n);
@@ -842,10 +842,10 @@ double SequenceStatistics::fuLiDStar(
 }
 
 double SequenceStatistics::fuLiF(
-  const PolymorphismSequenceContainer& ingroup,
-  const PolymorphismSequenceContainer& outgroup,
-  bool useNbSingletons,
-  bool useNbSegregatingSites)
+    const PolymorphismSequenceContainer& ingroup,
+    const PolymorphismSequenceContainer& outgroup,
+    bool useNbSingletons,
+    bool useNbSegregatingSites)
 {
   size_t n = ingroup.getNumberOfSequences();
   double nn = static_cast<double>(n);
@@ -865,13 +865,13 @@ double SequenceStatistics::fuLiF(
   if (useNbSingletons)
     etae = static_cast<double>(numberOfSingletons(outgroup));
   else
-    etae = static_cast<double>(totalNumberOfMutationsOnExternalBranches(ingroup, outgroup));                                                                                                // added by Khalid 13/07/2005
+    etae = static_cast<double>(totalNumberOfMutationsOnExternalBranches(ingroup, outgroup)); // added by Khalid 13/07/2005
   return (pi - etae) / sqrt(uF * eta + vF * eta * eta);
 }
 
 double SequenceStatistics::fuLiFStar(
-  const PolymorphismSequenceContainer& group,
-  bool useNbSegregatingSites)
+    const PolymorphismSequenceContainer& group,
+    bool useNbSegregatingSites)
 {
   double n = static_cast<double>(group.getNumberOfSequences());
   map<string, double> values = getUsefulValues_(group.getNumberOfSequences());
@@ -942,7 +942,7 @@ double SequenceStatistics::fstHudson92(
 
 unique_ptr<PolymorphismSequenceContainer> SequenceStatistics::generateLdContainer(
     const PolymorphismSequenceContainer& psc,
-    bool keepsingleton, 
+    bool keepsingleton,
     double freqmin)
 {
   SiteSelection ss;
@@ -1025,8 +1025,8 @@ Vdouble SequenceStatistics::pairwiseDistances1(
     if (keepsingleton)
     {
       if (SiteTools::isComplete(site) &&
-	 !SiteTools::isConstant(site) &&
-	 !SiteTools::isTriplet(site))
+          !SiteTools::isConstant(site) &&
+          !SiteTools::isTriplet(site))
       {
         bool deleteSite = false;
         map<int, double> freqs;
@@ -1043,9 +1043,9 @@ Vdouble SequenceStatistics::pairwiseDistances1(
     else
     {
       if (SiteTools::isComplete(site) &&
-         !SiteTools::isConstant(site) && 
-	 !SiteTools::isTriplet(site) &&
-	 !SiteTools::hasSingleton(site))
+          !SiteTools::isConstant(site) &&
+          !SiteTools::isTriplet(site) &&
+          !SiteTools::hasSingleton(site))
       {
         ss.push_back(i);
         bool deleteSite = false;
@@ -1084,8 +1084,8 @@ Vdouble SequenceStatistics::pairwiseDistances2(const PolymorphismSequenceContain
     if (keepsingleton)
     {
       if (SiteTools::isComplete(site) &&
-         !SiteTools::isConstant(site) &&
-	 !SiteTools::isTriplet(site))
+          !SiteTools::isConstant(site) &&
+          !SiteTools::isTriplet(site))
       {
         bool deleteSite = false;
         map<int, double> freqs;
@@ -1102,9 +1102,9 @@ Vdouble SequenceStatistics::pairwiseDistances2(const PolymorphismSequenceContain
     else
     {
       if (SiteTools::isComplete(site) &&
-	 !SiteTools::isConstant(site) &&
-	 !SiteTools::isTriplet(site) &&
-	 !SiteTools::hasSingleton(site))
+          !SiteTools::isConstant(site) &&
+          !SiteTools::isTriplet(site) &&
+          !SiteTools::hasSingleton(site))
       {
         ss.push_back(i);
         bool deleteSite = false;
@@ -1565,10 +1565,10 @@ std::map<std::string, double> SequenceStatistics::getUsefulValues_(size_t n)
     {
       values["cn"] = 2. * ((nn * values["a1"]) - (2. * (nn - 1.))) / ((nn - 1.) * (nn - 2.));
       values["dn"] =
-        values["cn"]
-        + ((nn - 2.) / ((nn - 1.) * (nn - 1.)))
-        + (2. / (nn - 1.))
-        * ((3. / 2.) - (((2. * values["a1n"]) - 3.) / (nn - 2.)) - (1. / nn));
+          values["cn"]
+          + ((nn - 2.) / ((nn - 1.) * (nn - 1.)))
+          + (2. / (nn - 1.))
+          * ((3. / 2.) - (((2. * values["a1n"]) - 3.) / (nn - 2.)) - (1. / nn));
     }
     values["e1"] = values["c1"] / values["a1"];
     values["e2"] = values["c2"] / ((values["a1"] * values["a1"]) + values["a2"]);
@@ -1603,8 +1603,8 @@ double SequenceStatistics::getVDstar_(size_t n, double a1, double a2, double dn)
     + (a1 * a1 * dn)
     - (2. * (nn * a1 * (a1 + 1)) / ((nn - 1.) * (nn - 1.)))
     )
-               /
-               denom;
+      /
+      denom;
   // Simonsen et al. 1995
   /*
      double vDs = (

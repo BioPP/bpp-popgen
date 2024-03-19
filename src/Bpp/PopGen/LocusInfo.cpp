@@ -55,4 +55,3 @@ unsigned int LocusInfo::getAlleleInfoKey(const std::string& id) const
   }
   throw AlleleNotFoundException("LocusInfo::getAlleleInfoKey: AlleleInfo id not found.", id);
 }
-

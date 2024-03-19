@@ -70,10 +70,10 @@ public:
    * @param sex The sex of the Individual as an unsigned short.
    */
   Individual(const std::string& id,
-             const Date& date,
-             const Point2D<double>& coord,
-             std::shared_ptr<Locality<double>> locality,
-             const unsigned short sex);
+      const Date& date,
+      const Point2D<double>& coord,
+      std::shared_ptr<Locality<double>> locality,
+      const unsigned short sex);
 
   /**
    * @brief The Individual copy constructor.
@@ -325,7 +325,7 @@ public:
    * @throw NullPointerException if there is no sequence container defined.
    */
   std::vector<std::string> getSequenceNames() const
-  { 
+  {
     if (!sequences_)
       throw NullPointerException("Individual::getSequencesNames: no sequence data.");
     return sequences_->getSequenceNames();
@@ -352,7 +352,7 @@ public:
    */
   size_t getNumberOfSequences() const
   {
-    return (sequences_ ? sequences_->getNumberOfSequences() : 0);
+    return sequences_ ? sequences_->getNumberOfSequences() : 0;
   }
 
 
@@ -423,8 +423,8 @@ public:
    * @throw Exception if there is no key in alleleKeys.
    */
   void setMonolocusGenotypeByAlleleKey(
-    size_t locusPosition,
-    const std::vector<size_t> alleleKeys);
+      size_t locusPosition,
+      const std::vector<size_t> alleleKeys);
 
   /**
    * @brief Set a MonolocusGenotype.
@@ -434,9 +434,9 @@ public:
    * @throw AlleleNotFoundException if at least one the id is not found in the LocusInfo.
    */
   void setMonolocusGenotypeByAlleleId(
-    size_t locusPosition,
-    const std::vector<std::string> alleleId,
-    const LocusInfo& locusInfo);
+      size_t locusPosition,
+      const std::vector<std::string> alleleId,
+      const LocusInfo& locusInfo);
 
   /**
    * @brief Get a MonolocusGenotype.
@@ -469,4 +469,4 @@ public:
 };
 } // end of namespace bpp;
 
-#endif// _INDIVIDUAL_H_
+#endif // _INDIVIDUAL_H_

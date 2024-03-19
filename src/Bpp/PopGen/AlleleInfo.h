@@ -54,4 +54,4 @@ public:
 };
 } // end of namespace bpp;
 
-#endif// _ALLELEINFO_H_
+#endif // _ALLELEINFO_H_

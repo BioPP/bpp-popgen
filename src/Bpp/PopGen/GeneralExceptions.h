@@ -260,4 +260,4 @@ public:
 };
 } // end of namespace bpp;
 
-#endif// _GENERALEXCEPTIONS_H_
+#endif // _GENERALEXCEPTIONS_H_

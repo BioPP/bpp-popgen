@@ -41,4 +41,3 @@ std::vector<size_t> MonoAlleleMonolocusGenotype::getAlleleIndex() const
   index.push_back(alleleIndex_);
   return index;
 }
-

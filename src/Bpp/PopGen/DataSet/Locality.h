@@ -91,4 +91,4 @@ public:
 };
 } // end of namespace bpp;
 
-#endif// _LOCALITY_H_
+#endif // _LOCALITY_H_

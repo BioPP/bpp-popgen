@@ -63,7 +63,9 @@ public:
     alleles_(locusInfo.getNumberOfAlleles())
   {
     for (unsigned int i = 0; i < locusInfo.getNumberOfAlleles(); ++i)
-    alleles_[i].reset(locusInfo.getAlleleInfoByKey(i).clone());
+    {
+      alleles_[i].reset(locusInfo.getAlleleInfoByKey(i).clone());
+    }
   }
 
   LocusInfo& operator=(const LocusInfo& locusInfo)
@@ -72,8 +74,10 @@ public:
     ploidy_ = locusInfo.ploidy_;
     alleles_.resize(locusInfo.getNumberOfAlleles());
     for (unsigned int i = 0; i < locusInfo.getNumberOfAlleles(); ++i)
+    {
       alleles_[i].reset(locusInfo.getAlleleInfoByKey(i).clone());
-    return(*this);
+    }
+    return *this;
   }
 
   /**
@@ -82,9 +86,8 @@ public:
   virtual ~LocusInfo() = default;
 
   LocusInfo* clone() const override { return new LocusInfo(*this); }
-  
+
 public:
-  
   /**
    * @brief Get the name of the locus.
    */
@@ -137,4 +140,4 @@ public:
 };
 } // end of namespace bpp;
 
-#endif// _LOCUSINFO_H_
+#endif // _LOCUSINFO_H_

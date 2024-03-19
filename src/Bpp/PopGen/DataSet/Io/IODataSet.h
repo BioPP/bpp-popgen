@@ -37,4 +37,4 @@ class IODataSet : public virtual IOFormat
 };
 } // end of namespace bpp;
 
-#endif// _IODATASET_H_
+#endif // _IODATASET_H_

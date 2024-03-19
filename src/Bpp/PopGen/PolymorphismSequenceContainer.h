@@ -76,7 +76,7 @@ public:
   /**
    * @brief Build a new empty PolymorphismSequenceContainer.
    */
-  PolymorphismSequenceContainer(std::shared_ptr<const Alphabet> alpha):
+  PolymorphismSequenceContainer(std::shared_ptr<const Alphabet> alpha) :
     VectorSiteContainer(alpha),
     ingroup_(std::vector<bool>()),
     count_(0),
@@ -86,7 +86,7 @@ public:
   /**
    * @brief Build a new empty PolymorphismSequenceContainer of given size.
    */
-  PolymorphismSequenceContainer(size_t size, std::shared_ptr<const Alphabet> alpha):
+  PolymorphismSequenceContainer(size_t size, std::shared_ptr<const Alphabet> alpha) :
     VectorSiteContainer(size, alpha),
     ingroup_(size),
     count_(size),
@@ -96,7 +96,7 @@ public:
   /**
    * @brief Build a new empty PolymorphismSequenceContainer with given sequence names.
    */
-  PolymorphismSequenceContainer(const std::vector<std::string>& names, std::shared_ptr<const Alphabet> alpha):
+  PolymorphismSequenceContainer(const std::vector<std::string>& names, std::shared_ptr<const Alphabet> alpha) :
     VectorSiteContainer(names, alpha),
     ingroup_(names.size()),
     count_(names.size()),
@@ -108,7 +108,7 @@ public:
    *
    * @param sc Sequence container to convert.
    */
-  PolymorphismSequenceContainer(const SequenceContainerInterface& sc):
+  PolymorphismSequenceContainer(const SequenceContainerInterface& sc) :
     VectorSiteContainer(sc),
     ingroup_(sc.getNumberOfSequences(), true),
     count_(sc.getNumberOfSequences(), 1),
@@ -416,4 +416,4 @@ public:
 };
 } // end of namespace bpp;
 
-#endif// _POLYMORPHISMSEQUENCECONTAINER_H_
+#endif // _POLYMORPHISMSEQUENCECONTAINER_H_

@@ -10,20 +10,20 @@ using namespace std;
 /******************************************************************************/
 
 void AnalyzedLoci::setLocusInfo(
-  size_t locusPosition,
-  const LocusInfo& locus)
+    size_t locusPosition,
+    const LocusInfo& locus)
 {
   if (locusPosition < loci_.size())
     loci_[locusPosition].reset(locus.clone());
   else
     throw IndexOutOfBoundsException("AnalyzedLoci::setLocusInfo: locus_position out of bounds",
-                                    locusPosition, 0, loci_.size());
+          locusPosition, 0, loci_.size());
 }
 
 /******************************************************************************/
 
 size_t AnalyzedLoci::getLocusInfoPosition(
-  const std::string& locusName) const
+    const std::string& locusName) const
 {
   for (size_t i = 0; i < loci_.size(); ++i)
   {
@@ -36,7 +36,7 @@ size_t AnalyzedLoci::getLocusInfoPosition(
 /******************************************************************************/
 
 const LocusInfo& AnalyzedLoci::getLocusInfoByName(
-  const std::string& locusName) const
+    const std::string& locusName) const
 {
   for (const auto& locus : loci_)
   {
@@ -44,13 +44,13 @@ const LocusInfo& AnalyzedLoci::getLocusInfoByName(
       return *locus;
   }
   throw BadIdentifierException("AnalyzedLoci::getLocusInfo: locus not found.",
-                               locusName);
+        locusName);
 }
 
 /******************************************************************************/
 
 const LocusInfo& AnalyzedLoci::getLocusInfoAtPosition(
-  size_t locusPosition) const
+    size_t locusPosition) const
 {
   if (locusPosition >= loci_.size())
     throw IndexOutOfBoundsException("AnalyzedLoci::getLocusInfoAtPosition: locus_position out of bounds.", locusPosition, 0, loci_.size());
@@ -64,7 +64,7 @@ const LocusInfo& AnalyzedLoci::getLocusInfoAtPosition(
 
 // AlleleInfo
 void AnalyzedLoci::addAlleleInfoByLocusName(const std::string& locusName,
-                                            const AlleleInfo& allele)
+    const AlleleInfo& allele)
 {
   bool locusFound = false;
   for (auto& locus : loci_)
@@ -84,13 +84,13 @@ void AnalyzedLoci::addAlleleInfoByLocusName(const std::string& locusName,
   }
   if (!locusFound)
     throw LocusNotFoundException("AnalyzedLoci::addAlleleInfoByLocusName: locus_name not found.",
-                                 locusName);
+          locusName);
 }
 
 /******************************************************************************/
 
 void AnalyzedLoci::addAlleleInfoByLocusPosition(size_t locusPosition,
-                                                const AlleleInfo& allele)
+    const AlleleInfo& allele)
 {
   if (locusPosition < loci_.size())
   {
@@ -105,7 +105,7 @@ void AnalyzedLoci::addAlleleInfoByLocusPosition(size_t locusPosition,
   }
   else
     throw IndexOutOfBoundsException("AnalyzedLoci::addAlleleInfoByLocusPosition: locus_position out of bounds.",
-                                    locusPosition, 0, loci_.size());
+          locusPosition, 0, loci_.size());
 }
 
 /******************************************************************************/
@@ -130,7 +130,7 @@ unsigned int AnalyzedLoci::getPloidyByLocusName(const std::string& locusName) co
       return locus->getPloidy();
   }
   throw LocusNotFoundException("AnalyzedLoci::getLocusInfo: locus_name not found.",
-                               locusName);
+        locusName);
 }
 
 /******************************************************************************/
@@ -143,4 +143,3 @@ unsigned int AnalyzedLoci::getPloidyByLocusPosition(size_t locusPosition) const
 }
 
 /******************************************************************************/
-

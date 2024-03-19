@@ -124,7 +124,7 @@ void PolymorphismSequenceContainer::deleteSequence(size_t sequencePosition)
 {
   try
   {
-    removeSequence(sequencePosition); //This returns a smart pointer, which automatically deletes the object.
+    removeSequence(sequencePosition); // This returns a smart pointer, which automatically deletes the object.
   }
   catch (IndexOutOfBoundsException& ioobe)
   {
@@ -138,7 +138,7 @@ void PolymorphismSequenceContainer::deleteSequence(const std::string& sequenceNa
 {
   try
   {
-    removeSequence(sequenceName); //This returns a smart pointer, which automatically deletes the object.
+    removeSequence(sequenceName); // This returns a smart pointer, which automatically deletes the object.
   }
   catch (SequenceNotFoundException& snfe)
   {

@@ -79,7 +79,7 @@ public:
     {
       addIndividual(group.getIndividualAtPosition(i));
     }
-    return(*this);
+    return *this;
   }
 
   /**
@@ -103,9 +103,8 @@ public:
   virtual ~Group() = default;
 
   Group* clone() const override { return new Group(*this); }
-  
-public:
 
+public:
   /**
    * @brief Set the id of the Group.
    *
@@ -316,8 +315,8 @@ public:
    * @throw BadIntegerException if sequencePosition is already in use.
    */
   void addIndividualSequenceAtPosition(size_t individualPosition,
-                                       size_t sequencePosition,
-                                       std::unique_ptr<Sequence>& sequence);
+      size_t sequencePosition,
+      std::unique_ptr<Sequence>& sequence);
 
   /**
    * @brief Get a sequence of an Individual.
@@ -327,8 +326,8 @@ public:
    * @throw SequenceNotFoundException if sequence_name is not found.
    */
   const Sequence& getIndividualSequenceByName(
-    size_t individualPosition,
-    const std::string& sequence_name) const;
+      size_t individualPosition,
+      const std::string& sequence_name) const;
 
   /**
    * @brief Get a sequence of an Individual.
@@ -338,8 +337,8 @@ public:
    * @throw SequenceNotFoundException if sequencePosition is not found.
    */
   const Sequence& getIndividualSequenceAtPosition(
-    size_t individualPosition,
-    size_t sequencePosition) const;
+      size_t individualPosition,
+      size_t sequencePosition) const;
 
   /**
    * @brief Delete a sequence of an Individual.
@@ -382,8 +381,8 @@ public:
    * @throw SequenceNotFoundException if sequence_name is not found.
    */
   size_t getIndividualSequencePosition(
-    size_t individualPosition,
-    const std::string& sequence_name) const;
+      size_t individualPosition,
+      const std::string& sequence_name) const;
 
   /**
    * @brief Get the number of sequences in an Individual.
@@ -451,7 +450,7 @@ public:
    * @throw Exception if there is no key in allele_keys.
    */
   void setIndividualMonolocusGenotypeByAlleleKey(
-      size_t individualPosition, 
+      size_t individualPosition,
       size_t locusPosition,
       const std::vector<size_t>& alleleKeys);
 
@@ -502,4 +501,4 @@ public:
 };
 } // end of namespace bpp;
 
-#endif// _GROUP_H_
+#endif // _GROUP_H_

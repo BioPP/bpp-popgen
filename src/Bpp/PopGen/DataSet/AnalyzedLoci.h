@@ -26,7 +26,7 @@ namespace bpp
  *
  * @author Sylvain Gaillard
  */
-class AnalyzedLoci:
+class AnalyzedLoci :
   public virtual Clonable
 {
 private:
@@ -42,12 +42,14 @@ public:
   /**
    * @brief Copy constructor.
    */
-  AnalyzedLoci(const AnalyzedLoci& analyzedLoci):
+  AnalyzedLoci(const AnalyzedLoci& analyzedLoci) :
     loci_(analyzedLoci.loci_.size())
   {
     size_t i = 0;
     for (const auto& locus : analyzedLoci.loci_)
+    {
       loci_[i++].reset(locus->clone());
+    }
   }
 
   AnalyzedLoci& operator=(const AnalyzedLoci& analyzedLoci)
@@ -55,10 +57,12 @@ public:
     loci_.resize(analyzedLoci.loci_.size());
     size_t i = 0;
     for (const auto& locus : analyzedLoci.loci_)
+    {
       loci_[i++].reset(locus->clone());
+    }
     return *this;
   }
-  
+
   /**
    * @brief Destroy the AnalyzedLoci.
    */
@@ -104,7 +108,7 @@ public:
    * @throw LocusNotFoundException if locus_name is not found.
    */
   void addAlleleInfoByLocusName(const std::string& locusName,
-                                const AlleleInfo& allele);
+      const AlleleInfo& allele);
 
   /**
    * @brief Add an AlleleInfo to a LocusInfo by its position.
@@ -113,7 +117,7 @@ public:
    * @throw IndexOutOfBoundsException if locus_position is out of bounds.
    */
   void addAlleleInfoByLocusPosition(size_t locusosition,
-                                    const AlleleInfo& allele);
+      const AlleleInfo& allele);
 
   /**
    * @brief Get the number of loci.
@@ -141,4 +145,4 @@ public:
 };
 } // end of namespace bpp;
 
-#endif// _ANALYZEDLOCI_H_
+#endif // _ANALYZEDLOCI_H_

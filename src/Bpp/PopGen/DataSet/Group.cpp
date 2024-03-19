@@ -415,7 +415,7 @@ void Group::setIndividualMonolocusGenotype(
 }
 
 void Group::setIndividualMonolocusGenotypeByAlleleKey(
-    size_t individualPosition, 
+    size_t individualPosition,
     size_t locusPosition,
     const vector<size_t>& alleleKeys)
 {
@@ -462,7 +462,7 @@ void Group::setIndividualMonolocusGenotypeByAlleleId(size_t individualPosition, 
 }
 
 const MonolocusGenotypeInterface& Group::getIndividualMonolocusGenotype(
-    size_t individualPosition, 
+    size_t individualPosition,
     size_t locusPosition) const
 {
   if (individualPosition >= getNumberOfIndividuals())

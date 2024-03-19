@@ -46,4 +46,4 @@ public:
 };
 } // end of namespace bpp;
 
-#endif// _IDATASET_H_
+#endif // _IDATASET_H_

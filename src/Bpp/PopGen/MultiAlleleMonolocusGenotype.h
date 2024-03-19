@@ -89,4 +89,4 @@ public:
 };
 } // end of namespace bpp;
 
-#endif// _MULTIALLELEMONOLOCUSGENOTYPE_H_
+#endif // _MULTIALLELEMONOLOCUSGENOTYPE_H_

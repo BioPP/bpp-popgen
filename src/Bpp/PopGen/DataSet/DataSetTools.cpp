@@ -43,7 +43,7 @@ std::unique_ptr<DataSet> DataSetTools::buildDataSet(const PolymorphismSequenceCo
       dataset->addEmptyIndividualToGroup(psc.getGroupId(i), string("Individual_") + TextTools::toString(indCount++));
       try
       {
-	auto tmpSeq = unique_ptr<Sequence>(psc.sequence(i).clone());
+        auto tmpSeq = unique_ptr<Sequence>(psc.sequence(i).clone());
         dataset->addIndividualSequenceInGroup(psc.getGroupId(i), i, 0, tmpSeq);
       }
       catch (Exception& e)
@@ -54,4 +54,3 @@ std::unique_ptr<DataSet> DataSetTools::buildDataSet(const PolymorphismSequenceCo
   }
   return dataset;
 }
-

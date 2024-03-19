@@ -237,7 +237,7 @@ public:
    */
   static std::unique_ptr<PolymorphismSequenceContainer> get3Prime(
       const PolymorphismSequenceContainer& psc,
-      const std::string& setName, 
+      const std::string& setName,
       const GeneticCode& gCode);
 
   /**
@@ -273,4 +273,4 @@ public:
 };
 } // end of namespace bpp;
 
-#endif// _POLYMORPHISMSEQUENCECONTAINERTOOL_H_
+#endif // _POLYMORPHISMSEQUENCECONTAINERTOOL_H_

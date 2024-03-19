@@ -24,4 +24,3 @@ std::unique_ptr<MonolocusGenotypeInterface> MonolocusGenotypeTools::buildMonoloc
   // for all other cases (allele_keys.size() > 2)
   return unique_ptr<MonolocusGenotypeInterface>(new MultiAlleleMonolocusGenotype(alleleKeys));
 }
-

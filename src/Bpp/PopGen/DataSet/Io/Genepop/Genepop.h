@@ -61,4 +61,4 @@ public:
 };
 } // end of namespace bpp;
 
-#endif// _GENEPOP_H_
+#endif // _GENEPOP_H_

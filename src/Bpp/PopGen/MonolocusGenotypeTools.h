@@ -42,4 +42,4 @@ public:
 };
 } // end of namespace bpp;
 
-#endif// _MonolocusGenotypeTools_h_
+#endif // _MonolocusGenotypeTools_h_

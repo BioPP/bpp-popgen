@@ -50,9 +50,9 @@ public:
    * unknown states
    */
   static unsigned int numberOfPolymorphicSites(
-    const PolymorphismSequenceContainer& psc,
-    bool gapflag = true,
-    bool ignoreUnknown = true);
+      const PolymorphismSequenceContainer& psc,
+      bool gapflag = true,
+      bool ignoreUnknown = true);
 
   /**
    * @brief Compute the frequency of polymorphic site in an alignment
@@ -71,9 +71,9 @@ public:
    * unknown states
    */
   static double frequencyOfPolymorphicSites(
-    const PolymorphismSequenceContainer& psc,
-    bool gapflag = true,
-    bool ignoreUnknown = true);
+      const PolymorphismSequenceContainer& psc,
+      bool gapflag = true,
+      bool ignoreUnknown = true);
 
   /**
    * @brief Compute the number of parsimony informative sites in an alignment
@@ -83,8 +83,8 @@ public:
    * take gap into account
    */
   static unsigned int numberOfParsimonyInformativeSites(
-    const PolymorphismSequenceContainer& psc,
-    bool gapflag = true);
+      const PolymorphismSequenceContainer& psc,
+      bool gapflag = true);
 
   /**
    * @brief Count the number of singleton nucleotides in an alignment.
@@ -95,8 +95,8 @@ public:
    * @author Sylvain Gaillard
    */
   static unsigned int numberOfSingletons(
-    const PolymorphismSequenceContainer& psc,
-    bool gapflag = true);
+      const PolymorphismSequenceContainer& psc,
+      bool gapflag = true);
 
   /**
    * @brief Count the total number of mutations in an alignment.
@@ -109,8 +109,8 @@ public:
    * @author Sylvain Gaillard
    */
   static unsigned int totalNumberOfMutations(
-    const PolymorphismSequenceContainer& psc,
-    bool gapflag = true);
+      const PolymorphismSequenceContainer& psc,
+      bool gapflag = true);
 
   /**
    * @brief Count the total number of mutations in external branchs.
@@ -125,8 +125,8 @@ public:
    * @author Khalid Belkhir
    */
   static unsigned int totalNumberOfMutationsOnExternalBranches(
-    const PolymorphismSequenceContainer& ing,
-    const PolymorphismSequenceContainer& outg);
+      const PolymorphismSequenceContainer& ing,
+      const PolymorphismSequenceContainer& outg);
 
   /**
    * @brief Compute the number of triplet in an alignment
@@ -136,8 +136,8 @@ public:
    * @author Sylvain Glémin
    */
   static unsigned int numberOfTriplets(
-    const PolymorphismSequenceContainer& psc,
-    bool gapflag = true);
+      const PolymorphismSequenceContainer& psc,
+      bool gapflag = true);
 
   /**
    * @brief Compute the sum of per site heterozygosity in an alignment
@@ -146,8 +146,8 @@ public:
    * @param gapflag a boolean set by default to true if you don't want to take gap into account
    */
   static double heterozygosity(
-    const PolymorphismSequenceContainer& psc,
-    bool gapflag = true);
+      const PolymorphismSequenceContainer& psc,
+      bool gapflag = true);
 
   /**
    * @brief Compute the sum of per site squared heterozygosity in an alignment
@@ -157,8 +157,8 @@ public:
    * to take gap into account
    */
   static double squaredHeterozygosity(
-    const PolymorphismSequenceContainer& psc,
-    bool gapflag = true);
+      const PolymorphismSequenceContainer& psc,
+      bool gapflag = true);
 
   /**
    * @brief Compute the mean GC content in an alignment
@@ -166,7 +166,7 @@ public:
    * @param psc a PolymorphismSequenceContainer
    */
   static double gcContent(
-    const PolymorphismSequenceContainer& psc);
+      const PolymorphismSequenceContainer& psc);
 
   /**
    * @brief Return the number of GC alleles and the total number of alleles at polymorphic sites only
@@ -183,8 +183,8 @@ public:
    * and the total number of alleles.
    */
   static std::vector<unsigned int> gcPolymorphism(
-    const PolymorphismSequenceContainer& psc,
-    bool gapflag = true);
+      const PolymorphismSequenceContainer& psc,
+      bool gapflag = true);
 
   /**
    * @brief Compute diversity estimator Theta of Watterson (1975, Theor Popul Biol, 7 pp256-276)
@@ -205,10 +205,10 @@ public:
    * @author Sylvain Gaillard, Julien Dutheil
    */
   static double watterson75(
-    const PolymorphismSequenceContainer& psc,
-    bool gapflag = true,
-    bool ignoreUnknown = true,
-    bool scaled = false);
+      const PolymorphismSequenceContainer& psc,
+      bool gapflag = true,
+      bool ignoreUnknown = true,
+      bool scaled = false);
 
   /**
    * @brief Compute diversity estimator Theta of Tajima (1983, Genetics, 105 pp437-460)
@@ -232,10 +232,10 @@ public:
    * @author Sylvain Gaillard, Julien Dutheil
    */
   static double tajima83(
-    const PolymorphismSequenceContainer& psc,
-    bool gapflag = true,
-    bool ignoreUnknown = true,
-    bool scaled = false);
+      const PolymorphismSequenceContainer& psc,
+      bool gapflag = true,
+      bool ignoreUnknown = true,
+      bool scaled = false);
 
   /**
    * @brief Compute diversity estimator Theta H (eq. 3) of Fay and Wu (2000, Genetics, 155: 1405-1413)
@@ -246,8 +246,8 @@ public:
      @author Benoit Nabholz
    */
   static double fayWu2000(
-    const PolymorphismSequenceContainer& psc,
-    const Sequence& ancestralSites);
+      const PolymorphismSequenceContainer& psc,
+      const Sequence& ancestralSites);
 
   /**
    * @brief Return the number of haplotype in the sample.
@@ -262,8 +262,8 @@ public:
    *  - work on Sequence rather than string
    */
   static unsigned int dvk(
-    const PolymorphismSequenceContainer& psc,
-    bool gapflag = true);
+      const PolymorphismSequenceContainer& psc,
+      bool gapflag = true);
 
   /**
    * @brief Return the haplotype diversity of a sample.
@@ -278,8 +278,8 @@ public:
    *  - work on Sequence rather on string
    */
   static double dvh(
-    const PolymorphismSequenceContainer& psc,
-    bool gapflag = true);
+      const PolymorphismSequenceContainer& psc,
+      bool gapflag = true);
 
   /**
    * @brief Return the number of transitions.
@@ -288,7 +288,7 @@ public:
    * @author Éric Bazin
    */
   static unsigned int numberOfTransitions(
-    const PolymorphismSequenceContainer& psc);
+      const PolymorphismSequenceContainer& psc);
 
   /**
    * @brief Return the number of transversions.
@@ -297,7 +297,7 @@ public:
    * @author Éric Bazin
    */
   static unsigned int numberOfTransversions(
-    const PolymorphismSequenceContainer& psc);
+      const PolymorphismSequenceContainer& psc);
 
   /**
    * @brief Return the ratio of transitions/transversions.
@@ -306,7 +306,7 @@ public:
    * @author Éric Bazin
    */
   static double ratioOfTransitionsTransversions(
-    const PolymorphismSequenceContainer& psc);
+      const PolymorphismSequenceContainer& psc);
 
   /**
    * @brief Compute the number of codon sites with stop codon
@@ -318,9 +318,9 @@ public:
    * @author Sylvain Glémin
    */
   static unsigned int numberOfSitesWithStopCodon(
-    const PolymorphismSequenceContainer& psc,
-    const GeneticCode& gCode,
-    bool gapflag = true);
+      const PolymorphismSequenceContainer& psc,
+      const GeneticCode& gCode,
+      bool gapflag = true);
 
   /**
    * @brief Compute the number of polymorphic codon with only one mutated site
@@ -335,9 +335,9 @@ public:
    * because CompleteSiteIterator don't skip stop codon.
    */
   static unsigned int numberOfMonoSitePolymorphicCodons(
-    const PolymorphismSequenceContainer& psc,
-    bool stopflag = true,
-    bool gapflag = true);
+      const PolymorphismSequenceContainer& psc,
+      bool stopflag = true,
+      bool gapflag = true);
 
   /**
    * @brief Compute the number of synonymous polymorphic codon sites
@@ -350,8 +350,8 @@ public:
    * @author Éric Bazin
    */
   static unsigned int numberOfSynonymousPolymorphicCodons(
-    const PolymorphismSequenceContainer& psc,
-    const GeneticCode& gc);
+      const PolymorphismSequenceContainer& psc,
+      const GeneticCode& gc);
 
   /**
    * @brief Compute the Watterson(1975,Theor Popul Biol, 7 pp256-276) estimator for synonymous positions
@@ -368,8 +368,8 @@ public:
    * @author Sylvain Glémin
    */
   static double watterson75Synonymous(
-    const PolymorphismSequenceContainer& psc,
-    const GeneticCode& gc);
+      const PolymorphismSequenceContainer& psc,
+      const GeneticCode& gc);
 
   /**
    * @brief Compute the Watterson(1975, Theor Popul Biol, 7 pp256-276) estimator for non synonymous positions
@@ -386,8 +386,8 @@ public:
    * @author Sylvain Glémin
    */
   static double watterson75NonSynonymous(
-    const PolymorphismSequenceContainer& psc,
-    const GeneticCode& gc);
+      const PolymorphismSequenceContainer& psc,
+      const GeneticCode& gc);
 
   /**
    * @brief Compute the synonymous nucleotide diversity, pi
@@ -405,9 +405,9 @@ public:
    * @author Éric Bazin
    */
   static double piSynonymous(
-    const PolymorphismSequenceContainer& psc,
-    const GeneticCode& gc,
-    bool minchange = false);
+      const PolymorphismSequenceContainer& psc,
+      const GeneticCode& gc,
+      bool minchange = false);
 
   /**
    * @brief Compute the non-synonymous nucleotide diversity, pi
@@ -425,9 +425,9 @@ public:
    * @author Éric Bazin
    */
   static double piNonSynonymous(
-    const PolymorphismSequenceContainer& psc,
-    const GeneticCode& gc,
-    bool minchange = false);
+      const PolymorphismSequenceContainer& psc,
+      const GeneticCode& gc,
+      bool minchange = false);
 
   /**
    * @brief compute the mean number of synonymous site in an alignment
@@ -444,9 +444,9 @@ public:
    * @author Éric Bazin
    */
   static double meanNumberOfSynonymousSites(
-    const PolymorphismSequenceContainer& psc,
-    const GeneticCode& gc,
-    double ratio = 1.);
+      const PolymorphismSequenceContainer& psc,
+      const GeneticCode& gc,
+      double ratio = 1.);
 
   /**
    * @brief compute the mean number of non-synonymous site in an alignment
@@ -462,9 +462,9 @@ public:
    * @author Éric Bazin
    */
   static double meanNumberOfNonSynonymousSites(
-    const PolymorphismSequenceContainer& psc,
-    const GeneticCode& gc,
-    double ratio = 1.);
+      const PolymorphismSequenceContainer& psc,
+      const GeneticCode& gc,
+      double ratio = 1.);
 
   /**
    * @brief compute the number of synonymous subsitutions in an alignment
@@ -482,9 +482,9 @@ public:
    * than freqmin
    */
   static unsigned int numberOfSynonymousSubstitutions(
-    const PolymorphismSequenceContainer& psc,
-    const GeneticCode& gc,
-    double freqmin = 0.);
+      const PolymorphismSequenceContainer& psc,
+      const GeneticCode& gc,
+      double freqmin = 0.);
 
   /**
    * @brief compute the number of non synonymous subsitutions in an alignment
@@ -502,9 +502,9 @@ public:
    * than freqmin
    */
   static unsigned int numberOfNonSynonymousSubstitutions(
-    const PolymorphismSequenceContainer& psc,
-    const GeneticCode& gc,
-    double freqmin = 0.);
+      const PolymorphismSequenceContainer& psc,
+      const GeneticCode& gc,
+      double freqmin = 0.);
 
   /**
    * @brief compute the number of fixed differences between two alignements
@@ -524,10 +524,10 @@ public:
    * pscout and psccons have different length (site number).
    */
   static std::vector<unsigned int> fixedDifferences(
-    const PolymorphismSequenceContainer& pscin,
-    const PolymorphismSequenceContainer& pscout,
-    PolymorphismSequenceContainer& psccons,
-    const GeneticCode& gc);
+      const PolymorphismSequenceContainer& pscin,
+      const PolymorphismSequenceContainer& pscout,
+      PolymorphismSequenceContainer& psccons,
+      const GeneticCode& gc);
 
   /**
    * @brief return a vector containing Pa, Ps, Da, Ds
@@ -541,10 +541,10 @@ public:
    * @author Sylvain Glémin
    */
   static std::vector<unsigned int> mkTable(
-    const PolymorphismSequenceContainer& ingroup,
-    const PolymorphismSequenceContainer& outgroup,
-    const GeneticCode& gc,
-    double freqmin = 0.);
+      const PolymorphismSequenceContainer& ingroup,
+      const PolymorphismSequenceContainer& outgroup,
+      const GeneticCode& gc,
+      double freqmin = 0.);
 
   /**
    * @brief return the neutrality index NI = (Pa/Ps)/(Da/Ds) (Rand & Kann 1996, Mol. Biol. Evol. 13 pp735-748)
@@ -560,10 +560,10 @@ public:
    * @author Sylvain Glémin
    */
   static double neutralityIndex(
-    const PolymorphismSequenceContainer& ingroup,
-    const PolymorphismSequenceContainer& outgroup,
-    const GeneticCode& gc,
-    double freqmin = 0.);
+      const PolymorphismSequenceContainer& ingroup,
+      const PolymorphismSequenceContainer& outgroup,
+      const GeneticCode& gc,
+      double freqmin = 0.);
 
   /**
    * @brief Return the Tajima's D test (Tajima 1989, Genetics 123 pp 585-595).
@@ -583,9 +583,9 @@ public:
    * @author Sylvain Gaillard
    */
   static double tajimaDss(
-    const PolymorphismSequenceContainer& psc,
-    bool gapflag = true,
-    bool ignoreUnknown = true);
+      const PolymorphismSequenceContainer& psc,
+      bool gapflag = true,
+      bool ignoreUnknown = true);
 
   /**
    * @brief Return the Tajima's D test (Tajima 1989, Genetics 123 pp 585-595).
@@ -603,9 +603,9 @@ public:
    * @author Sylvain Gaillard
    */
   static double tajimaDtnm(
-    const PolymorphismSequenceContainer& psc,
-    bool gapflag = true,
-    bool ignoreUnknown = true);
+      const PolymorphismSequenceContainer& psc,
+      bool gapflag = true,
+      bool ignoreUnknown = true);
 
   /**
    * @brief Return the Fu and Li D test (Fu & Li 1993, Genetics, 133 pp693-709).
@@ -626,10 +626,10 @@ public:
    * than one variant will not be considered for external branch mutations!
    */
   static double fuLiD(
-    const PolymorphismSequenceContainer& ingroup,
-    const PolymorphismSequenceContainer& outgroup,
-    bool useNbSingletons = true,
-    bool useNbSegregatingSites = false);
+      const PolymorphismSequenceContainer& ingroup,
+      const PolymorphismSequenceContainer& outgroup,
+      bool useNbSingletons = true,
+      bool useNbSegregatingSites = false);
 
   /**
    * @brief Return the Fu and Li D<sup>*</sup> test (Fu & Li 1993, Genetics, 133 pp693-709).
@@ -641,8 +641,8 @@ public:
    * @author Julien Dutheil
    */
   static double fuLiDStar(
-    const PolymorphismSequenceContainer& group,
-    bool useNbSegregatingSites = false);
+      const PolymorphismSequenceContainer& group,
+      bool useNbSegregatingSites = false);
 
   /**
    * @brief Return the Fu and Li F test (Fu & Li 1993, Genetics, 133 pp693-709).
@@ -663,10 +663,10 @@ public:
    * than one variant will not be considered for external branch mutations!
    */
   static double fuLiF(
-    const PolymorphismSequenceContainer& ingroup,
-    const PolymorphismSequenceContainer& outgroup,
-    bool useNbSingletons = true,
-    bool useNbSegregatingSites = false);
+      const PolymorphismSequenceContainer& ingroup,
+      const PolymorphismSequenceContainer& outgroup,
+      bool useNbSingletons = true,
+      bool useNbSegregatingSites = false);
 
   /**
    * @brief Return the Fu and Li F<sup>*</sup> test (Fu & Li 1993, Genetics, 133 pp693-709).
@@ -678,8 +678,8 @@ public:
    * @author Julien Dutheil
    */
   static double fuLiFStar(
-    const PolymorphismSequenceContainer& group,
-    bool useNbSegregatingSites);
+      const PolymorphismSequenceContainer& group,
+      bool useNbSegregatingSites);
 
   /**
    * Fst of Hudson, Slatkin and Maddison
@@ -700,9 +700,9 @@ public:
    * @author Benoit Nabholz
    */
   static double fstHudson92(
-    const PolymorphismSequenceContainer& psc,
-    size_t id1,
-    size_t id2);
+      const PolymorphismSequenceContainer& psc,
+      size_t id1,
+      size_t id2);
 
 
   /**
@@ -732,9 +732,9 @@ public:
    *  - To be moved to PolymorphismSequenceContainerTools.
    */
   static std::unique_ptr<PolymorphismSequenceContainer> generateLdContainer(
-    const PolymorphismSequenceContainer& psc,
-    bool keepsingleton = true,
-    double freqmin = 0.);
+      const PolymorphismSequenceContainer& psc,
+      bool keepsingleton = true,
+      double freqmin = 0.);
 
   /**
    * @brief give the vector of the pairwise distances between site positions corresponding to a LD SequencePolymorphismContainer
@@ -750,9 +750,9 @@ public:
    * @author Sylvain Glémin
    */
   static Vdouble pairwiseDistances1(
-    const PolymorphismSequenceContainer& psc,
-    bool keepsingleton = true,
-    double freqmin = 0.);
+      const PolymorphismSequenceContainer& psc,
+      bool keepsingleton = true,
+      double freqmin = 0.);
 
   /**
    * @brief give the vector of all mean pairwise distance between two sites to a LD SequencePolymorphismContainer
@@ -769,9 +769,9 @@ public:
    * @author Sylvain Glémin
    */
   static Vdouble pairwiseDistances2(
-    const PolymorphismSequenceContainer& psc,
-    bool keepsingleton = true,
-    double freqmin = 0.);
+      const PolymorphismSequenceContainer& psc,
+      bool keepsingleton = true,
+      double freqmin = 0.);
 
   /**
    * @brief give the vector of all mean pairwise D value between two sites (Lewontin & Kojima 1964, Evolution 14 pp458-472)
@@ -786,9 +786,9 @@ public:
    * @author Sylvain Glémin
    */
   static Vdouble pairwiseD(
-    const PolymorphismSequenceContainer& psc,
-    bool keepsingleton = true,
-    double freqmin = 0.);
+      const PolymorphismSequenceContainer& psc,
+      bool keepsingleton = true,
+      double freqmin = 0.);
 
   /**
    * @brief give the vector of all mean pairwise D' value between two sites (Lewontin 1964, Genetics 49 pp49-67))
@@ -803,9 +803,9 @@ public:
    * @author Sylvain Glémin
    */
   static Vdouble pairwiseDprime(
-    const PolymorphismSequenceContainer& psc,
-    bool keepsingleton = true,
-    double freqmin = 0.);
+      const PolymorphismSequenceContainer& psc,
+      bool keepsingleton = true,
+      double freqmin = 0.);
 
   /**
    * @brief give the vector of all mean pairwise R² value between two sites (Hill & Robertson 1968, Theor. Appl. Genet., 38 pp226-231)
@@ -820,9 +820,9 @@ public:
    * @author Sylvain Glémin
    */
   static Vdouble pairwiseR2(
-    const PolymorphismSequenceContainer& psc,
-    bool keepsingleton = true,
-    double freqmin = 0.);
+      const PolymorphismSequenceContainer& psc,
+      bool keepsingleton = true,
+      double freqmin = 0.);
 
   /**
    * @brief give mean D over all pairwise comparisons
@@ -837,9 +837,9 @@ public:
    * @author Sylvain Glémin
    */
   static double meanD(
-    const PolymorphismSequenceContainer& psc,
-    bool keepsingleton = true,
-    double freqmin = 0.);
+      const PolymorphismSequenceContainer& psc,
+      bool keepsingleton = true,
+      double freqmin = 0.);
 
   /**
    * @brief give mean D' over all pairwise comparisons
@@ -854,9 +854,9 @@ public:
    * @author Sylvain Glémin
    */
   static double meanDprime(
-    const PolymorphismSequenceContainer& psc,
-    bool keepsingleton = true,
-    double freqmin = 0.);
+      const PolymorphismSequenceContainer& psc,
+      bool keepsingleton = true,
+      double freqmin = 0.);
 
   /**
    * @brief give mean R² over all pairwise comparisons
@@ -871,9 +871,9 @@ public:
    * @author Sylvain Glémin
    */
   static double meanR2(
-    const PolymorphismSequenceContainer& psc,
-    bool keepsingleton = true,
-    double freqmin = 0.);
+      const PolymorphismSequenceContainer& psc,
+      bool keepsingleton = true,
+      double freqmin = 0.);
 
   /**
    * @brief give mean pairwise distances between sites / method 1: differences between sequences are not taken into account
@@ -887,9 +887,9 @@ public:
    * @author Sylvain Glémin
    */
   static double meanDistance1(
-    const PolymorphismSequenceContainer& psc,
-    bool keepsingleton = true,
-    double freqmin = 0.);
+      const PolymorphismSequenceContainer& psc,
+      bool keepsingleton = true,
+      double freqmin = 0.);
 
   /**
    * @brief give mean pairwise distances between sites / method 2: differences between sequences are taken into account
@@ -903,9 +903,9 @@ public:
    * @author Sylvain Glémin
    */
   static double meanDistance2(
-    const PolymorphismSequenceContainer& psc,
-    bool keepsingleton = true,
-    double freqmin = 0.);
+      const PolymorphismSequenceContainer& psc,
+      bool keepsingleton = true,
+      double freqmin = 0.);
 
   /**
    * @brief give the slope of the regression |D| = 1+a*distance
@@ -924,10 +924,10 @@ public:
    * @author Sylvain Glémin
    */
   static double originRegressionD(
-    const PolymorphismSequenceContainer& psc,
-    bool distance1 = false,
-    bool keepsingleton = true,
-    double freqmin = 0.);
+      const PolymorphismSequenceContainer& psc,
+      bool distance1 = false,
+      bool keepsingleton = true,
+      double freqmin = 0.);
 
   /**
    * @brief give the slope of the regression |D'| = 1+a*distance
@@ -946,10 +946,10 @@ public:
    * @author Sylvain Glémin
    */
   static double originRegressionDprime(
-    const PolymorphismSequenceContainer& psc,
-    bool distance1 = false,
-    bool keepsingleton = true,
-    double freqmin = 0.);
+      const PolymorphismSequenceContainer& psc,
+      bool distance1 = false,
+      bool keepsingleton = true,
+      double freqmin = 0.);
 
   /**
    * @brief give the slope of the regression R² = 1+a*distance
@@ -968,10 +968,10 @@ public:
    * @author Sylvain Glémin
    */
   static double originRegressionR2(
-    const PolymorphismSequenceContainer& psc,
-    bool distance1 = false,
-    bool keepsingleton = true,
-    double freqmin = 0.);
+      const PolymorphismSequenceContainer& psc,
+      bool distance1 = false,
+      bool keepsingleton = true,
+      double freqmin = 0.);
 
   /**
    * @brief give the slope and the origin of the regression |D| = a*distance+b
@@ -990,10 +990,10 @@ public:
    * @author Sylvain Glémin
    */
   static Vdouble linearRegressionD(
-    const PolymorphismSequenceContainer& psc,
-    bool distance1 = false,
-    bool keepsingleton = true,
-    double freqmin = 0.);
+      const PolymorphismSequenceContainer& psc,
+      bool distance1 = false,
+      bool keepsingleton = true,
+      double freqmin = 0.);
 
   /**
    * @brief give the slope and the origin of the regression |D'| = a*distance+b
@@ -1012,10 +1012,10 @@ public:
    * @author Sylvain Glémin
    */
   static Vdouble linearRegressionDprime(
-    const PolymorphismSequenceContainer& psc,
-    bool distance1 = false,
-    bool keepsingleton = true,
-    double freqmin = 0.);
+      const PolymorphismSequenceContainer& psc,
+      bool distance1 = false,
+      bool keepsingleton = true,
+      double freqmin = 0.);
 
   /**
    * @brief give the slope and the origin of the regression R² = a*distance+b
@@ -1034,10 +1034,10 @@ public:
    * @author Sylvain Glémin
    */
   static Vdouble linearRegressionR2(
-    const PolymorphismSequenceContainer& psc,
-    bool distance1 = false,
-    bool keepsingleton = true,
-    double freqmin = 0.);
+      const PolymorphismSequenceContainer& psc,
+      bool distance1 = false,
+      bool keepsingleton = true,
+      double freqmin = 0.);
 
   /**
    * @brief give the slope of the regression R² = 1/(1+a*distance)
@@ -1057,10 +1057,10 @@ public:
    * @author Sylvain Glémin
    */
   static double inverseRegressionR2(
-    const PolymorphismSequenceContainer& psc,
-    bool distance1 = false,
-    bool keepsingleton = true,
-    double freqmin = 0.);
+      const PolymorphismSequenceContainer& psc,
+      bool distance1 = false,
+      bool keepsingleton = true,
+      double freqmin = 0.);
 
   /**
    * @brief give estimate of C=4Nr using Hudson method (Hudson 1987, Genet. Res., 50 pp245-250)
@@ -1072,10 +1072,10 @@ public:
    * @author Sylvain Glémin
    */
   static double hudson87(
-    const PolymorphismSequenceContainer& psc,
-    double precision = 0.000001,
-    double cinf = 0.001,
-    double csup = 10000.);
+      const PolymorphismSequenceContainer& psc,
+      double precision = 0.000001,
+      double cinf = 0.001,
+      double csup = 10000.);
 
   /**
    * @brief Test useful values
@@ -1084,8 +1084,8 @@ public:
    * @author Sylvain Gaillard
    */
   static void testUsefulValues(
-    std::ostream& s,
-    size_t n);
+      std::ostream& s,
+      size_t n);
 
 private:
   /**
@@ -1106,8 +1106,8 @@ private:
    * @author Khalid Belkhir
    */
   static unsigned getNumberOfDerivedSingletons_(
-    const Site& site_in,
-    const Site& site_out);
+      const Site& site_in,
+      const Site& site_out);
 
   /**
    * @brief Get useful values for theta estimators.
@@ -1143,7 +1143,7 @@ private:
    * @author Sylvain Gaillard
    */
   static std::map<std::string, double> getUsefulValues_(
-    size_t n);
+      size_t n);
 
   /**
    * @brief Get the vD value of equation (32) in Fu & Li 1993, Genetics, 133 pp693-709)
@@ -1158,10 +1158,10 @@ private:
    * @author Sylvain Gaillard
    */
   static double getVD_(
-    size_t n,
-    double a1,
-    double a2,
-    double cn);
+      size_t n,
+      double a1,
+      double a2,
+      double cn);
 
   /**
    * @brief Get the uD value of equation (32) in Fu & Li 1993, Genetics, 133 pp693-709)
@@ -1174,8 +1174,8 @@ private:
    * @author Sylvain Gaillard
    */
   static double getUD_(
-    double a1,
-    double vD);
+      double a1,
+      double vD);
 
   /**
    * @brief Get the vD* value of D* equation in Fu & Li 1993, Genetics, 133 pp693-709)
@@ -1190,10 +1190,10 @@ private:
    * @author Sylvain Gaillard
    */
   static double getVDstar_(
-    size_t n,
-    double a1,
-    double a2,
-    double dn);
+      size_t n,
+      double a1,
+      double a2,
+      double dn);
 
   /**
    * @brief Get the uD* value of D* equation in Fu & Li 1993, Genetics, 133 pp693-709)
@@ -1207,9 +1207,9 @@ private:
    * @author Sylvain Gaillard
    */
   static double getUDstar_(
-    size_t n,
-    double a1,
-    double vDs);
+      size_t n,
+      double a1,
+      double vDs);
 
   /**
    * @brief give the left hand term of equation (4) in Hudson (Hudson 1987, Genet. Res., 50 pp245-250)
@@ -1217,18 +1217,18 @@ private:
    * @param psc a PolymorphismSequenceContainer
    */
   static double leftHandHudson_(
-    const PolymorphismSequenceContainer& psc);
+      const PolymorphismSequenceContainer& psc);
 
   /**
    * @brief give the right hand term of equation (4) in Hudson (Hudson 1987, Genet. Res., 50 pp245-250)
    * This term is used in hudson87
    */
   static double rightHandHudson_(
-    double c,
-    size_t n);
+      double c,
+      size_t n);
 
   /************************************************************************/
 };
 } // end of namespace bpp;
 
-#endif// _SEQUENCESTATISTICS_H_
+#endif // _SEQUENCESTATISTICS_H_

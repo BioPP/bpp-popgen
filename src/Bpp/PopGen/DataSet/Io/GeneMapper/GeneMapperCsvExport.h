@@ -175,4 +175,4 @@ public:
 };
 } // end of namespace bpp;
 
-#endif// _BPP_POPGEN_GENEMAPPERCSVEXPORT_H_
+#endif // _BPP_POPGEN_GENEMAPPERCSVEXPORT_H_

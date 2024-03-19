@@ -95,12 +95,12 @@ void GeneMapperCsvExport::read(std::istream& is, DataSet& dataset)
       alleles_cols.push_back(i);
   }
   // Set LocusInfo
-  vector<vector<size_t> > alleles_pos;
+  vector<vector<size_t>> alleles_pos;
   for (size_t i = 0; i < markers.size(); i++)
   {
     al.setLocusInfo(i, LocusInfo(markers[i], LocusInfo::UNKNOWN));
   }
-  std::map< std::string, std::set< std::string > > markerAlleles;
+  std::map< std::string, std::set< std::string >> markerAlleles;
   for (size_t i = 0; i < dt.getNumberOfRows(); ++i)
   {
     for (size_t j = 0; j < alleles_cols.size(); ++j)
@@ -111,7 +111,7 @@ void GeneMapperCsvExport::read(std::istream& is, DataSet& dataset)
       }
     }
   }
-  for (std::map< std::string, std::set< std::string > >::iterator itm = markerAlleles.begin(); itm != markerAlleles.end(); itm++)
+  for (std::map< std::string, std::set< std::string >>::iterator itm = markerAlleles.begin(); itm != markerAlleles.end(); itm++)
   {
     std::set< std::string >& s = itm->second;
     for (std::set< std::string >::iterator its = s.begin(); its != s.end(); its++)
@@ -189,11 +189,11 @@ GeneMapperCsvExport::Record::Record(const std::string& row) : sampleFile_(),
   for (unsigned int i = 0; i < alleleNum; ++i)
   {
     GeneMapperCsvExport::Allele al(
-      st.getToken(5 + i),
-      TextTools::toDouble(st.getToken(5 + alleleNum + i)),
-      TextTools::to<unsigned int>(st.getToken(5 + (2 * alleleNum) + i)),
-      TextTools::toDouble(st.getToken(5 + (3 * alleleNum) + i))
-      );
+        st.getToken(5 + i),
+        TextTools::toDouble(st.getToken(5 + alleleNum + i)),
+        TextTools::to<unsigned int>(st.getToken(5 + (2 * alleleNum) + i)),
+        TextTools::toDouble(st.getToken(5 + (3 * alleleNum) + i))
+        );
     alleles_.push_back(al);
   }
 }

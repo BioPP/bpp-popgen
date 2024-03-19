@@ -9,7 +9,7 @@ using namespace bpp;
 using namespace std;
 
 // ** Class constructor: *******************************************************/
-Individual::Individual() : 
+Individual::Individual() :
   id_(""),
   sex_(0),
   date_(),
@@ -27,10 +27,10 @@ Individual::Individual(const std::string& id) : id_(id),
   genotype_() {}
 
 Individual::Individual(const string& id,
-                       const Date& date,
-                       const Point2D<double>& coord,
-                       shared_ptr<Locality<double>> locality,
-                       const unsigned short sex) :
+    const Date& date,
+    const Point2D<double>& coord,
+    shared_ptr<Locality<double>> locality,
+    const unsigned short sex) :
   id_(id),
   sex_(sex),
   date_(new Date(date)),

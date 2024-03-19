@@ -13,7 +13,7 @@ using namespace bpp;
 /******************************************************************************/
 
 unique_ptr<PolymorphismMultiGContainer> PolymorphismMultiGContainerTools::permuteMultiG(
-  const PolymorphismMultiGContainer& pmgc)
+    const PolymorphismMultiGContainer& pmgc)
 {
   auto permutedPmgc = make_unique<PolymorphismMultiGContainer>(pmgc);
   vector<size_t> groups;
@@ -31,7 +31,7 @@ unique_ptr<PolymorphismMultiGContainer> PolymorphismMultiGContainerTools::permut
 
 /******************************************************************************/
 
-unique_ptr<PolymorphismMultiGContainer>PolymorphismMultiGContainerTools::permuteMonoG(
+unique_ptr<PolymorphismMultiGContainer> PolymorphismMultiGContainerTools::permuteMonoG(
     const PolymorphismMultiGContainer& pmgc,
     const std::set<size_t>& groups)
 {
@@ -217,7 +217,8 @@ unique_ptr<PolymorphismMultiGContainer> PolymorphismMultiGContainerTools::permut
 
   // update groups names
   set<size_t> grpIds = pmgc.getAllGroupsIds();
-  for (auto& id : grpIds) {
+  for (auto& id : grpIds)
+  {
     string name = pmgc.getGroupName(id);
     permutedPmgc->setGroupName(id, name);
   }
@@ -329,7 +330,7 @@ unique_ptr<PolymorphismMultiGContainer> PolymorphismMultiGContainerTools::extrac
       {
         if (indivGrp == g)
         {
-	  auto tmpMg = make_unique<MultilocusGenotype>(pmgc.multilocusGenotype(i));
+          auto tmpMg = make_unique<MultilocusGenotype>(pmgc.multilocusGenotype(i));
           subPmgc->addMultilocusGenotype(tmpMg, indivGrp);
         }
       }

@@ -23,7 +23,7 @@ void Genepop::read(istream& is, DataSet& data_set)
   bool loc_nbr_ok = false;
   size_t grp_nbr = 0;
   vector<LocusInfo> tmp_loc;
-  vector<set<string> > al_ids;
+  vector<set<string>> al_ids;
   map<string, size_t> ind_id_count;
   map<string, size_t> ind_id_index;
 
