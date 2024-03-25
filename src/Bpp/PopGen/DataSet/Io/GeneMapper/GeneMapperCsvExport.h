@@ -51,7 +51,7 @@ public:
 
   // public:
   /**
-   * @brief Set if allels are concidered as independent markers.
+   * @brief Set if allels are considered as independent markers.
    *
    */
   // SetAllelsAsIndependent(bool flag);

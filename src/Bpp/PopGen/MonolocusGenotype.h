@@ -15,7 +15,7 @@ namespace bpp
 /**
  * @brief The MonolocusGenotype virtual class.
  *
- * A MonolocusGenotype containes the Alleles' keys defined in a Locus object.
+ * A MonolocusGenotype contains the Alleles' keys defined in a Locus object.
  * This keys are returned as size_tegers.
  * This class is an interface for all monolocus genotypes.
  *

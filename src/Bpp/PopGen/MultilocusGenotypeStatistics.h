@@ -58,7 +58,7 @@ public:
   /**
    * @brief Get the alleles' id at one locus for a set of groups.
    *
-   * @throw IndexOutOfBoundsException if locusPosition excedes the number of loci of one MultilocusGenotype.
+   * @throw IndexOutOfBoundsException if locusPosition exceeds the number of loci of one MultilocusGenotype.
    */
   static std::vector<size_t> getAllelesIdsForGroups(
       const PolymorphismMultiGContainer& pmgc,
@@ -68,7 +68,7 @@ public:
   /**
    * @brief Count the number of allele (gametes) at a locus for a set of groups.
    *
-   * @throw IndexOutOfBoundsException if locusPosition excedes the number of loci of one MultilocusGenotype.
+   * @throw IndexOutOfBoundsException if locusPosition exceeds the number of loci of one MultilocusGenotype.
    */
   static size_t countGametesForGroups(
       const PolymorphismMultiGContainer& pmgc,
@@ -78,7 +78,7 @@ public:
   /**
    * @brief Get a map of allele count for a set of groups.
    *
-   * @throw IndexOutOfBoundsException if locusPosition excedes the number of loci of one MultilocusGenotype.
+   * @throw IndexOutOfBoundsException if locusPosition exceeds the number of loci of one MultilocusGenotype.
    */
   static std::map<size_t, size_t> getAllelesMapForGroups(
       const PolymorphismMultiGContainer& pmgc,
@@ -88,7 +88,7 @@ public:
   /**
    * @brief Get the alleles frequencies at one locus for a set of groups.
    *
-   * @throw IndexOutOfBoundsException if locusPosition excedes the number of loci of one MultilocusGenotype.
+   * @throw IndexOutOfBoundsException if locusPosition exceeds the number of loci of one MultilocusGenotype.
    * @throw ZeroDivisionException if the number of considered alleles = 0.
    */
   static std::map<size_t, double> getAllelesFrqForGroups(
@@ -99,7 +99,7 @@ public:
   /**
    * @brief Count the number of non-missing data at a given locus for a set of groups.
    *
-   * @throw IndexOutOfBoundsException if locusPosition excedes the number of loci of one MultilocusGenotype.
+   * @throw IndexOutOfBoundsException if locusPosition exceeds the number of loci of one MultilocusGenotype.
    */
   static size_t countNonMissingForGroups(
       const PolymorphismMultiGContainer& pmgc,
@@ -109,7 +109,7 @@ public:
   /**
    * @brief Counr the number of bi-allelic MonolocusGenotype at a given locus for a set of groups.
    *
-   * @throw IndexOutOfBoundsException if locusPosition excedes the number of loci of one MultilocusGenotype.
+   * @throw IndexOutOfBoundsException if locusPosition exceeds the number of loci of one MultilocusGenotype.
    */
   static size_t countBiAllelicForGroups(
       const PolymorphismMultiGContainer& pmgc,
@@ -119,7 +119,7 @@ public:
   /**
    * @brief Count how many times each allele is found in an heterozygous MonolocusGenotype in a set of groups.
    *
-   * @throw IndexOutOfBoundsException if locusPosition excedes the number of loci of one MultilocusGenotype.
+   * @throw IndexOutOfBoundsException if locusPosition exceeds the number of loci of one MultilocusGenotype.
    */
   static std::map<size_t, size_t> countHeterozygousForGroups(
       const PolymorphismMultiGContainer& pmgc,
@@ -129,7 +129,7 @@ public:
   /**
    * @brief Get the heterozygous frequencies for each allele at a locus in a set of groups.
    *
-   * @throw IndexOutOfBoundsException if locusPosition excedes the number of loci of one MultilocusGenotype.
+   * @throw IndexOutOfBoundsException if locusPosition exceeds the number of loci of one MultilocusGenotype.
    * @throw ZeroDivisionException if the number of considered alleles = 0.
    */
   static std::map<size_t, double> getHeterozygousFrqForGroups(
@@ -141,7 +141,7 @@ public:
    * @brief Compute the observed heterozygosity for one locus.
    *
    * This is the mean value of the getHeterozygousFrqForGroups map.
-   * @throw IndexOutOfBoundsException if locusPosition excedes the number of loci of one MultilocusGenotype.
+   * @throw IndexOutOfBoundsException if locusPosition exceeds the number of loci of one MultilocusGenotype.
    * @throw ZeroDivisionException if the number of considered alleles = 0.
    */
   static double getHobsForGroups(
@@ -157,7 +157,7 @@ public:
    * H_{exp}=1-\sum_{i=1}^{n}x_i^2
    * @f]
    * where @f$x_i@f$ is the frequency of the i<sup>th</sup> allele and @f$n@f$ the number of alleles.
-   * @throw IndexOutOfBoundsException if locusPosition excedes the number of loci of one MultilocusGenotype.
+   * @throw IndexOutOfBoundsException if locusPosition exceeds the number of loci of one MultilocusGenotype.
    * @throw ZeroDivisionException if the number of considered alleles = 0.
    */
   static double getHexpForGroups(
@@ -173,7 +173,7 @@ public:
    * H_{nb}=\frac{2n}{2n-1}\left(1-\sum_{i=1}^{n}x_i^2\right)=\frac{2n}{2n-1}H_{exp}
    * @f]
    * where @f$x_i@f$ is the frequency of the i<sup>th</sup> allele and @f$n@f$ the number of alleles.
-   * @throw IndexOutOfBoundsException if locusPosition excedes the number of loci of one MultilocusGenotype.
+   * @throw IndexOutOfBoundsException if locusPosition exceeds the number of loci of one MultilocusGenotype.
    * @throw ZeroDivisionException if the number of considered alleles = 0.
    */
   static double getHnbForGroups(
@@ -191,7 +191,7 @@ public:
    * @f]
    * where @f$x_i@f$ and @f$y_i@f$ are respectively the i<sup>th</sup> allele's frequency of the first and second group
    * and @f$n@f$ the total number of alleles of both groups.
-   * @throw IndexOutOfBoundsException if locusPosition excedes the number of loci of one MultilocusGenotype.
+   * @throw IndexOutOfBoundsException if locusPosition exceeds the number of loci of one MultilocusGenotype.
    * @throw ZeroDivisionException if the number of considered alleles = 0.
    */
   static double getDnei72(
@@ -217,7 +217,7 @@ public:
    * \qquad\textrm{and}\qquad
    * J_Y=\sum_{i=1}^{n}y_i^2
    * @f]
-   * @throw IndexOutOfBoundsException if locusPosition excedes the number of loci of one MultilocusGenotype.
+   * @throw IndexOutOfBoundsException if locusPosition exceeds the number of loci of one MultilocusGenotype.
    * @throw ZeroDivisionException if the number of considered alleles = 0.
    */
   static double getDnei78(
@@ -268,7 +268,7 @@ public:
 
   /**
    * @brief Compute the Weir and Cockerham @f$\theta{wc}@f$ on a set of groups for a given set of loci.
-   * The variance componenets for each allele are calculated and then combined over loci using Weir and Cockerham weighting.
+   * The variance components for each allele are calculated and then combined over loci using Weir and Cockerham weighting.
    */
   static double getWCMultilocusFst(
       const PolymorphismMultiGContainer& pmgc,
@@ -277,7 +277,7 @@ public:
 
   /**
    * @brief Compute the Weir and Cockerham Fis on a set of groups for a given set of loci.
-   * The variance componenets for each allele are calculated and then combined over loci using Weir and Cockerham weighting.
+   * The variance components for each allele are calculated and then combined over loci using Weir and Cockerham weighting.
    */
   static double getWCMultilocusFis(
       const PolymorphismMultiGContainer& pmgc,
@@ -311,7 +311,7 @@ public:
 
   /**
    * @brief Compute the @f$\theta_{RH}@f$ on a set of groups for a given set of loci.
-   * The variance componenets for each allele are calculated and then combined over loci using RH weighting with alleles frequency.
+   * The variance components for each allele are calculated and then combined over loci using RH weighting with alleles frequency.
    */
   static double getRHMultilocusFst(
       const PolymorphismMultiGContainer& pmgc,

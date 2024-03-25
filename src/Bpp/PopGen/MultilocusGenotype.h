@@ -65,7 +65,7 @@ public:
   /**
    * @brief Set a MonolocusGenotype by allele keys.
    *
-   * @throw IndexOutOfBoundsException if locus_position excedes the number of loci.
+   * @throw IndexOutOfBoundsException if locus_position exceeds the number of loci.
    * @throw Exception if there is no key in allele_keys.
    */
   void setMonolocusGenotypeByAlleleKey(
@@ -75,7 +75,7 @@ public:
   /**
    * @brief Set a MonolocusGenotype by allele id.
    *
-   * @throw IndexOutOfBoundsException if locus_position excedes the number of loci.
+   * @throw IndexOutOfBoundsException if locus_position exceeds the number of loci.
    * @throw AlleleNotFoundException if at least one of the id is not found in the LocusInfo.
    */
   void setMonolocusGenotypeByAlleleId(
@@ -86,14 +86,14 @@ public:
   /**
    * @brief Set a MonolocusGenotype as missing data.
    *
-   * @throw IndexOutOfBoundsException if locus_position excedes the number of loci.
+   * @throw IndexOutOfBoundsException if locus_position exceeds the number of loci.
    */
   void setMonolocusGenotypeAsMissing(size_t locusPosition);
 
   /**
    * @brief Tell if a MonolocusGenotype is a missing data.
    *
-   * @throw IndexOutOfBoundsException if locus_position excedes the number of loci.
+   * @throw IndexOutOfBoundsException if locus_position exceeds the number of loci.
    */
   bool isMonolocusGenotypeMissing(size_t locusPosition) const;
 

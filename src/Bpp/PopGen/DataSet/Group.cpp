@@ -410,7 +410,7 @@ void Group::setIndividualMonolocusGenotype(
   }
   catch (IndexOutOfBoundsException& ioobe)
   {
-    throw IndexOutOfBoundsException("Group::setIndividualMonolocusGenotype: locusPosition excedes the number of locus.", ioobe.getBadIndex(), ioobe.getBounds()[0], ioobe.getBounds()[1]);
+    throw IndexOutOfBoundsException("Group::setIndividualMonolocusGenotype: locusPosition exceeds the number of locus.", ioobe.getBadIndex(), ioobe.getBounds()[0], ioobe.getBounds()[1]);
   }
 }
 
@@ -431,7 +431,7 @@ void Group::setIndividualMonolocusGenotypeByAlleleKey(
   }
   catch (IndexOutOfBoundsException& ioobe)
   {
-    throw IndexOutOfBoundsException("Group::setIndividualMonolocusGenotypeByAlleleKey: locusPosition excedes the number of locus.", ioobe.getBadIndex(), ioobe.getBounds()[0], ioobe.getBounds()[1]);
+    throw IndexOutOfBoundsException("Group::setIndividualMonolocusGenotypeByAlleleKey: locusPosition exceeds the number of locus.", ioobe.getBadIndex(), ioobe.getBounds()[0], ioobe.getBounds()[1]);
   }
   catch (Exception&)
   {
@@ -453,7 +453,7 @@ void Group::setIndividualMonolocusGenotypeByAlleleId(size_t individualPosition, 
   }
   catch (IndexOutOfBoundsException& ioobe)
   {
-    throw IndexOutOfBoundsException("Group::setIndividualMonolocusGenotypeByAlleleId: locusPosition excedes the number of locus.", ioobe.getBadIndex(), ioobe.getBounds()[0], ioobe.getBounds()[1]);
+    throw IndexOutOfBoundsException("Group::setIndividualMonolocusGenotypeByAlleleId: locusPosition exceeds the number of locus.", ioobe.getBadIndex(), ioobe.getBounds()[0], ioobe.getBounds()[1]);
   }
   catch (AlleleNotFoundException& anfe)
   {
@@ -477,7 +477,7 @@ const MonolocusGenotypeInterface& Group::getIndividualMonolocusGenotype(
   }
   catch (IndexOutOfBoundsException& ioobe)
   {
-    throw IndexOutOfBoundsException("Group::getIndividualMonolocusGenotype: locusPosition excedes the number of locus.", ioobe.getBadIndex(), ioobe.getBounds()[0], ioobe.getBounds()[1]);
+    throw IndexOutOfBoundsException("Group::getIndividualMonolocusGenotype: locusPosition exceeds the number of locus.", ioobe.getBadIndex(), ioobe.getBounds()[0], ioobe.getBounds()[1]);
   }
 }
 

@@ -216,7 +216,7 @@ public:
   /**
    * @brief Get the group identifier of the sequence.
    *
-   * @throw IndexOutOfBoundsException if index excedes the number of sequences in the container.
+   * @throw IndexOutOfBoundsException if index exceeds the number of sequences in the container.
    */
   size_t getGroupId(size_t index) const
   {
@@ -251,7 +251,7 @@ public:
   /**
    * @brief Set the group identifier of a sequence.
    *
-   * @throw IndexOutOfBoundsException if index excedes the number of sequences in the container.
+   * @throw IndexOutOfBoundsException if index exceeds the number of sequences in the container.
    */
   void setGroupId(size_t index, size_t group_id)
   {
@@ -293,7 +293,7 @@ public:
   /**
    * @brief Tell if the sequence is ingroup by index.
    *
-   * @throw IndexOutOfBoundsException if index excedes the number of sequences in the container.
+   * @throw IndexOutOfBoundsException if index exceeds the number of sequences in the container.
    */
   bool isIngroupMember(size_t index) const
   {
@@ -322,7 +322,7 @@ public:
   /**
    * @brief Set a sequence as ingroup member by index.
    *
-   * @throw IndexOutOfBoundsException if index excedes the number of sequences in the container.
+   * @throw IndexOutOfBoundsException if index exceeds the number of sequences in the container.
    */
   void setAsIngroupMember(size_t index);
 
@@ -336,7 +336,7 @@ public:
   /**
    * @brief Set a sequence as outgroup member by index.
    *
-   * @throw IndexOutOfBoundsException if index excedes the number of sequences in the container.
+   * @throw IndexOutOfBoundsException if index exceeds the number of sequences in the container.
    */
   void setAsOutgroupMember(size_t index);
 
@@ -350,7 +350,7 @@ public:
   /**
    * @brief Set the count of a sequence by index.
    *
-   * @throw IndexOutOfBoundsException if index excedes the number of sequences in the container.
+   * @throw IndexOutOfBoundsException if index exceeds the number of sequences in the container.
    * @throw BadIntegerException if count < 1 ... use deleteSequence instead of setting the count to 0.
    */
   void setSequenceCount(size_t index, unsigned int count);
@@ -366,7 +366,7 @@ public:
   /**
    * @brief Add 1 to the sequence count.
    *
-   * @throw IndexOutOfBoundsException if index excedes the number of sequences in the container.
+   * @throw IndexOutOfBoundsException if index exceeds the number of sequences in the container.
    */
   void incrementSequenceCount(size_t index);
 
@@ -380,7 +380,7 @@ public:
   /**
    * @brief Removz 1 to the sequence count.
    *
-   * @throw IndexOutOfBoundsException if index excedes the number of sequences in the container.
+   * @throw IndexOutOfBoundsException if index exceeds the number of sequences in the container.
    * @throw BadIntegerException if count < 1 ... use deleteSequence instead of setting the count to 0.
    */
   void decrementSequenceCount(size_t index);
@@ -396,7 +396,7 @@ public:
   /**
    * @brief Get the count of a sequence by index.
    *
-   * @throw IndexOutOfBoundsException if index excedes the number of sequences in the container.
+   * @throw IndexOutOfBoundsException if index exceeds the number of sequences in the container.
    */
   unsigned int getSequenceCount(size_t index) const;
 
@@ -410,7 +410,7 @@ public:
   /**
    * @brief convert the container to a site container, with sequences dulicated according to their respective frequencies.
    *
-   * @return A SiteContainer object, eventually with duplicated sequences. Names of duplicated sequences are happended with _1, _2, etc.
+   * @return A SiteContainer object, eventually with duplicated sequences. Names of duplicated sequences are happened with _1, _2, etc.
    */
   std::unique_ptr<SiteContainerInterface> toSiteContainer() const;
 };

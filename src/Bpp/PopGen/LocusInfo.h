@@ -21,7 +21,7 @@ namespace bpp
 /**
  * @brief The LocusInfo class.
  *
- * This is an AlleleInfo container with additionnal data like a name,
+ * This is an AlleleInfo container with additional data like a name,
  * the ploidy and some comments.
  *
  * @author Sylvain Gaillard
@@ -117,7 +117,7 @@ public:
   /**
    * @brief Retrieve an AlleleInfo object of the LocusInfo.
    *
-   * @throw IndexOutOfBoundsException if key excedes the number of alleles.
+   * @throw IndexOutOfBoundsException if key exceeds the number of alleles.
    */
   const AlleleInfo& getAlleleInfoByKey(size_t key) const;
 

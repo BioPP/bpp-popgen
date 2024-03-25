@@ -160,7 +160,7 @@ public:
   /**
    * @brief Get the maximum number of sequence.
    *
-   * Give the value of the highest sequence key. This value is usefull to
+   * Give the value of the highest sequence key. This value is useful to
    * discover the missing sequences data for each individual.
    */
   size_t getMaxNumberOfSequences() const;
@@ -199,7 +199,7 @@ public:
    * @return An std::auto_ptr to the removed Individual.
    * @throw IndividualNotFoundException if individualId is not found.
    *
-   * Search an Individual in the Group by cheking the id and remove it
+   * Search an Individual in the Group by checking the id and remove it
    * if it is found then return a pointer to this Individual.
    */
   std::unique_ptr<Individual> removeIndividualById(const std::string& individualId);
@@ -222,7 +222,7 @@ public:
    * @param individualId The id of the Individual to delete.
    * @throw IndividualNotFoundException if individualId is not found.
    *
-   * Search an Individual in the Group by cheking the id and delete it
+   * Search an Individual in the Group by checking the id and delete it
    * if it is foundi and free the memory by calling the destructor of the
    * Individual.
    */
@@ -248,28 +248,28 @@ public:
   /**
    * @brief Set the sex of an Individual.
    *
-   * @throw IndexOutOfBoundsException if individualPosition excedes the number of individuals.
+   * @throw IndexOutOfBoundsException if individualPosition exceeds the number of individuals.
    */
   void setIndividualSexAtPosition(size_t individualPosition, const unsigned short sex);
 
   /**
    * @brief Get the sex of an Individual.
    *
-   * @throw IndexOutOfBoundsException if individualPosition excedes the number of individuals.
+   * @throw IndexOutOfBoundsException if individualPosition exceeds the number of individuals.
    */
   unsigned short getIndividualSexAtPosition(size_t individualPosition) const;
 
   /**
    * @brief Set the date of an Individual.
    *
-   * @throw IndexOutOfBoundsException if individualPosition excedes the number of individuals.
+   * @throw IndexOutOfBoundsException if individualPosition exceeds the number of individuals.
    */
   void setIndividualDateAtPosition(size_t individualPosition, const Date& date);
 
   /**
    * @brief Get the date of an Individual.
    *
-   * @throw IndexOutOfBoundsException if individualPosition excedes the number of individuals.
+   * @throw IndexOutOfBoundsException if individualPosition exceeds the number of individuals.
    * @throw NullPointerException if the Individual has no date.
    */
   const Date& getIndividualDateAtPosition(size_t individualPosition) const;
@@ -277,14 +277,14 @@ public:
   /**
    * @brief Set the coordinates of an Individual.
    *
-   * @throw IndexOutOfBoundsException if individualPosition excedes the number of individuals.
+   * @throw IndexOutOfBoundsException if individualPosition exceeds the number of individuals.
    */
   void setIndividualCoordAtPosition(size_t individualPosition, const Point2D<double>& coord);
 
   /**
    * @brief Get the coordinates of an Individual.
    *
-   * @throw IndexOutOfBoundsException if individualPosition excedes the number of individuals.
+   * @throw IndexOutOfBoundsException if individualPosition exceeds the number of individuals.
    * @throw NullPointerException if the individual has no coordinate.
    */
   const Point2D<double>& getIndividualCoordAtPosition(size_t individualPosition) const;
@@ -292,7 +292,7 @@ public:
   /**
    * @brief Set the locality of an Individual.
    *
-   * @throw IndexOutOfBoundsException if individualPosition excedes the number of individuals.
+   * @throw IndexOutOfBoundsException if individualPosition exceeds the number of individuals.
    */
   void setIndividualLocalityAtPosition(
       size_t individualPosition,
@@ -301,7 +301,7 @@ public:
   /**
    * @brief Get the locality of an Individual.
    *
-   * @throw IndexOutOfBoundsException if individualPosition excedes the number of individuals.
+   * @throw IndexOutOfBoundsException if individualPosition exceeds the number of individuals.
    * @throw NullPointerException if the individual has no locality.
    */
   std::shared_ptr<const Locality<double>> getIndividualLocalityAtPosition(size_t individualPosition) const;
@@ -309,7 +309,7 @@ public:
   /**
    * @brief Add a sequence to an Individual.
    *
-   * @throw IndexOutOfBoundsException if individualPosition excedes the number of individuals.
+   * @throw IndexOutOfBoundsException if individualPosition exceeds the number of individuals.
    * @throw AlphabetMismatchException if the sequence's alphabet doesn't match the container's alphabet.
    * @throw BadIdentifierException if the sequence's name is already in use.
    * @throw BadIntegerException if sequencePosition is already in use.
@@ -321,7 +321,7 @@ public:
   /**
    * @brief Get a sequence of an Individual.
    *
-   * @throw IndexOutOfBoundsException if individualPosition excedes the number of individuals.
+   * @throw IndexOutOfBoundsException if individualPosition exceeds the number of individuals.
    * @throw NullPointerException if there is no sequence container defined in the individual.
    * @throw SequenceNotFoundException if sequence_name is not found.
    */
@@ -332,7 +332,7 @@ public:
   /**
    * @brief Get a sequence of an Individual.
    *
-   * @throw IndexOutOfBoundsException if individualPosition excedes the number of individuals.
+   * @throw IndexOutOfBoundsException if individualPosition exceeds the number of individuals.
    * @throw NullPointerException if there is no sequence container defined in the individual.
    * @throw SequenceNotFoundException if sequencePosition is not found.
    */
@@ -343,7 +343,7 @@ public:
   /**
    * @brief Delete a sequence of an Individual.
    *
-   * @throw IndexOutOfBoundsException if individualPosition excedes the number of individuals.
+   * @throw IndexOutOfBoundsException if individualPosition exceeds the number of individuals.
    * @throw NullPointerException if there is no sequence container defined in the individual.
    * @throw SequenceNotFoundException if sequence_name is not found.
    */
@@ -352,7 +352,7 @@ public:
   /**
    * @brief Delete a sequence of an Individual.
    *
-   * @throw IndexOutOfBoundsException if individualPosition excedes the number of individuals.
+   * @throw IndexOutOfBoundsException if individualPosition exceeds the number of individuals.
    * @throw NullPointerException if there is no sequence container defined in the individual.
    * @throw SequenceNotFoundException if sequencePosition is not found.
    */
@@ -361,14 +361,14 @@ public:
   /**
    * @brief Tell if the Individual has some sequences.
    *
-   * @throw IndexOutOfBoundsException if individualPosition excedes the number of individuals.
+   * @throw IndexOutOfBoundsException if individualPosition exceeds the number of individuals.
    */
   bool hasIndividualSequences(size_t individualPosition) const;
 
   /**
    * @brief Get the sequences' names from an Individual.
    *
-   * @throw IndexOutOfBoundsException if individualPosition excedes the number of individuals.
+   * @throw IndexOutOfBoundsException if individualPosition exceeds the number of individuals.
    * @throw NullPointerException if there is no sequence container defined in the individual.
    */
   std::vector<std::string> getIndividualSequencesNames(size_t individualPosition) const;
@@ -376,7 +376,7 @@ public:
   /**
    * @brief Get the position of a sequence in an Individual.
    *
-   * @throw IndexOutOfBoundsException if individualPosition excedes the number of individuals.
+   * @throw IndexOutOfBoundsException if individualPosition exceeds the number of individuals.
    * @throw NullPointerException if there is no sequence container defined in the individual.
    * @throw SequenceNotFoundException if sequence_name is not found.
    */
@@ -387,7 +387,7 @@ public:
   /**
    * @brief Get the number of sequences in an Individual.
    *
-   * @throw IndexOutOfBoundsException if individualPosition excedes the number of individuals.
+   * @throw IndexOutOfBoundsException if individualPosition exceeds the number of individuals.
    * @throw NullPointerException if there is no sequence container defined in the individual.
    */
   size_t getIndividualNumberOfSequences(size_t individualPosition) const;
@@ -395,21 +395,21 @@ public:
   /**
    * @brief Set all the sequences by copying an OrderedSequenceContainer.
    *
-   * @throw IndexOutOfBoundsException if individualPosition excedes the number of individuals.
+   * @throw IndexOutOfBoundsException if individualPosition exceeds the number of individuals.
    */
   void setIndividualSequences(size_t individualPosition, const SequenceContainerInterface& sc);
 
   /**
    * @brief Set the genotype of an Individual.
    *
-   * @throw IndexOutOfBoundsException if individualPosition excedes the number of individuals.
+   * @throw IndexOutOfBoundsException if individualPosition exceeds the number of individuals.
    */
   void setIndividualGenotype(size_t individualPosition, const MultilocusGenotype& genotype);
 
   /**
-   * @brief Initialyze the genotype of an Individual.
+   * @brief Initialize the genotype of an Individual.
    *
-   * @throw IndexOutOfBoundsException if individualPosition excedes the number of individuals.
+   * @throw IndexOutOfBoundsException if individualPosition exceeds the number of individuals.
    * @throw BadIntegerException if loci_number < 1.
    * @throw Exception if the individual already has a genotype.
    */
@@ -418,23 +418,23 @@ public:
   /**
    * @brief Delete the genotype of an Individual.
    *
-   * @throw IndexOutOfBoundsException if individualPosition excedes the number of individuals.
+   * @throw IndexOutOfBoundsException if individualPosition exceeds the number of individuals.
    */
   void deleteIndividualGenotype(size_t individualPosition);
 
   /**
    * @brief Tell if an Individual has a genotype.
    *
-   * @throw IndexOutOfBoundsException if individualPosition excedes the number of individuals.
+   * @throw IndexOutOfBoundsException if individualPosition exceeds the number of individuals.
    */
   bool hasIndividualGenotype(size_t individualPosition) const;
 
   /**
    * @brief Set a MonolocusGenotype of an Individual.
    *
-   * @throw IndexOutOfBoundsException if individualPosition excedes the number of individuals.
+   * @throw IndexOutOfBoundsException if individualPosition exceeds the number of individuals.
    * @throw NullPointerException if the individual has no genotype.
-   * @throw IndexOutOfBoundsException if locusPosition excedes the number of locus.
+   * @throw IndexOutOfBoundsException if locusPosition exceeds the number of locus.
    */
   void setIndividualMonolocusGenotype(
       size_t individualPosition,
@@ -444,9 +444,9 @@ public:
   /**
    * @brief Set a MonolocusGenotype of an Individual.
    *
-   * @throw IndexOutOfBoundsException if individualPosition excedes the number of individuals.
+   * @throw IndexOutOfBoundsException if individualPosition exceeds the number of individuals.
    * @throw NullPointerException if the individual has no genotype.
-   * @throw IndexOutOfBoundsException if locusPosition excedes the number of locus.
+   * @throw IndexOutOfBoundsException if locusPosition exceeds the number of locus.
    * @throw Exception if there is no key in allele_keys.
    */
   void setIndividualMonolocusGenotypeByAlleleKey(
@@ -457,9 +457,9 @@ public:
   /**
    * @brief Set a MonolocusGenotype of an Individual.
    *
-   * @throw IndexOutOfBoundsException if individualPosition excedes the number of individuals.
+   * @throw IndexOutOfBoundsException if individualPosition exceeds the number of individuals.
    * @throw NullPointerException if the individual has no genotype.
-   * @throw IndexOutOfBoundsException if locusPosition excedes the number of locus.
+   * @throw IndexOutOfBoundsException if locusPosition exceeds the number of locus.
    * @throw AlleleNotFoundException if at least one id is not found in locus_info.
    */
   void setIndividualMonolocusGenotypeByAlleleId(
@@ -471,9 +471,9 @@ public:
   /**
    * @brief Get a MonolocusGenotype of an Individual.
    *
-   * @throw IndexOutOfBoundsException if individualPosition excedes the number of individuals.
+   * @throw IndexOutOfBoundsException if individualPosition exceeds the number of individuals.
    * @throw NullPointerException if the individual has no genotype.
-   * @throw IndexOutOfBoundsException if locusPosition excedes the number of locus.
+   * @throw IndexOutOfBoundsException if locusPosition exceeds the number of locus.
    */
   const MonolocusGenotypeInterface& getIndividualMonolocusGenotype(
       size_t individualPosition,

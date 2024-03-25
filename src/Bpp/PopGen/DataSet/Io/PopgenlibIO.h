@@ -87,7 +87,7 @@ public:
    * or a tabulation.
    * The default value is '$'.
    *
-   * @throw Excpetion if missing_data_symbol is a not allowed character.
+   * @throw Exception if missing_data_symbol is a not allowed character.
    * @throw Exception if missing_data_symbol contains more than one character.
    */
   void setMissingDataSymbol(const std::string& missing_data_symbol);
@@ -105,7 +105,7 @@ public:
    * The default value is "WHITESPACE".
    *
    * @throw Exception if data_separator is a not allowed character.
-   * @throw Exception if data_separator containes more than one character other than the two codes defined upper.
+   * @throw Exception if data_separator contains more than one character other than the two codes defined upper.
    */
   void setDataSeparator(const std::string& data_separator);
 

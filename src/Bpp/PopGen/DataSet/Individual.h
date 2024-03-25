@@ -91,7 +91,7 @@ public:
    * @brief The Individual copy operator.
    *
    * @return A ref toward the assigned Individual.
-   * Make a copy of each atribute of the Individual.
+   * Make a copy of each attribute of the Individual.
    */
   Individual& operator=(const Individual& ind);
 
@@ -144,7 +144,7 @@ public:
   bool hasDate() const;
 
   /**
-   * @brief Set the coodinates of the Individual.
+   * @brief Set the coordinates of the Individual.
    *
    * @param coord A Point2D object.
    */
@@ -243,7 +243,7 @@ public:
    * @brief Add a sequence to the Individual.
    *
    * Creates the sequence container when adding the first sequence.
-   * Otherwize add the sequence to the end of the sequence container.
+   * Otherwise add the sequence to the end of the sequence container.
    *
    * @param sequenceKey the place where the sequence will be put.
    * @param sequence The sequence to add.
@@ -411,7 +411,7 @@ public:
    * @brief Set a MonolocusGenotype.
    *
    * @throw NullPointerException if there is no genotype defined.
-   * @throw IndexOutOfBoundsException if locusPosition excedes the number of loci.
+   * @throw IndexOutOfBoundsException if locusPosition exceeds the number of loci.
    */
   void setMonolocusGenotype(size_t locusPosition, const MonolocusGenotypeInterface& monogen);
 
@@ -419,7 +419,7 @@ public:
    * @brief Set a MonolocusGenotype.
    *
    * @throw NullPointerException if there is no genotype defined.
-   * @throw IndexOutOfBoundsException if locusPosition excedes the number of loci.
+   * @throw IndexOutOfBoundsException if locusPosition exceeds the number of loci.
    * @throw Exception if there is no key in alleleKeys.
    */
   void setMonolocusGenotypeByAlleleKey(
@@ -430,7 +430,7 @@ public:
    * @brief Set a MonolocusGenotype.
    *
    * @throw NullPointerException if there is no genotype defined.
-   * @throw IndexOutOfBoundsException if locusPosition excedes the number of loci.
+   * @throw IndexOutOfBoundsException if locusPosition exceeds the number of loci.
    * @throw AlleleNotFoundException if at least one the id is not found in the LocusInfo.
    */
   void setMonolocusGenotypeByAlleleId(
@@ -442,7 +442,7 @@ public:
    * @brief Get a MonolocusGenotype.
    *
    * @throw NullPointerException if there is no genotype defined.
-   * @throw IndexOutOfBoundsException if locusPosition excedes the number of loci.
+   * @throw IndexOutOfBoundsException if locusPosition exceeds the number of loci.
    */
   const MonolocusGenotypeInterface& getMonolocusGenotype(size_t locusPosition);
 

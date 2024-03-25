@@ -35,7 +35,7 @@ void GeneMapperCsvExport::read(std::istream& is, DataSet& dataset)
   DataTable& dt = *dtp;
 
   /*
-   * Fixe the individuals' name if there is duplicate in the file
+   * Fixes the individuals' name if there is duplicate in the file
    */
   vector<string> ind_names;
   vector<string> markers;
@@ -122,7 +122,7 @@ void GeneMapperCsvExport::read(std::istream& is, DataSet& dataset)
   dataset.setAnalyzedLoci(al);
 
   /*
-   * Individuals informations
+   * Individuals information
    */
   size_t ind_col_index = VectorTools::which(dt.getColumnNames(), SAMPLE_NAME_H);
   size_t mark_col_index = VectorTools::which(dt.getColumnNames(), MARKER_H);

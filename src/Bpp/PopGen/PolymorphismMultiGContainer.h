@@ -78,21 +78,21 @@ public:
   /**
    * @brief Get a MultilocusGenotype at a position.
    *
-   * @throw IndexOutOfBoundsException if position excedes the size of the container.
+   * @throw IndexOutOfBoundsException if position exceeds the size of the container.
    */
   const MultilocusGenotype& multilocusGenotype(size_t position) const;
 
   /**
    * @brief Remove a MultilocusGenotype.
    *
-   * @throw IndexOutOfBoundsException if position excedes the size of the container.
+   * @throw IndexOutOfBoundsException if position exceeds the size of the container.
    */
   std::unique_ptr<MultilocusGenotype> removeMultilocusGenotype(size_t position);
 
   /**
    * @brief Delete a MultilocusGenotype.
    *
-   * @throw IndexOutOfBoundsException if position excedes the size of the container.
+   * @throw IndexOutOfBoundsException if position exceeds the size of the container.
    */
   void deleteMultilocusGenotype(size_t position);
 
@@ -111,14 +111,14 @@ public:
   /**
    * @brief Get the Group id of a MultilocusGenotype.
    *
-   * @throw IndexOutOfBoundsException if position excedes the size of the container.
+   * @throw IndexOutOfBoundsException if position exceeds the size of the container.
    */
   size_t getGroupId(size_t position) const;
 
   /**
    * @brief Set the Group id of a MultilocusGenotype.
    *
-   * @throw IndexOutOfBoundsException if position excedes the size of the container.
+   * @throw IndexOutOfBoundsException if position exceeds the size of the container.
    */
   void setGroupId(size_t position, size_t groupId);
 
