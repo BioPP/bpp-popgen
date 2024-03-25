@@ -257,7 +257,7 @@ size_t DataSet::getNumberOfGroups() const
 
 void DataSet::mergeTwoGroups(size_t source_id, size_t target_id)
 {
-  // Test the existance of the two groups.
+  // Test the existence of the two groups.
   try
   {
     getGroupById(source_id);
@@ -339,7 +339,7 @@ void DataSet::splitGroup(size_t groupId, vector<size_t> individualSelection)
   for (size_t i = 0; i < individualSelection.size(); i++)
   {
     if (individualSelection[i] >= groups_[sourcePos]->getNumberOfIndividuals())
-      throw IndexOutOfBoundsException("DataSet::splitGroup: individuals_selection excedes the number of individual in the group.", individualSelection[i], 0, groups_[sourcePos]->getNumberOfIndividuals());
+      throw IndexOutOfBoundsException("DataSet::splitGroup: individuals_selection exceeds the number of individual in the group.", individualSelection[i], 0, groups_[sourcePos]->getNumberOfIndividuals());
   }
   for (size_t i = 0; i < individualSelection.size(); i++)
   {
@@ -422,7 +422,7 @@ const Individual& DataSet::getIndividualAtPositionFromGroup(size_t groupPosition
   }
   catch (IndexOutOfBoundsException& ioobe)
   {
-    throw IndexOutOfBoundsException("DataSet::getIndividualAtPositionFromGroup: individualPosition out of bouds.", ioobe.getBadIndex(), ioobe.getBounds()[0], ioobe.getBounds()[1]);
+    throw IndexOutOfBoundsException("DataSet::getIndividualAtPositionFromGroup: individualPosition out of bounds.", ioobe.getBadIndex(), ioobe.getBounds()[0], ioobe.getBounds()[1]);
   }
 }
 

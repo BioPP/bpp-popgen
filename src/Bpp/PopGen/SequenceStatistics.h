@@ -58,7 +58,7 @@ public:
    * @brief Compute the frequency of polymorphic site in an alignment
    *
    * The number of polymorphic site is also known as the number of
-   * segregating site @f$S@f$. This number is devided by the number
+   * segregating site @f$S@f$. This number is divided by the number
    * of callable sites, which dependson the gapflag and ignoreUnknown arguments.
    *
    * Gaps are consider as mutations so if you want number of
@@ -113,15 +113,15 @@ public:
       bool gapflag = true);
 
   /**
-   * @brief Count the total number of mutations in external branchs.
+   * @brief Count the total number of mutations in external branches.
    *
    * This is counted as the number of distinct singleton nucleotide
    * in the ingroup that are not shared with the outgroup.
    * A site is ignored if it contains more than one variant in the outgroup.
    * A site is ignored if it contains unresolved variants or gaps.
    *
-   * @param ing a PolymorphismSequenceContainer the ingroup alignement
-   * @param outg a PolymorphismSequenceContainer the outgroup alignement
+   * @param ing a PolymorphismSequenceContainer the ingroup alignment
+   * @param outg a PolymorphismSequenceContainer the outgroup alignment
    * @author Khalid Belkhir
    */
   static unsigned int totalNumberOfMutationsOnExternalBranches(
@@ -467,7 +467,7 @@ public:
       double ratio = 1.);
 
   /**
-   * @brief compute the number of synonymous subsitutions in an alignment
+   * @brief compute the number of synonymous substitutions in an alignment
    *
    * Gaps and unresolved sites are automatically excluded
    *
@@ -487,7 +487,7 @@ public:
       double freqmin = 0.);
 
   /**
-   * @brief compute the number of non synonymous subsitutions in an alignment
+   * @brief compute the number of non synonymous substitutions in an alignment
    *
    * Gaps and unresolved sites are automatically excluded
    *
@@ -722,11 +722,11 @@ public:
    * @param psc a PolymorphismSequenceContainer
    * @param keepsingleton a boolean (true by default, false to exclude
    * singleton)
-   * @param freqmin a float (to exlude site with the lowest allele
+   * @param freqmin a float (to exclude site with the lowest allele
    * frequency less than the threshold given by freqmin, 0 by default)
    * @author Sylvain Glémin
    * @bug Sylvain Gaillard 17/03/2010: Needs cleaning and lack of tests
-   * of usability. This methode assume that psc as a DNA alphabet but don't
+   * of usability. This method assume that psc as a DNA alphabet but don't
    * check for conformity.
    * @todo
    *  - To be moved to PolymorphismSequenceContainerTools.
@@ -744,7 +744,7 @@ public:
    * @param psc a PolymorphismSequenceContainer
    * @param keepsingleton a boolean (true by default, false to exclude
    * singleton)
-   * @param freqmin a float (to exlude site with the lowest allele
+   * @param freqmin a float (to exclude site with the lowest allele
    * frequency less than the threshold given by freqmin, 0 by default)
    * @throw DimensionException if the number of sites is lower than 2
    * @author Sylvain Glémin
@@ -763,7 +763,7 @@ public:
    * @param psc a PolymorphismSequenceContainer
    * @param keepsingleton a boolean (true by default, false to exclude
    * singleton)
-   * @param freqmin a float (to exlude site with the lowest allele
+   * @param freqmin a float (to exclude site with the lowest allele
    * frequency less than the threshold given by freqmin, 0 by default)
    * @throw DimensionException if the number of sites is lower than 2
    * @author Sylvain Glémin
@@ -779,7 +779,7 @@ public:
    * @param psc a PolymorphismSequenceContainer
    * @param keepsingleton a boolean (true by default, false to exclude
    * singleton)
-   * @param freqmin a float (to exlude site with the lowest allele
+   * @param freqmin a float (to exclude site with the lowest allele
    * frequency less than the threshold given by freqmin, 0 by default)
    * @throw DimensionException if the number of sites or the number of
    * sequences is lower than 2
@@ -796,7 +796,7 @@ public:
    * @param psc a PolymorphismSequenceContainer
    * @param keepsingleton a boolean (true by default, false to exclude
    * singleton)
-   * @param freqmin a float (to exlude site with the lowest allele
+   * @param freqmin a float (to exclude site with the lowest allele
    * frequency less than the threshold given by freqmin, 0 by default)
    * @throw DimensionException if the number of sites or the number of
    * sequences is lower than 2
@@ -813,7 +813,7 @@ public:
    * @param psc a PolymorphismSequenceContainer
    * @param keepsingleton a boolean (true by default, false to exclude
    * singleton)
-   * @param freqmin a float (to exlude site with the lowest allele
+   * @param freqmin a float (to exclude site with the lowest allele
    * frequency less than the threshold given by freqmin, 0 by default)
    * @throw DimensionException if the number of sites or the number of
    * sequences is lower than 2
@@ -830,7 +830,7 @@ public:
    * @param psc a PolymorphismSequenceContainer
    * @param keepsingleton a boolean (true by default, false to exclude
    * singleton)
-   * @param freqmin a float (to exlude site with the lowest allele
+   * @param freqmin a float (to exclude site with the lowest allele
    * frequency less than the threshold given by freqmin, 0 by default)
    * @throw DimensionException if the number of sites or the number of
    * sequences is lower than 2
@@ -847,7 +847,7 @@ public:
    * @param psc a PolymorphismSequenceContainer
    * @param keepsingleton a boolean (true by default, false to exclude
    * singleton)
-   * @param freqmin a float (to exlude site with the lowest allele
+   * @param freqmin a float (to exclude site with the lowest allele
    * frequency less than the threshold given by freqmin, 0 by default)
    * @throw DimensionException if the number of sites or the number of
    * sequences is lower than 2
@@ -864,7 +864,7 @@ public:
    * @param psc a PolymorphismSequenceContainer
    * @param keepsingleton a boolean (true by default, false to exclude
    * singleton)
-   * @param freqmin a float (to exlude site with the lowest allele
+   * @param freqmin a float (to exclude site with the lowest allele
    * frequency less than the threshold given by freqmin, 0 by default)
    * @throw DimensionException if the number of sites or the number of
    * sequences is lower than 2
@@ -881,7 +881,7 @@ public:
    * @param psc a PolymorphismSequenceContainer
    * @param keepsingleton a boolean (true by default, false to exclude
    * singleton)
-   * @param freqmin a float (to exlude site with the lowest allele
+   * @param freqmin a float (to exclude site with the lowest allele
    * frequency less than the threshold given by freqmin, 0 by default)
    * @throw DimensionException if the number of sites is lower than 2
    * @author Sylvain Glémin
@@ -897,7 +897,7 @@ public:
    * @param psc a PolymorphismSequenceContainer
    * @param keepsingleton a boolean (true by default, false to exclude
    * singleton)
-   * @param freqmin a float (to exlude site with the lowest allele
+   * @param freqmin a float (to exclude site with the lowest allele
    * frequency less than the threshold given by freqmin, 0 by default)
    * @throw DimensionException if the number of sites is lower than 2
    * @author Sylvain Glémin
@@ -917,7 +917,7 @@ public:
    * distance2, false by default)
    * @param keepsingleton a boolean (true by default, false to exclude
    * singleton)
-   * @param freqmin a float (to exlude site with the lowest allele
+   * @param freqmin a float (to exclude site with the lowest allele
    * frequency less than the threshold given by freqmin, 0 by default)
    * @throw DimensionException if the number of sites or the number of
    * sequences is lower than 2
@@ -939,7 +939,7 @@ public:
    * distance2, false by default)
    * @param keepsingleton a boolean (true by default, false to exclude
    * singleton)
-   * @param freqmin a float (to exlude site with the lowest allele
+   * @param freqmin a float (to exclude site with the lowest allele
    * frequency less than the threshold given by freqmin, 0 by default)
    * @throw DimensionException if the number of sites or the number of
    * sequences is lower than 2
@@ -961,7 +961,7 @@ public:
    * distance2, false by default)
    * @param keepsingleton a boolean (true by default, false to exclude
    * singleton)
-   * @param freqmin a float (to exlude site with the lowest allele
+   * @param freqmin a float (to exclude site with the lowest allele
    * frequency less than the threshold given by freqmin, 0 by default)
    * @throw DimensionException if the number of sites or the number of
    * sequences is lower than 2
@@ -983,7 +983,7 @@ public:
    * distance2, false by default)
    * @param keepsingleton a boolean (true by default, false to exclude
    * singleton)
-   * @param freqmin a float (to exlude site with the lowest allele
+   * @param freqmin a float (to exclude site with the lowest allele
    * frequency less than the threshold given by freqmin, 0 by default)
    * @throw DimensionException if the number of sites or the number of
    * sequences is lower than 2
@@ -1005,7 +1005,7 @@ public:
    * distance2, false by default)
    * @param keepsingleton a boolean (true by default, false to exclude
    * singleton)
-   * @param freqmin a float (to exlude site with the lowest allele
+   * @param freqmin a float (to exclude site with the lowest allele
    * frequency less than the threshold given by freqmin, 0 by default)
    * @throw DimensionException if the number of sites or the number of
    * sequences is lower than 2
@@ -1027,7 +1027,7 @@ public:
    * distance2, false by default)
    * @param keepsingleton a boolean (true by default, false to exclude
    * singleton)
-   * @param freqmin a float (to exlude site with the lowest allele
+   * @param freqmin a float (to exclude site with the lowest allele
    * frequency less than the threshold given by freqmin, 0 by default)
    * @throw DimensionException if the number of sites or the number of
    * sequences is lower than 2
@@ -1050,7 +1050,7 @@ public:
    * distance2, false by default)
    * @param keepsingleton a boolean (true by default, false to exclude
    * singleton)
-   * @param freqmin a float (to exlude site with the lowest allele
+   * @param freqmin a float (to exclude site with the lowest allele
    * frequency less than the threshold given by freqmin, 0 by default)
    * @throw DimensionException if the number of sites or the number of
    * sequences is lower than 2

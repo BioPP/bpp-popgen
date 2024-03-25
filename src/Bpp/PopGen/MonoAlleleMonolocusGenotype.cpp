@@ -15,7 +15,7 @@ MonoAlleleMonolocusGenotype::MonoAlleleMonolocusGenotype(size_t allele_index) :
 MonoAlleleMonolocusGenotype::MonoAlleleMonolocusGenotype(std::vector<size_t> allele_index) : alleleIndex_(0)
 {
   if (allele_index.size() != 1)
-    throw BadSizeException("MonoAlleleMonolocusGenotype::MonoAlleleMonolocusGenotype: allele_index must conain one value.", allele_index.size(), 1);
+    throw BadSizeException("MonoAlleleMonolocusGenotype::MonoAlleleMonolocusGenotype: allele_index must contain one value.", allele_index.size(), 1);
   alleleIndex_ = allele_index[0];
 }
 

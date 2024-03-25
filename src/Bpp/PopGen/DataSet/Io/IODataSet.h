@@ -17,7 +17,7 @@
 namespace bpp
 {
 /**
- * @brief Interface for input/ouput with DataSet.
+ * @brief Interface for input/output with DataSet.
  *
  * IODataSet is a virtual class.
  * This is an interface to declare commune methodes for in/out action on DataSet.

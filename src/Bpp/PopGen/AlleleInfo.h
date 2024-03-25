@@ -15,7 +15,7 @@ namespace bpp
 /**
  * @brief The AlleleInfo interface.
  *
- * An AlleleInfo is a data structure designed to store informations about
+ * An AlleleInfo is a data structure designed to store information about
  * alleles in general like the size of the marker for example.
  *
  * @author Sylvain Gaillard

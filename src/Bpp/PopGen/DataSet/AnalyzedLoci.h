@@ -21,7 +21,7 @@ namespace bpp
  * @brief The AnalyzedLoci class.
  *
  * This is a LocusInfo container.
- * Its instanciation requires a number of locus wich is fixed
+ * Its instantiation requires a number of locus which is fixed
  * and can't be modified.
  *
  * @author Sylvain Gaillard
@@ -96,7 +96,7 @@ public:
   /**
    * @brief Get a LocusInfo by its position.
    *
-   * @throw NullPointerException if the LocusInfo is not difined.
+   * @throw NullPointerException if the LocusInfo is not defined.
    * @throw IndexOutOfBoundsException if locus_position is out of bounds.
    */
   const LocusInfo& getLocusInfoAtPosition(size_t locusPosition) const;

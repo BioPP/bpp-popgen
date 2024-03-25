@@ -35,7 +35,7 @@ public:
   static std::unique_ptr<DataSet> buildDataSet(const SequenceContainerInterface& sc);
 
   /**
-   * @brief Specific methode to build a DataSet from a PolymorphismSequenceContainer.
+   * @brief Specific method to build a DataSet from a PolymorphismSequenceContainer.
    */
   static std::unique_ptr<DataSet> buildDataSet(const PolymorphismSequenceContainer& psc);
 };
