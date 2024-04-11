@@ -532,7 +532,7 @@ unsigned int SequenceStatistics::numberOfSitesWithStopCodon(
     const GeneticCode& gCode,
     bool gapflag)
 {
-  if (!AlphabetTools::isCodonAlphabet(&psc.alphabet()))
+  if (!AlphabetTools::isCodonAlphabet(psc.alphabet()))
     throw AlphabetMismatchException("SequenceStatistics::stopCodonSiteNumber(). PolymorphismSequenceContainer must be with a codon alphabet.", &psc.alphabet(), AlphabetTools::DNA_CODON_ALPHABET.get());
 
   unique_ptr<ConstSiteIterator> si;
