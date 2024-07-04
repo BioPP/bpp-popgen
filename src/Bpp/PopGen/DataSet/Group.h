@@ -108,7 +108,7 @@ public:
   /**
    * @brief Set the id of the Group.
    *
-   * @param group_id The id of the Group as an size_t.
+   * @param groupId The id of the Group as an size_t.
    */
   void setGroupId(size_t groupId){ id_ = groupId; }
 
@@ -122,7 +122,7 @@ public:
   /**
    * @brief Set the name of the Group.
    *
-   * @param group_name Name of the Group as string.
+   * @param groupName Name of the Group as string.
    */
   void setGroupName(const std::string& groupName) { name_ = groupName; }
 

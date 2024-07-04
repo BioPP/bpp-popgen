@@ -81,7 +81,7 @@ public:
    * @brief Extract a special group from the PolymorphismSequenceContainer.
    *
    * @param psc a PolymorphismSequenceContainer reference.
-   * @param group_id the group identifier as an size_t.
+   * @param groupId the group identifier as an size_t.
    *
    * @throw GroupNotFoundException if group_id is not found.
    */

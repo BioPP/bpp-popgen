@@ -35,7 +35,7 @@ public:
    * if two allele keys, send a BiAlleleMonolocusGenotype,
    * if more allele keys, send a MultiAlleleMonolocusGenotype.
    *
-   * @param allele_keys A vector containing thes allele keys to put in the MonolocusGenotype.
+   * @param alleleKeys A vector containing thes allele keys to put in the MonolocusGenotype.
    * @return A MonolocusGenotype according to the number of alleles
    */
   static std::unique_ptr<MonolocusGenotypeInterface> buildMonolocusGenotypeByAlleleKey(const std::vector<size_t> alleleKeys);
