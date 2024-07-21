@@ -29,7 +29,7 @@ Individual::Individual(const std::string& id) : id_(id),
 Individual::Individual(const string& id,
     const Date& date,
     const Point2D<double>& coord,
-    shared_ptr<Locality<double>> locality,
+    std::shared_ptr<Locality<double>> locality,
     const unsigned short sex) :
   id_(id),
   sex_(sex),
