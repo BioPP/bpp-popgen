@@ -71,6 +71,7 @@ public:
 
   /**
    * @name The AlleleInfo interface
+   * @{
    */
   void setId(const std::string& allele_id);
   const std::string& getId() const;

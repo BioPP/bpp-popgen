@@ -90,7 +90,7 @@ public:
    * @brief Get a Locality by localityPosition.
    *
    * @return A const pointer to the locality matching the locality_position.
-   * @param locality_position The position of the Locality in the DataSet.
+   * @param localityPosition The position of the Locality in the DataSet.
    * @throw IndexOutOfBoundsException if locality_position exceeds the number of locality of the DataSet.
    */
   std::shared_ptr<const Locality<double>> getLocalityAtPosition(size_t localityPosition) const;
@@ -99,7 +99,7 @@ public:
    * @brief Get a Locality by localityPosition.
    *
    * @return A const pointer to the locality matching the locality_position.
-   * @param locality_position The position of the Locality in the DataSet.
+   * @param localityPosition The position of the Locality in the DataSet.
    * @throw IndexOutOfBoundsException if locality_position exceeds the number of locality of the DataSet.
    */
   const Locality<double>& localityAtPosition(size_t localityPosition) const;
