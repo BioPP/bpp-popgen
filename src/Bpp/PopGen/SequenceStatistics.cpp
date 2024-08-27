@@ -480,7 +480,7 @@ unsigned int SequenceStatistics::numberOfTransversions(const PolymorphismSequenc
       }
     }
     if (!(((state1 == 0 && state2 == 2) || (state1 == 2 && state2 == 0)) ||
-        ((state1 == 1 && state2 == 3) || (state1 == 3 && state2 == 1))))
+          ((state1 == 1 && state2 == 3) || (state1 == 3 && state2 == 1))))
     {
       nbTv++;
     }
@@ -1565,10 +1565,10 @@ std::map<std::string, double> SequenceStatistics::getUsefulValues_(size_t n)
     {
       values["cn"] = 2. * ((nn * values["a1"]) - (2. * (nn - 1.))) / ((nn - 1.) * (nn - 2.));
       values["dn"] =
-          values["cn"]
-          + ((nn - 2.) / ((nn - 1.) * (nn - 1.)))
-          + (2. / (nn - 1.))
-          * ((3. / 2.) - (((2. * values["a1n"]) - 3.) / (nn - 2.)) - (1. / nn));
+        values["cn"]
+        + ((nn - 2.) / ((nn - 1.) * (nn - 1.)))
+        + (2. / (nn - 1.))
+        * ((3. / 2.) - (((2. * values["a1n"]) - 3.) / (nn - 2.)) - (1. / nn));
     }
     values["e1"] = values["c1"] / values["a1"];
     values["e2"] = values["c2"] / ((values["a1"] * values["a1"]) + values["a2"]);
@@ -1603,8 +1603,8 @@ double SequenceStatistics::getVDstar_(size_t n, double a1, double a2, double dn)
     + (a1 * a1 * dn)
     - (2. * (nn * a1 * (a1 + 1)) / ((nn - 1.) * (nn - 1.)))
     )
-      /
-      denom;
+               /
+               denom;
   // Simonsen et al. 1995
   /*
      double vDs = (

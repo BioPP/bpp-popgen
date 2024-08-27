@@ -131,7 +131,7 @@ private:
     std::string panel_;
     std::string markerName_;
     std::string dye_;
-    std::vector< GeneMapperCsvExport::Allele > alleles_;
+    std::vector<GeneMapperCsvExport::Allele> alleles_;
     std::string dac_;
     double an_;
 

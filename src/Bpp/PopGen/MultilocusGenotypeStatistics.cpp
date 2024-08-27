@@ -692,7 +692,7 @@ double MultilocusGenotypeStatistics::getRHMultilocusFst(
     {
       nb_alleles = 0;
       // mean allelic frequencies
-      map< size_t, double > P = MultilocusGenotypeStatistics::getAllelesFrqForGroups (pmgc, locusPositions[i], groups);
+      map<size_t, double> P = MultilocusGenotypeStatistics::getAllelesFrqForGroups (pmgc, locusPositions[i], groups);
       // variance components from W&C
       map<size_t, MultilocusGenotypeStatistics::VarComp> values = getVarianceComponents(pmgc, locusPositions[i], groups);
       for (map<size_t, MultilocusGenotypeStatistics::VarComp>::iterator it = values.begin(); it != values.end(); it++)
