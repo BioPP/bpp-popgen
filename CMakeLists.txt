@@ -69,7 +69,6 @@ endif (CMAKE_INSTALL_PREFIX)
 include (GNUInstallDirs)
 find_package (bpp-core3 1.0.0 REQUIRED)
 find_package (bpp-seq3 1.0.0 REQUIRED)
-find_package (bpp-phyl3 1.0.0 REQUIRED)
 
 # CMake package
 set (cmake-package-location ${CMAKE_INSTALL_LIBDIR}/cmake/${PROJECT_NAME})
