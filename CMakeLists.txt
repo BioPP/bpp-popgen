@@ -9,7 +9,7 @@
 #   Francois Gindraud (2017)
 # Created: 21/08/2009
 
-cmake_minimum_required (VERSION 3.5)
+cmake_minimum_required (VERSION 3.10)
 project (bpp-popgen3 CXX)
 
 # Compile options
