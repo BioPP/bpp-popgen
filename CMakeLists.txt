@@ -2,18 +2,13 @@
 #
 # SPDX-License-Identifier: CECILL-2.1
 
-# CMake script for Bio++ Population Genetics Library
-# Authors:
-#   Sylvain Gaillard
-#   Julien Dutheil
-#   Francois Gindraud (2017)
-# Created: 21/08/2009
-
-cmake_minimum_required (VERSION 3.10)
-project (bpp-popgen3 CXX)
+cmake_minimum_required(VERSION 3.10)
+project (bpp-popgen CXX)
+set(CMAKE_CXX_STANDARD 17)
+set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
 # Compile options
-add_compile_options(-std=c++14 -Wall -Weffc++ -Wshadow -Wconversion)
+add_compile_options(-Wall -Weffc++ -Wshadow -Wconversion)
 
 IF(NOT CMAKE_BUILD_TYPE)
   SET(CMAKE_BUILD_TYPE RelWithDebInfo CACHE STRING
@@ -39,7 +34,7 @@ ELSE(NO_DEP_CHECK)
 #           library implements.
 # In other words, the library implements all the interface numbers in the
 # range from number current - age to current.
-SET(${PROJECT_NAME}_VERSION_CURRENT "1")
+SET(${PROJECT_NAME}_VERSION_CURRENT "3")
 SET(${PROJECT_NAME}_VERSION_REVISION "0")
 SET(${PROJECT_NAME}_VERSION_AGE "0")
 
@@ -67,7 +62,7 @@ if (CMAKE_INSTALL_PREFIX)
 endif (CMAKE_INSTALL_PREFIX)
 
 include (GNUInstallDirs)
-find_package (bpp-seq3 1.0.0 REQUIRED)
+find_package (bpp-seq 3.0.0 REQUIRED)
 
 # CMake package
 set (cmake-package-location ${CMAKE_INSTALL_LIBDIR}/cmake/${PROJECT_NAME})
