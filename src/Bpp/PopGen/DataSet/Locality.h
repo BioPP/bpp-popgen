@@ -35,7 +35,7 @@ public:
    * @param x The longitude.
    * @param y The latitude.
    */
-  Locality<T>(const std::string name, const T x = 0, const T y = 0) :
+  Locality(const std::string name, const T x = 0, const T y = 0) :
     bpp::Point2D<T>(x, y),
     name_(name) {}
 
@@ -45,14 +45,14 @@ public:
    * @param name The name of the locality.
    * @param coord The coordinates of the locality.
    */
-  Locality<T>(const std::string name, const bpp::Point2D<T>& coord) :
+  Locality(const std::string name, const bpp::Point2D<T>& coord) :
     bpp::Point2D<T>(coord),
     name_(name) {}
 
   /**
    * @brief Destroy a locality.
    */
-  virtual ~Locality<T>() {}
+  virtual ~Locality() {}
 
 public:
   // Methodes
