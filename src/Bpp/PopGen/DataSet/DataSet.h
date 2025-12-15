@@ -68,7 +68,7 @@ public:
 
 public:
   // Methodes
-// ** Locality manipulation ***************************************************/
+  // ** Locality manipulation ***************************************************/
   /**
    * @brief Add a locality to the DataSet.
    *
