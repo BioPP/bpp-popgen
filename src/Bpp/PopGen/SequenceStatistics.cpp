@@ -213,7 +213,7 @@ std::vector<unsigned int> SequenceStatistics::gcPolymorphism(const PolymorphismS
 {
   unsigned int nbMut = 0;
   unsigned int nbGC = 0;
-  size_t nbSeq = psc.getNumberOfSequences();
+  auto nbSeq = psc.getNumberOfSequences();
   vector<unsigned int> vect(2);
   unique_ptr<ConstSiteIterator> si;
   if (gapflag)
@@ -229,7 +229,7 @@ std::vector<unsigned int> SequenceStatistics::gcPolymorphism(const PolymorphismS
       if (freqGC > 0 && freqGC < 1) // Not 100% AT or GC
       {
         nbMut += static_cast<unsigned int>(nbSeq);
-        long double adGC = freqGC * nbSeq;
+        long double adGC = freqGC * static_cast<long double>(nbSeq);
         nbGC += static_cast<unsigned int>(adGC);
       }
     }
