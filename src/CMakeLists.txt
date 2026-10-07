@@ -2,13 +2,6 @@
 #
 # SPDX-License-Identifier: CECILL-2.1
 
-# CMake script for Bio++ PopGen
-# Authors:
-#   Sylvain Gaillard
-#   Julien Dutheil
-#   Francois Gindraud (2017)
-# Created: 21/08/2009
-
 # File list
 set(CPP_FILES
     Bpp/PopGen/BasicAlleleInfo.cpp
@@ -48,7 +41,7 @@ if(BUILD_STATIC)
         ${PROJECT_NAME}-static
         PUBLIC
             $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}>
-            $<INSTALL_INTERFACE:$<INSTALL_PREFIX>/${CMAKE_INSTALL_INCLUDEDIR}>
+            $<INSTALL_INTERFACE:${CMAKE_INSTALL_INCLUDEDIR}>
     )
     set_target_properties(
         ${PROJECT_NAME}-static
@@ -63,7 +56,7 @@ target_include_directories(
     ${PROJECT_NAME}-shared
     PUBLIC
         $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}>
-        $<INSTALL_INTERFACE:$<INSTALL_PREFIX>/${CMAKE_INSTALL_INCLUDEDIR}>
+        $<INSTALL_INTERFACE:${CMAKE_INSTALL_INCLUDEDIR}>
 )
 set_target_properties(
     ${PROJECT_NAME}-shared
